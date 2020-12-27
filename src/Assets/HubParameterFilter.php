@@ -9,7 +9,8 @@ class HubParameterFilter extends AbstractMapParameterFilter {
 
     protected function createValueSanitizers(): array {
         return [
-            'version' => new FileNameSanitizer('')
+            'version' => new FileNameSanitizer(''),
+            'modules' => new TokenSanitizer([])
         ];
     }
 }

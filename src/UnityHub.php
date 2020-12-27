@@ -78,19 +78,30 @@ class UnityHub {
             $this->editors[$version] = new UnityEditor($path, $version);
         }
     }
-
-    public function installEditor(string $version): iterable {
+    public function createEditorListing(): Process {
+        $args = ['editors', '-r'];
+        $process = $this->createProcess($args);
+        return $process;
+    }
+    public function createEditorInstallation(string $version, array $modules = []): Process {
         assert($version !== '');
-        yield "Installing $version...";
-        $process = $this->createProcess(['install', '--version', $version]);
-        $process->start();
-        foreach ($process as $type => $data) {
-            if ($type === $process::OUT) {
-                yield $data;
-            } else {
-                fwrite(STDERR, $data);
-            }
+        $args = ['install', '--version', $version, '--childModules'];
+        foreach ($modules as $module) {
+            $args[] = '--module';
+            $args[] = $module;
         }
+        $process = $this->createProcess($args);
+        return $process;
+    }
+    public function createModuleInstallation(string $version, array $modules = []): Process {
+        assert($version !== '');
+        $args = ['install-modules', '--version', $version, '--childModules'];
+        foreach ($modules as $module) {
+            $args[] = '--module';
+            $args[] = $module;
+        }
+        $process = $this->createProcess($args);
+        return $process;
     }
 
     public function loadProjects() {
@@ -114,7 +125,7 @@ class UnityHub {
         return trim($result);
     }
     
-    private function createProcess(array $arguments) : Process {
+    public function createProcess(array $arguments) : Process {
         assert($this->isInstalled);
         
         $command = array_merge([
