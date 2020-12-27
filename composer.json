@@ -9,18 +9,19 @@
 	],
 	"type" : "library",
 	"require" : {
-		"php" : "^7.2",
-		"slothsoft/core" : "^1.1"
+		"php" : "7.2 - 7.4",
+		"slothsoft/core" : "^1.2",
+		"slothsoft/farah" : "^1.2"
 	},
 	"require-dev" : {
-		"phpunit/phpunit" : "^6.5"
+		"phpunit/phpunit" : "8.5.*"
 	},
 	"autoload" : {
-		"psr-0" : {
-			"Slothsoft\\Unity\\" : "src/"
+		"psr-4" : {
+			"Slothsoft\\Unity\\" : "src"
 		},
 		"files" : [
-			"src/autoload.php"
+			"scripts/bootstrap.php"
 		]
 	},
 	"keywords" : [
@@ -29,9 +30,14 @@
 		"unity"
 	],
 	"autoload-dev" : {
-		"classmap" : [
-			"tests/"
-		]
+		"psr-4" : {
+			"Slothsoft\\Unity\\" : "tests"
+		}
+	},
+	"extra" : {
+		"branch-alias" : {
+			"dev-develop" : "1.0.x-dev"
+		}
 	},
 	"homepage" : "http://farah.slothsoft.net/modules/unity"
 }
