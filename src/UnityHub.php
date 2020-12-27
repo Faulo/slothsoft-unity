@@ -79,8 +79,18 @@ class UnityHub {
         }
     }
 
-    public function installEditor(string $version): bool {
-        return false;
+    public function installEditor(string $version): iterable {
+        assert($version !== '');
+        yield "Installing $version...";
+        $process = $this->createProcess(['install', '--version', $version]);
+        $process->start();
+        foreach ($process as $type => $data) {
+            if ($type === $process::OUT) {
+                yield $data;
+            } else {
+                fwrite(STDERR, $data);
+            }
+        }
     }
 
     public function loadProjects() {
@@ -91,15 +101,7 @@ class UnityHub {
     }
 
     public function execute(array $arguments): string {
-        assert($this->isInstalled);
-
-        $command = array_merge([
-            $this->hubFile,
-            '--',
-            '--headless'
-        ], $arguments);
-        $process = new Process($command);
-        $process->setTimeout(0);
+        $process = $this->createProcess($arguments);
         $process->start();
         $result = '';
         foreach ($process as $type => $data) {
@@ -110,6 +112,19 @@ class UnityHub {
             }
         }
         return trim($result);
+    }
+    
+    private function createProcess(array $arguments) : Process {
+        assert($this->isInstalled);
+        
+        $command = array_merge([
+            $this->hubFile,
+            '--',
+            '--headless'
+        ], $arguments);
+        $process = new Process($command);
+        $process->setTimeout(0);
+        return $process;
     }
 
     private function scanForSubDirectories(string $directory): iterable {

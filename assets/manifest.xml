@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<assets xmlns="http://schema.slothsoft.net/farah/module">
+	<fragment name="hub">
+		<custom-asset name="editors"
+			executable-builder="Slothsoft\Unity\Assets\HubEditorsBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\HubParameterFilter" />
+		<custom-asset name="install"
+			executable-builder="Slothsoft\Unity\Assets\HubInstallBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\HubParameterFilter" />
+	</fragment>
+</assets>

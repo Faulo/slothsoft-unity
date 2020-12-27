@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f4cc07a4dcf1e099f46de76386fd807",
+    "content-hash": "7e22b145ffce9d9da494d994102c5fc4",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1315,16 +1315,16 @@
         },
         {
             "name": "slothsoft/farah",
-            "version": "1.2.0",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-farah.git",
-                "reference": "8ac5a056cac96c02ae5a6e2db905e0a37af37832"
+                "reference": "dd57c36666ffc78b38de6d748faeb2cfabf9361e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/8ac5a056cac96c02ae5a6e2db905e0a37af37832",
-                "reference": "8ac5a056cac96c02ae5a6e2db905e0a37af37832",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/dd57c36666ffc78b38de6d748faeb2cfabf9361e",
+                "reference": "dd57c36666ffc78b38de6d748faeb2cfabf9361e",
                 "shasum": ""
             },
             "require": {
@@ -1351,7 +1351,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "1.1.x-dev"
+                    "dev-develop": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -1381,9 +1381,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-farah/issues",
-                "source": "https://github.com/Faulo/slothsoft-farah/tree/1.2.0"
+                "source": "https://github.com/Faulo/slothsoft-farah/tree/develop"
             },
-            "time": "2020-12-26T20:38:39+00:00"
+            "time": "2020-12-27T16:43:50+00:00"
         },
         {
             "name": "slothsoft/w3c",
@@ -3356,7 +3356,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "slothsoft/farah": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
