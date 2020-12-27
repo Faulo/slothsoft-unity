@@ -5,6 +5,8 @@ namespace Slothsoft\Unity;
 use Slothsoft\Core\Configuration\ConfigurationField;
 use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
+use Slothsoft\Core\Storage;
+use Slothsoft\Core\Calendar\Seconds;
 
 class UnityHub {
 
@@ -90,10 +92,15 @@ class UnityHub {
 
     public function createEditorInstallation(string $version, array $modules = []): Process {
         assert($version !== '');
+        $this->loadChangesets();
+        $changeset = $this->changesets[$version] ?? '';
+        assert($changeset !== '');
         $args = [
             'install',
             '--version',
             $version,
+            '--changeset',
+            $changeset,
             '--childModules'
         ];
         foreach ($modules as $module) {
@@ -157,6 +164,22 @@ class UnityHub {
     private function scanForSubDirectories(string $directory): iterable {
         $options = FileSystem::SCANDIR_SORT | FileSystem::SCANDIR_EXCLUDE_FILES;
         return FileSystem::scanDir($directory, $options);
+    }
+    
+    private $changesets;
+    const CHANGESET_URL = 'https://unity3d.com/get-unity/download/archive';
+    private function loadChangesets() {
+        $this->changesets = [];
+        if ($xpath = Storage::loadExternalXPath(self::CHANGESET_URL, Seconds::DAY)) {
+            foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {;
+                // unityhub://2019.4.17f1/667c8606c536
+                $href = $node->getAttribute('href');
+                $version = parse_url($href, PHP_URL_HOST);
+                $changeset = parse_url($href, PHP_URL_PATH);
+                assert(!isset($this->changesets[$version]));
+                $this->changesets[$version] = substr($changeset, 1);
+            }
+        }
     }
 }
 
