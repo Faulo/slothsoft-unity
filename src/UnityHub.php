@@ -78,14 +78,24 @@ class UnityHub {
             $this->editors[$version] = new UnityEditor($path, $version);
         }
     }
+
     public function createEditorListing(): Process {
-        $args = ['editors', '-r'];
+        $args = [
+            'editors',
+            '-r'
+        ];
         $process = $this->createProcess($args);
         return $process;
     }
+
     public function createEditorInstallation(string $version, array $modules = []): Process {
         assert($version !== '');
-        $args = ['install', '--version', $version, '--childModules'];
+        $args = [
+            'install',
+            '--version',
+            $version,
+            '--childModules'
+        ];
         foreach ($modules as $module) {
             $args[] = '--module';
             $args[] = $module;
@@ -93,9 +103,15 @@ class UnityHub {
         $process = $this->createProcess($args);
         return $process;
     }
+
     public function createModuleInstallation(string $version, array $modules = []): Process {
         assert($version !== '');
-        $args = ['install-modules', '--version', $version, '--childModules'];
+        $args = [
+            'install-modules',
+            '--version',
+            $version,
+            '--childModules'
+        ];
         foreach ($modules as $module) {
             $args[] = '--module';
             $args[] = $module;
@@ -124,10 +140,10 @@ class UnityHub {
         }
         return trim($result);
     }
-    
-    public function createProcess(array $arguments) : Process {
+
+    public function createProcess(array $arguments): Process {
         assert($this->isInstalled);
-        
+
         $command = array_merge([
             $this->hubFile,
             '--',

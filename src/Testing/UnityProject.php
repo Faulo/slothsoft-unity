@@ -1,7 +1,7 @@
 <?php
-namespace Slothsoft\Devtools\Unity;
+namespace Slothsoft\Unity\Testing;
 
-use Slothsoft\Devtools\CLI;
+use Slothsoft\Core\CLI;
 
 class UnityProject {
 
@@ -114,7 +114,7 @@ class UnityProject {
             foreach ($objects as $object) {
                 if ($object != "." && $object != "..") {
                     if (is_dir($dir . DIRECTORY_SEPARATOR . $object) && ! is_link($dir . "/" . $object)) {
-                        rrmdir($dir . DIRECTORY_SEPARATOR . $object);
+                        $this->rrmdir($dir . DIRECTORY_SEPARATOR . $object);
                     } else {
                         unlink($dir . DIRECTORY_SEPARATOR . $object);
                     }

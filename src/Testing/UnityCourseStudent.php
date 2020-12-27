@@ -1,7 +1,8 @@
 <?php
-namespace Slothsoft\Devtools\Unity;
+namespace Slothsoft\Unity\Testing;
 
-use Slothsoft\Devtools\CLI;
+use Slothsoft\Core\CLI;
+use Slothsoft\Unity\UnityProject;
 use DOMElement;
 
 class UnityCourseStudent {

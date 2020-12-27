@@ -10,8 +10,8 @@
 	"type" : "library",
 	"require" : {
 		"php" : "7.2 - 7.4",
-		"slothsoft/core" : "^1.2",
-		"slothsoft/farah" : "^1.2",
+		"slothsoft/core" : "^1.3",
+		"slothsoft/farah" : "^1.3",
 		"symfony/process" : "^5.0"
 	},
 	"require-dev" : {
@@ -43,8 +43,8 @@
 	"scripts" : {
 		"farah-asset" : "@php vendor/slothsoft/farah/scripts/farah-asset.php"
 	},
-	"config": {
-		"process-timeout": 3600
+	"config" : {
+		"process-timeout" : 3600
 	},
 	"homepage" : "http://farah.slothsoft.net/modules/unity"
 }

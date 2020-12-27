@@ -1,7 +1,8 @@
 <?php
-namespace Slothsoft\Devtools\Unity;
+namespace Slothsoft\Unity\Testing;
 
 use Slothsoft\Core\DOMHelper;
+use Slothsoft\Devtools\Unity\UnityCourseStudent;
 use SplFileInfo;
 
 class UnityCourse {

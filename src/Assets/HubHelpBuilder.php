@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets;
 
+use Slothsoft\Core\IO\Writable\Delegates\ChunkWriterFromProcess;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Farah\Module\Asset\AssetInterface;
 use Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface;
@@ -17,7 +18,7 @@ class HubHelpBuilder implements ExecutableBuilderStrategyInterface {
             'help'
         ]);
         $writer = new ChunkWriterFromProcess($process);
-        $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt");
+        $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt", false);
         return new ExecutableStrategies($resultBuilder);
     }
 }
