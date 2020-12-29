@@ -7,6 +7,7 @@ use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 use Slothsoft\Core\Storage;
 use Slothsoft\Core\Calendar\Seconds;
+use Generator;
 
 class UnityHub {
 
@@ -58,11 +59,14 @@ class UnityHub {
 
     public $editors;
 
+    public $daemon;
+
     public function __construct() {
         $this->hubFile = realpath(self::getHubLocation());
         $this->workspaceDirectory = realpath(self::getWorkspaceLocation());
 
         $this->isInstalled = ($this->hubFile and $this->workspaceDirectory);
+        $this->daemon = new DaemonClient(5050);
     }
 
     public function loadEditors() {
@@ -81,16 +85,15 @@ class UnityHub {
         }
     }
 
-    public function createEditorListing(): Process {
+    public function createEditorListing(): array {
         $args = [
             'editors',
             '-r'
         ];
-        $process = $this->createProcess($args);
-        return $process;
+        return $args;
     }
 
-    public function createEditorInstallation(string $version, array $modules = []): Process {
+    public function createEditorInstallation(string $version, array $modules = []): array {
         assert($version !== '');
         $this->loadChangesets();
         $changeset = $this->changesets[$version] ?? '';
@@ -107,11 +110,10 @@ class UnityHub {
             $args[] = '--module';
             $args[] = $module;
         }
-        $process = $this->createProcess($args);
-        return $process;
+        return $args;
     }
 
-    public function createModuleInstallation(string $version, array $modules = []): Process {
+    public function createModuleInstallation(string $version, array $modules = []): array {
         assert($version !== '');
         $args = [
             'install-modules',
@@ -123,8 +125,7 @@ class UnityHub {
             $args[] = '--module';
             $args[] = $module;
         }
-        $process = $this->createProcess($args);
-        return $process;
+        return $args;
     }
 
     public function loadProjects() {
@@ -134,49 +135,34 @@ class UnityHub {
         }
     }
 
-    public function execute(array $arguments): string {
-        $process = $this->createProcess($arguments);
-        $process->start();
-        $result = '';
-        foreach ($process as $type => $data) {
-            if ($type === $process::OUT) {
-                $result .= $data;
-            } else {
-                fwrite(STDERR, $data);
-            }
-        }
-        return trim($result);
+    public function executeNow(array $arguments): string {
+        return implode('', (array) $this->executeStream($arguments));
     }
 
-    public function createProcess(array $arguments): Process {
-        assert($this->isInstalled);
-
-        $command = array_merge([
-            $this->hubFile,
-            '--',
-            '--headless'
-        ], $arguments);
-        $process = new Process($command);
-        $process->setTimeout(0);
-        return $process;
+    public function executeStream(array $arguments): Generator {
+        $arguments = implode(' ', $arguments);
+        yield from $this->daemon->call($arguments);
     }
 
     private function scanForSubDirectories(string $directory): iterable {
         $options = FileSystem::SCANDIR_SORT | FileSystem::SCANDIR_EXCLUDE_FILES;
         return FileSystem::scanDir($directory, $options);
     }
-    
+
     private $changesets;
+
     const CHANGESET_URL = 'https://unity3d.com/get-unity/download/archive';
+
     private function loadChangesets() {
         $this->changesets = [];
         if ($xpath = Storage::loadExternalXPath(self::CHANGESET_URL, Seconds::DAY)) {
-            foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {;
+            foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
+                ;
                 // unityhub://2019.4.17f1/667c8606c536
                 $href = $node->getAttribute('href');
                 $version = parse_url($href, PHP_URL_HOST);
                 $changeset = parse_url($href, PHP_URL_PATH);
-                assert(!isset($this->changesets[$version]));
+                assert(! isset($this->changesets[$version]));
                 $this->changesets[$version] = substr($changeset, 1);
             }
         }
