@@ -772,16 +772,16 @@
         },
         {
             "name": "matthiasmullie/minify",
-            "version": "1.3.64",
+            "version": "1.3.65",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasmullie/minify.git",
-                "reference": "38f9d58c739687e269f46c6dff4647de9e2eb855"
+                "reference": "227f19062451c55a797e0cc667ef983834e6580c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/38f9d58c739687e269f46c6dff4647de9e2eb855",
-                "reference": "38f9d58c739687e269f46c6dff4647de9e2eb855",
+                "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/227f19062451c55a797e0cc667ef983834e6580c",
+                "reference": "227f19062451c55a797e0cc667ef983834e6580c",
                 "shasum": ""
             },
             "require": {
@@ -830,9 +830,23 @@
             ],
             "support": {
                 "issues": "https://github.com/matthiasmullie/minify/issues",
-                "source": "https://github.com/matthiasmullie/minify/tree/1.3.64"
+                "source": "https://github.com/matthiasmullie/minify/tree/1.3.65"
             },
-            "time": "2020-12-23T13:37:53+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/[user1",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/matthiasmullie] # Replace with up to 4 GitHub Sponsors-enabled usernames e.g.",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/user2",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-12-27T21:43:29+00:00"
         },
         {
             "name": "matthiasmullie/path-converter",
@@ -1315,16 +1329,16 @@
         },
         {
             "name": "slothsoft/farah",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-farah.git",
-                "reference": "81fd5329d06c02be15fe189283d416928ce488a6"
+                "reference": "f8cd7c8e58c4cc6cb5a73ebee596086fa5296f22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/81fd5329d06c02be15fe189283d416928ce488a6",
-                "reference": "81fd5329d06c02be15fe189283d416928ce488a6",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/f8cd7c8e58c4cc6cb5a73ebee596086fa5296f22",
+                "reference": "f8cd7c8e58c4cc6cb5a73ebee596086fa5296f22",
                 "shasum": ""
             },
             "require": {
@@ -1381,9 +1395,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-farah/issues",
-                "source": "https://github.com/Faulo/slothsoft-farah/tree/1.3.0"
+                "source": "https://github.com/Faulo/slothsoft-farah/tree/1.3.1"
             },
-            "time": "2020-12-27T18:42:46+00:00"
+            "time": "2020-12-30T00:05:27+00:00"
         },
         {
             "name": "slothsoft/w3c",
