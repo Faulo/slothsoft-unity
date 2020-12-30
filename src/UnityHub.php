@@ -119,11 +119,18 @@ class UnityHub {
         return $args;
     }
 
-    public function loadProjects() {
+    public function getProjectPath(string $id, string $branch): string {
+        assert($id !== '');
+        assert($branch !== '');
+        return $this->workspaceDirectory . DIRECTORY_SEPARATOR . $id . '.' . $branch;
+    }
+
+    public function loadProject(string $projectPath): UnityProject {
         assert($this->isInstalled);
-        foreach ($this->scanForSubDirectories($this->workspaceDirectory) as $project) {
-            var_dump($project);
-        }
+        $version = UnityProject::guessVersion($projectPath);
+        $this->loadEditors();
+        assert(isset($this->editors[$version]));
+        return new UnityProject($projectPath, $this->editors[$version]);
     }
 
     public function executeNow(array $arguments): string {
@@ -135,8 +142,12 @@ class UnityHub {
     }
 
     public function executeStream(array $arguments): Generator {
-        $arguments = implode(' ', $arguments);
-        yield from $this->daemon->call($arguments);
+        $arguments = array_merge([
+            $this->hubFile,
+            '--',
+            '--headless'
+        ], $arguments);
+        yield from $this->daemon->call(json_encode($arguments));
     }
 
     private function scanForSubDirectories(string $directory): iterable {

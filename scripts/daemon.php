@@ -10,11 +10,9 @@ function print_message(string $message) {
 }
 
 $daemon = new DaemonServer(5050, function (string $message): iterable {
-    $command = <<<EOT
-"C:\Unity\Unity Hub\Unity Hub.exe" -- --headless $message
-EOT;
-    print_message($command);
-    $process = Process::fromShellCommandline($command);
+    $args = json_decode($message, true);
+    $process = new Process($args);
+    print_message($process->getCommandLine());
     $process->setTimeout(0);
     $process->start();
     foreach ($process as $type => $data) {

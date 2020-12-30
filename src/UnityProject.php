@@ -3,10 +3,22 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Slothsoft\Core\CLI;
+use RuntimeException;
 
 class UnityProject {
 
-    const FILE_UNITY = '%s/%s/Editor/Unity.exe';
+    public static function guessVersion(string $projectPath): string {
+        assert(is_dir($projectPath));
+        $projectPath = realpath($projectPath);
+        $projectFile = $projectPath . self::FILE_VERSION;
+        assert(is_file($projectFile));
+        $unityVersion = file_get_contents($projectFile);
+        $match = [];
+        if (preg_match('~m_EditorVersion: (.+)~', $unityVersion, $match)) {
+            return trim($match[1]);
+        }
+        throw new RuntimeException('Unable to determine EditorVersion!');
+    }
 
     const FILE_VERSION = '/ProjectSettings/ProjectVersion.txt';
 
@@ -14,31 +26,19 @@ class UnityProject {
 
     private $projectPath;
 
-    private $unityVersion;
-
-    private $unityPath;
+    private $editor;
 
     public $packages = [];
 
-    public function __construct(string $unityPath, string $projectPath) {
-        assert(is_dir($unityPath), "Path $unityPath not found");
+    public function __construct(string $projectPath, UnityEditor $editor) {
         assert(is_dir($projectPath), "Path $projectPath not found");
 
-        $this->unityPath = realpath($unityPath);
+        $this->editor = $editor;
         $this->projectPath = realpath($projectPath);
         $this->loadProject();
     }
 
     private function loadProject() {
-        $contents = $this->loadFile($this->projectPath . self::FILE_VERSION);
-        $match = [];
-        if (preg_match('~m_EditorVersion: (.+)~', $contents, $match)) {
-            $this->unityVersion = trim($match[1]);
-
-            $unityFile = sprintf(self::FILE_UNITY, $this->unityPath, $this->unityVersion);
-            assert(is_file($unityFile), "File $unityFile not found");
-            $this->unityFile = realpath($unityFile);
-        }
         $tmp = json_decode($this->loadFile($this->projectPath . self::FILE_PACKAGES), true);
         if (is_array($tmp) and isset($tmp['dependencies'])) {
             $this->packages = $tmp['dependencies'];
@@ -66,6 +66,31 @@ class UnityProject {
         $command = vsprintf('%s -quit -accept-apiupdate -batchmode -nographics -projectPath %s -executeMethod %s %s', $args);
 
         return CLI::execute($command);
+    }
+
+    /**
+     *
+     * @link https://docs.unity3d.com/Packages/com.unity.test-framework@1.1/manual/reference-command-line.html
+     * @param string $resultsFile
+     * @param string $testPlatform
+     * @return iterable
+     */
+    public function executeTestRunner(string $resultsFile, string $testPlatform = 'EditMode'): iterable {
+        // ..\2019.4.12f1\Editor\Unity.exe -runTests -batchmode -projectPath 2020WS.UnityPP.Lodil -testResults results.xml -testPlatform PlayMode
+        $args = [];
+        $args[] = $this->editor->executable;
+        $args[] = '-runTests';
+        $args[] = '-accept-apiupdate';
+        $args[] = '-batchmode';
+        $args[] = '-nographics';
+        $args[] = '-projectPath';
+        $args[] = $this->projectPath;
+        $args[] = '-testResults';
+        $args[] = $resultsFile;
+        $args[] = '-testPlatform';
+        $args[] = $testPlatform;
+        $daemon = new DaemonClient(5050);
+        return $daemon->call(json_encode($args));
     }
 }
 
