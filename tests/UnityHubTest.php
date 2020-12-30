@@ -24,7 +24,7 @@ class UnityHubTest extends TestCase {
         $hub = new UnityHub();
         $this->assertTrue($hub->isInstalled);
 
-        $result = $hub->execute([
+        $result = $hub->executeNow([
             'install-path',
             '--get'
         ]);

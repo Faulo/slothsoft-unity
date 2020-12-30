@@ -2,11 +2,10 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
-use Slothsoft\Core\Configuration\ConfigurationField;
 use Slothsoft\Core\FileSystem;
-use Symfony\Component\Process\Process;
 use Slothsoft\Core\Storage;
 use Slothsoft\Core\Calendar\Seconds;
+use Slothsoft\Core\Configuration\ConfigurationField;
 use Generator;
 
 class UnityHub {
@@ -72,7 +71,7 @@ class UnityHub {
     public function loadEditors() {
         assert($this->isInstalled);
         $this->editors = [];
-        $editorPaths = $this->execute([
+        $editorPaths = $this->executeNow([
             'editors',
             '--installed'
         ]);
@@ -83,14 +82,6 @@ class UnityHub {
             $path = trim($line[1]);
             $this->editors[$version] = new UnityEditor($path, $version);
         }
-    }
-
-    public function createEditorListing(): array {
-        $args = [
-            'editors',
-            '-r'
-        ];
-        return $args;
     }
 
     public function createEditorInstallation(string $version, array $modules = []): array {
@@ -136,7 +127,11 @@ class UnityHub {
     }
 
     public function executeNow(array $arguments): string {
-        return implode('', (array) $this->executeStream($arguments));
+        $result = '';
+        foreach ($this->executeStream($arguments) as $value) {
+            $result .= $value;
+        }
+        return trim($result);
     }
 
     public function executeStream(array $arguments): Generator {

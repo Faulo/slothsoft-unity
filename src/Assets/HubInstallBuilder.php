@@ -3,7 +3,6 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets;
 
 use Slothsoft\Core\IO\Writable\Delegates\ChunkWriterFromChunksDelegate;
-use Slothsoft\Core\IO\Writable\Delegates\ChunkWriterFromProcess;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Farah\Module\Asset\AssetInterface;
 use Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface;
@@ -16,11 +15,15 @@ class HubInstallBuilder implements ExecutableBuilderStrategyInterface {
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $version = $args->get('version');
-        $modules = $args->get('modules');
+        $modules = (array) $args->get('modules');
         $hub = new UnityHub();
         if ($version === '') {
             // create editor index
-            $writer = new ChunkWriterFromProcess($hub->createEditorListing());
+            $generator = $hub->executeStream([
+                'editors',
+                '-r'
+            ]);
+            $writer = new ChunkWriterFromGenerator($generator);
         } else {
             // actually install editor+modules
             $chunkDelegate = function () use ($hub, $version, $modules): Generator {
@@ -28,26 +31,18 @@ class HubInstallBuilder implements ExecutableBuilderStrategyInterface {
                 if (isset($hub->editors[$version])) {
                     foreach ($modules as $module) {
                         yield "Unity Editor $version already installed, installing module $module..." . PHP_EOL;
-                        $process = $hub->createModuleInstallation($version, [
+                        $args = $hub->createModuleInstallation($version, [
                             $module
                         ]);
-                        yield $process->getCommandLine() . PHP_EOL;
-                        $process->start();
-                        foreach ($process as $data) {
-                            yield $data;
-                        }
+                        yield from $hub->executeStream($args);
                     }
                 } else {
                     $m = json_encode($modules);
                     yield "Installing Unity Editor version $version with modules $m..." . PHP_EOL;
-                    $process = $hub->createEditorInstallation($version, $modules);
-                    yield $process->getCommandLine() . PHP_EOL;
-                    $process->start();
-                    foreach ($process as $data) {
-                        yield $data;
-                    }
+                    $args = $hub->createEditorInstallation($version, $modules);
+                    yield from $hub->executeStream($args);
                 }
-                yield "Done!" . PHP_EOL;
+                yield PHP_EOL . "Done!" . PHP_EOL;
             };
             $writer = new ChunkWriterFromChunksDelegate($chunkDelegate);
         }

@@ -1,5 +1,4 @@
 <?php
-
 use Slothsoft\Unity\DaemonClient;
 
 require_once __DIR__ . '/../vendor/autoload.php';
