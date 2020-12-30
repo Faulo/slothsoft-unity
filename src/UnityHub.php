@@ -121,8 +121,11 @@ class UnityHub {
 
     public function getProjectPath(string $id, string $branch): string {
         assert($id !== '');
-        assert($branch !== '');
-        return $this->workspaceDirectory . DIRECTORY_SEPARATOR . $id . '.' . $branch;
+        $path = $this->workspaceDirectory . DIRECTORY_SEPARATOR . $id;
+        if ($branch !== '') {
+            $path .= ".$branch";
+        }
+        return $path;
     }
 
     public function loadProject(string $projectPath): UnityProject {

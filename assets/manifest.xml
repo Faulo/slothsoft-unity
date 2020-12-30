@@ -22,6 +22,9 @@
 		<custom-asset name="fetch"
 			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
 			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+		<custom-asset name="pull"
+			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
 		<custom-asset name="checkout"
 			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
 			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />

@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets;
 
+use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\IO\Writable\Delegates\ChunkWriterFromChunksDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Farah\Module\Module;
@@ -26,16 +27,41 @@ class ProjectInstallBuilder implements ExecutableBuilderStrategyInterface {
                 }
 
                 $id = $args->get('id');
+                $href = $args->get('href');
+                if ($id === '') {
+                    $id = parse_url($href, PHP_URL_PATH);
+                    $id = str_replace('/', '.', $id);
+                    $id = preg_replace([
+                        '~^\.~',
+                        '~\.$~'
+                    ], '', $id);
+                    $id = FileSystem::filenameSanitize($id);
+                    $args->set('id', $id);
+                }
                 $branch = $args->get('branch');
                 $projectPath = $hub->getProjectPath($id, $branch);
 
-                $gitUrl = $context->createUrl($args)->withPath(is_dir($projectPath) ? '/git/fetch' : '/git/clone');
-                yield "Loading project $id to '$projectPath' via: $gitUrl" . PHP_EOL;
-                yield from Module::resolveToChunkWriter($gitUrl)->toChunks();
+                $url = $context->createUrl($args);
 
-                $gitUrl = $gitUrl->withPath('/git/checkout');
-                yield "Switching to branch '$branch' via: $gitUrl" . PHP_EOL;
-                yield from Module::resolveToChunkWriter($gitUrl)->toChunks();
+                if (is_dir($projectPath)) {
+                    $url = $url->withPath('/git/fetch');
+                    yield "Updating project $id at '$projectPath' via: $url" . PHP_EOL;
+                    yield from Module::resolveToChunkWriter($url)->toChunks();
+                } else {
+                    $url = $url->withPath('/git/clone');
+                    yield "Creating project $id at '$projectPath' via: $url" . PHP_EOL;
+                    yield from Module::resolveToChunkWriter($url)->toChunks();
+                }
+
+                if ($branch === '') {
+                    $url = $url->withPath('/git/pull');
+                    yield "Updating current branch via: $url" . PHP_EOL;
+                    yield from Module::resolveToChunkWriter($url)->toChunks();
+                } else {
+                    $url = $url->withPath('/git/checkout');
+                    yield "Switching to branch '$branch' via: $url" . PHP_EOL;
+                    yield from Module::resolveToChunkWriter($url)->toChunks();
+                }
 
                 $version = UnityProject::guessVersion($projectPath);
                 $hub->loadEditors();
@@ -46,9 +72,9 @@ class ProjectInstallBuilder implements ExecutableBuilderStrategyInterface {
                         'version' => $version,
                         'modules' => 'windows-il2cpp webgl'
                     ]);
-                    $hubUrl = $gitUrl->withPath('/hub/install')->withQueryArguments($hubArgs);
-                    yield "Installing Editor v$version via: $hubUrl" . PHP_EOL;
-                    yield from Module::resolveToChunkWriter($hubUrl)->toChunks();
+                    $url = $url->withPath('/hub/install')->withQueryArguments($hubArgs);
+                    yield "Installing Editor v$version via: $url" . PHP_EOL;
+                    yield from Module::resolveToChunkWriter($url)->toChunks();
                 }
                 yield "Succesfully installed project $id to '$projectPath'!" . PHP_EOL;
             } catch (Throwable $e) {

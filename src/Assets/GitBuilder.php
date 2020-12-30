@@ -43,6 +43,12 @@ class GitBuilder implements ExecutableBuilderStrategyInterface {
                         $args[] = '--progress';
                         $args[] = '--all';
                         break;
+                    case '/git/pull':
+                        $args[] = '-C';
+                        $args[] = $projectPath;
+                        $args[] = 'pull';
+                        $args[] = '--progress';
+                        break;
                     case '/git/checkout':
                         $args[] = '-C';
                         $args[] = $projectPath;

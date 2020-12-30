@@ -13,7 +13,7 @@ class ProjectParameterFilter extends AbstractMapParameterFilter {
         return [
             'id' => new FileNameSanitizer(''),
             'href' => new StringSanitizer(''),
-            'branch' => new StringSanitizer('master'),
+            'branch' => new StringSanitizer(''),
             'debug' => new IntegerSanitizer(0)
         ];
     }
