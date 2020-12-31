@@ -9,6 +9,7 @@ use Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStra
 use Slothsoft\Farah\Module\Executable\ExecutableStrategies;
 use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ChunkWriterResultBuilder;
 use Slothsoft\Unity\UnityHub;
+use Slothsoft\Unity\Git\GitProject;
 use Symfony\Component\Process\Process;
 use Generator;
 use Throwable;
@@ -27,39 +28,24 @@ class GitBuilder implements ExecutableBuilderStrategyInterface {
                     return;
                 }
                 $projectPath = $hub->getProjectPath($id, $branch);
-                $args = [
-                    'git'
-                ];
+                $git = new GitProject($projectPath);
                 switch ((string) $context->getUrlPath()) {
                     case '/git/clone':
-                        $args[] = 'clone';
-                        $args[] = $href;
-                        $args[] = $projectPath;
+                        $args = $git->createClone($href);
                         break;
                     case '/git/fetch':
-                        $args[] = '-C';
-                        $args[] = $projectPath;
-                        $args[] = 'fetch';
-                        $args[] = '--progress';
-                        $args[] = '--all';
+                        $args = $git->createFetch();
                         break;
                     case '/git/pull':
-                        $args[] = '-C';
-                        $args[] = $projectPath;
-                        $args[] = 'pull';
-                        $args[] = '--progress';
+                        $args = $git->createPull();
                         break;
                     case '/git/checkout':
-                        $args[] = '-C';
-                        $args[] = $projectPath;
-                        $args[] = 'checkout';
-                        $args[] = '-B';
-                        $args[] = $branch;
-                        $args[] = '--track';
-                        $args[] = "origin/$branch";
+                        $args = $git->createPull($branch);
                         break;
+                    default:
+                        yield "Unknown action: $context->getUrlPath()" . PHP_EOL;
+                        return;
                 }
-
                 $process = new Process($args);
                 $process->setTimeout(0);
                 yield $process->getCommandLine() . PHP_EOL;

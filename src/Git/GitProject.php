@@ -14,6 +14,57 @@ class GitProject {
         $this->projectPath = realpath($projectPath);
     }
 
+    public function projectExists(): bool {
+        return is_dir($this->projectPath);
+    }
+
+    public function createClone(string $url): array {
+        assert(! $this->projectExists());
+        return [
+            'git',
+            'clone',
+            $url,
+            $this->projectPath
+        ];
+    }
+
+    public function createPull(): array {
+        assert($this->projectExists());
+        return [
+            'git',
+            '-C',
+            $this->projectPath,
+            'pull',
+            '--progress'
+        ];
+    }
+
+    public function createFetch(): array {
+        assert($this->projectExists());
+        return [
+            'git',
+            '-C',
+            $this->projectPath,
+            'fetch',
+            '--progress',
+            '--all'
+        ];
+    }
+
+    public function createCheckout(string $branch): array {
+        assert($this->projectExists());
+        return [
+            'git',
+            '-C',
+            $this->projectPath,
+            'checkout',
+            '-B',
+            $branch,
+            '--track',
+            "origin/$branch"
+        ];
+    }
+
     public function add(string $flags = '.') {
         $this->execute("add $flags");
     }
