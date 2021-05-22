@@ -34,7 +34,7 @@ if (isset($_REQUEST['branch'])) {
     $branches[] = 'origin/' . $_REQUEST['branch'];
 } else {
     chdir($workspaceDir . $start);
-    
+
     $output = [];
     exec('git branch -r', $output);
     array_shift($output);
