@@ -1,21 +1,6 @@
 Search.appendIndex(
     [
                 {
-            "fqsen": "\\Slothsoft\\Unity\\Assets\\ChunkWriterFromProcess",
-            "name": "ChunkWriterFromProcess",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-Assets-ChunkWriterFromProcess.html"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\Assets\\ChunkWriterFromProcess\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-Assets-ChunkWriterFromProcess.html#method___construct"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\Assets\\ChunkWriterFromProcess\u003A\u003AtoChunks\u0028\u0029",
-            "name": "toChunks",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-Assets-ChunkWriterFromProcess.html#method_toChunks"
-        },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\HubHelpBuilder",
             "name": "HubHelpBuilder",
             "summary": "",
@@ -46,26 +31,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-HubParameterFilter.html#method_createValueSanitizers"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\Assets\\TokenSanitizer",
-            "name": "TokenSanitizer",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-Assets-TokenSanitizer.html"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\Assets\\TokenSanitizer\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-Assets-TokenSanitizer.html#method___construct"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\Assets\\TokenSanitizer\u003A\u003Aapply\u0028\u0029",
-            "name": "apply",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-Assets-TokenSanitizer.html#method_apply"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\Assets\\TokenSanitizer\u003A\u003AgetDefault\u0028\u0029",
-            "name": "getDefault",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-Assets-TokenSanitizer.html#method_getDefault"
-        },                {
             "fqsen": "\\Slothsoft\\Unity\\Git\\GitProject",
             "name": "GitProject",
             "summary": "",
@@ -75,6 +40,31 @@ Search.appendIndex(
             "name": "__construct",
             "summary": "",
             "url": "classes/Slothsoft-Unity-Git-GitProject.html#method___construct"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Git\\GitProject\u003A\u003AprojectExists\u0028\u0029",
+            "name": "projectExists",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Git-GitProject.html#method_projectExists"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Git\\GitProject\u003A\u003AcreateClone\u0028\u0029",
+            "name": "createClone",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Git-GitProject.html#method_createClone"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Git\\GitProject\u003A\u003AcreatePull\u0028\u0029",
+            "name": "createPull",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Git-GitProject.html#method_createPull"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Git\\GitProject\u003A\u003AcreateFetch\u0028\u0029",
+            "name": "createFetch",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Git-GitProject.html#method_createFetch"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Git\\GitProject\u003A\u003AcreateCheckout\u0028\u0029",
+            "name": "createCheckout",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Git-GitProject.html#method_createCheckout"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\Git\\GitProject\u003A\u003Aadd\u0028\u0029",
             "name": "add",
@@ -276,230 +266,230 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-MLAgents-MLTraining.html#property_runId"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject",
             "name": "GitProject",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method___construct"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method___construct"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Aadd\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Aadd\u0028\u0029",
             "name": "add",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_add"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_add"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Acommit\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Acommit\u0028\u0029",
             "name": "commit",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_commit"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_commit"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Apull\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Apull\u0028\u0029",
             "name": "pull",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_pull"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_pull"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Apush\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Apush\u0028\u0029",
             "name": "push",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_push"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_push"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Areset\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Areset\u0028\u0029",
             "name": "reset",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_reset"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_reset"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Aclean\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Aclean\u0028\u0029",
             "name": "clean",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_clean"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_clean"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Abranch\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Abranch\u0028\u0029",
             "name": "branch",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_branch"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_branch"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Acheckout\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Acheckout\u0028\u0029",
             "name": "checkout",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_checkout"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_checkout"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003AcheckoutLatest\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003AcheckoutLatest\u0028\u0029",
             "name": "checkoutLatest",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_checkoutLatest"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_checkoutLatest"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Abranches\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Abranches\u0028\u0029",
             "name": "branches",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_branches"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_branches"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\GitProject\u003A\u003Aexecute\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\GitProject\u003A\u003Aexecute\u0028\u0029",
             "name": "execute",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-GitProject.html#method_execute"
+            "url": "classes/Slothsoft-Unity-Testing-GitProject.html#method_execute"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse",
             "name": "UnityCourse",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method___construct"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method___construct"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003AgetStudents\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003AgetStudents\u0028\u0029",
             "name": "getStudents",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method_getStudents"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method_getStudents"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003AgetGitProjects\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003AgetGitProjects\u0028\u0029",
             "name": "getGitProjects",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method_getGitProjects"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method_getGitProjects"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003AgetUnityProjects\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003AgetUnityProjects\u0028\u0029",
             "name": "getUnityProjects",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method_getUnityProjects"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method_getUnityProjects"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003ApullRepositories\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003ApullRepositories\u0028\u0029",
             "name": "pullRepositories",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method_pullRepositories"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method_pullRepositories"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003ApushRepositories\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003ApushRepositories\u0028\u0029",
             "name": "pushRepositories",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method_pushRepositories"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method_pushRepositories"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003ArunTests\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003ArunTests\u0028\u0029",
             "name": "runTests",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method_runTests"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method_runTests"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003AdeleteFolder\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003AdeleteFolder\u0028\u0029",
             "name": "deleteFolder",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method_deleteFolder"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method_deleteFolder"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003AwriteReport\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003AwriteReport\u0028\u0029",
             "name": "writeReport",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method_writeReport"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method_writeReport"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003ArequestTest\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003ArequestTest\u0028\u0029",
             "name": "requestTest",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#method_requestTest"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#method_requestTest"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003A\u0024resultsFolder",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003A\u0024resultsFolder",
             "name": "resultsFolder",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#property_resultsFolder"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#property_resultsFolder"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourse\u003A\u003A\u0024settings",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourse\u003A\u003A\u0024settings",
             "name": "settings",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourse.html#property_settings"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourse.html#property_settings"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourseStudent",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourseStudent",
             "name": "UnityCourseStudent",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourseStudent.html"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourseStudent.html"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourseStudent\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourseStudent\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourseStudent.html#method___construct"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourseStudent.html#method___construct"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourseStudent\u003A\u003Adownload\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourseStudent\u003A\u003Adownload\u0028\u0029",
             "name": "download",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourseStudent.html#method_download"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourseStudent.html#method_download"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourseStudent\u003A\u003ArunTests\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourseStudent\u003A\u003ArunTests\u0028\u0029",
             "name": "runTests",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourseStudent.html#method_runTests"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourseStudent.html#method_runTests"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourseStudent\u003A\u003A\u0024owner",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourseStudent\u003A\u003A\u0024owner",
             "name": "owner",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourseStudent.html#property_owner"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourseStudent.html#property_owner"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourseStudent\u003A\u003A\u0024node",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourseStudent\u003A\u003A\u0024node",
             "name": "node",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourseStudent.html#property_node"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourseStudent.html#property_node"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityCourseStudent\u003A\u003A\u0024git",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityCourseStudent\u003A\u003A\u0024git",
             "name": "git",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityCourseStudent.html#property_git"
+            "url": "classes/Slothsoft-Unity-Testing-UnityCourseStudent.html#property_git"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject",
             "name": "UnityProject",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#method___construct"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#method___construct"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003Aexecute\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003Aexecute\u0028\u0029",
             "name": "execute",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#method_execute"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#method_execute"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003ArunTests\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003ArunTests\u0028\u0029",
             "name": "runTests",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#method_runTests"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#method_runTests"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003AgetAssetFiles\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003AgetAssetFiles\u0028\u0029",
             "name": "getAssetFiles",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#method_getAssetFiles"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#method_getAssetFiles"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003AdeleteFolder\u0028\u0029",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003AdeleteFolder\u0028\u0029",
             "name": "deleteFolder",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#method_deleteFolder"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#method_deleteFolder"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003AFILE_UNITY",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003AFILE_UNITY",
             "name": "FILE_UNITY",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#constant_FILE_UNITY"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#constant_FILE_UNITY"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003AFILE_VERSION",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003AFILE_VERSION",
             "name": "FILE_VERSION",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#constant_FILE_VERSION"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#constant_FILE_VERSION"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003AFILE_PROJECT",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003AFILE_PROJECT",
             "name": "FILE_PROJECT",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#constant_FILE_PROJECT"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#constant_FILE_PROJECT"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003AFILE_PACKAGES",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003AFILE_PACKAGES",
             "name": "FILE_PACKAGES",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#constant_FILE_PACKAGES"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#constant_FILE_PACKAGES"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003A\u0024companyName",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003A\u0024companyName",
             "name": "companyName",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#property_companyName"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#property_companyName"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity\\UnityProject\u003A\u003A\u0024packages",
+            "fqsen": "\\Slothsoft\\Unity\\Testing\\UnityProject\u003A\u003A\u0024packages",
             "name": "packages",
             "summary": "",
-            "url": "classes/Slothsoft-Devtools-Unity-UnityProject.html#property_packages"
+            "url": "classes/Slothsoft-Unity-Testing-UnityProject.html#property_packages"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityEditor",
             "name": "UnityEditor",
@@ -561,11 +551,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityHub.html#method_loadEditors"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AcreateEditorListing\u0028\u0029",
-            "name": "createEditorListing",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityHub.html#method_createEditorListing"
-        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AcreateEditorInstallation\u0028\u0029",
             "name": "createEditorInstallation",
             "summary": "",
@@ -576,20 +561,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityHub.html#method_createModuleInstallation"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AloadProjects\u0028\u0029",
-            "name": "loadProjects",
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AgetProjectPath\u0028\u0029",
+            "name": "getProjectPath",
             "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityHub.html#method_loadProjects"
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_getProjectPath"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003Aexecute\u0028\u0029",
-            "name": "execute",
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AloadProject\u0028\u0029",
+            "name": "loadProject",
             "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityHub.html#method_execute"
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_loadProject"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AcreateProcess\u0028\u0029",
-            "name": "createProcess",
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AexecuteNow\u0028\u0029",
+            "name": "executeNow",
             "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityHub.html#method_createProcess"
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_executeNow"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AexecuteStream\u0028\u0029",
+            "name": "executeStream",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_executeStream"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003ADEFAULT_HUB_LOCATION",
             "name": "DEFAULT_HUB_LOCATION",
@@ -605,6 +595,11 @@ Search.appendIndex(
             "name": "DEFAULT_WORKSPACE_LOCATION",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityHub.html#constant_DEFAULT_WORKSPACE_LOCATION"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003ACHANGESET_URL",
+            "name": "CHANGESET_URL",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#constant_CHANGESET_URL"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003A\u0024isInstalled",
             "name": "isInstalled",
@@ -631,10 +626,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityHub.html#property_editors"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003A\u0024daemon",
+            "name": "daemon",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#property_daemon"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProject",
             "name": "UnityProject",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AguessVersion\u0028\u0029",
+            "name": "guessVersion",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityProject.html#method_guessVersion"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
@@ -646,10 +651,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html#method_execute"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AFILE_UNITY",
-            "name": "FILE_UNITY",
+            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AexecuteTestRunner\u0028\u0029",
+            "name": "executeTestRunner",
             "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityProject.html#constant_FILE_UNITY"
+            "url": "classes/Slothsoft-Unity-UnityProject.html#method_executeTestRunner"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AFILE_VERSION",
             "name": "FILE_VERSION",
@@ -666,6 +671,91 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html#property_packages"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ChunkWriterFromGenerator",
+            "name": "ChunkWriterFromGenerator",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ChunkWriterFromGenerator.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ChunkWriterFromGenerator\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ChunkWriterFromGenerator.html#method___construct"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ChunkWriterFromGenerator\u003A\u003AtoChunks\u0028\u0029",
+            "name": "toChunks",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ChunkWriterFromGenerator.html#method_toChunks"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\GitBuilder",
+            "name": "GitBuilder",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-GitBuilder.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\GitBuilder\u003A\u003AbuildExecutableStrategies\u0028\u0029",
+            "name": "buildExecutableStrategies",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-GitBuilder.html#method_buildExecutableStrategies"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectInstallBuilder",
+            "name": "ProjectInstallBuilder",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectInstallBuilder.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectInstallBuilder\u003A\u003AbuildExecutableStrategies\u0028\u0029",
+            "name": "buildExecutableStrategies",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectInstallBuilder.html#method_buildExecutableStrategies"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectParameterFilter",
+            "name": "ProjectParameterFilter",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectParameterFilter.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectParameterFilter\u003A\u003AcreateValueSanitizers\u0028\u0029",
+            "name": "createValueSanitizers",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectParameterFilter.html#method_createValueSanitizers"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestBuilder",
+            "name": "ProjectTestBuilder",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectTestBuilder.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestBuilder\u003A\u003AbuildExecutableStrategies\u0028\u0029",
+            "name": "buildExecutableStrategies",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectTestBuilder.html#method_buildExecutableStrategies"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\DaemonClient",
+            "name": "DaemonClient",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-DaemonClient.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\DaemonClient\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-DaemonClient.html#method___construct"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\DaemonClient\u003A\u003Acall\u0028\u0029",
+            "name": "call",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-DaemonClient.html#method_call"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\DaemonServer",
+            "name": "DaemonServer",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-DaemonServer.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\DaemonServer\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-DaemonServer.html#method___construct"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\DaemonServer\u003A\u003Arun\u0028\u0029",
+            "name": "run",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-DaemonServer.html#method_run"
+        },                {
             "fqsen": "\\",
             "name": "\\",
             "summary": "",
@@ -675,6 +765,16 @@ Search.appendIndex(
             "name": "Assets",
             "summary": "",
             "url": "namespaces/slothsoft-unity-assets.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity",
+            "name": "Unity",
+            "summary": "",
+            "url": "namespaces/slothsoft-unity.html"
+        },                {
+            "fqsen": "\\Slothsoft",
+            "name": "Slothsoft",
+            "summary": "",
+            "url": "namespaces/slothsoft.html"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\Git",
             "name": "Git",
@@ -686,29 +786,14 @@ Search.appendIndex(
             "summary": "",
             "url": "namespaces/slothsoft-cms.html"
         },                {
-            "fqsen": "\\Slothsoft",
-            "name": "Slothsoft",
-            "summary": "",
-            "url": "namespaces/slothsoft.html"
-        },                {
             "fqsen": "\\Slothsoft\\Unity\\MLAgents",
             "name": "MLAgents",
             "summary": "",
             "url": "namespaces/slothsoft-unity-mlagents.html"
         },                {
-            "fqsen": "\\Slothsoft\\Devtools\\Unity",
-            "name": "Unity",
+            "fqsen": "\\Slothsoft\\Unity\\Testing",
+            "name": "Testing",
             "summary": "",
-            "url": "namespaces/slothsoft-devtools-unity.html"
-        },                {
-            "fqsen": "\\Slothsoft\\Devtools",
-            "name": "Devtools",
-            "summary": "",
-            "url": "namespaces/slothsoft-devtools.html"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity",
-            "name": "Unity",
-            "summary": "",
-            "url": "namespaces/slothsoft-unity.html"
+            "url": "namespaces/slothsoft-unity-testing.html"
         }            ]
 );
