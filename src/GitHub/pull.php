@@ -1,5 +1,5 @@
 <?php
-namespace Slothsoft\CMS;
+namespace Slothsoft\Unity\GitHub;
 
 $queue = __DIR__ . '/queue.bat';
 
@@ -18,6 +18,7 @@ if (isset($_REQUEST['branch'])) {
 } else {
     chdir($workspaceDir . $start);
 
+    $output = [];
     exec('git branch -r', $output);
     array_shift($output);
     foreach ($output as $val) {

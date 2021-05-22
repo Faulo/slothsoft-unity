@@ -1,5 +1,7 @@
 <?php
-namespace Slothsoft\CMS;
+namespace Slothsoft\Unity\GitHub;
+
+$queue = __DIR__ . '/queue.bat';
 
 $projectName = trim($_REQUEST['project']);
 if (! $projectName) {
@@ -17,6 +19,7 @@ if ($input) {
 }
 
 if (isset($input['ref'])) {
+    $match = [];
     if (preg_match('~^refs/heads/(.+)$~', $input['ref'], $match)) {
         $branch = $match[1];
     }

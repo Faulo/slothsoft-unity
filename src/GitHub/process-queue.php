@@ -1,4 +1,6 @@
 <?php
+namespace Slothsoft\Unity\GitHub;
+
 $queueFile = __DIR__ . '/queue.bat';
 
 // there can be only one

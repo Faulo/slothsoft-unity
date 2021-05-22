@@ -1,5 +1,5 @@
 <?php
-namespace Slothsoft\CMS;
+namespace Slothsoft\Unity\GitHub;
 
 $queue = __DIR__ . '/queue.bat';
 
@@ -25,7 +25,7 @@ $targets = [
 $workspaceDir = 'C:/Unity/workspace/';
 $projectFile = 'ProjectSettings/ProjectVersion.txt';
 
-$url = "https://github.com/Faulo/$projectName";
+// $url = "https://github.com/Faulo/$projectName";
 $start = "$projectName.master";
 $unityFile = 'C:/Unity/%s/Editor/Unity.exe';
 
@@ -34,7 +34,8 @@ if (isset($_REQUEST['branch'])) {
     $branches[] = 'origin/' . $_REQUEST['branch'];
 } else {
     chdir($workspaceDir . $start);
-
+    
+    $output = [];
     exec('git branch -r', $output);
     array_shift($output);
     foreach ($output as $val) {
@@ -58,6 +59,7 @@ foreach ($branches as $branch) {
             chdir($projectDir);
 
             $unityVersion = file_get_contents($projectFile);
+            $match = [];
             if (preg_match('~m_EditorVersion: (.+)~', $unityVersion, $match)) {
                 $unityVersion = trim($match[1]);
 
