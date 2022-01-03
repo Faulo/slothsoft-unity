@@ -18,11 +18,7 @@ class UnityHubTest extends TestCase {
         $this->assertTrue($hub->isInstalled, 'Please provide a valid Unity Hub installation.');
         $this->assertFileExists($hub->hubFile);
     }
-
-    /**
-     *
-     * @depends testHubIsInstalled
-     */
+    
     public function testExecute() {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
@@ -35,11 +31,7 @@ class UnityHubTest extends TestCase {
         $this->assertNotNull($result);
         $this->assertDirectoryExists($result);
     }
-
-    /**
-     *
-     * @depends testHubIsInstalled
-     */
+    
     public function testLoadEditors() {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
@@ -48,7 +40,16 @@ class UnityHubTest extends TestCase {
         $hub->loadEditors();
         $this->assertIsArray($hub->editors);
         foreach ($hub->editors as $version => $editor) {
+            $this->assertTrue($editor->isInstalled);
             $this->assertStringContainsString($version, $editor->executable);
         }
+    }
+    
+    public function testGetEditorByVersion() {
+        UnityHub::setUseDaemon(false);
+        $hub = new UnityHub();
+        $this->assertTrue($hub->isInstalled);
+        
+        $this->assertInstanceOf(UnityEditor::class, $hub->getEditorByVersion('2021.2.7f1'));
     }
 }

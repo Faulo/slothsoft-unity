@@ -5,15 +5,17 @@ namespace Slothsoft\Unity;
 use Symfony\Component\Process\Process;
 
 class UnityEditor {
-
-    public $version;
-
+    
     public $executable;
+    
+    public $version;
+    
+    public $isInstalled;
 
     public function __construct(string $executable, string $version) {
-        assert(is_file($executable));
         $this->executable = $executable;
         $this->version = $version;
+        $this->isInstalled = is_file($executable);
     }
 
     public function execute(array $arguments): string {
