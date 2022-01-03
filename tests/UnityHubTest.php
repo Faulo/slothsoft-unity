@@ -5,22 +5,26 @@ namespace Slothsoft\Unity;
 use PHPUnit\Framework\TestCase;
 
 class UnityHubTest extends TestCase {
-
-    public function testHubExists() {
+    public function testUseDaemon() {
+        UnityHub::setUseDaemon(true);
+        $this->assertEquals(true, UnityHub::getUseDaemon());
+        
+        UnityHub::setUseDaemon(false);
+        $this->assertEquals(false, UnityHub::getUseDaemon());
+    }
+    
+    public function testHubIsInstalled() {
         $hub = new UnityHub();
-        if ($hub->isInstalled) {
-            $this->assertFileExists($hub->hubFile);
-            $this->assertDirectoryExists($hub->workspaceDirectory);
-        } else {
-            $this->markTestSkipped('Please provide a valid Unity Hub installation via UnityHub::setHubLocation, setEditorLocation and setWorkspaceLocation');
-        }
+        $this->assertTrue($hub->isInstalled, 'Please provide a valid Unity Hub installation.');
+        $this->assertFileExists($hub->hubFile);
     }
 
     /**
      *
-     * @depends testHubExists
+     * @depends testHubIsInstalled
      */
     public function testExecute() {
+        UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
         $this->assertTrue($hub->isInstalled);
 
@@ -34,9 +38,10 @@ class UnityHubTest extends TestCase {
 
     /**
      *
-     * @depends testHubExists
+     * @depends testHubIsInstalled
      */
     public function testLoadEditors() {
+        UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
         $this->assertTrue($hub->isInstalled);
 

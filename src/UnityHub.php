@@ -6,46 +6,30 @@ use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\Storage;
 use Slothsoft\Core\Calendar\Seconds;
 use Slothsoft\Core\Configuration\ConfigurationField;
+use Symfony\Component\Process\Process;
 use Generator;
 
 class UnityHub {
-
-    const DEFAULT_HUB_LOCATION = 'C:/Unity/Unity Hub/Unity Hub.exe';
-
-    const DEFAULT_EDITOR_LOCATION = 'C:/Unity';
-
-    const DEFAULT_WORKSPACE_LOCATION = 'C:/Unity/workspace';
-
-    private static function hubLocation(): ConfigurationField {
+    
+    private static function useDaemon(): ConfigurationField {
         static $field;
         if ($field === null) {
-            $field = new ConfigurationField(self::DEFAULT_HUB_LOCATION);
+            $field = new ConfigurationField(false);
         }
         return $field;
     }
-
-    public static function setHubLocation(string $value) {
-        self::hubLocation()->setValue($value);
+    
+    public static function setUseDaemon(bool $value) {
+        self::useDaemon()->setValue($value);
     }
-
-    public static function getHubLocation(): string {
-        return self::hubLocation()->getValue();
+    
+    public static function getUseDaemon(): bool {
+        return self::useDaemon()->getValue();
     }
-
-    private static function workspaceLocation(): ConfigurationField {
-        static $field;
-        if ($field === null) {
-            $field = new ConfigurationField(self::DEFAULT_WORKSPACE_LOCATION);
-        }
-        return $field;
-    }
-
-    public static function setWorkspaceLocation(string $value) {
-        self::workspaceLocation()->setValue($value);
-    }
-
-    public static function getWorkspaceLocation(): string {
-        return self::workspaceLocation()->getValue();
+    
+    private static function getHubLocation() : string {
+        $locator = new UnityHubLocator();
+        return $locator->findHubLocation();
     }
 
     public $isInstalled;
@@ -62,10 +46,12 @@ class UnityHub {
 
     public function __construct() {
         $this->hubFile = realpath(self::getHubLocation());
-        $this->workspaceDirectory = realpath(self::getWorkspaceLocation());
 
-        $this->isInstalled = ($this->hubFile and $this->workspaceDirectory);
-        $this->daemon = new DaemonClient(5050);
+        $this->isInstalled = (bool) $this->hubFile;
+        
+        if (self::getUseDaemon()) {
+            $this->daemon = new DaemonClient(5050);
+        }
     }
 
     public function loadEditors() {
@@ -144,13 +130,24 @@ class UnityHub {
         return trim($result);
     }
 
-    public function executeStream(array $arguments): Generator {
+    private function executeStream(array $arguments): Generator {
         $arguments = array_merge([
             $this->hubFile,
             '--',
             '--headless'
         ], $arguments);
-        yield from $this->daemon->call(json_encode($arguments));
+        if ($this->daemon) {
+            yield from $this->daemon->call(json_encode($arguments));
+        } else {
+            $process = new Process($arguments);
+            $process->setTimeout(0);
+            $process->start();
+            foreach ($process as $type => $data) {
+                if ($type === $process::OUT) {
+                    yield $data;
+                }
+            }
+        }
     }
 
     private function scanForSubDirectories(string $directory): iterable {
