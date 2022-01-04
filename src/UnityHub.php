@@ -159,7 +159,7 @@ class UnityHub {
         return trim($result);
     }
 
-    private function executeStream(array $arguments): Generator {
+    public function executeStream(array $arguments): Generator {
         $arguments = array_merge([
             $this->hubFile,
             '--',
