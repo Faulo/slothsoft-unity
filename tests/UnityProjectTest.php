@@ -4,6 +4,10 @@ namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ *
+ * @depends \Slothsoft\Unity\UnityHubLocatorTest::testFindHubLocation
+ */
 class UnityProjectTest extends TestCase {
 
     public function testClassExists() {

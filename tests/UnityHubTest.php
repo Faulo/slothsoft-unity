@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class UnityHubTest extends TestCase {
 
-    public function testUseDaemon() {
+    public function testUseDaemon(): void {
         UnityHub::setUseDaemon(true);
         $this->assertEquals(true, UnityHub::getUseDaemon());
 
@@ -14,16 +14,23 @@ class UnityHubTest extends TestCase {
         $this->assertEquals(false, UnityHub::getUseDaemon());
     }
 
-    public function testHubIsInstalled() {
+    public function testHubIsInstalled(): void {
+        UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        $this->assertTrue($hub->isInstalled, 'Please provide a valid Unity Hub installation.');
+        if (! $hub->isInstalled) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
         $this->assertFileExists($hub->hubFile);
     }
 
-    public function testExecute() {
+    public function testExecute(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        $this->assertTrue($hub->isInstalled);
+        if (! $hub->isInstalled) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
 
         $result = $hub->executeNow([
             'install-path',
@@ -34,10 +41,13 @@ class UnityHubTest extends TestCase {
         $this->assertDirectoryExists($result);
     }
 
-    public function testLoadEditors() {
+    public function testLoadEditors(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        $this->assertTrue($hub->isInstalled);
+        if (! $hub->isInstalled) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
 
         $hub->loadEditors();
         $this->assertIsArray($hub->editors);
@@ -47,10 +57,13 @@ class UnityHubTest extends TestCase {
         }
     }
 
-    public function testGetEditorByVersion() {
+    public function testGetEditorByVersion(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        $this->assertTrue($hub->isInstalled);
+        if (! $hub->isInstalled) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
 
         $this->assertInstanceOf(UnityEditor::class, $hub->getEditorByVersion('2021.2.7f1'));
     }
