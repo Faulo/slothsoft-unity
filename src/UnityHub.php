@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 use Generator;
 
 class UnityHub {
-    
+
     private static function useDaemon(): ConfigurationField {
         static $field;
         if ($field === null) {
@@ -18,16 +18,16 @@ class UnityHub {
         }
         return $field;
     }
-    
+
     public static function setUseDaemon(bool $value) {
         self::useDaemon()->setValue($value);
     }
-    
+
     public static function getUseDaemon(): bool {
         return self::useDaemon()->getValue();
     }
-    
-    private static function getHubLocation() : string {
+
+    private static function getHubLocation(): string {
         $locator = new UnityHubLocator();
         return $locator->findHubLocation();
     }
@@ -39,7 +39,7 @@ class UnityHub {
     public $projects = [];
 
     public $editors = [];
-    
+
     public $editorPath;
 
     private $daemon;
@@ -52,13 +52,13 @@ class UnityHub {
                 $this->isInstalled = true;
             }
         }
-        
+
         if (self::getUseDaemon()) {
             $this->daemon = new DaemonClient(5050);
         }
     }
 
-    public function loadEditors() : void {
+    public function loadEditors(): void {
         assert($this->isInstalled);
         $this->editors = [];
         $editorPaths = $this->executeNow([
@@ -73,20 +73,23 @@ class UnityHub {
             $this->editors[$version] = new UnityEditor($path, $version);
         }
     }
-    
-    private function loadEditorPath() : void {
+
+    private function loadEditorPath(): void {
         if ($this->editorPath === null) {
             assert($this->isInstalled);
-            if ($path = $this->executeNow(['install-path', '--get'])) {
+            if ($path = $this->executeNow([
+                'install-path',
+                '--get'
+            ])) {
                 if ($path = realpath($path)) {
                     $this->editorPath = $path;
                 }
             }
         }
     }
-    
-    public function getEditorByVersion(string $version) : UnityEditor {
-        if (!isset($this->editors[$version])) {
+
+    public function getEditorByVersion(string $version): UnityEditor {
+        if (! isset($this->editors[$version])) {
             $this->loadEditorPath();
             if ($this->editorPath === null) {
                 throw new \RuntimeException("Failed to determine editor path!");

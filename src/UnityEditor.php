@@ -5,11 +5,11 @@ namespace Slothsoft\Unity;
 use Symfony\Component\Process\Process;
 
 class UnityEditor {
-    
+
     public $executable;
-    
+
     public $version;
-    
+
     public $isInstalled;
 
     public function __construct(string $executable, string $version) {
