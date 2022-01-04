@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<assets xmlns="http://schema.slothsoft.net/farah/module">
+	<fragment name="hub">
+		<custom-asset name="help"
+			executable-builder="Slothsoft\Unity\Assets\HubHelpBuilder" />
+		<custom-asset name="install"
+			executable-builder="Slothsoft\Unity\Assets\HubInstallBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\HubParameterFilter" />
+	</fragment>
+	<fragment name="project">
+		<custom-asset name="test"
+			executable-builder="Slothsoft\Unity\Assets\ProjectTestBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+		<custom-asset name="install"
+			executable-builder="Slothsoft\Unity\Assets\ProjectInstallBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+	</fragment>
+	<fragment name="git">
+		<custom-asset name="clone"
+			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+		<custom-asset name="fetch"
+			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+		<custom-asset name="pull"
+			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+		<custom-asset name="checkout"
+			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+	</fragment>
+</assets>

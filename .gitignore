@@ -10,3 +10,6 @@ $RECYCLE.BIN/
 
 # == phpDocumentor ==
 /docs/tmp/
+
+# == PHPUnit ==
+/.phpunit.result.cache
