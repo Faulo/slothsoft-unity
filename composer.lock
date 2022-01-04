@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be4abbdf4f80d24f3b05bdce848c6447",
+    "content-hash": "1a3e97079f078a176cb5db6bb6b4b9e9",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1239,20 +1239,20 @@
         },
         {
             "name": "slothsoft/blob",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-blob.git",
-                "reference": "b6d9222a6e6c1d51e33f3a7b856e71891ab17107"
+                "reference": "9aabb6e2f2cc8b6c1588e58cbd1d39b7a7693e82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-blob/zipball/b6d9222a6e6c1d51e33f3a7b856e71891ab17107",
-                "reference": "b6d9222a6e6c1d51e33f3a7b856e71891ab17107",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-blob/zipball/9aabb6e2f2cc8b6c1588e58cbd1d39b7a7693e82",
+                "reference": "9aabb6e2f2cc8b6c1588e58cbd1d39b7a7693e82",
                 "shasum": ""
             },
             "require": {
-                "php": "7.2 - 8.0",
+                "php": "7.2 - 8.1",
                 "slothsoft/core": "^1.0",
                 "slothsoft/w3c": "^1.0"
             },
@@ -1291,27 +1291,28 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-blob/issues",
-                "source": "https://github.com/Faulo/slothsoft-blob/tree/1.0.2"
+                "source": "https://github.com/Faulo/slothsoft-blob/tree/1.0.3"
             },
-            "time": "2020-12-26T15:13:12+00:00"
+            "time": "2022-01-04T18:52:30+00:00"
         },
         {
             "name": "slothsoft/core",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-core.git",
-                "reference": "d770b7bd73cc0b6767f693c6759f2405966c9329"
+                "reference": "f92036ea2b82b16a8bfdac1809cb597bb8ccc44d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/d770b7bd73cc0b6767f693c6759f2405966c9329",
-                "reference": "d770b7bd73cc0b6767f693c6759f2405966c9329",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/f92036ea2b82b16a8bfdac1809cb597bb8ccc44d",
+                "reference": "f92036ea2b82b16a8bfdac1809cb597bb8ccc44d",
                 "shasum": ""
             },
             "require": {
+                "ext-xsl": "*",
                 "guzzlehttp/psr7": "^1.4",
-                "php": "7.2 - 8.0",
+                "php": "7.2 - 8.1",
                 "php-ds/php-ds": "^1.2",
                 "psr/http-message": "^1.0",
                 "slothsoft/w3c": "^1.1",
@@ -1321,6 +1322,7 @@
                 "phpunit/phpunit": "8.5.*"
             },
             "suggest": {
+                "ext-com_dotnet": "*",
                 "ext-curl": "*"
             },
             "type": "library",
@@ -1355,30 +1357,31 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-core/issues",
-                "source": "https://github.com/Faulo/slothsoft-core/tree/1.3.0"
+                "source": "https://github.com/Faulo/slothsoft-core/tree/1.3.1"
             },
-            "time": "2020-12-27T18:43:10+00:00"
+            "time": "2022-01-04T18:43:16+00:00"
         },
         {
             "name": "slothsoft/farah",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-farah.git",
-                "reference": "c1cccdfdb12e35fd257d18886df4a20566a5e00c"
+                "reference": "4f7a0df3e219afaff82f29bcbca83ecde4d66a63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/c1cccdfdb12e35fd257d18886df4a20566a5e00c",
-                "reference": "c1cccdfdb12e35fd257d18886df4a20566a5e00c",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/4f7a0df3e219afaff82f29bcbca83ecde4d66a63",
+                "reference": "4f7a0df3e219afaff82f29bcbca83ecde4d66a63",
                 "shasum": ""
             },
             "require": {
+                "ext-sockets": "*",
                 "guzzlehttp/psr7": "^1.4",
                 "krakjoe/pthreads-polyfill": "^1.1",
                 "laminas/laminas-router": "^3.2",
                 "matthiasmullie/minify": "^1.3",
-                "php": "7.2 - 7.4",
+                "php": "7.2 - 8.0",
                 "php-ds/php-ds": "^1.2",
                 "psr/cache": "^1.0",
                 "psr/container": "^1.0",
@@ -1431,26 +1434,26 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-farah/issues",
-                "source": "https://github.com/Faulo/slothsoft-farah/tree/1.4.0"
+                "source": "https://github.com/Faulo/slothsoft-farah/tree/1.4.1"
             },
-            "time": "2021-01-03T19:04:16+00:00"
+            "time": "2022-01-04T22:05:41+00:00"
         },
         {
             "name": "slothsoft/w3c",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-w3c.git",
-                "reference": "de9114a3af30c2941924c33afdce542a8ed22416"
+                "reference": "578baa0927203e2ac6b39ca62fee8bbb83887da0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-w3c/zipball/de9114a3af30c2941924c33afdce542a8ed22416",
-                "reference": "de9114a3af30c2941924c33afdce542a8ed22416",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-w3c/zipball/578baa0927203e2ac6b39ca62fee8bbb83887da0",
+                "reference": "578baa0927203e2ac6b39ca62fee8bbb83887da0",
                 "shasum": ""
             },
             "require": {
-                "php": "7.2 - 8.0"
+                "php": "7.2 - 8.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "8.5.*"
@@ -1484,9 +1487,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-w3c/issues",
-                "source": "https://github.com/Faulo/slothsoft-w3c/tree/1.1.0"
+                "source": "https://github.com/Faulo/slothsoft-w3c/tree/1.1.1"
             },
-            "time": "2020-12-26T12:29:45+00:00"
+            "time": "2022-01-04T18:38:50+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
@@ -1982,16 +1985,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.5.1",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "a12f7e301eb7258bb68acd89d4aefa05c2906cae"
+                "reference": "93ebd0014cab80c4ea9f5e297ea48672f1b87706"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/a12f7e301eb7258bb68acd89d4aefa05c2906cae",
-                "reference": "a12f7e301eb7258bb68acd89d4aefa05c2906cae",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/93ebd0014cab80c4ea9f5e297ea48672f1b87706",
+                "reference": "93ebd0014cab80c4ea9f5e297ea48672f1b87706",
                 "shasum": ""
             },
             "require": {
@@ -2026,9 +2029,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.5.1"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.6.0"
             },
-            "time": "2021-10-02T14:08:47+00:00"
+            "time": "2022-01-04T19:58:01+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -3414,7 +3417,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "7.2 - 7.4"
+        "php": "7.2 - 8.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"
