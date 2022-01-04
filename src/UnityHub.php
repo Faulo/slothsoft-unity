@@ -27,7 +27,7 @@ class UnityHub {
         return self::useDaemon()->getValue();
     }
 
-    private static function getHubLocation(): string {
+    private static function getHubLocation() {
         $locator = new UnityHubLocator();
         return $locator->findHubLocation();
     }
