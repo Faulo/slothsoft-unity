@@ -19,8 +19,20 @@ class UnityProjectTest extends TestCase {
         }
 
         $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
-        $this->assertInstanceOf(UnityProject::class, $project);
+        $this->assertNotNull($project);
         $this->assertEquals(UnityProjectInfoTest::VALID_PROJECT, $project->getProjectPath());
+    }
+
+    public function testNoFindProject(): void {
+        UnityHub::setUseDaemon(false);
+        $hub = new UnityHub();
+        if (! $hub->isInstalled) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
+
+        $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT . DIRECTORY_SEPARATOR . 'Assets');
+        $this->assertNull($project);
     }
 
     public function testGetAssetFiles(): void {
@@ -40,5 +52,33 @@ class UnityProjectTest extends TestCase {
         $asset = $assets[0];
         $this->assertInstanceof(\SplFileInfo::class, $asset);
         $this->assertEquals('Script.cs', $asset->getBasename());
+    }
+
+    public function testSettingSuccess(): void {
+        UnityHub::setUseDaemon(false);
+        $hub = new UnityHub();
+        if (! $hub->isInstalled) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
+
+        $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
+
+        $this->assertTrue($project->hasSetting('companyName'));
+        $this->assertEquals('Oilcatz', $project->getSetting('companyName'));
+    }
+
+    public function testSettingFailure(): void {
+        UnityHub::setUseDaemon(false);
+        $hub = new UnityHub();
+        if (! $hub->isInstalled) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
+
+        $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
+
+        $this->assertFalse($project->hasSetting('???'));
+        $this->assertEquals('Oilcatz', $project->getSetting('???', 'Oilcatz'));
     }
 }

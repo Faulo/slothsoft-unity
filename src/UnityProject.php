@@ -21,6 +21,14 @@ class UnityProject {
         return $this->info->path;
     }
 
+    public function hasSetting(string $key): bool {
+        return isset($this->info->settings[$key]);
+    }
+
+    public function getSetting(string $key, $defaultValue = null) {
+        return $this->info->settings[$key] ?? $defaultValue;
+    }
+
     public function getAssetFiles(): iterable {
         $path = $this->info->path . DIRECTORY_SEPARATOR . 'Assets';
         $directory = new \RecursiveDirectoryIterator($path);

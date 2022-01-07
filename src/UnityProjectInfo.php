@@ -2,8 +2,8 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
+use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use RuntimeException;
 use Spyc;
 
@@ -24,18 +24,14 @@ class UnityProjectInfo {
 
     public static function findAll(string $directory): iterable {
         assert(is_dir($directory), "Invalid directory: '$directory'");
-        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file) {
-            yield from self::findProjectInDirectory($file);
-        }
-    }
-
-    private static function findProjectInDirectory(\SplFileInfo $file): iterable {
-        if (! $file->isDir()) {
-            return;
-        }
-        $path = $file->getRealPath();
-        if (is_file($path . self::FILE_VERSION) and is_file($path . self::FILE_SETTINGS) and is_file($path . self::FILE_PACKAGES)) {
-            yield new UnityProjectInfo($path);
+        $iterator = new RecursiveCallbackFilterIterator(new RecursiveDirectoryIterator($directory), function (\SplFileInfo $file, string $path, RecursiveDirectoryIterator $iterator): bool {
+            return $file->isDir() and $file->getBasename() !== '..';
+        });
+        foreach ($iterator as $file) {
+            $path = $file->getRealPath();
+            if (is_file($path . self::FILE_VERSION) and is_file($path . self::FILE_SETTINGS) and is_file($path . self::FILE_PACKAGES)) {
+                yield new UnityProjectInfo($file->getRealPath());
+            }
         }
     }
 
