@@ -39,6 +39,6 @@ class UnityProjectTest extends TestCase {
 
         $asset = $assets[0];
         $this->assertInstanceof(\SplFileInfo::class, $asset);
-        $this->assertEquals('Script.cs', $asset->getBaseName());
+        $this->assertEquals('Script.cs', $asset->getBasename());
     }
 }
