@@ -5,6 +5,10 @@ namespace Slothsoft\Unity;
 use PHPUnit\Framework\TestCase;
 
 class UnityHubTest extends TestCase {
+    
+    public function testClassExists() {
+        $this->assertTrue(class_exists(UnityHub::class));
+    }
 
     public function testUseDaemon(): void {
         UnityHub::setUseDaemon(true);

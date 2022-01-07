@@ -4,6 +4,10 @@ namespace Slothsoft\Unity;
 use PHPUnit\Framework\TestCase;
 
 class UnityHubLocatorTest extends TestCase {
+    
+    public function testClassExists() {
+        $this->assertTrue(class_exists(UnityHubLocator::class));
+    }
 
     public function testFindHubLocation(): void {
         if (PHP_OS !== 'WINNT') {
