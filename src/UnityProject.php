@@ -72,8 +72,8 @@ class UnityProject {
 
         foreach ($testPlatforms as $testPlatform) {
             $resultsFile = temp_file(__CLASS__);
-            $success = $this->runSingleTest($resultsFile, $testPlatform);
-            if ($success === 0) {
+            $this->runSingleTest($resultsFile, $testPlatform);
+            if (is_file($resultsFile)) {
                 $resultsDoc = DOMHelper::loadDocument($resultsFile);
                 foreach ($resultsDoc->documentElement->attributes as $attr) {
                     if (isset($attributes[$attr->name])) {
