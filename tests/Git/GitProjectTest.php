@@ -24,6 +24,5 @@ class GitProjectTest extends TestCase {
         $git = new GitProject('.');
         $branches = $git->getBranches();
         $this->assertIsArray($branches);
-        $this->assertNotEmpty($branches);
     }
 }

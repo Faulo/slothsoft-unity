@@ -47,7 +47,7 @@ class GitProject {
         if (preg_match_all('~^\s*origin/([^\s]+)$~m', $output, $matches, PREG_PATTERN_ORDER)) {
             return $matches[1];
         }
-        throw new \RuntimeException('Failed to parse git branch output:' . PHP_EOL . $output);
+        return [];
     }
 
     private function execute(bool $includePath, string ...$args): string {
