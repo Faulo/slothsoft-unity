@@ -204,7 +204,6 @@ class UnityHub {
 
     public function findProject(string $projectPath): UnityProject {
         $info = UnityProjectInfo::find($projectPath);
-        my_dump($info);
         $editor = $this->getEditorByVersion($info->editorVersion);
         return new UnityProject($info, $editor);
     }

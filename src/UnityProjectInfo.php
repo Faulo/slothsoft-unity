@@ -15,7 +15,7 @@ class UnityProjectInfo {
 
     const FILE_PACKAGES = '/Packages/packages-lock.json';
 
-    public static function find(string $directory): UnityProjectInfo {
+    public static function find(string $directory): ?UnityProjectInfo {
         foreach (self::findAll($directory) as $info) {
             return $info;
         }

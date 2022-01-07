@@ -90,16 +90,4 @@ class UnityHubTest extends TestCase {
         $editor = $hub->getEditorByVersion($version);
         $this->assertEditorIsValid($editor, $version);
     }
-
-    public function testFindProject(): void {
-        UnityHub::setUseDaemon(false);
-        $hub = new UnityHub();
-        if (! $hub->isInstalled) {
-            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
-        }
-
-        $project = $hub->findProject(__DIR__ . DIRECTORY_SEPARATOR . 'ValidProject');
-        $this->assertInstanceOf(UnityProject::class, $project);
-    }
 }
