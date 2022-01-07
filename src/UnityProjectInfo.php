@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use FilesystemIterator;
@@ -24,14 +25,17 @@ class UnityProjectInfo {
 
     public static function findAll(string $directory): iterable {
         assert(is_dir($directory), "Invalid directory: '$directory'");
-        yield from self::findProjectInDirectory($directory);
-        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory), FilesystemIterator::CURRENT_AS_PATHNAME | FilesystemIterator::SKIP_DOTS) as $path) {
-            yield from self::findProjectInDirectory($path);
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file) {
+            yield from self::findProjectInDirectory($file);
         }
     }
 
-    private static function findProjectInDirectory(string $path): iterable {
-        if (is_dir($path) and is_file($path . self::FILE_VERSION) and is_file($path . self::FILE_SETTINGS) and is_file($path . self::FILE_PACKAGES)) {
+    private static function findProjectInDirectory(\SplFileInfo $file): iterable {
+        if (!$file->isDir()) {
+            return;
+        }
+        $path = $file->getRealPath();
+        if (is_file($path . self::FILE_VERSION) and is_file($path . self::FILE_SETTINGS) and is_file($path . self::FILE_PACKAGES)) {
             yield new UnityProjectInfo($path);
         }
     }

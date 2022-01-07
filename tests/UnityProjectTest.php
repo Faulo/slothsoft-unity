@@ -32,11 +32,11 @@ class UnityProjectTest extends TestCase {
         }
 
         $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
-        
+
         $assets = iterator_to_array($project->getAssetFiles());
-        
+
         $this->assertCount(1, $assets);
-        
+
         $asset = $assets[0];
         $this->assertInstanceof(\SplFileInfo::class, $asset);
         $this->assertEquals('Script.cs', $asset->getBaseName());

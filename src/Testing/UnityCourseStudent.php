@@ -3,6 +3,7 @@ namespace Slothsoft\Unity\Testing;
 
 use Slothsoft\Core\CLI;
 use Slothsoft\Unity\UnityProject;
+use Slothsoft\Unity\Git\GitProject;
 use DOMElement;
 
 class UnityCourseStudent {
