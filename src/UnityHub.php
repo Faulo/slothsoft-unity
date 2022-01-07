@@ -202,10 +202,12 @@ class UnityHub {
         }
     }
 
-    public function findProject(string $projectPath): UnityProject {
-        $info = UnityProjectInfo::find($projectPath);
-        $editor = $this->getEditorByVersion($info->editorVersion);
-        return new UnityProject($info, $editor);
+    public function findProject(string $projectPath): ?UnityProject {
+        if ($info = UnityProjectInfo::find($projectPath)) {
+            $editor = $this->getEditorByVersion($info->editorVersion);
+            return new UnityProject($info, $editor);
+        }
+        return null;
     }
 }
 

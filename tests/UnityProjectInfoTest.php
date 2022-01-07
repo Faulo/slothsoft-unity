@@ -22,7 +22,13 @@ class UnityProjectInfoTest extends TestCase {
      */
     public function testFind(string $path) {
         $info = UnityProjectInfo::find($path);
+        $this->assertNotNull($info);
         $this->assertInfoIsValid($info);
+    }
+
+    public function testNoFind() {
+        $info = UnityProjectInfo::find(self::VALID_PROJECT . DIRECTORY_SEPARATOR . 'Assets');
+        $this->assertNull($info);
     }
 
     private function assertInfoIsValid(UnityProjectInfo $info) {
