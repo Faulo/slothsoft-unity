@@ -2,7 +2,6 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
-use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
@@ -31,7 +30,7 @@ class UnityProjectInfo {
     }
 
     private static function findProjectInDirectory(\SplFileInfo $file): iterable {
-        if (!$file->isDir()) {
+        if (! $file->isDir()) {
             return;
         }
         $path = $file->getRealPath();

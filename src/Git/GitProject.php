@@ -36,6 +36,11 @@ class GitProject {
         $this->gitCheckout($branch);
     }
 
+    public function mergeLatest(): void {
+        $branch = $this->getBranches()[0];
+        $this->gitMerge("origin/$branch");
+    }
+
     public function getBranches(): array {
         $output = $this->execute(true, 'branch', '--sort=-committerdate', '-r');
         $matches = null;
@@ -74,6 +79,10 @@ class GitProject {
         $this->execute(true, 'push');
     }
 
+    public function gitPushBranch(string $branch): void {
+        $this->execute(true, 'push', '--set-upstream', 'origin', $branch);
+    }
+
     public function gitReset(): void {
         $this->execute(true, 'reset', '--hard');
     }
@@ -82,11 +91,15 @@ class GitProject {
         $this->execute(true, 'clean', '-d', '-f');
     }
 
-    public function gitCheckout(string $branch) {
+    public function gitMerge(string $name): void {
+        $this->execute(true, 'merge', $name);
+    }
+
+    public function gitCheckout(string $branch): void {
         $this->execute(true, 'checkout', '-B', $branch, '--track', "origin/$branch");
     }
 
-    public function gitBranch(string $name, bool $checkout = false) {
+    public function gitBranch(string $name, bool $checkout = false): void {
         $this->execute(true, 'branch', $name);
         if ($checkout) {
             $this->checkout($name);

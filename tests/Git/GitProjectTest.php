@@ -14,12 +14,12 @@ class GitProjectTest extends TestCase {
         $this->assertTrue($git->exists);
         $this->assertEquals(realpath('.'), $git->path);
     }
-    
+
     public function testProjectDoesNotExist() {
         $git = new GitProject(__DIR__);
         $this->assertFalse($git->exists);
     }
-    
+
     public function testGetBranches() {
         $git = new GitProject('.');
         $branches = $git->getBranches();
