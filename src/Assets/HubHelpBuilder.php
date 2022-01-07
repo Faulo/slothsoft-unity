@@ -13,7 +13,9 @@ class HubHelpBuilder implements ExecutableBuilderStrategyInterface {
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $hub = new UnityHub();
-        $generator = $hub->executeStream(['help']);
+        $generator = $hub->executeStream([
+            'help'
+        ]);
         $writer = new ChunkWriterFromGenerator($generator);
         $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt", false);
         return new ExecutableStrategies($resultBuilder);

@@ -2,96 +2,107 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Git;
 
-use Slothsoft\Core\CLI;
+use Symfony\Component\Process\Process;
 
 class GitProject {
 
-    private $projectPath;
+    private const GIT_TIMEOUT = 3600;
 
-    public function __construct(string $projectPath) {
-        assert(is_dir($projectPath), "Path $projectPath not found");
+    public $path;
 
-        $this->projectPath = realpath($projectPath);
+    public $exists;
+
+    public function __construct(string $path) {
+        $this->path = $path;
+        $this->initialize();
     }
 
-    public function projectExists(): bool {
-        return is_dir($this->projectPath);
+    private function initialize() {
+        $this->exists = is_dir($this->path . DIRECTORY_SEPARATOR . '.git');
+        if ($this->exists) {
+            $this->path = realpath($this->path);
+            assert($this->path !== false);
+        }
     }
 
-    public function createClone(string $url): array {
-        assert(! $this->projectExists());
-        return [
-            'git',
-            'clone',
-            $url,
-            $this->projectPath
-        ];
+    public function tryCloneFrom(string $url): bool {
+        $this->execute(false, 'clone', $url, $this->path);
+        $this->initialize();
+        return $this->exists;
     }
 
-    public function createPull(): array {
-        assert($this->projectExists());
-        return [
-            'git',
-            '-C',
-            $this->projectPath,
-            'pull',
-            '--progress'
-        ];
+    public function checkoutLatest(): void {
+        $branch = $this->getBranches()[0];
+        $this->gitCheckout($branch);
     }
 
-    public function createFetch(): array {
-        assert($this->projectExists());
-        return [
-            'git',
-            '-C',
-            $this->projectPath,
-            'fetch',
-            '--progress',
-            '--all'
-        ];
+    public function mergeLatest(): void {
+        $branch = $this->getBranches()[0];
+        $this->gitMerge("origin/$branch");
     }
 
-    public function createCheckout(string $branch): array {
-        assert($this->projectExists());
-        return [
-            'git',
-            '-C',
-            $this->projectPath,
-            'checkout',
-            '-B',
-            $branch,
-            '--track',
-            "origin/$branch"
-        ];
+    public function getBranches(): array {
+        $output = $this->execute(true, 'branch', '--sort=-committerdate', '-r');
+        $matches = null;
+        if (preg_match_all('~^\s*origin/([^\s]+)$~m', $output, $matches, PREG_PATTERN_ORDER)) {
+            return $matches[1];
+        }
+        throw new \RuntimeException('Failed to parse git branch output:' . PHP_EOL . $output);
     }
 
-    public function add(string $flags = '.') {
-        $this->execute("add $flags");
+    private function execute(bool $includePath, string ...$args): string {
+        if ($includePath) {
+            array_unshift($args, $this->path);
+            array_unshift($args, '-C');
+        }
+        array_unshift($args, 'git');
+        $process = new Process($args, null, null, null, self::GIT_TIMEOUT);
+        // echo PHP_EOL . $process->getCommandLine() . PHP_EOL;
+        $process->run();
+        $process->wait();
+        return $process->getOutput();
     }
 
-    public function commit(string $message) {
-        $this->execute(sprintf('commit -m %s', escapeshellarg($message)));
+    public function gitPull(): void {
+        $this->execute(true, 'pull', '-f');
     }
 
-    public function pull(string $flags = '-f') {
-        $this->execute("pull $flags");
+    public function gitAdd(string $pattern = '.'): void {
+        $this->execute(true, 'add', $pattern);
     }
 
-    public function push(string $flags = '') {
-        $this->execute("push $flags");
+    public function gitCommit(string $message): void {
+        $this->execute(true, 'commit', '-m', $message);
     }
 
-    public function reset(string $flags = '--hard') {
-        $this->execute("reset $flags");
+    public function gitPush(): void {
+        $this->execute(true, 'push');
     }
 
-    public function clean(string $flags = '-d -f') {
-        $this->execute("clean $flags");
+    public function gitPushBranch(string $branch): void {
+        $this->execute(true, 'push', '--set-upstream', 'origin', $branch);
     }
 
-    public function execute($gitArgs) {
-        $command = sprintf('git -C %s %s', escapeshellarg($this->projectPath), $gitArgs);
-        CLI::execute($command);
+    public function gitReset(): void {
+        $this->execute(true, 'reset', '--hard');
+    }
+
+    public function gitClean(): void {
+        $this->execute(true, 'clean', '-d', '-f');
+    }
+
+    public function gitMerge(string $name): void {
+        $this->execute(true, 'merge', $name);
+    }
+
+    public function gitCheckout(string $branch): void {
+        $this->execute(true, 'checkout', '-B', $branch, '--track', "origin/$branch");
+    }
+
+    public function gitBranch(string $name, bool $checkout = false): void {
+        $this->execute(true, 'branch', $name);
+        if ($checkout) {
+            $this->checkout($name);
+        }
     }
 }
-

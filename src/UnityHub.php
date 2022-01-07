@@ -36,13 +36,13 @@ class UnityHub {
 
     public $hubFile = null;
 
-    public $projects = [];
+    private $editors = null;
 
-    public $editors = [];
+    private $editorPath = null;
 
-    public $editorPath;
+    private $changesets = null;
 
-    private $daemon;
+    private $daemon = null;
 
     public function __construct() {
         if ($hubFile = self::getHubLocation()) {
@@ -58,25 +58,39 @@ class UnityHub {
         }
     }
 
-    public function loadEditors(): void {
-        assert($this->isInstalled);
-        $this->editors = [];
-        $editorPaths = $this->executeNow([
-            'editors',
-            '--installed'
-        ]);
-        foreach (explode(PHP_EOL, $editorPaths) as $line) {
-            $line = explode(', installed at', $line, 2);
-            assert(count($line) === 2);
-            $version = trim($line[0]);
-            $path = trim($line[1]);
-            $this->editors[$version] = new UnityEditor($path, $version);
+    public function getEditors(): array {
+        $this->loadEditors();
+        return $this->editors;
+    }
+
+    private function loadEditors(): void {
+        if ($this->editors === null) {
+            assert($this->isInstalled);
+
+            $this->editors = [];
+            $editorPaths = $this->executeNow([
+                'editors',
+                '--installed'
+            ]);
+            foreach (explode(PHP_EOL, $editorPaths) as $line) {
+                $line = explode(', installed at', $line, 2);
+                assert(count($line) === 2);
+                $version = trim($line[0]);
+                $path = trim($line[1]);
+                $this->editors[$version] = new UnityEditor($this, $path, $version);
+            }
         }
+    }
+
+    public function getEditorPath(): string {
+        $this->loadEditorPath();
+        return $this->editorPath;
     }
 
     private function loadEditorPath(): void {
         if ($this->editorPath === null) {
             assert($this->isInstalled);
+
             if ($path = $this->executeNow([
                 'install-path',
                 '--get'
@@ -89,12 +103,13 @@ class UnityHub {
     }
 
     public function getEditorByVersion(string $version): UnityEditor {
+        $this->loadEditors();
         if (! isset($this->editors[$version])) {
             $this->loadEditorPath();
             if ($this->editorPath === null) {
                 throw new \RuntimeException("Failed to determine editor path!");
             }
-            $this->editors[$version] = new UnityEditor($this->editorPath . DIRECTORY_SEPARATOR . $version, $version);
+            $this->editors[$version] = new UnityEditor($this, $this->editorPath . DIRECTORY_SEPARATOR . $version, $version);
         }
         return $this->editors[$version];
     }
@@ -134,23 +149,6 @@ class UnityHub {
         return $args;
     }
 
-    public function getProjectPath(string $id, string $branch): string {
-        assert($id !== '');
-        $path = $this->workspaceDirectory . DIRECTORY_SEPARATOR . $id;
-        if ($branch !== '') {
-            $path .= ".$branch";
-        }
-        return $path;
-    }
-
-    public function loadProject(string $projectPath): UnityProject {
-        assert($this->isInstalled);
-        $version = UnityProject::guessVersion($projectPath);
-        $this->loadEditors();
-        assert(isset($this->editors[$version]));
-        return new UnityProject($projectPath, $this->editors[$version]);
-    }
-
     public function executeNow(array $arguments): string {
         $result = '';
         foreach ($this->executeStream($arguments) as $value) {
@@ -184,23 +182,30 @@ class UnityHub {
         return FileSystem::scanDir($directory, $options);
     }
 
-    private $changesets;
-
     const CHANGESET_URL = 'https://unity3d.com/get-unity/download/archive';
 
     private function loadChangesets() {
-        $this->changesets = [];
-        my_dump(Storage::loadExternalFile(self::CHANGESET_URL, Seconds::DAY));
-        if ($xpath = Storage::loadExternalXPath(self::CHANGESET_URL, Seconds::DAY)) {
-            foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
-                // unityhub://2019.4.17f1/667c8606c536
-                $href = $node->getAttribute('href');
-                $version = parse_url($href, PHP_URL_HOST);
-                $changeset = parse_url($href, PHP_URL_PATH);
-                assert(! isset($this->changesets[$version]));
-                $this->changesets[$version] = substr($changeset, 1);
+        if ($this->changesets === null) {
+            assert($this->isInstalled);
+
+            $this->changesets = [];
+            if ($xpath = Storage::loadExternalXPath(self::CHANGESET_URL, Seconds::DAY)) {
+                foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
+                    // unityhub://2019.4.17f1/667c8606c536
+                    $href = $node->getAttribute('href');
+                    $version = parse_url($href, PHP_URL_HOST);
+                    $changeset = parse_url($href, PHP_URL_PATH);
+                    assert(! isset($this->changesets[$version]));
+                    $this->changesets[$version] = substr($changeset, 1);
+                }
             }
         }
+    }
+
+    public function findProject(string $projectPath): UnityProject {
+        $info = UnityProjectInfo::find($projectPath);
+        $editor = $this->getEditorByVersion($info->editorVersion);
+        return new UnityProject($info, $editor);
     }
 }
 

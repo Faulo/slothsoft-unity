@@ -6,6 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 class UnityHubTest extends TestCase {
 
+    public function testClassExists() {
+        $this->assertTrue(class_exists(UnityHub::class));
+    }
+
     public function testUseDaemon(): void {
         UnityHub::setUseDaemon(true);
         $this->assertEquals(true, UnityHub::getUseDaemon());
@@ -41,7 +45,7 @@ class UnityHubTest extends TestCase {
         $this->assertDirectoryExists($result);
     }
 
-    public function testLoadEditors(): void {
+    public function testGetEditors(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
         if (! $hub->isInstalled) {
@@ -49,12 +53,29 @@ class UnityHubTest extends TestCase {
             return;
         }
 
-        $hub->loadEditors();
-        $this->assertIsArray($hub->editors);
-        foreach ($hub->editors as $version => $editor) {
-            $this->assertTrue($editor->isInstalled);
-            $this->assertStringContainsString($version, $editor->executable);
+        $editors = $hub->getEditors();
+        $this->assertIsArray($editors);
+        foreach ($editors as $version => $editor) {
+            $this->assertEditorIsValid($editor, $version);
         }
+    }
+
+    private function assertEditorIsValid(UnityEditor $editor, string $version) {
+        $this->assertInstanceOf(UnityEditor::class, $editor);
+        $this->assertTrue($editor->isInstalled);
+        $this->assertStringContainsString($version, $editor->executable);
+    }
+
+    public function testGetEditorPath(): void {
+        UnityHub::setUseDaemon(false);
+        $hub = new UnityHub();
+        if (! $hub->isInstalled) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
+
+        $path = $hub->getEditorPath();
+        $this->assertDirectoryExists($path);
     }
 
     public function testGetEditorByVersion(): void {
@@ -65,6 +86,8 @@ class UnityHubTest extends TestCase {
             return;
         }
 
-        $this->assertInstanceOf(UnityEditor::class, $hub->getEditorByVersion('2021.2.7f1'));
+        $version = '2021.2.7f1';
+        $editor = $hub->getEditorByVersion($version);
+        $this->assertEditorIsValid($editor, $version);
     }
 }
