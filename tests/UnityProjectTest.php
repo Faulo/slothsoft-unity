@@ -31,7 +31,7 @@ class UnityProjectTest extends TestCase {
             return;
         }
 
-        $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT . DIRECTORY_SEPARATOR . 'Assets');
+        $project = $hub->findProject(UnityProjectInfoTest::VALID_ROOT . DIRECTORY_SEPARATOR . 'MissingDirectory');
         $this->assertNull($project);
     }
 

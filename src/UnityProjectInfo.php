@@ -23,14 +23,15 @@ class UnityProjectInfo {
     }
 
     public static function findAll(string $directory): iterable {
-        assert(is_dir($directory), "Invalid directory: '$directory'");
-        $iterator = new RecursiveCallbackFilterIterator(new RecursiveDirectoryIterator($directory), function (\SplFileInfo $file, string $path, RecursiveDirectoryIterator $iterator): bool {
-            return $file->isDir() and $file->getBasename() !== '..';
-        });
-        foreach ($iterator as $file) {
-            $path = $file->getRealPath();
-            if (is_file($path . self::FILE_VERSION) and is_file($path . self::FILE_SETTINGS) and is_file($path . self::FILE_PACKAGES)) {
-                yield new UnityProjectInfo($file->getRealPath());
+        if (is_dir($directory)) {
+            $iterator = new RecursiveCallbackFilterIterator(new RecursiveDirectoryIterator($directory), function (\SplFileInfo $file, string $path, RecursiveDirectoryIterator $iterator): bool {
+                return $file->isDir() and $file->getBasename() !== '..';
+            });
+            foreach ($iterator as $file) {
+                $path = $file->getRealPath();
+                if (is_file($path . self::FILE_VERSION) and is_file($path . self::FILE_SETTINGS) and is_file($path . self::FILE_PACKAGES)) {
+                    yield new UnityProjectInfo($file->getRealPath());
+                }
             }
         }
     }
