@@ -2,6 +2,7 @@
 namespace Slothsoft\Unity\Testing;
 
 use Slothsoft\Core\CLI;
+use Symfony\Component\Filesystem\Filesystem;
 
 class UnityProject {
 
@@ -104,7 +105,8 @@ class UnityProject {
     public function deleteFolder(string $folder) {
         $directory = new \SplFileInfo($this->projectPath . DIRECTORY_SEPARATOR . $folder);
         if ($directory->isDir()) {
-            $this->rrmdir($directory->getRealPath());
+            $filesystem = new Filesystem();
+            $filesystem->remove($directory->getRealPath());
         }
     }
 

@@ -6,13 +6,16 @@ use Symfony\Component\Process\Process;
 
 class UnityEditor {
 
+    public $hub;
+
     public $executable;
 
     public $version;
 
     public $isInstalled;
 
-    public function __construct(string $executable, string $version) {
+    public function __construct(UnityHub $hub, string $executable, string $version) {
+        $this->hub = $hub;
         $this->executable = $executable;
         $this->version = $version;
         $this->isInstalled = is_file($executable);

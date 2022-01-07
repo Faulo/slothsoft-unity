@@ -3,51 +3,16 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Slothsoft\Core\CLI;
-use RuntimeException;
 
 class UnityProject {
 
-    public static function guessVersion(string $projectPath): string {
-        assert(is_dir($projectPath));
-        $projectPath = realpath($projectPath);
-        $projectFile = $projectPath . self::FILE_VERSION;
-        assert(is_file($projectFile));
-        $unityVersion = file_get_contents($projectFile);
-        $match = [];
-        if (preg_match('~m_EditorVersion: (.+)~', $unityVersion, $match)) {
-            return trim($match[1]);
-        }
-        throw new RuntimeException('Unable to determine EditorVersion!');
-    }
-
-    const FILE_VERSION = '/ProjectSettings/ProjectVersion.txt';
-
-    const FILE_PACKAGES = '/Packages/packages-lock.json';
-
-    private $projectPath;
+    private $info;
 
     private $editor;
 
-    public $packages = [];
-
-    public function __construct(string $projectPath, UnityEditor $editor) {
-        assert(is_dir($projectPath), "Path $projectPath not found");
-
+    public function __construct(UnityProjectInfo $info, UnityEditor $editor) {
+        $this->info = $info;
         $this->editor = $editor;
-        $this->projectPath = realpath($projectPath);
-        $this->loadProject();
-    }
-
-    private function loadProject() {
-        $tmp = json_decode($this->loadFile($this->projectPath . self::FILE_PACKAGES), true);
-        if (is_array($tmp) and isset($tmp['dependencies'])) {
-            $this->packages = $tmp['dependencies'];
-        }
-    }
-
-    private function loadFile(string $path): string {
-        assert(is_file($path), "Path $path not found");
-        return file_get_contents($path);
     }
 
     public function execute(string $path, string $file, string $method): int {
