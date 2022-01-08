@@ -8,8 +8,10 @@ use DOMDocument;
 
 class UnityProject {
 
+    /** @var UnityProjectInfo */
     private $info;
 
+    /** @var UnityEditor */
     private $editor;
 
     public function __construct(UnityProjectInfo $info, UnityEditor $editor) {
