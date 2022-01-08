@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fce1dd886fd50c9fa1d8d693a80a655e",
+    "content-hash": "43360bf8eace2df9ed8b7a4bc1cf30f9",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -2003,6 +2003,9 @@
             "require": {
                 "php": "^7.1 || ^8.0"
             },
+            "replace": {
+                "myclabs/deep-copy": "self.version"
+            },
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
@@ -3620,5 +3623,5 @@
         "php": "7.2 - 8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.0.0"
 }
