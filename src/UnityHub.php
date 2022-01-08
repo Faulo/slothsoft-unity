@@ -19,7 +19,7 @@ class UnityHub {
         return $field;
     }
 
-    public static function setUseDaemon(bool $value) {
+    public static function setUseDaemon(bool $value): void {
         self::useDaemon()->setValue($value);
     }
 
@@ -32,16 +32,22 @@ class UnityHub {
         return $locator->findHubLocation();
     }
 
+    /** @var bool */
     public $isInstalled = false;
 
+    /** @var string */
     public $hubFile = null;
 
+    /** @var UnityEditor[] */
     private $editors = null;
 
+    /** @var string */
     private $editorPath = null;
 
+    /** @var string[] */
     private $changesets = null;
 
+    /** @var DaemonClient */
     private $daemon = null;
 
     public function __construct() {

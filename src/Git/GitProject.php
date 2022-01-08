@@ -6,10 +6,13 @@ use Symfony\Component\Process\Process;
 
 class GitProject {
 
+    /** @var int */
     private const GIT_TIMEOUT = 3600;
 
+    /** @var string */
     public $path;
 
+    /** @var bool */
     public $exists;
 
     public function __construct(string $path) {

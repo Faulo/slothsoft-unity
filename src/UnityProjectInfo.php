@@ -36,12 +36,16 @@ class UnityProjectInfo {
         }
     }
 
+    /** @var string */
     public $path;
 
+    /** @var string */
     public $editorVersion;
 
+    /** @var array */
     public $settings;
 
+    /** @var array */
     public $packages;
 
     private function __construct(string $path) {
