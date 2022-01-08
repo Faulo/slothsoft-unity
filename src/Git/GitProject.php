@@ -69,6 +69,10 @@ class GitProject {
     public function gitPull(): void {
         $this->execute(true, 'pull', '-f');
     }
+    
+    public function gitFetch(): void {
+        $this->execute(true, 'fetch', '--all');
+    }
 
     public function gitAdd(string $pattern = '.'): void {
         $this->execute(true, 'add', $pattern);
