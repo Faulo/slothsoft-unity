@@ -70,6 +70,10 @@ class GitProject {
         $this->execute(true, 'pull', '-f');
     }
 
+    public function gitFetch(): void {
+        $this->execute(true, 'fetch', '--all');
+    }
+
     public function gitAdd(string $pattern = '.'): void {
         $this->execute(true, 'add', $pattern);
     }
@@ -99,13 +103,14 @@ class GitProject {
     }
 
     public function gitCheckout(string $branch): void {
+        $this->execute(true, 'checkout', '-B', $branch);
+    }
+
+    public function gitCheckoutAndTrack(string $branch): void {
         $this->execute(true, 'checkout', '-B', $branch, '--track', "origin/$branch");
     }
 
-    public function gitBranch(string $name, bool $checkout = false): void {
+    public function gitBranch(string $name): void {
         $this->execute(true, 'branch', $name);
-        if ($checkout) {
-            $this->gitCheckout($name);
-        }
     }
 }
