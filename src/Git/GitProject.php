@@ -69,7 +69,7 @@ class GitProject {
     public function gitPull(): void {
         $this->execute(true, 'pull', '-f');
     }
-    
+
     public function gitFetch(): void {
         $this->execute(true, 'fetch', '--all');
     }
@@ -105,7 +105,7 @@ class GitProject {
     public function gitCheckout(string $branch): void {
         $this->execute(true, 'checkout', '-B', $branch);
     }
-    
+
     public function gitCheckoutAndTrack(string $branch): void {
         $this->execute(true, 'checkout', '-B', $branch, '--track', "origin/$branch");
     }
