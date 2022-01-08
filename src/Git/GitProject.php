@@ -102,7 +102,7 @@ class GitProject {
     public function gitBranch(string $name, bool $checkout = false): void {
         $this->execute(true, 'branch', $name);
         if ($checkout) {
-            $this->checkout($name);
+            $this->gitCheckout($name);
         }
     }
 }
