@@ -111,11 +111,7 @@ class UnityHub {
     public function getEditorByVersion(string $version): UnityEditor {
         $this->loadEditors();
         if (! isset($this->editors[$version])) {
-            $this->loadEditorPath();
-            if ($this->editorPath === null) {
-                throw new \RuntimeException("Failed to determine editor path!");
-            }
-            $this->editors[$version] = new UnityEditor($this, $this->editorPath . DIRECTORY_SEPARATOR . $version, $version);
+            $this->editors[$version] = new UnityEditor($this, null, $version);
         }
         return $this->editors[$version];
     }

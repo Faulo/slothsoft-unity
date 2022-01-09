@@ -18,11 +18,11 @@ class UnityEditor {
     /** @var bool */
     public $isInstalled;
 
-    public function __construct(UnityHub $hub, string $executable, string $version) {
+    public function __construct(UnityHub $hub, ?string $executable, string $version) {
         $this->hub = $hub;
         $this->executable = $executable;
         $this->version = $version;
-        $this->isInstalled = is_file($executable);
+        $this->isInstalled = $executable === null ? false : is_file($executable);
     }
 
     public function execute(array $arguments): string {
