@@ -1347,16 +1347,16 @@
         },
         {
             "name": "slothsoft/core",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-core.git",
-                "reference": "83baae5ca10feed572d9e8d3dbbd355d4e53cbaf"
+                "reference": "faa460cd6f439bb5aa0599f69fcc60b476474d22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/83baae5ca10feed572d9e8d3dbbd355d4e53cbaf",
-                "reference": "83baae5ca10feed572d9e8d3dbbd355d4e53cbaf",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/faa460cd6f439bb5aa0599f69fcc60b476474d22",
+                "reference": "faa460cd6f439bb5aa0599f69fcc60b476474d22",
                 "shasum": ""
             },
             "require": {
@@ -1407,9 +1407,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-core/issues",
-                "source": "https://github.com/Faulo/slothsoft-core/tree/1.4.0"
+                "source": "https://github.com/Faulo/slothsoft-core/tree/1.4.1"
             },
-            "time": "2022-01-04T23:03:04+00:00"
+            "time": "2022-01-08T17:45:47+00:00"
         },
         {
             "name": "slothsoft/farah",
@@ -2002,9 +2002,6 @@
             },
             "require": {
                 "php": "^7.1 || ^8.0"
-            },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
             },
             "require-dev": {
                 "doctrine/collections": "^1.0",
@@ -3623,5 +3620,5 @@
         "php": "7.2 - 8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }

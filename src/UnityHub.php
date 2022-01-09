@@ -121,7 +121,7 @@ class UnityHub {
 
     public function installEditor(UnityEditor $editor, string ...$modules): void {
         $arguments = $this->createEditorInstallation($editor->version, $modules);
-        $this->hub->executeNow($arguments);
+        $this->executeNow($arguments);
 
         foreach ($this->loadInstalledEditors() as $version => $path) {
             if ($version === $editor->version) {
