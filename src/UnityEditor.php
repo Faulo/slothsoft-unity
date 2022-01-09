@@ -10,19 +10,28 @@ class UnityEditor {
     public $hub;
 
     /** @var string */
-    public $executable;
+    public $version;
 
     /** @var string */
-    public $version;
+    public $executable;
 
     /** @var bool */
     public $isInstalled;
 
-    public function __construct(UnityHub $hub, ?string $executable, string $version) {
+    public function __construct(UnityHub $hub, string $version) {
         $this->hub = $hub;
-        $this->executable = $executable;
         $this->version = $version;
-        $this->isInstalled = $executable === null ? false : is_file($executable);
+    }
+
+    public function setExecutable(string $executable) {
+        assert(is_file($executable));
+        $this->executable = $executable;
+        $this->isInstalled = true;
+    }
+
+    public function install(): bool {
+        $this->hub->installEditor($this);
+        return $this->isInstalled;
     }
 
     public function execute(array $arguments): string {
