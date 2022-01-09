@@ -71,20 +71,25 @@ class UnityHub {
 
     private function loadEditors(): void {
         if ($this->editors === null) {
-            assert($this->isInstalled);
-
             $this->editors = [];
-            $editorPaths = $this->executeNow([
-                'editors',
-                '--installed'
-            ]);
-            foreach (explode(PHP_EOL, $editorPaths) as $line) {
-                $line = explode(', installed at', $line, 2);
-                assert(count($line) === 2);
-                $version = trim($line[0]);
-                $path = trim($line[1]);
-                $this->editors[$version] = new UnityEditor($this, $path, $version);
+            foreach ($this->loadInstalledEditors() as $version => $path) {
+                $this->editors[$version] = new UnityEditor($this, $version);
+                $this->editors[$version]->setExecutable($path);
             }
+        }
+    }
+
+    private function loadInstalledEditors(): iterable {
+        $editorPaths = $this->executeNow([
+            'editors',
+            '--installed'
+        ]);
+        foreach (explode(PHP_EOL, $editorPaths) as $line) {
+            $line = explode(', installed at', $line, 2);
+            assert(count($line) === 2);
+            $version = trim($line[0]);
+            $path = trim($line[1]);
+            yield $version => $path;
         }
     }
 
@@ -95,8 +100,6 @@ class UnityHub {
 
     private function loadEditorPath(): void {
         if ($this->editorPath === null) {
-            assert($this->isInstalled);
-
             if ($path = $this->executeNow([
                 'install-path',
                 '--get'
@@ -111,20 +114,30 @@ class UnityHub {
     public function getEditorByVersion(string $version): UnityEditor {
         $this->loadEditors();
         if (! isset($this->editors[$version])) {
-            $this->loadEditorPath();
-            if ($this->editorPath === null) {
-                throw new \RuntimeException("Failed to determine editor path!");
-            }
-            $this->editors[$version] = new UnityEditor($this, $this->editorPath . DIRECTORY_SEPARATOR . $version, $version);
+            $this->editors[$version] = new UnityEditor($this, $version);
         }
         return $this->editors[$version];
     }
 
+    public function installEditor(UnityEditor $editor, string ...$modules): void {
+        $arguments = $this->createEditorInstallation($editor->version, $modules);
+        $this->hub->executeNow($arguments);
+
+        foreach ($this->loadInstalledEditors() as $version => $path) {
+            if ($version === $editor->version) {
+                $editor->setExecutable($path);
+                break;
+            }
+        }
+    }
+
     public function createEditorInstallation(string $version, array $modules = []): array {
         assert($version !== '');
+
         $this->loadChangesets();
         assert(isset($this->changesets[$version]));
         $changeset = $this->changesets[$version];
+
         $args = [
             'install',
             '--version',
@@ -142,6 +155,7 @@ class UnityHub {
 
     public function createModuleInstallation(string $version, array $modules = []): array {
         assert($version !== '');
+
         $args = [
             'install-modules',
             '--version',
@@ -164,6 +178,7 @@ class UnityHub {
     }
 
     public function executeStream(array $arguments): Generator {
+        assert($this->isInstalled);
         $arguments = array_merge([
             $this->hubFile,
             '--',
@@ -192,8 +207,6 @@ class UnityHub {
 
     private function loadChangesets() {
         if ($this->changesets === null) {
-            assert($this->isInstalled);
-
             $this->changesets = [];
             if ($xpath = Storage::loadExternalXPath(self::CHANGESET_URL, Seconds::DAY)) {
                 foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {

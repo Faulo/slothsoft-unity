@@ -110,5 +110,9 @@ class UnityProject {
         ], $args);
         return new Process($args, $this->info->path, null, null, self::EDITOR_TIMEOUT);
     }
+
+    public function ensureEditorIsInstalled(): bool {
+        return $this->editor->isInstalled or $this->editor->install();
+    }
 }
 
