@@ -18,7 +18,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/composer-cache
-          key: ${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-${{ matrix.php }}
       
       - name: Install Composer
         uses: php-actions/composer@v6
