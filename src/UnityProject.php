@@ -43,8 +43,8 @@ class UnityProject {
     }
 
     public function executeMethod(string ...$args): int {
-        array_unshift($args, '-quit');
         array_unshift($args, '-executeMethod');
+        array_unshift($args, '-quit');
 
         $process = $this->createEditorProcess(...$args);
         $process->run();
