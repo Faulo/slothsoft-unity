@@ -36,7 +36,7 @@ class GitProject {
 
     public function checkoutLatest(): void {
         $branch = $this->getBranches()[0];
-        $this->gitCheckout($branch);
+        $this->gitCheckoutAndTrack($branch);
     }
 
     public function mergeLatest(): void {
