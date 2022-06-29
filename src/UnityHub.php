@@ -26,6 +26,22 @@ class UnityHub {
         return self::useDaemon()->getValue();
     }
 
+    private static function loggingEnabled(): ConfigurationField {
+        static $field;
+        if ($field === null) {
+            $field = new ConfigurationField(false);
+        }
+        return $field;
+    }
+
+    public static function setLoggingEnabled(bool $value): void {
+        self::loggingEnabled()->setValue($value);
+    }
+
+    public static function getLoggingEnabled(): bool {
+        return self::loggingEnabled()->getValue();
+    }
+
     private static function hubLocator(): ConfigurationField {
         static $field;
         if ($field === null) {
@@ -214,6 +230,9 @@ class UnityHub {
             $process->setTimeout(0);
             $process->start();
             foreach ($process as $type => $data) {
+                if (self::getLoggingEnabled()) {
+                    echo $data;
+                }
                 if ($type === $process::OUT) {
                     yield $data;
                 }
