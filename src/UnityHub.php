@@ -35,7 +35,7 @@ class UnityHub {
                         'xvfb-run',
                         '-a',
                         'unityhub',
-                        '--',
+                        '--no-sandbox',
                         '--headless'
                     ]);
                     break;
