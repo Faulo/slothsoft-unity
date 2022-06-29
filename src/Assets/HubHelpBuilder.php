@@ -13,16 +13,17 @@ use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\NullResultBuilder;
 class HubHelpBuilder implements ExecutableBuilderStrategyInterface {
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
+                
         $hub = new UnityHub();
-        if ($hub->isInstalled()) {
-            $generator = $hub->executeStream([
-                'help'
-            ]);
-            $writer = new ChunkWriterFromGenerator($generator);
-            $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt", false);
-        } else {
-            $resultBuilder = new NullResultBuilder();
+        if (!$hub->isInstalled()) {
+            return new ExecutableStrategies(new NullResultBuilder());
         }
+        
+        $generator = $hub->executeStream([
+            'help'
+        ]);
+        $writer = new ChunkWriterFromGenerator($generator);
+        $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt", false);
         return new ExecutableStrategies($resultBuilder);
     }
 }

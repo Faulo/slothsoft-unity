@@ -10,13 +10,19 @@ use Slothsoft\Farah\Module\Executable\ExecutableStrategies;
 use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ChunkWriterResultBuilder;
 use Slothsoft\Unity\UnityHub;
 use Generator;
+use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\NullResultBuilder;
 
 class HubInstallBuilder implements ExecutableBuilderStrategyInterface {
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $version = $args->get('version');
         $modules = (array) $args->get('modules');
+        
         $hub = new UnityHub();
+        if (!$hub->isInstalled()) {
+            return new ExecutableStrategies(new NullResultBuilder());
+        }
+        
         if ($version === '') {
             // create editor index
             $generator = $hub->executeStream([
