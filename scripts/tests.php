@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 use Slothsoft\Unity\UnityHub;
 use Slothsoft\Core\DOMHelper;
+use Slothsoft\Core\FileSystem;
 
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
@@ -51,6 +52,7 @@ if (! $project->ensureEditorIsInstalled()) {
 
 $reportDirectory = $workspace . DIRECTORY_SEPARATOR . 'test-reports';
 
+FileSystem::removeDir($reportDirectory, true);
 if (! is_dir($reportDirectory)) {
     mkdir($reportDirectory, 0777, true);
 }
