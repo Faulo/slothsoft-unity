@@ -30,7 +30,18 @@ class UnityHub {
     private static function hubLocator(): ConfigurationField {
         static $field;
         if ($field === null) {
-            $field = new ConfigurationField(new LocateHubForWindows());
+            switch (PHP_OS) {
+                case 'Linux':
+                    $locator = new LocateHubFromCommand('xvfb-run unityhub');
+                    break;
+                case 'WINNT':
+                    $locator = new LocateHubForWindows();
+                    break;
+                default:
+                    $locator = null;
+                    break;
+            }
+            $field = new ConfigurationField($locator);
         }
         return $field;
     }
