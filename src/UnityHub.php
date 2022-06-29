@@ -227,6 +227,9 @@ class UnityHub {
             yield from $this->daemon->call(json_encode($arguments));
         } else {
             $process = self::getHubLocator()->create($arguments);
+            if (self::getLoggingEnabled()) {
+                echo $process->getCommandLine() . PHP_EOL;
+            }
             $process->setTimeout(0);
             $process->start();
             foreach ($process as $type => $data) {
