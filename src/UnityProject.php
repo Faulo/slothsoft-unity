@@ -99,7 +99,7 @@ class UnityProject {
     private const EDITOR_TIMEOUT = 3600;
 
     private function createEditorProcess(string ...$args): Process {
-        assert($this->editor->isInstalled);
+        assert($this->editor->isInstalled());
         $args = array_merge([
             $this->editor->executable,
             '-accept-apiupdate',
@@ -112,7 +112,7 @@ class UnityProject {
     }
 
     public function ensureEditorIsInstalled(): bool {
-        return $this->editor->isInstalled or $this->editor->install();
+        return $this->editor->isInstalled() or $this->editor->install();
     }
 }
 

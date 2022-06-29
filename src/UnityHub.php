@@ -158,7 +158,6 @@ class UnityHub {
         $this->loadEditors();
         if (! isset($this->editors[$version])) {
             $this->editors[$version] = new UnityEditor($this, $version);
-            $this->editors[$version]->isInstalled = false;
         }
         return $this->editors[$version];
     }

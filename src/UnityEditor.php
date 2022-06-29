@@ -15,8 +15,9 @@ class UnityEditor {
     /** @var string */
     public $executable;
 
-    /** @var bool */
-    public $isInstalled;
+    public function isInstalled(): bool {
+        return is_string($this->executable) and is_file($this->executable);
+    }
 
     public function __construct(UnityHub $hub, string $version) {
         $this->hub = $hub;
@@ -26,12 +27,11 @@ class UnityEditor {
     public function setExecutable(string $executable) {
         assert(is_file($executable));
         $this->executable = $executable;
-        $this->isInstalled = true;
     }
 
     public function install(): bool {
         $this->hub->installEditor($this);
-        return $this->isInstalled;
+        return $this->isInstalled();
     }
 
     public function execute(array $arguments): string {

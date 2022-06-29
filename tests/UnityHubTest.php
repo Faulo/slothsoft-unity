@@ -65,7 +65,7 @@ class UnityHubTest extends TestCase {
 
     private function assertEditorIsValid(UnityEditor $editor, string $version) {
         $this->assertInstanceOf(UnityEditor::class, $editor);
-        $this->assertTrue($editor->isInstalled);
+        $this->assertTrue($editor->isInstalled());
         $this->assertStringContainsString($version, $editor->executable);
     }
 
