@@ -4,7 +4,7 @@ namespace Slothsoft\Unity;
 
 use Symfony\Component\Process\Process;
 
-class LocateHubForWindows implements IHubLocator {
+class LocateHubFromWindowsRegistry implements IHubLocator {
 
     private const REG_HUB_COMMAND = 'REG QUERY %s /v %s';
 
@@ -20,9 +20,19 @@ class LocateHubForWindows implements IHubLocator {
     /** @var bool */
     private $exists = false;
 
-    public function locate(): string {
+    /** @var string[] */
+    private $command;
+
+    public function __construct(array $command) {
+        $this->command = $command;
+    }
+
+    public function create(array $arguments): Process {
         $this->init();
-        return $this->file;
+        $arguments = array_merge([
+            $this->file
+        ], $this->command, $arguments);
+        return new Process($arguments);
     }
 
     public function exists(): bool {

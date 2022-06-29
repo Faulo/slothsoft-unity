@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 class LocateHubForWindowsTest extends TestCase {
 
     public function testClassExists() {
-        $this->assertTrue(class_exists(LocateHubForWindows::class));
+        $this->assertTrue(class_exists(LocateHubFromWindowsRegistry::class));
     }
 
     public function testFindHubLocation(): void {
@@ -15,8 +15,7 @@ class LocateHubForWindowsTest extends TestCase {
             $this->markTestSkipped('Unity API is only available on Windows systems.');
             return;
         }
-        $locator = new LocateHubForWindows();
-        $this->assertFileExists($locator->locate());
+        $locator = new LocateHubFromWindowsRegistry([]);
         $this->assertTrue($locator->exists());
     }
 }

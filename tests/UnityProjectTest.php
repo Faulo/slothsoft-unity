@@ -13,7 +13,7 @@ class UnityProjectTest extends TestCase {
     public function testFindProject(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }
@@ -26,7 +26,7 @@ class UnityProjectTest extends TestCase {
     public function testNoFindProject(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }
@@ -38,7 +38,7 @@ class UnityProjectTest extends TestCase {
     public function testGetAssetFiles(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }
@@ -57,7 +57,7 @@ class UnityProjectTest extends TestCase {
     public function testSettingSuccess(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }
@@ -71,7 +71,7 @@ class UnityProjectTest extends TestCase {
     public function testSettingFailure(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }

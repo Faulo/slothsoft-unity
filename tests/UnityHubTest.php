@@ -21,17 +21,20 @@ class UnityHubTest extends TestCase {
     public function testHubIsInstalled(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }
-        $this->assertFileExists($hub->hubFile);
+        $result = $hub->executeNow([
+            'help'
+        ]);
+        $this->assertStringContainsString('editors', $result);
     }
 
     public function testExecute(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }
@@ -48,7 +51,7 @@ class UnityHubTest extends TestCase {
     public function testGetEditors(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }
@@ -69,7 +72,7 @@ class UnityHubTest extends TestCase {
     public function testGetEditorPath(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }
@@ -81,7 +84,7 @@ class UnityHubTest extends TestCase {
     public function testGetEditorByVersion(): void {
         UnityHub::setUseDaemon(false);
         $hub = new UnityHub();
-        if (! $hub->isInstalled) {
+        if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }

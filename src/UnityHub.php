@@ -6,7 +6,6 @@ use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\Storage;
 use Slothsoft\Core\Calendar\Seconds;
 use Slothsoft\Core\Configuration\ConfigurationField;
-use Symfony\Component\Process\Process;
 use Generator;
 
 class UnityHub {
@@ -32,10 +31,18 @@ class UnityHub {
         if ($field === null) {
             switch (PHP_OS) {
                 case 'Linux':
-                    $locator = new LocateHubFromCommand('xvfb-run unityhub');
+                    $locator = new LocateHubFromCommand([
+                        'xvfb-run',
+                        'unityhub',
+                        '--',
+                        '--headless'
+                    ]);
                     break;
                 case 'WINNT':
-                    $locator = new LocateHubForWindows();
+                    $locator = new LocateHubFromWindowsRegistry([
+                        '--',
+                        '--headless'
+                    ]);
                     break;
                 default:
                     $locator = null;
@@ -55,10 +62,9 @@ class UnityHub {
     }
 
     /** @var bool */
-    public $isInstalled = false;
-
-    /** @var string */
-    public $hubFile = null;
+    public function isInstalled() {
+        return self::getHubLocator()->exists();
+    }
 
     /** @var UnityEditor[] */
     private $editors = null;
@@ -73,11 +79,6 @@ class UnityHub {
     private $daemon = null;
 
     public function __construct() {
-        if ($hubLocator = self::getHubLocator()) {
-            $this->hubFile = $hubLocator->locate();
-            $this->isInstalled = $hubLocator->exists();
-        }
-
         if (self::getUseDaemon()) {
             $this->daemon = new DaemonClient(5050);
         }
@@ -140,6 +141,7 @@ class UnityHub {
         $this->loadEditors();
         if (! isset($this->editors[$version])) {
             $this->editors[$version] = new UnityEditor($this, $version);
+            $this->editors[$version]->isInstalled = false;
         }
         return $this->editors[$version];
     }
@@ -203,16 +205,12 @@ class UnityHub {
     }
 
     public function executeStream(array $arguments): Generator {
-        assert($this->isInstalled);
-        $arguments = array_merge([
-            $this->hubFile,
-            '--',
-            '--headless'
-        ], $arguments);
+        assert($this->isInstalled());
         if ($this->daemon) {
             yield from $this->daemon->call(json_encode($arguments));
         } else {
-            $process = new Process($arguments);
+            $process = self::getHubLocator()->create($arguments);
+            echo $process->getCommandLine() . PHP_EOL;
             $process->setTimeout(0);
             $process->start();
             foreach ($process as $type => $data) {
