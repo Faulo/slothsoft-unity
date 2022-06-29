@@ -61,6 +61,7 @@ foreach ($args as $testMode) {
     $document = $project->runTests($testMode);
 
     $document = $dom->transformToDocument($document, 'farah://slothsoft@unity/xsl/to-junit');
+
     $document->formatOutput = true;
     $document->save($reportDirectory . DIRECTORY_SEPARATOR . "$testMode.xml");
 }
