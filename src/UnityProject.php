@@ -54,8 +54,17 @@ class UnityProject {
 
     private function runSingleTest(string $resultsFile, string $testPlatform = 'EditMode'): int {
         $process = $this->createEditorProcess('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
-        $process->run();
-        $process->wait();
+        if (UnityHub::getLoggingEnabled()) {
+            echo $process->getCommandLine() . PHP_EOL;
+            $process->setTimeout(0);
+            $process->start();
+            foreach ($process as $data) {
+                echo $data;
+            }
+        } else {
+            $process->run();
+            $process->wait();
+        }
         return $process->getExitCode();
     }
 
