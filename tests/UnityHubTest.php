@@ -86,7 +86,14 @@ class UnityHubTest extends TestCase {
             return;
         }
 
-        $version = '2021.2.7f1';
+        $editors = $hub->getEditors();
+        if (count($editors) === 0) {
+            $this->markTestSkipped('Needs at least 1 installed editor to test getEditorByVersion.');
+            return;
+        }
+
+        $editor = array_shift($editors);
+        $version = $editor->version;
         $editor = $hub->getEditorByVersion($version);
         $this->assertEditorIsValid($editor, $version);
     }

@@ -27,9 +27,20 @@ class UnityHub {
         return self::useDaemon()->getValue();
     }
 
-    private static function getHubLocation() {
-        $locator = new UnityHubLocator();
-        return $locator->findHubLocation();
+    private static function hubLocator(): ConfigurationField {
+        static $field;
+        if ($field === null) {
+            $field = new ConfigurationField(new LocateHubForWindows());
+        }
+        return $field;
+    }
+
+    public static function setHubLocator(IHubLocator $value): void {
+        self::hubLocator()->setValue($value);
+    }
+
+    public static function getHubLocator(): IHubLocator {
+        return self::hubLocator()->getValue();
     }
 
     /** @var bool */
@@ -51,12 +62,9 @@ class UnityHub {
     private $daemon = null;
 
     public function __construct() {
-        if ($hubFile = self::getHubLocation()) {
-            $this->hubFile = $hubFile;
-            if ($hubFile = realpath($hubFile)) {
-                $this->hubFile = $hubFile;
-                $this->isInstalled = true;
-            }
+        if ($hubLocator = self::getHubLocator()) {
+            $this->hubFile = $hubLocator->locate();
+            $this->isInstalled = $hubLocator->exists();
         }
 
         if (self::getUseDaemon()) {
@@ -64,6 +72,10 @@ class UnityHub {
         }
     }
 
+    /**
+     *
+     * @return UnityEditor[]
+     */
     public function getEditors(): array {
         $this->loadEditors();
         return $this->editors;

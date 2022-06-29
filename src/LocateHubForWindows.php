@@ -4,7 +4,7 @@ namespace Slothsoft\Unity;
 
 use Symfony\Component\Process\Process;
 
-class UnityHubLocator {
+class LocateHubForWindows implements IHubLocator {
 
     private const REG_HUB_COMMAND = 'REG QUERY %s /v %s';
 
@@ -14,7 +14,26 @@ class UnityHubLocator {
 
     private const HUB_EXECUTABLE = 'Unity Hub.exe';
 
-    public function findHubLocation() {
+    /** @var string */
+    private $file = '';
+
+    /** @var bool */
+    private $exists = false;
+
+    public function locate(): string {
+        $this->init();
+        return $this->file;
+    }
+
+    public function exists(): bool {
+        $this->init();
+        return $this->exists;
+    }
+
+    private function init() {
+        if ($this->exists) {
+            return;
+        }
         $command = sprintf(self::REG_HUB_COMMAND, escapeshellarg(self::REG_HUB_KEY), escapeshellarg(self::REG_HUB_VALUE));
         $process = Process::fromShellCommandline($command);
         $process->run();
@@ -23,7 +42,11 @@ class UnityHubLocator {
         if (count($output) !== 2) {
             return false;
         }
-        return trim($output[1]) . DIRECTORY_SEPARATOR . self::HUB_EXECUTABLE;
+        $this->file = trim($output[1]) . DIRECTORY_SEPARATOR . self::HUB_EXECUTABLE;
+        if ($file = realpath($this->file)) {
+            $this->file = $file;
+            $this->exists = true;
+        }
     }
 }
 

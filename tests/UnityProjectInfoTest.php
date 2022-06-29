@@ -25,7 +25,7 @@ class UnityProjectInfoTest extends TestCase {
         $this->assertNotNull($info);
         $this->assertInfoIsValid($info);
     }
-    
+
     /**
      *
      * @dataProvider invalidPathProvider
@@ -54,7 +54,7 @@ class UnityProjectInfoTest extends TestCase {
             $this->assertInfoIsValid($info);
         }
     }
-    
+
     public function validPathProvider(): iterable {
         yield self::VALID_PROJECT => [
             self::VALID_PROJECT
@@ -63,7 +63,7 @@ class UnityProjectInfoTest extends TestCase {
             self::VALID_ROOT
         ];
     }
-    
+
     public function invalidPathProvider(): iterable {
         yield self::VALID_PROJECT . DIRECTORY_SEPARATOR . 'Assets' => [
             self::VALID_PROJECT . DIRECTORY_SEPARATOR . 'Assets'

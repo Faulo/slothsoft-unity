@@ -4,10 +4,10 @@ namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
 
-class UnityHubLocatorTest extends TestCase {
+class LocateHubForWindowsTest extends TestCase {
 
     public function testClassExists() {
-        $this->assertTrue(class_exists(UnityHubLocator::class));
+        $this->assertTrue(class_exists(LocateHubForWindows::class));
     }
 
     public function testFindHubLocation(): void {
@@ -15,7 +15,8 @@ class UnityHubLocatorTest extends TestCase {
             $this->markTestSkipped('Unity API is only available on Windows systems.');
             return;
         }
-        $locator = new UnityHubLocator();
-        $this->assertFileExists($locator->findHubLocation());
+        $locator = new LocateHubForWindows();
+        $this->assertFileExists($locator->locate());
+        $this->assertTrue($locator->exists());
     }
 }
