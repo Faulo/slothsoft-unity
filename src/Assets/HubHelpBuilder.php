@@ -8,16 +8,21 @@ use Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStra
 use Slothsoft\Farah\Module\Executable\ExecutableStrategies;
 use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ChunkWriterResultBuilder;
 use Slothsoft\Unity\UnityHub;
+use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\NullResultBuilder;
 
 class HubHelpBuilder implements ExecutableBuilderStrategyInterface {
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $hub = new UnityHub();
-        $generator = $hub->executeStream([
-            'help'
-        ]);
-        $writer = new ChunkWriterFromGenerator($generator);
-        $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt", false);
+        if ($hub->isInstalled()) {
+            $generator = $hub->executeStream([
+                'help'
+            ]);
+            $writer = new ChunkWriterFromGenerator($generator);
+            $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt", false);
+        } else {
+            $resultBuilder = new NullResultBuilder();
+        }
         return new ExecutableStrategies($resultBuilder);
     }
 }
