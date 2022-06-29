@@ -47,7 +47,8 @@
 	],
 	"scripts" : {
 		"farah-asset" : "@php vendor/slothsoft/farah/scripts/farah-asset.php",
-		"unity-daemon" : "@php scripts/daemon.php"
+        "unity-tests" : "@php scripts/tests.php",
+        "unity-daemon" : "@php scripts/daemon.php"
 	},
 	"config" : {
 		"process-timeout" : 0

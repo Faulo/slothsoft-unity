@@ -3,7 +3,18 @@ use Symfony\Component\Process\Process;
 use Slothsoft\Core\Calendar\DateTimeFormatter;
 use Slothsoft\Unity\DaemonServer;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+foreach ([
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php'
+] as $file) {
+    if (file_exists($file)) {
+        require_once $file;
+        break;
+    }
+}
 
 function print_message(string $message) {
     printf('[%s] %s%s', date(DateTimeFormatter::FORMAT_DATETIME), $message, PHP_EOL);

@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <assets xmlns="http://schema.slothsoft.net/farah/module">
+    <resource-directory name="xsl" type="application/xslt+xml" />
+    
 	<fragment name="hub">
 		<custom-asset name="help"
 			executable-builder="Slothsoft\Unity\Assets\HubHelpBuilder" />
