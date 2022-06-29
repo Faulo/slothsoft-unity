@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 use Slothsoft\Unity\UnityHub;
 use Slothsoft\Core\DOMHelper;
 

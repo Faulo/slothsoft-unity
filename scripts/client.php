@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 use Slothsoft\Unity\DaemonClient;
 
 array_shift($_SERVER['argv']);

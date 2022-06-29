@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 use Symfony\Component\Process\Process;
 use Slothsoft\Core\Calendar\DateTimeFormatter;
 use Slothsoft\Unity\DaemonServer;
