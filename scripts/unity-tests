@@ -9,18 +9,17 @@ use Slothsoft\Core\FileSystem;
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
 
-foreach ([
-    __DIR__ . '/../../../autoload.php',
-    __DIR__ . '/../vendor/autoload.php'
-] as $file) {
-    if (file_exists($file)) {
-        require_once $file;
-        break;
-    }
-}
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
 if ($_SERVER['argc'] < 2) {
-    throw new \Exception("Missing arguments! Needs at least 2 (workspace and test mode).");
+    echo <<<'EOT'
+    Run all tests inside a Unity project.
+        
+    Usage:
+    composer exec unity-tests "path/to/project" [EditMode|PlayMode|Platform]
+            
+    EOT;
+    return;
 }
 
 $args = $_SERVER['argv'];
