@@ -13,7 +13,7 @@ use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\NullResultBuilder;
 class HubHelpBuilder implements ExecutableBuilderStrategyInterface {
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
-        $hub = new UnityHub();
+        $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             return new ExecutableStrategies(new NullResultBuilder());
         }

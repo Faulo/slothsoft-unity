@@ -18,7 +18,7 @@ class HubInstallBuilder implements ExecutableBuilderStrategyInterface {
         $version = $args->get('version');
         $modules = (array) $args->get('modules');
 
-        $hub = new UnityHub();
+        $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             return new ExecutableStrategies(new NullResultBuilder());
         }

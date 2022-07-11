@@ -10,6 +10,14 @@ use Generator;
 
 class UnityHub {
 
+    public static function getInstance(): self {
+        static $instance;
+        if ($instance === null) {
+            $instance = new self();
+        }
+        return $instance;
+    }
+
     private static function useDaemon(): ConfigurationField {
         static $field;
         if ($field === null) {
@@ -95,7 +103,7 @@ class UnityHub {
     /** @var DaemonClient */
     private $daemon = null;
 
-    public function __construct() {
+    private function __construct() {
         if (self::getUseDaemon()) {
             $this->daemon = new DaemonClient(5050);
         }

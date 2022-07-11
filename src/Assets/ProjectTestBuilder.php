@@ -26,7 +26,7 @@ class ProjectTestBuilder implements ExecutableBuilderStrategyInterface {
                 yield "Installing project via: $url" . PHP_EOL;
                 yield from Module::resolveToChunkWriter($url)->toChunks();
 
-                $hub = new UnityHub();
+                $hub = UnityHub::getInstance();
                 $id = $args->get('id');
                 $branch = $args->get('branch');
                 $projectPath = $hub->getProjectPath($id, $branch);

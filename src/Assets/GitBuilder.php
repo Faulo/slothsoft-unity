@@ -22,7 +22,7 @@ class GitBuilder implements ExecutableBuilderStrategyInterface {
                 $id = $args->get('id');
                 $href = $args->get('href');
                 $branch = $args->get('branch');
-                $hub = new UnityHub();
+                $hub = UnityHub::getInstance();
                 if (! $hub->isInstalled()) {
                     yield 'Unity Hub not installed or not found!' . PHP_EOL;
                     return;

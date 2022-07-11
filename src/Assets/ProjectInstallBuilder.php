@@ -20,7 +20,7 @@ class ProjectInstallBuilder implements ExecutableBuilderStrategyInterface {
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $chunkDelegate = function () use ($context, $args): Generator {
             try {
-                $hub = new UnityHub();
+                $hub = UnityHub::getInstance();
                 if (! $hub->isInstalled()) {
                     yield 'Unity Hub not installed or not found!' . PHP_EOL;
                     return;
