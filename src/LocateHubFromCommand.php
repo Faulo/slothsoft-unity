@@ -13,10 +13,6 @@ class LocateHubFromCommand implements IHubLocator {
         $this->command = $command;
     }
 
-    public function locate(): string {
-        return $this->command;
-    }
-
     public function create(array $arguments): Process {
         $arguments = array_merge($this->command, $arguments);
         return new Process($arguments);

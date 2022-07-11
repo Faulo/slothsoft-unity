@@ -45,24 +45,24 @@ class UnityHub {
     private static function hubLocator(): ConfigurationField {
         static $field;
         if ($field === null) {
+            $locator = new LocateHubNull();
             switch (PHP_OS) {
                 case 'Linux':
-                    $locator = new LocateHubFromCommand([
-                        'xvfb-run',
-                        '-a',
-                        'unityhub',
-                        '--no-sandbox',
-                        '--headless'
-                    ]);
+                    if (stream_resolve_include_path('xvfb-run') and stream_resolve_include_path('unityhub')) {
+                        $locator = new LocateHubFromCommand([
+                            'xvfb-run',
+                            '-a',
+                            'unityhub',
+                            '--no-sandbox',
+                            '--headless'
+                        ]);
+                    }
                     break;
                 case 'WINNT':
                     $locator = new LocateHubFromWindowsRegistry([
                         '--',
                         '--headless'
                     ]);
-                    break;
-                default:
-                    $locator = null;
                     break;
             }
             $field = new ConfigurationField($locator);
@@ -87,7 +87,7 @@ class UnityHub {
     private $editors = null;
 
     /** @var string */
-    private $editorPath = null;
+    private $editorPath = '';
 
     /** @var string[] */
     private $changesets = null;
@@ -142,7 +142,7 @@ class UnityHub {
     }
 
     private function loadEditorPath(): void {
-        if ($this->editorPath === null) {
+        if ($this->editorPath === '') {
             if ($path = $this->executeNow([
                 'install-path',
                 '--get'
