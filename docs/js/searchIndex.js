@@ -386,6 +386,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityEditor.html#method_isInstalled"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityEditor\u003A\u003AisLicensed\u0028\u0029",
+            "name": "isLicensed",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityEditor.html#method_isLicensed"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityEditor\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
@@ -400,6 +405,11 @@ Search.appendIndex(
             "name": "install",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityEditor.html#method_install"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityEditor\u003A\u003Alicense\u0028\u0029",
+            "name": "license",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityEditor.html#method_license"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityEditor\u003A\u003Aexecute\u0028\u0029",
             "name": "execute",
@@ -440,6 +450,11 @@ Search.appendIndex(
             "name": "getUseDaemon",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityHub.html#method_getUseDaemon"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AaddLicenseFolder\u0028\u0029",
+            "name": "addLicenseFolder",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_addLicenseFolder"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AsetLoggingEnabled\u0028\u0029",
             "name": "setLoggingEnabled",
@@ -485,6 +500,11 @@ Search.appendIndex(
             "name": "installEditor",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityHub.html#method_installEditor"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AfindLicenses\u0028\u0029",
+            "name": "findLicenses",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_findLicenses"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AcreateEditorInstallation\u0028\u0029",
             "name": "createEditorInstallation",
@@ -560,6 +580,11 @@ Search.appendIndex(
             "name": "ensureEditorIsInstalled",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html#method_ensureEditorIsInstalled"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AensureEditorIsLicensed\u0028\u0029",
+            "name": "ensureEditorIsLicensed",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityProject.html#method_ensureEditorIsLicensed"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProjectInfo",
             "name": "UnityProjectInfo",
