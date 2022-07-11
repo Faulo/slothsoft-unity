@@ -216,11 +216,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-Git-GitProject.html#property_exists"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\GitHub\\PATH_LOCK",
-            "name": "PATH_LOCK",
-            "summary": "",
-            "url": "namespaces/slothsoft-unity-github.html#constant_PATH_LOCK"
-        },                {
             "fqsen": "\\Slothsoft\\Unity\\MLAgents\\MLContext",
             "name": "MLContext",
             "summary": "",
@@ -730,11 +725,6 @@ Search.appendIndex(
             "name": "Git",
             "summary": "",
             "url": "namespaces/slothsoft-unity-git.html"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\GitHub",
-            "name": "GitHub",
-            "summary": "",
-            "url": "namespaces/slothsoft-unity-github.html"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\MLAgents",
             "name": "MLAgents",
