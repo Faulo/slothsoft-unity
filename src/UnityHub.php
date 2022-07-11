@@ -66,7 +66,7 @@ class UnityHub {
             $locator = new LocateHubNull();
             switch (PHP_OS) {
                 case 'Linux':
-                    if (stream_resolve_include_path('xvfb-run') and stream_resolve_include_path('unityhub')) {
+                    if (FileSystem::commandExist('xvfb-run') and FileSystem::commandExist('unityhub')) {
                         $locator = new LocateHubFromCommand([
                             'xvfb-run',
                             '-a',

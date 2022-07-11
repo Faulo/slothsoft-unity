@@ -10,7 +10,7 @@
 	"type" : "library",
 	"require" : {
 		"php" : "7.4 - 8.0",
-		"slothsoft/core" : "^1.6",
+		"slothsoft/core" : "^1.7",
 		"slothsoft/farah" : "^1.8",
 		"symfony/process" : "^5.0",
 		"symfony/filesystem" : "^5.0",

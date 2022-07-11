@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e690d5ae98697424d07a90c093415138",
+    "content-hash": "6af99fdb8ecca16711fe1ca51cd98d8c",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1282,16 +1282,16 @@
         },
         {
             "name": "slothsoft/core",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-core.git",
-                "reference": "a5a65aad106a0aec64e9f346490f7c7d03d6b1ca"
+                "reference": "d3671b6a9d5758bb163dce6d951bee8ba9695c58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/a5a65aad106a0aec64e9f346490f7c7d03d6b1ca",
-                "reference": "a5a65aad106a0aec64e9f346490f7c7d03d6b1ca",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/d3671b6a9d5758bb163dce6d951bee8ba9695c58",
+                "reference": "d3671b6a9d5758bb163dce6d951bee8ba9695c58",
                 "shasum": ""
             },
             "require": {
@@ -1313,7 +1313,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "1.6.x-dev"
+                    "dev-develop": "1.7.x-dev"
                 }
             },
             "autoload": {
@@ -1342,9 +1342,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-core/issues",
-                "source": "https://github.com/Faulo/slothsoft-core/tree/1.6.0"
+                "source": "https://github.com/Faulo/slothsoft-core/tree/1.7.0"
             },
-            "time": "2022-07-10T14:26:56+00:00"
+            "time": "2022-07-11T18:43:28+00:00"
         },
         {
             "name": "slothsoft/farah",
