@@ -1,7 +1,7 @@
 {
 	"name" : "slothsoft/unity",
 	"description" : "Slothsoft's Unity API",
-	"license" : "WTFPL",
+	"license" : "MIT",
 	"authors" : [{
 			"name" : "Daniel Schulz",
 			"email" : "info.slothsoft@gmail.com"
