@@ -12,13 +12,17 @@ use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\DOMWriterResultBuild
 use Slothsoft\Unity\UnityHub;
 use DOMDocument;
 use DOMElement;
+use Slothsoft\Unity\UnityProject;
 
 class ProjectTestsBuilder implements ExecutableBuilderStrategyInterface {
 
+    /** @var string */
     private $message;
 
+    /** @var UnityProject */
     private $project;
 
+    /** @var string */
     private $mode;
 
     private function parseArguments(FarahUrlArguments $args): bool {
