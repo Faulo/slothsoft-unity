@@ -4,7 +4,7 @@ namespace Slothsoft\Unity;
 
 use Symfony\Component\Process\Process;
 
-interface IHubLocator {
+interface HubLocatorInterface {
 
     public function create(array $arguments): Process;
 

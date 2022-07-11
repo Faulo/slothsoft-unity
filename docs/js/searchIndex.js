@@ -631,21 +631,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-ProjectTestsParameterFilter.html#method_createValueSanitizers"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\IHubLocator",
-            "name": "IHubLocator",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-IHubLocator.html"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\IHubLocator\u003A\u003Acreate\u0028\u0029",
-            "name": "create",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-IHubLocator.html#method_create"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\IHubLocator\u003A\u003Aexists\u0028\u0029",
-            "name": "exists",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-IHubLocator.html#method_exists"
-        },                {
             "fqsen": "\\Slothsoft\\Unity\\LocateHubFromCommand",
             "name": "LocateHubFromCommand",
             "summary": "",
@@ -700,6 +685,21 @@ Search.appendIndex(
             "name": "exists",
             "summary": "",
             "url": "classes/Slothsoft-Unity-LocateHubNull.html#method_exists"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\HubLocatorInterface",
+            "name": "HubLocatorInterface",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-HubLocatorInterface.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\HubLocatorInterface\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-HubLocatorInterface.html#method_create"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\HubLocatorInterface\u003A\u003Aexists\u0028\u0029",
+            "name": "exists",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-HubLocatorInterface.html#method_exists"
         },                {
             "fqsen": "\\",
             "name": "\\",

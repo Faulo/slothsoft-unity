@@ -78,11 +78,11 @@ class UnityHub {
         return $field;
     }
 
-    public static function setHubLocator(IHubLocator $value): void {
+    public static function setHubLocator(HubLocatorInterface $value): void {
         self::hubLocator()->setValue($value);
     }
 
-    public static function getHubLocator(): IHubLocator {
+    public static function getHubLocator(): HubLocatorInterface {
         return self::hubLocator()->getValue();
     }
 

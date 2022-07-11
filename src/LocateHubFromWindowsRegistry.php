@@ -4,7 +4,7 @@ namespace Slothsoft\Unity;
 
 use Symfony\Component\Process\Process;
 
-class LocateHubFromWindowsRegistry implements IHubLocator {
+class LocateHubFromWindowsRegistry implements HubLocatorInterface {
 
     private const REG_HUB_COMMAND = 'REG QUERY %s /v %s';
 

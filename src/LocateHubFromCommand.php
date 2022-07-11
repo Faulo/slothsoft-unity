@@ -4,7 +4,7 @@ namespace Slothsoft\Unity;
 
 use Symfony\Component\Process\Process;
 
-class LocateHubFromCommand implements IHubLocator {
+class LocateHubFromCommand implements HubLocatorInterface {
 
     /** @var string[] */
     private $command;
