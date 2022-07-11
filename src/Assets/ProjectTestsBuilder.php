@@ -60,6 +60,11 @@ class ProjectTestsBuilder implements ExecutableBuilderStrategyInterface {
             return false;
         }
 
+        if (! $this->project->ensureEditorIsLicensed()) {
+            $this->message = "Editor for project '$this->project' is not licensed!";
+            return false;
+        }
+
         return true;
     }
 

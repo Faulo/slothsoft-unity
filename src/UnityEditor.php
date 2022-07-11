@@ -39,7 +39,7 @@ class UnityEditor {
     }
 
     public function license(): bool {
-        foreach ($this->hub->findLicenses($this) as $licenseFile) {
+        foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
             $this->execute([
                 '-manualLicenseFile',
                 $licenseFile
