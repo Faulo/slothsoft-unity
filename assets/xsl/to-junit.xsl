@@ -3,11 +3,15 @@
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<xsl:template match="error">
+		<xsl:copy-of select="." />
+	</xsl:template>
+
 	<xsl:template match="test-run">
 		<testsuites id="{generate-id()}" name="TODO: NAME"
 			tests="{@testcasecount}" failures="{@failed}" disabled="{@skipped}"
 			errors="{@inconclusive}" time="{sum(test-suite/@duration)}">
-			
+
 			<xsl:apply-templates select="*" />
 		</testsuites>
 	</xsl:template>

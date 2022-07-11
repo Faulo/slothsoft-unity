@@ -2,9 +2,11 @@
 <?php
 declare(strict_types = 1);
 
-use Slothsoft\Unity\UnityHub;
-use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Unity\UnityHub;
+use Slothsoft\Unity\UnityProjectInfo;
 
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
@@ -25,47 +27,26 @@ if ($_SERVER['argc'] < 2) {
 $args = $_SERVER['argv'];
 
 $workspace = array_shift($args);
+$modes = $args;
 
 UnityHub::setLoggingEnabled(true);
 
-$hub = new UnityHub();
+$testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/tests/result');
+foreach (UnityProjectInfo::findAll($workspace) as $project) {
+    $reportDirectory = $workspace . DIRECTORY_SEPARATOR . 'test-reports';
 
-if (! $hub->isInstalled()) {
-    throw new \Exception("Failed to find Unity Hub!");
+    FileSystem::removeDir($reportDirectory, true);
+    if (! is_dir($reportDirectory)) {
+        mkdir($reportDirectory, 0777, true);
+    }
+
+    foreach ($modes as $mode) {
+        $reportFile = "{$project->settings['productName']}.{$mode}.xml";
+        $testsArgs = FarahUrlArguments::createFromValueList([
+            'workspace' => $project->path,
+            'mode' => $mode
+        ]);
+        $url = $testsUrl->withQueryArguments($testsArgs);
+        copy((string) $url, $reportDirectory . DIRECTORY_SEPARATOR . $reportFile);
+    }
 }
-
-if (! is_dir($workspace)) {
-    throw new \Exception("Workspace '$workspace' is not a directory!");
-}
-
-$workspace = realpath($workspace);
-
-$project = $hub->findProject($workspace);
-
-if (! $project) {
-    throw new \Exception("Workspace '$workspace' does not contain a Unity project!");
-}
-
-if (! $project->ensureEditorIsInstalled()) {
-    throw new \Exception("Editor installation for project '$project' failed!");
-}
-
-$reportDirectory = $workspace . DIRECTORY_SEPARATOR . 'test-reports';
-
-FileSystem::removeDir($reportDirectory, true);
-if (! is_dir($reportDirectory)) {
-    mkdir($reportDirectory, 0777, true);
-}
-
-$dom = new DOMHelper();
-
-foreach ($args as $testMode) {
-    $document = $project->runTests($testMode);
-
-    $document = $dom->transformToDocument($document, 'farah://slothsoft@unity/xsl/to-junit');
-
-    $document->formatOutput = true;
-    $document->save($reportDirectory . DIRECTORY_SEPARATOR . "$testMode.xml");
-}
-
-return 0;

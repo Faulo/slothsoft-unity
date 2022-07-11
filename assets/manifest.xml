@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <assets xmlns="http://schema.slothsoft.net/farah/module">
-    <resource-directory name="xsl" type="application/xslt+xml" />
-    
+	<resource-directory name="xsl"
+		type="application/xslt+xml" />
+
 	<fragment name="hub">
 		<custom-asset name="help"
 			executable-builder="Slothsoft\Unity\Assets\HubHelpBuilder" />
@@ -16,6 +17,13 @@
 		<custom-asset name="install"
 			executable-builder="Slothsoft\Unity\Assets\ProjectInstallBuilder"
 			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+		<custom-asset name="tests"
+			executable-builder="Slothsoft\Unity\Assets\ProjectTestsBuilder"
+			parameter-filter="Slothsoft\Unity\Assets\ProjectTestsParameterFilter" />
+		<fragment name="tests-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/project/tests" />
+		</fragment>
 	</fragment>
 	<fragment name="git">
 		<custom-asset name="clone"
