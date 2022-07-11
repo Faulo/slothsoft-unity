@@ -31,7 +31,7 @@ $modes = $args;
 
 UnityHub::setLoggingEnabled(true);
 
-$testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/tests/result');
+$testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/tests-junit');
 foreach (UnityProjectInfo::findAll($workspace) as $project) {
     $reportDirectory = $workspace . DIRECTORY_SEPARATOR . 'test-reports';
 
