@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 declare(strict_types = 1);
 
@@ -8,15 +9,7 @@ use Slothsoft\Unity\DaemonServer;
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
 
-foreach ([
-    __DIR__ . '/../../../autoload.php',
-    __DIR__ . '/../vendor/autoload.php'
-] as $file) {
-    if (file_exists($file)) {
-        require_once $file;
-        break;
-    }
-}
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
 function print_message(string $message) {
     printf('[%s] %s%s', date(DateTimeFormatter::FORMAT_DATETIME), $message, PHP_EOL);

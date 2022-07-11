@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "354cc25e4a2b1f8283c112b12bdd23e4",
+    "content-hash": "e690d5ae98697424d07a90c093415138",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1348,16 +1348,16 @@
         },
         {
             "name": "slothsoft/farah",
-            "version": "1.7.1",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-farah.git",
-                "reference": "26227cc0e00699f317dc58b8726b4d4b9622c71d"
+                "reference": "98d7f287362fba6d59427e77b4ff994d12c8bc11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/26227cc0e00699f317dc58b8726b4d4b9622c71d",
-                "reference": "26227cc0e00699f317dc58b8726b4d4b9622c71d",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/98d7f287362fba6d59427e77b4ff994d12c8bc11",
+                "reference": "98d7f287362fba6d59427e77b4ff994d12c8bc11",
                 "shasum": ""
             },
             "require": {
@@ -1383,13 +1383,13 @@
                 "ext-sockets": "*"
             },
             "bin": [
-                "bin/farah-asset",
-                "bin/farah-page"
+                "scripts/farah-asset",
+                "scripts/farah-page"
             ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "1.7.x-dev"
+                    "dev-develop": "1.8.x-dev"
                 }
             },
             "autoload": {
@@ -1419,9 +1419,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-farah/issues",
-                "source": "https://github.com/Faulo/slothsoft-farah/tree/1.7.1"
+                "source": "https://github.com/Faulo/slothsoft-farah/tree/1.8.0"
             },
-            "time": "2022-07-10T16:32:40+00:00"
+            "time": "2022-07-11T13:18:46+00:00"
         },
         {
             "name": "slothsoft/w3c",

@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 declare(strict_types = 1);
 
@@ -6,15 +7,7 @@ use Slothsoft\Unity\DaemonClient;
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
 
-foreach ([
-    __DIR__ . '/../../../autoload.php',
-    __DIR__ . '/../vendor/autoload.php'
-] as $file) {
-    if (file_exists($file)) {
-        require_once $file;
-        break;
-    }
-}
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
 $daemon = new DaemonClient(5050);
 foreach ($daemon->call('help') as $response) {
