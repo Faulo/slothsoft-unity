@@ -86,31 +86,23 @@
                     <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/slothsoft.html">Slothsoft</a></li>
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/slothsoft-unity.html">Unity</a></li>
-            <li class="phpdocumentor-breadcrumb"><a href="namespaces/slothsoft-unity-assets.html">Assets</a></li>
     </ul>
 
-    <article class="phpdocumentor-element -class">
+    <article class="phpdocumentor-element -interface">
         <h2 class="phpdocumentor-content__title">
-    HubHelpBuilder
-
-    
-            <div class="phpdocumentor-element__package">
-            in package
+    IHubLocator
+                <div class="phpdocumentor-element__package">
+            in
             <ul class="phpdocumentor-breadcrumbs">
-                                    <li class="phpdocumentor-breadcrumb"><a href="packages/Application.html">Application</a></li>
+                                    <li><a href="packages/Application.html">Application</a></li>
                             </ul>
         </div>
-    
-            <span class="phpdocumentor-element__implements">
-            implements
-                            <abbr title="\Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface">ExecutableBuilderStrategyInterface</abbr>                    </span>
-    
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/HubHelpBuilder.php"><a href="files/src-assets-hubhelpbuilder.html"><abbr title="src/Assets/HubHelpBuilder.php">HubHelpBuilder.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/IHubLocator.php"><a href="files/src-ihublocator.html"><abbr title="src/IHubLocator.php">IHubLocator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">13</span>
+    <span class="phpdocumentor-element-found-in__line">7</span>
 
     </aside>
 
@@ -122,17 +114,6 @@
 
 
 
-<h3 id="interfaces_class_traits">
-    Interfaces, Classes and Traits
-    <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
-<dl class="phpdocumentor-table-of-contents">
-            <dt class="phpdocumentor-table-of-contents__entry -interface"><abbr title="\Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface">ExecutableBuilderStrategyInterface</abbr></dt>
-        <dd></dd>
-    
-    
-    </dl>
 
 
 <h3 id="toc">
@@ -142,9 +123,16 @@
 
 <dl class="phpdocumentor-table-of-contents">
                     <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-Assets-HubHelpBuilder.html#method_buildExecutableStrategies">buildExecutableStrategies()</a>
+    <a href="classes/Slothsoft-Unity-IHubLocator.html#method_create">create()</a>
     <span>
-                        &nbsp;: <abbr title="\Slothsoft\Farah\Module\Executable\ExecutableStrategies">ExecutableStrategies</abbr>    </span>
+                        &nbsp;: <abbr title="\Symfony\Component\Process\Process">Process</abbr>    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Slothsoft-Unity-IHubLocator.html#method_exists">exists()</a>
+    <span>
+                        &nbsp;: bool    </span>
 </dt>
 <dd></dd>
 
@@ -154,12 +142,10 @@
 
         
 
-        
-
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/Slothsoft-Unity-Assets-HubHelpBuilder.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/Slothsoft-Unity-IHubLocator.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="phpdocumentor-element
@@ -167,37 +153,29 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_buildExecutableStrategies">
-        buildExecutableStrategies()
-        <a href="classes/Slothsoft-Unity-Assets-HubHelpBuilder.html#method_buildExecutableStrategies" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_create">
+        create()
+        <a href="classes/Slothsoft-Unity-IHubLocator.html#method_create" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/HubHelpBuilder.php"><a href="files/src-assets-hubhelpbuilder.html"><abbr title="src/Assets/HubHelpBuilder.php">HubHelpBuilder.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/IHubLocator.php"><a href="files/src-ihublocator.html"><abbr title="src/IHubLocator.php">IHubLocator.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">9</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">buildExecutableStrategies</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Slothsoft\Farah\Module\Asset\AssetInterface">AssetInterface</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$context</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Slothsoft\Farah\FarahUrl\FarahUrlArguments">FarahUrlArguments</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$args</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Slothsoft\Farah\Module\Executable\ExecutableStrategies">ExecutableStrategies</abbr></span></code>
+                <span class="phpdocumentor-signature__name">create</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$arguments</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Symfony\Component\Process\Process">Process</abbr></span></code>
 
         <section class="phpdocumentor-description"></section>
 
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$context</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Slothsoft\Farah\Module\Asset\AssetInterface">AssetInterface</abbr></span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$args</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Slothsoft\Farah\FarahUrl\FarahUrlArguments">FarahUrlArguments</abbr></span>
+                <span class="phpdocumentor-signature__argument__name">$arguments</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
@@ -208,7 +186,40 @@
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><abbr title="\Slothsoft\Farah\Module\Executable\ExecutableStrategies">ExecutableStrategies</abbr></span>
+    <span class="phpdocumentor-signature__response_type"><abbr title="\Symfony\Component\Process\Process">Process</abbr></span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_exists">
+        exists()
+        <a href="classes/Slothsoft-Unity-IHubLocator.html#method_exists" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/IHubLocator.php"><a href="files/src-ihublocator.html"><abbr title="src/IHubLocator.php">IHubLocator.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">11</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">exists</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">bool</span>
             &mdash;
         
     
@@ -291,7 +302,7 @@
 </section>
             </div>
         </div>
-        <a href="classes/Slothsoft-Unity-Assets-HubHelpBuilder.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/Slothsoft-Unity-IHubLocator.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

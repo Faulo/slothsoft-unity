@@ -386,6 +386,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityEditor.html"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityEditor\u003A\u003AisInstalled\u0028\u0029",
+            "name": "isInstalled",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityEditor.html#method_isInstalled"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityEditor\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
@@ -421,15 +426,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityEditor.html#property_executable"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityEditor\u003A\u003A\u0024isInstalled",
-            "name": "isInstalled",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityEditor.html#property_isInstalled"
-        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityHub",
             "name": "UnityHub",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityHub.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AgetInstance\u0028\u0029",
+            "name": "getInstance",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_getInstance"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AsetUseDaemon\u0028\u0029",
             "name": "setUseDaemon",
@@ -441,10 +446,30 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityHub.html#method_getUseDaemon"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AsetLoggingEnabled\u0028\u0029",
+            "name": "setLoggingEnabled",
             "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityHub.html#method___construct"
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_setLoggingEnabled"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AgetLoggingEnabled\u0028\u0029",
+            "name": "getLoggingEnabled",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_getLoggingEnabled"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AsetHubLocator\u0028\u0029",
+            "name": "setHubLocator",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_setHubLocator"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AgetHubLocator\u0028\u0029",
+            "name": "getHubLocator",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_getHubLocator"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AisInstalled\u0028\u0029",
+            "name": "isInstalled",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityHub.html#method_isInstalled"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003AgetEditors\u0028\u0029",
             "name": "getEditors",
@@ -495,26 +520,6 @@ Search.appendIndex(
             "name": "CHANGESET_URL",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityHub.html#constant_CHANGESET_URL"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003A\u0024isInstalled",
-            "name": "isInstalled",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityHub.html#property_isInstalled"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityHub\u003A\u003A\u0024hubFile",
-            "name": "hubFile",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityHub.html#property_hubFile"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityHubLocator",
-            "name": "UnityHubLocator",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityHubLocator.html"
-        },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityHubLocator\u003A\u003AfindHubLocation\u0028\u0029",
-            "name": "findHubLocation",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityHubLocator.html#method_findHubLocation"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProject",
             "name": "UnityProject",
@@ -610,6 +615,96 @@ Search.appendIndex(
             "name": "packages",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProjectInfo.html#property_packages"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestsBuilder",
+            "name": "ProjectTestsBuilder",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestsBuilder\u003A\u003AbuildExecutableStrategies\u0028\u0029",
+            "name": "buildExecutableStrategies",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#method_buildExecutableStrategies"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestsParameterFilter",
+            "name": "ProjectTestsParameterFilter",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectTestsParameterFilter.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestsParameterFilter\u003A\u003AcreateValueSanitizers\u0028\u0029",
+            "name": "createValueSanitizers",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectTestsParameterFilter.html#method_createValueSanitizers"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\IHubLocator",
+            "name": "IHubLocator",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-IHubLocator.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\IHubLocator\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-IHubLocator.html#method_create"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\IHubLocator\u003A\u003Aexists\u0028\u0029",
+            "name": "exists",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-IHubLocator.html#method_exists"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubFromCommand",
+            "name": "LocateHubFromCommand",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubFromCommand.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubFromCommand\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubFromCommand.html#method___construct"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubFromCommand\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubFromCommand.html#method_create"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubFromCommand\u003A\u003Aexists\u0028\u0029",
+            "name": "exists",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubFromCommand.html#method_exists"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubFromWindowsRegistry",
+            "name": "LocateHubFromWindowsRegistry",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubFromWindowsRegistry.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubFromWindowsRegistry\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubFromWindowsRegistry.html#method___construct"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubFromWindowsRegistry\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubFromWindowsRegistry.html#method_create"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubFromWindowsRegistry\u003A\u003Aexists\u0028\u0029",
+            "name": "exists",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubFromWindowsRegistry.html#method_exists"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubNull",
+            "name": "LocateHubNull",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubNull.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubNull\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubNull.html#method_create"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\LocateHubNull\u003A\u003Aexists\u0028\u0029",
+            "name": "exists",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-LocateHubNull.html#method_exists"
         },                {
             "fqsen": "\\",
             "name": "\\",
