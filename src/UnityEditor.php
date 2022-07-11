@@ -19,6 +19,10 @@ class UnityEditor {
         return is_string($this->executable) and is_file($this->executable);
     }
 
+    public function isLicensed(): bool {
+        return false;
+    }
+
     public function __construct(UnityHub $hub, string $version) {
         $this->hub = $hub;
         $this->version = $version;
@@ -32,6 +36,17 @@ class UnityEditor {
     public function install(): bool {
         $this->hub->installEditor($this);
         return $this->isInstalled();
+    }
+
+    public function license(): bool {
+        foreach ($this->hub->findLicenses($this) as $licenseFile) {
+            $this->execute([
+                '-manualLicenseFile',
+                $licenseFile
+            ]);
+            return true;
+        }
+        return true;
     }
 
     public function execute(array $arguments): string {

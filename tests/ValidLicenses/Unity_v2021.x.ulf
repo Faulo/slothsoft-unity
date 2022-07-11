@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><root>
+    <License id="Terms">
+        <MachineBindings>
+            <Binding Key="1" Value="f565e450ff5b4bdc906eaec8d75d3290"/>
+            <Binding Key="2" Value="f565e450ff5b4bdc906eaec8d75d3290"/>
+        </MachineBindings>
+        <MachineID Value="jvUuMSFQhgOSo07gx4z7wkekICY="/>
+        <SerialHash Value="96371c76e4024b2d7c093c34cf3f6ae69921081c"/>
+        <Features>
+            <Feature Value="33"/>
+            <Feature Value="1"/>
+            <Feature Value="12"/>
+            <Feature Value="2"/>
+            <Feature Value="24"/>
+            <Feature Value="3"/>
+            <Feature Value="36"/>
+            <Feature Value="17"/>
+            <Feature Value="19"/>
+            <Feature Value="62"/>
+        </Features>
+        <DeveloperData Value="AQAAAEY0LTlETTYtQ0VEUC1FVEZCLVZEWUQtOTZQUQ=="/>
+        <SerialMasked Value="F4-9DM6-CEDP-ETFB-VDYD-XXXX"/>
+        <StartDate Value="2018-10-17T00:00:00"/>
+        <UpdateDate Value="2022-06-30T13:30:43"/>
+        <InitialActivationDate Value="2018-10-17T13:24:32"/>
+        <LicenseVersion Value="6.x"/>
+        <ClientProvidedVersion Value="2021.1.4"/>
+        <AlwaysOnline Value="false"/>
+        <Entitlements>
+            <Entitlement Ns="unity_editor" Tag="UnityPersonal" Type="EDITOR" ValidTo="9999-12-31T00:00:00"/>
+            <Entitlement Ns="unity_editor" Tag="DarkSkin" Type="EDITOR_FEATURE" ValidTo="9999-12-31T00:00:00"/>
+        </Entitlements>
+    </License>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"/></root>

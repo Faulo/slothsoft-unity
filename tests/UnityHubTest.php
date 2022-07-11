@@ -100,4 +100,22 @@ class UnityHubTest extends TestCase {
         $editor = $hub->getEditorByVersion($version);
         $this->assertEditorIsValid($editor, $version);
     }
+
+    public function testFindLicenses(): void {
+        $licenseFolder = __DIR__ . DIRECTORY_SEPARATOR . 'ValidLicenses';
+        $licenseFile = realpath($licenseFolder . DIRECTORY_SEPARATOR . 'Unity_v2022.x.ulf');
+
+        UnityHub::setUseDaemon(false);
+        $hub = UnityHub::getInstance();
+        if (! $hub->isInstalled()) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
+
+        UnityHub::addLicenseFolder($licenseFolder);
+
+        $this->assertEquals([
+            $licenseFile
+        ], iterator_to_array($hub->findLicenses('2022.1.4')));
+    }
 }

@@ -123,5 +123,9 @@ class UnityProject {
     public function ensureEditorIsInstalled(): bool {
         return $this->editor->isInstalled() or $this->editor->install();
     }
+
+    public function ensureEditorIsLicensed(): bool {
+        return $this->editor->isLicensed() or $this->editor->license();
+    }
 }
 

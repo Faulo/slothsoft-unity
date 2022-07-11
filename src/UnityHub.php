@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
+use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\Storage;
 use Slothsoft\Core\Calendar\Seconds;
@@ -32,6 +33,15 @@ class UnityHub {
 
     public static function getUseDaemon(): bool {
         return self::useDaemon()->getValue();
+    }
+
+    private static $licenseFolders = [];
+
+    public static function addLicenseFolder(string $folder): void {
+        if (! is_dir($folder)) {
+            throw new \InvalidArgumentException("Folder '$folder' does not exist!");
+        }
+        self::$licenseFolders[] = $folder;
     }
 
     private static function loggingEnabled(): ConfigurationField {
@@ -178,6 +188,20 @@ class UnityHub {
             if ($version === $editor->version) {
                 $editor->setExecutable($path);
                 break;
+            }
+        }
+    }
+
+    public function findLicenses(string $editorVersion): iterable {
+        foreach (self::$licenseFolders as $folder) {
+            foreach (FileSystem::scanDir($folder, FileSystem::SCANDIR_EXCLUDE_DIRS | FileSystem::SCANDIR_REALPATH) as $file) {
+                if ($document = DOMHelper::loadDocument($file) and $xpath = DOMHelper::loadXPath($document)) {
+                    if ($licenseVersion = $xpath->evaluate('string(//ClientProvidedVersion/@Value)')) {
+                        if (substr($licenseVersion, 0, 4) === substr($editorVersion, 0, 4)) {
+                            yield $file;
+                        }
+                    }
+                }
             }
         }
     }
