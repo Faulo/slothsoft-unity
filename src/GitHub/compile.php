@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Slothsoft\Unity\GitHub;
 
 $queue = __DIR__ . '/queue.bat';
