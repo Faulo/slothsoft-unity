@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Slothsoft\Core\DOMHelper;
+use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 use DOMDocument;
 
@@ -106,6 +107,26 @@ class UnityProject {
         }
         $doc->appendChild($rootNode);
 
+        return $doc;
+    }
+
+    public function build(string $buildFile): DOMDocument {
+        $doc = new DOMDocument();
+        $process = $this->createEditorProcess('-buildWindows64Player', $buildFile);
+        if (UnityHub::getLoggingEnabled()) {
+            echo $process->getCommandLine() . PHP_EOL;
+            $process->setTimeout(0);
+            $process->start();
+            foreach ($process as $data) {
+                echo $data;
+            }
+        } else {
+            $process->run();
+            $process->wait();
+        }
+        $node = $doc->createElement('result');
+        $node->setAttribute('code', (string) $process->getExitCode());
+        $doc->appendChild($node);
         return $doc;
     }
 

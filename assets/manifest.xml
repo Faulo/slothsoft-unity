@@ -17,6 +17,11 @@
 		<custom-asset name="install"
 			executable-builder="Slothsoft\Unity\Assets\ProjectInstallBuilder"
 			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+			
+			
+        <custom-asset name="build"
+            executable-builder="Slothsoft\Unity\Assets\ProjectBuildBuilder"
+            parameter-filter="Slothsoft\Unity\Assets\ProjectBuildParameterFilter" />
 		<custom-asset name="tests"
 			executable-builder="Slothsoft\Unity\Assets\ProjectTestsBuilder"
 			parameter-filter="Slothsoft\Unity\Assets\ProjectTestsParameterFilter" />
