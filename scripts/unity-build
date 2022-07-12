@@ -40,7 +40,7 @@ foreach (UnityProjectInfo::findAll($workspace) as $project) {
         mkdir($buildDirectory, 0777, true);
     }
 
-    $buildFile = $buildDirectory . DIRECTORY_SEPARATOR . "{buildName}.exe";
+    $buildFile = $buildDirectory . DIRECTORY_SEPARATOR . "{$buildName}.exe";
     $testsArgs = FarahUrlArguments::createFromValueList([
         'workspace' => $project->path,
         'path' => $buildFile
