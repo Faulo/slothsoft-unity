@@ -6,6 +6,10 @@ use Symfony\Component\Process\Process;
 
 class UnityEditor {
 
+    private const LICENSE_SUCCESS = '[Licensing::Module] Serial number assigned to:';
+
+    private const LICENSE_CREATED = '[LicensingClient] Successfully processed ALF generation request:';
+
     /** @var UnityHub */
     public $hub;
 
@@ -20,12 +24,20 @@ class UnityEditor {
     }
 
     public function isLicensed(): bool {
-        return false;
+        if (! $this->isInstalled()) {
+            return false;
+        }
+        $log = $this->execute([]);
+        return strpos($log, self::LICENSE_SUCCESS) !== false;
     }
 
     public function __construct(UnityHub $hub, string $version) {
         $this->hub = $hub;
         $this->version = $version;
+    }
+
+    public function __toString(): string {
+        return "Unity Editor v{$this->version}";
     }
 
     public function setExecutable(string $executable) {
@@ -44,9 +56,24 @@ class UnityEditor {
                 '-manualLicenseFile',
                 $licenseFile
             ]);
-            return true;
+            if ($this->isLicensed()) {
+                return true;
+            }
         }
-        return true;
+
+        $log = $this->execute([
+            '-createManualActivationFile'
+        ]);
+        $position = strpos($log, self::LICENSE_CREATED);
+        if ($position !== false) {
+            $log = explode("\n", substr($log, $position + strlen(self::LICENSE_CREATED)), 2);
+            $log = trim($log[0]);
+            if (is_file($log)) {
+                $this->hub->prepareLicense($log);
+            }
+        }
+
+        return false;
     }
 
     public function execute(array $arguments): string {

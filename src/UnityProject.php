@@ -19,6 +19,10 @@ class UnityProject {
         $this->editor = $editor;
     }
 
+    public function __toString(): string {
+        return $this->info->path;
+    }
+
     public function getProjectPath(): string {
         return $this->info->path;
     }

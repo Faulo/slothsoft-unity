@@ -194,14 +194,25 @@ class UnityHub {
     public function findLicenses(string $editorVersion): iterable {
         foreach (self::$licenseFolders as $folder) {
             foreach (FileSystem::scanDir($folder, FileSystem::SCANDIR_EXCLUDE_DIRS | FileSystem::SCANDIR_REALPATH) as $file) {
-                if ($document = DOMHelper::loadDocument($file) and $xpath = DOMHelper::loadXPath($document)) {
-                    if ($licenseVersion = $xpath->evaluate('string(//ClientProvidedVersion/@Value)')) {
-                        if (substr($licenseVersion, 0, 4) === substr($editorVersion, 0, 4)) {
-                            yield $file;
+                if (pathinfo($file, PATHINFO_EXTENSION) === 'ulf') {
+                    if ($document = DOMHelper::loadDocument($file) and $xpath = DOMHelper::loadXPath($document)) {
+                        if ($licenseVersion = $xpath->evaluate('string(//ClientProvidedVersion/@Value)')) {
+                            if (substr($licenseVersion, 0, 4) === substr($editorVersion, 0, 4)) {
+                                yield $file;
+                            }
                         }
                     }
                 }
             }
+        }
+    }
+
+    public function prepareLicense(string $licenseFile): void {
+        assert(is_file($licenseFile));
+        foreach (self::$licenseFolders as $folder) {
+            $targetFile = $folder . DIRECTORY_SEPARATOR . basename($licenseFile);
+            copy($licenseFile, $targetFile);
+            chmod($targetFile, 0777);
         }
     }
 
