@@ -50,6 +50,16 @@ class UnityEditor {
         return $this->isInstalled();
     }
 
+    public function installModules(string ...$modules): bool {
+        if (! $this->isInstalled()) {
+            return false;
+        }
+        foreach ($modules as $module) {
+            $this->hub->installEditorModule($this, $module);
+        }
+        return true;
+    }
+
     public function license(): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
             $this->execute([

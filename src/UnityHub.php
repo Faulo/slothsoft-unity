@@ -191,6 +191,11 @@ class UnityHub {
         }
     }
 
+    public function installEditorModule(UnityEditor $editor, string ...$modules): void {
+        $arguments = $this->createModuleInstallation($editor->version, $modules);
+        $this->executeNow($arguments);
+    }
+
     public function findLicenses(string $editorVersion): iterable {
         foreach (self::$licenseFolders as $folder) {
             foreach (FileSystem::scanDir($folder, FileSystem::SCANDIR_EXCLUDE_DIRS | FileSystem::SCANDIR_REALPATH) as $file) {

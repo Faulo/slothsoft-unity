@@ -111,6 +111,8 @@ class UnityProject {
     }
 
     public function build(string $buildFile): DOMDocument {
+        $this->editor->installModules('windows', 'windows-mono', 'windows-il2cpp');
+
         $doc = new DOMDocument();
         $process = $this->createEditorProcess('-buildWindows64Player', $buildFile);
         if (UnityHub::getLoggingEnabled()) {
