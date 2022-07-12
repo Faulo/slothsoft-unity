@@ -63,29 +63,28 @@ class UnityHub {
     private static function hubLocator(): ConfigurationField {
         static $field;
         if ($field === null) {
-            $locator = new LocateHubNull();
-            switch (PHP_OS) {
-                case 'Linux':
-                    if (FileSystem::commandExist('xvfb-run') and FileSystem::commandExist('unityhub')) {
-                        $locator = new LocateHubFromCommand([
-                            'xvfb-run',
-                            '-a',
-                            'unityhub',
-                            '--no-sandbox',
-                            '--headless'
-                        ]);
-                    }
-                    break;
-                case 'WINNT':
-                    $locator = new LocateHubFromWindowsRegistry([
-                        '--',
-                        '--headless'
-                    ]);
-                    break;
-            }
-            $field = new ConfigurationField($locator);
+            $field = new ConfigurationField(self::inventHubLocator());
         }
         return $field;
+    }
+
+    private static function inventHubLocator(): HubLocatorInterface {
+        if (PHP_OS === 'WINNT') {
+            return new LocateHubFromWindowsRegistry([
+                '--',
+                '--headless'
+            ]);
+        }
+        if (FileSystem::commandExists('xvfb-run') and FileSystem::commandExists('unityhub')) {
+            return new LocateHubFromCommand([
+                'xvfb-run',
+                '-a',
+                'unityhub',
+                '--no-sandbox',
+                '--headless'
+            ]);
+        }
+        return new LocateHubNull();
     }
 
     public static function setHubLocator(HubLocatorInterface $value): void {
