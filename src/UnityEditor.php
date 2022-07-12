@@ -55,6 +55,7 @@ class UnityEditor {
             '-quit',
             '-batchmode',
             '-nographics',
+            '-ignorecompilererrors',
             '-accept-apiupdate'
         ], $arguments);
         $process = new Process($command);
