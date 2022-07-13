@@ -3,17 +3,20 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets;
 
 use Psr\Http\Message\StreamInterface;
+use Slothsoft\Core\IO\Writable\Adapter\ChunkWriterFromStreamWriter;
+use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromElementDelegate;
 use Slothsoft\Core\IO\Writable\Delegates\StreamWriterFromStreamDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Farah\Module\Asset\AssetInterface;
 use Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface;
 use Slothsoft\Farah\Module\Executable\ExecutableStrategies;
 use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ChunkWriterResultBuilder;
+use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\DOMWriterResultBuilder;
 use Slothsoft\Unity\UnityHub;
 use Slothsoft\Unity\UnityProject;
 use Slothsoft\Unity\ZipFileStream;
-use InvalidArgumentException;
-use Slothsoft\Core\IO\Writable\Adapter\ChunkWriterFromStreamWriter;
+use DOMDocument;
+use DOMElement;
 
 class ProjectBuildBuilder implements ExecutableBuilderStrategyInterface {
 
@@ -61,27 +64,37 @@ class ProjectBuildBuilder implements ExecutableBuilderStrategyInterface {
     }
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
-        if (! $this->parseArguments($args)) {
-            throw new InvalidArgumentException($this->message);
+        if ($this->parseArguments($args)) {
+            $delegate = function (): StreamInterface {
+                $path = temp_dir(__NAMESPACE__);
+                
+                $this->project->build($path);
+                
+                $zip = new ZipFileStream();
+                
+                $zip->addDirRecursive($path);
+                
+                return $zip->outputAsStream();
+            };
+            
+            $writer = new ChunkWriterFromStreamWriter(new StreamWriterFromStreamDelegate($delegate));
+            
+            $resultBuilder = new ChunkWriterResultBuilder($writer, 'build.zip', false);
+            
+            return new ExecutableStrategies($resultBuilder);
+        } else {
+            $delegate = function (DOMDocument $document): DOMElement {
+                $node = $document->createElement('error');
+                $node->textContent = $this->message;
+                return $node;
+            };
+            
+            $writer = new DOMWriterFromElementDelegate($delegate);
+            
+            $resultBuilder = new DOMWriterResultBuilder($writer, 'result.xml');
+            
+            return new ExecutableStrategies($resultBuilder);
         }
-
-        $delegate = function (): StreamInterface {
-            $path = temp_dir(__NAMESPACE__);
-
-            $this->project->build($path);
-
-            $zip = new ZipFileStream();
-
-            $zip->addDirRecursive($path);
-
-            return $zip->outputAsStream();
-        };
-
-        $writer = new ChunkWriterFromStreamWriter(new StreamWriterFromStreamDelegate($delegate));
-
-        $resultBuilder = new ChunkWriterResultBuilder($writer, 'build.zip', false);
-
-        return new ExecutableStrategies($resultBuilder);
     }
 }
 
