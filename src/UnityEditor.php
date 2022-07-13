@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
+use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 use Generator;
 
@@ -106,7 +107,7 @@ class UnityEditor {
     }
 
     private function createProcess(array $arguments): Process {
-        $command = array_merge([
+        $arguments = array_merge([
             $this->executable,
             '-quit',
             '-batchmode',
@@ -114,6 +115,14 @@ class UnityEditor {
             '-ignorecompilererrors',
             '-accept-apiupdate'
         ], $arguments);
-        return new Process($command);
+
+        if (FileSystem::commandExists('xvfb-run')) {
+            $arguments = array_merge([
+                'xvfb-run',
+                '-a'
+            ], $arguments);
+        }
+
+        return new Process($arguments);
     }
 }
