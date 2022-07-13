@@ -616,6 +616,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html#method_ensureEditorIsLicensed"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003ABUILD_FOLDERS",
+            "name": "BUILD_FOLDERS",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityProject.html#constant_BUILD_FOLDERS"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProjectInfo",
             "name": "UnityProjectInfo",
             "summary": "",
