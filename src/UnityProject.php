@@ -3,8 +3,8 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Slothsoft\Core\DOMHelper;
-use Symfony\Component\Process\Process;
 use DOMDocument;
+use Generator;
 
 class UnityProject {
 
@@ -56,22 +56,6 @@ class UnityProject {
         return $process->getExitCode();
     }
 
-    private function runSingleTest(string $resultsFile, string $testPlatform = 'EditMode'): int {
-        $process = $this->createEditorProcess('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
-        if (UnityHub::getLoggingEnabled()) {
-            echo $process->getCommandLine() . PHP_EOL;
-            $process->setTimeout(0);
-            $process->start();
-            foreach ($process as $data) {
-                echo $data;
-            }
-        } else {
-            $process->run();
-            $process->wait();
-        }
-        return $process->getExitCode();
-    }
-
     public function runTests(string ...$testPlatforms): DOMDocument {
         $doc = new DOMDocument();
 
@@ -87,7 +71,15 @@ class UnityProject {
 
         foreach ($testPlatforms as $testPlatform) {
             $resultsFile = temp_file(__CLASS__);
-            $this->runSingleTest($resultsFile, $testPlatform);
+
+            $this->execute([
+                '-runTests',
+                '-testResults',
+                $resultsFile,
+                '-testPlatform',
+                $testPlatform
+            ]);
+
             if (is_file($resultsFile)) {
                 $resultsDoc = DOMHelper::loadDocument($resultsFile);
                 foreach ($resultsDoc->documentElement->attributes as $attr) {
@@ -112,38 +104,33 @@ class UnityProject {
     public function build(string $buildFile): DOMDocument {
         $this->editor->installModules('windows', 'windows-mono', 'windows-il2cpp');
 
+        $result = $this->execute([
+            '-buildWindows64Player',
+            $buildFile
+        ]);
+
         $doc = new DOMDocument();
-        $process = $this->createEditorProcess('-buildWindows64Player', $buildFile);
-        if (UnityHub::getLoggingEnabled()) {
-            echo $process->getCommandLine() . PHP_EOL;
-            $process->setTimeout(0);
-            $process->start();
-            foreach ($process as $data) {
-                echo $data;
-            }
-        } else {
-            $process->run();
-            $process->wait();
-        }
         $node = $doc->createElement('result');
-        $node->setAttribute('code', (string) $process->getExitCode());
+        $node->textContent = $result;
         $doc->appendChild($node);
+
         return $doc;
     }
 
     private const EDITOR_TIMEOUT = 3600;
 
-    private function createEditorProcess(string ...$args): Process {
-        assert($this->editor->isInstalled());
-        $args = array_merge([
-            $this->editor->executable,
-            '-accept-apiupdate',
-            '-batchmode',
-            '-nographics',
-            '-projectPath',
-            $this->info->path
-        ], $args);
-        return new Process($args, $this->info->path, null, null, self::EDITOR_TIMEOUT);
+    public function execute(array $arguments): string {
+        return $this->editor->execute($this->createProcessArguments($arguments));
+    }
+
+    public function executeStream(array $arguments): Generator {
+        return $this->editor->executeStream($this->createProcessArguments($arguments));
+    }
+
+    private function createProcessArguments(array $arguments): array {
+        array_unshift($arguments, '-projectPath');
+        array_unshift($arguments, $this->info->path);
+        return $arguments;
     }
 
     public function ensureEditorIsInstalled(): bool {
