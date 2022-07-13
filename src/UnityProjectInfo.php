@@ -37,16 +37,16 @@ class UnityProjectInfo {
     }
 
     /** @var string */
-    public $path;
+    public string $path;
 
     /** @var string */
-    public $editorVersion;
+    public string $editorVersion;
 
     /** @var array */
-    public $settings;
+    public array $settings;
 
     /** @var array */
-    public $packages;
+    public array $packages;
 
     private function __construct(string $path) {
         $this->path = $path;

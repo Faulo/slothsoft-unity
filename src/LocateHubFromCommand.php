@@ -7,7 +7,7 @@ use Symfony\Component\Process\Process;
 class LocateHubFromCommand implements HubLocatorInterface {
 
     /** @var string[] */
-    private $command;
+    private array $command;
 
     public function __construct(array $command) {
         $this->command = $command;

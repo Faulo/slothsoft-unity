@@ -11,13 +11,13 @@ class UnityEditor {
     private const LICENSE_CREATED = '[LicensingClient] Successfully processed ALF generation request:';
 
     /** @var UnityHub */
-    public $hub;
+    public UnityHub $hub;
 
     /** @var string */
-    public $version;
+    public string $version;
 
     /** @var string */
-    public $executable;
+    public ?string $executable = null;
 
     public function isInstalled(): bool {
         return is_string($this->executable) and is_file($this->executable);

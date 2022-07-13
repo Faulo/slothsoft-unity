@@ -101,16 +101,16 @@ class UnityHub {
     }
 
     /** @var UnityEditor[] */
-    private $editors = null;
+    private ?array $editors = null;
 
     /** @var string */
-    private $editorPath = '';
+    private string $editorPath = '';
 
     /** @var string[] */
-    private $changesets = null;
+    private ?array $changesets = null;
 
     /** @var DaemonClient */
-    private $daemon = null;
+    private ?DaemonClient $daemon = null;
 
     private function __construct() {
         if (self::getUseDaemon()) {

@@ -15,13 +15,13 @@ class LocateHubFromWindowsRegistry implements HubLocatorInterface {
     private const HUB_EXECUTABLE = 'Unity Hub.exe';
 
     /** @var string */
-    private $file = '';
+    private string $file = '';
 
     /** @var bool */
-    private $exists = false;
+    private bool $exists = false;
 
     /** @var string[] */
-    private $command;
+    private array $command;
 
     public function __construct(array $command) {
         $this->command = $command;

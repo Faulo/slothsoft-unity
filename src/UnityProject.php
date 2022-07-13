@@ -3,17 +3,16 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Slothsoft\Core\DOMHelper;
-use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 use DOMDocument;
 
 class UnityProject {
 
     /** @var UnityProjectInfo */
-    private $info;
+    private UnityProjectInfo $info;
 
     /** @var UnityEditor */
-    private $editor;
+    private UnityEditor $editor;
 
     public function __construct(UnityProjectInfo $info, UnityEditor $editor) {
         $this->info = $info;
