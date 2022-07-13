@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Symfony\Component\Process\Process;
+use Generator;
 
 class UnityEditor {
 
@@ -87,6 +88,24 @@ class UnityEditor {
     }
 
     public function execute(array $arguments): string {
+        return $this->createProcessRunner($arguments)->toString();
+    }
+
+    public function executeStream(array $arguments): Generator {
+        return $this->createProcessRunner($arguments)->toGenerator();
+    }
+
+    private function createProcessRunner(array $arguments): ProcessRunner {
+        assert($this->isInstalled());
+
+        $process = $this->createProcess($arguments);
+
+        $runner = new ProcessRunner($process, self::getLoggingEnabled());
+
+        return $runner;
+    }
+
+    private function createProcess(array $arguments): Process {
         $command = array_merge([
             $this->executable,
             '-quit',
@@ -95,17 +114,6 @@ class UnityEditor {
             '-ignorecompilererrors',
             '-accept-apiupdate'
         ], $arguments);
-        $process = new Process($command);
-        $process->setTimeout(0);
-        $process->start();
-        $result = '';
-        foreach ($process as $type => $data) {
-            if ($type === $process::OUT) {
-                $result .= $data;
-            } else {
-                fwrite(STDERR, $data);
-            }
-        }
-        return trim($result);
+        return new Process($command);
     }
 }

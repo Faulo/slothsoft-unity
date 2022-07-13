@@ -138,7 +138,7 @@ class UnityHub {
     }
 
     private function loadInstalledEditors(): iterable {
-        $editorPaths = $this->executeNow([
+        $editorPaths = $this->execute([
             'editors',
             '--installed'
         ]);
@@ -160,7 +160,7 @@ class UnityHub {
 
     private function loadEditorPath(): void {
         if ($this->editorPath === '') {
-            if ($path = $this->executeNow([
+            if ($path = $this->execute([
                 'install-path',
                 '--get'
             ])) {
@@ -181,7 +181,7 @@ class UnityHub {
 
     public function installEditor(UnityEditor $editor, string ...$modules): void {
         $arguments = $this->createEditorInstallation($editor->version, $modules);
-        $this->executeNow($arguments);
+        $this->execute($arguments);
 
         foreach ($this->loadInstalledEditors() as $version => $path) {
             if ($version === $editor->version) {
@@ -193,7 +193,7 @@ class UnityHub {
 
     public function installEditorModule(UnityEditor $editor, string ...$modules): void {
         $arguments = $this->createModuleInstallation($editor->version, $modules);
-        $this->executeNow($arguments);
+        $this->execute($arguments);
     }
 
     public function findLicenses(string $editorVersion): iterable {
@@ -259,34 +259,22 @@ class UnityHub {
         return $args;
     }
 
-    public function executeNow(array $arguments): string {
-        $result = '';
-        foreach ($this->executeStream($arguments) as $value) {
-            $result .= $value;
-        }
-        return trim($result);
+    public function execute(array $arguments): string {
+        return $this->createProcessRunner($arguments)->toString();
     }
 
     public function executeStream(array $arguments): Generator {
+        return $this->createProcessRunner($arguments)->toGenerator();
+    }
+
+    private function createProcessRunner(array $arguments): ProcessRunner {
         assert($this->isInstalled());
-        if ($this->daemon) {
-            yield from $this->daemon->call(json_encode($arguments));
-        } else {
-            $process = self::getHubLocator()->create($arguments);
-            if (self::getLoggingEnabled()) {
-                echo $process->getCommandLine() . PHP_EOL;
-            }
-            $process->setTimeout(0);
-            $process->start();
-            foreach ($process as $type => $data) {
-                if (self::getLoggingEnabled()) {
-                    echo $data;
-                }
-                if ($type === $process::OUT) {
-                    yield $data;
-                }
-            }
-        }
+
+        $process = self::getHubLocator()->create($arguments);
+
+        $runner = new ProcessRunner($process, self::getLoggingEnabled());
+
+        return $runner;
     }
 
     private function scanForSubDirectories(string $directory): iterable {
