@@ -101,6 +101,33 @@ class UnityHubTest extends TestCase {
         $this->assertEditorIsValid($editor, $version);
     }
 
+    /**
+     *
+     * @dataProvider validUnityVersions
+     */
+    public function testCreateEditorInstallation(string $version) {
+        UnityHub::setUseDaemon(false);
+        $hub = UnityHub::getInstance();
+        if (! $hub->isInstalled()) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
+
+        $this->assertIsArray($hub->createEditorInstallation($version));
+    }
+
+    public function validUnityVersions(): iterable {
+        yield '2019.4.17f1' => [
+            '2019.4.17f1'
+        ];
+        yield '2022.2.0a12' => [
+            '2022.2.0a12'
+        ];
+        yield '2022.2.0b1' => [
+            '2022.2.0b1'
+        ];
+    }
+
     public function testFindLicenses(): void {
         $licenseFolder = __DIR__ . DIRECTORY_SEPARATOR . 'ValidLicenses';
         $licenseFile = realpath($licenseFolder . DIRECTORY_SEPARATOR . 'Unity_v2022.x.ulf');

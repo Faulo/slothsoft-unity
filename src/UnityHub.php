@@ -224,9 +224,7 @@ class UnityHub {
     public function createEditorInstallation(string $version, array $modules = []): array {
         assert($version !== '');
 
-        $this->loadChangesets();
-        assert(isset($this->changesets[$version]));
-        $changeset = $this->changesets[$version];
+        $changeset = $this->inventChangeset($version);
 
         $args = [
             'install',
@@ -236,11 +234,31 @@ class UnityHub {
             $changeset,
             '--childModules'
         ];
+
         foreach ($modules as $module) {
             $args[] = '--module';
             $args[] = $module;
         }
+
         return $args;
+    }
+
+    private function inventChangeset(string $version): string {
+        $this->loadChangesets();
+
+        if (isset($this->changesets[$version])) {
+            return $this->changesets[$version];
+        }
+
+        if (strpos($version, 'b') !== false) {
+            $this->loadChangesetsFromUrl('https://unity3d.com/unity/beta/' . $version);
+        }
+
+        if (strpos($version, 'a') !== false) {
+            $this->loadChangesetsFromUrl('https://unity3d.com/unity/alpha/' . $version);
+        }
+
+        throw new \LogicException("Failed to determine changeset ID for Unity version '{$version}'!");
     }
 
     public function createModuleInstallation(string $version, array $modules = []): array {
@@ -284,18 +302,22 @@ class UnityHub {
 
     const CHANGESET_URL = 'https://unity3d.com/get-unity/download/archive';
 
-    private function loadChangesets() {
+    private function loadChangesets(): void {
         if ($this->changesets === null) {
             $this->changesets = [];
-            if ($xpath = Storage::loadExternalXPath(self::CHANGESET_URL, Seconds::DAY)) {
-                foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
-                    // unityhub://2019.4.17f1/667c8606c536
-                    $href = $node->getAttribute('href');
-                    $version = parse_url($href, PHP_URL_HOST);
-                    $changeset = parse_url($href, PHP_URL_PATH);
-                    assert(! isset($this->changesets[$version]));
-                    $this->changesets[$version] = substr($changeset, 1);
-                }
+            $this->loadChangesetsFromUrl(self::CHANGESET_URL);
+        }
+    }
+
+    private function loadChangesetsFromUrl(string $url): void {
+        if ($xpath = Storage::loadExternalXPath($url, Seconds::DAY)) {
+            foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
+                // unityhub://2019.4.17f1/667c8606c536
+                $href = $node->getAttribute('href');
+                $version = parse_url($href, PHP_URL_HOST);
+                $changeset = parse_url($href, PHP_URL_PATH);
+
+                $this->changesets[$version] = substr($changeset, 1);
             }
         }
     }
