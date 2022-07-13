@@ -128,9 +128,10 @@ class UnityProject {
     }
 
     private function createProcessArguments(array $arguments): array {
-        array_unshift($arguments, '-projectPath');
-        array_unshift($arguments, $this->info->path);
-        return $arguments;
+        return array_merge([
+            '-projectPath',
+            $this->info->path
+        ], $arguments);
     }
 
     public function ensureEditorIsInstalled(): bool {
