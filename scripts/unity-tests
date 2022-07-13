@@ -33,6 +33,7 @@ UnityHub::setLoggingEnabled(true);
 
 $testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/tests-junit');
 foreach (UnityProjectInfo::findAll($workspace) as $project) {
+    $name = FileSystem::filenameSanitize($project->settings['productName']);
     $reportDirectory = $workspace . DIRECTORY_SEPARATOR . 'test-reports';
 
     FileSystem::removeDir($reportDirectory, true);
@@ -41,7 +42,7 @@ foreach (UnityProjectInfo::findAll($workspace) as $project) {
     }
 
     foreach ($modes as $mode) {
-        $reportFile = "{$project->settings['productName']}.{$mode}.xml";
+        $reportFile = "{$name}.{$mode}.xml";
         $testsArgs = FarahUrlArguments::createFromValueList([
             'workspace' => $project->path,
             'mode' => $mode

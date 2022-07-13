@@ -5,6 +5,7 @@ namespace Slothsoft\Unity;
 use Slothsoft\Core\DOMHelper;
 use DOMDocument;
 use Generator;
+use Slothsoft\Core\FileSystem;
 
 class UnityProject {
 
@@ -101,8 +102,10 @@ class UnityProject {
         return $doc;
     }
 
-    public function build(string $buildFile): DOMDocument {
+    public function build(string $buildPath): DOMDocument {
         $this->editor->installModules('windows', 'windows-mono', 'windows-il2cpp');
+
+        $buildFile = $buildPath . DIRECTORY_SEPARATOR . FileSystem::filenameSanitize($this->getSetting('productName')) . '.exe';
 
         $result = $this->execute([
             '-buildWindows64Player',

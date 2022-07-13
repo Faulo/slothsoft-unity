@@ -2,17 +2,18 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets;
 
-use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromDocumentDelegate;
-use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromElementDelegate;
+use Psr\Http\Message\StreamInterface;
+use Slothsoft\Core\IO\Writable\Delegates\StreamWriterFromStreamDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Farah\Module\Asset\AssetInterface;
 use Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface;
 use Slothsoft\Farah\Module\Executable\ExecutableStrategies;
-use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\DOMWriterResultBuilder;
+use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ChunkWriterResultBuilder;
 use Slothsoft\Unity\UnityHub;
-use DOMDocument;
-use DOMElement;
 use Slothsoft\Unity\UnityProject;
+use Slothsoft\Unity\ZipFileStream;
+use InvalidArgumentException;
+use Slothsoft\Core\IO\Writable\Adapter\ChunkWriterFromStreamWriter;
 
 class ProjectBuildBuilder implements ExecutableBuilderStrategyInterface {
 
@@ -22,12 +23,8 @@ class ProjectBuildBuilder implements ExecutableBuilderStrategyInterface {
     /** @var UnityProject */
     private $project;
 
-    /** @var string */
-    private $path;
-
     private function parseArguments(FarahUrlArguments $args): bool {
         $workspace = $args->get('workspace');
-        $this->path = $args->get('path');
 
         if (! is_dir($workspace)) {
             $this->message = "Workspace '$workspace' is not a directory!";
@@ -35,11 +32,6 @@ class ProjectBuildBuilder implements ExecutableBuilderStrategyInterface {
         }
 
         $workspace = realpath($workspace);
-
-        if (! $this->path) {
-            $this->message = "Path must not be empty!";
-            return false;
-        }
 
         $hub = UnityHub::getInstance();
 
@@ -69,23 +61,25 @@ class ProjectBuildBuilder implements ExecutableBuilderStrategyInterface {
     }
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
-        if ($this->parseArguments($args)) {
-            $delegate = function (): DOMDocument {
-                return $this->project->build($this->path);
-            };
-
-            $writer = new DOMWriterFromDocumentDelegate($delegate);
-        } else {
-            $delegate = function (DOMDocument $document): DOMElement {
-                $node = $document->createElement('error');
-                $node->textContent = $this->message;
-                return $node;
-            };
-
-            $writer = new DOMWriterFromElementDelegate($delegate);
+        if (! $this->parseArguments($args)) {
+            throw new InvalidArgumentException($this->message);
         }
 
-        $resultBuilder = new DOMWriterResultBuilder($writer, 'result.xml');
+        $delegate = function (): StreamInterface {
+            $path = temp_dir(__NAMESPACE__);
+
+            $this->project->build($path);
+
+            $zip = new ZipFileStream();
+
+            $zip->addDirRecursive($path);
+
+            return $zip->outputAsStream();
+        };
+
+        $writer = new ChunkWriterFromStreamWriter(new StreamWriterFromStreamDelegate($delegate));
+
+        $resultBuilder = new ChunkWriterResultBuilder($writer, 'build.zip', false);
 
         return new ExecutableStrategies($resultBuilder);
     }
