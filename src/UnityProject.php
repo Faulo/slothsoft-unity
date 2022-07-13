@@ -114,6 +114,7 @@ class UnityProject {
         $buildFile = $buildPath . DIRECTORY_SEPARATOR . $buildName . '.exe';
 
         $result = $this->execute([
+            '-quit',
             '-buildWindows64Player',
             $buildFile
         ]);

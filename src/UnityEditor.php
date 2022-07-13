@@ -29,7 +29,9 @@ class UnityEditor {
         if (! $this->isInstalled()) {
             return false;
         }
-        $log = $this->execute([]);
+        $log = $this->execute([
+            '-quit'
+        ]);
         return strpos($log, self::LICENSE_SUCCESS) !== false;
     }
 
@@ -65,6 +67,7 @@ class UnityEditor {
     public function license(): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
             $this->execute([
+                '-quit',
                 '-manualLicenseFile',
                 $licenseFile
             ]);
@@ -74,6 +77,7 @@ class UnityEditor {
         }
 
         $log = $this->execute([
+            '-quit',
             '-createManualActivationFile'
         ]);
         $position = strpos($log, self::LICENSE_CREATED);
@@ -109,7 +113,6 @@ class UnityEditor {
     private function createProcess(array $arguments): Process {
         $arguments = array_merge([
             $this->executable,
-            '-quit',
             '-batchmode',
             '-nographics',
             '-ignorecompilererrors',
