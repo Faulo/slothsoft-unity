@@ -100,7 +100,7 @@ class UnityEditor {
 
         $process = $this->createProcess($arguments);
 
-        $runner = new ProcessRunner($process, self::getLoggingEnabled());
+        $runner = new ProcessRunner($process, UnityHub::getLoggingEnabled());
 
         return $runner;
     }
