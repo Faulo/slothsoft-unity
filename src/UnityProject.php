@@ -102,15 +102,25 @@ class UnityProject {
         return $doc;
     }
 
+    const BUILD_FOLDERS = [
+        '_BurstDebugInformation_DoNotShip',
+        '_BackUpThisFolder_ButDontShipItWithYourGame'
+    ];
+
     public function build(string $buildPath): DOMDocument {
         $this->editor->installModules('windows', 'windows-mono', 'windows-il2cpp');
 
-        $buildFile = $buildPath . DIRECTORY_SEPARATOR . FileSystem::filenameSanitize($this->getSetting('productName')) . '.exe';
+        $buildName = FileSystem::filenameSanitize($this->getSetting('productName'));
+        $buildFile = $buildPath . DIRECTORY_SEPARATOR . $buildName . '.exe';
 
         $result = $this->execute([
             '-buildWindows64Player',
             $buildFile
         ]);
+
+        foreach (self::BUILD_FOLDERS as $folder) {
+            FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . $buildName . $folder);
+        }
 
         $doc = new DOMDocument();
         $node = $doc->createElement('result');
