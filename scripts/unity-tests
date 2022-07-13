@@ -32,15 +32,16 @@ $modes = $args;
 UnityHub::setLoggingEnabled(true);
 
 $testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/tests-junit');
+
+$reportDirectory = $workspace . DIRECTORY_SEPARATOR . 'test-reports';
+
+FileSystem::removeDir($reportDirectory, true);
+if (! is_dir($reportDirectory)) {
+    mkdir($reportDirectory, 0777, true);
+}
+
 foreach (UnityProjectInfo::findAll($workspace) as $project) {
     $name = FileSystem::filenameSanitize($project->settings['productName']);
-    $reportDirectory = $workspace . DIRECTORY_SEPARATOR . 'test-reports';
-
-    FileSystem::removeDir($reportDirectory, true);
-    if (! is_dir($reportDirectory)) {
-        mkdir($reportDirectory, 0777, true);
-    }
-
     foreach ($modes as $mode) {
         $reportFile = "{$name}.{$mode}.xml";
         $testsArgs = FarahUrlArguments::createFromValueList([

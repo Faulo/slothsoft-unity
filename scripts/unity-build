@@ -30,16 +30,16 @@ $workspace = array_shift($args);
 
 UnityHub::setLoggingEnabled(true);
 
+$buildDirectory = $workspace . DIRECTORY_SEPARATOR . 'builds';
+
+FileSystem::removeDir($buildDirectory, true);
+if (! is_dir($buildDirectory)) {
+    mkdir($buildDirectory, 0777, true);
+}
+
 $testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/build');
 foreach (UnityProjectInfo::findAll($workspace) as $project) {
     $name = FileSystem::filenameSanitize($project->settings['productName']);
-    $buildDirectory = $workspace . DIRECTORY_SEPARATOR . 'builds';
-
-    FileSystem::removeDir($buildDirectory, true);
-    if (! is_dir($buildDirectory)) {
-        mkdir($buildDirectory, 0777, true);
-    }
-
     $buildFile = "{$name}.zip";
     $testsArgs = FarahUrlArguments::createFromValueList([
         'workspace' => $project->path,
