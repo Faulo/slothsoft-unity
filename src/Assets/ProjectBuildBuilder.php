@@ -67,20 +67,20 @@ class ProjectBuildBuilder implements ExecutableBuilderStrategyInterface {
         if ($this->parseArguments($args)) {
             $delegate = function (): StreamInterface {
                 $path = temp_dir(__NAMESPACE__);
-                
+
                 $this->project->build($path);
-                
+
                 $zip = new ZipFileStream();
-                
+
                 $zip->addDirRecursive($path);
-                
+
                 return $zip->outputAsStream();
             };
-            
+
             $writer = new ChunkWriterFromStreamWriter(new StreamWriterFromStreamDelegate($delegate));
-            
+
             $resultBuilder = new ChunkWriterResultBuilder($writer, 'build.zip', false);
-            
+
             return new ExecutableStrategies($resultBuilder);
         } else {
             $delegate = function (DOMDocument $document): DOMElement {
@@ -88,11 +88,11 @@ class ProjectBuildBuilder implements ExecutableBuilderStrategyInterface {
                 $node->textContent = $this->message;
                 return $node;
             };
-            
+
             $writer = new DOMWriterFromElementDelegate($delegate);
-            
+
             $resultBuilder = new DOMWriterResultBuilder($writer, 'result.xml');
-            
+
             return new ExecutableStrategies($resultBuilder);
         }
     }

@@ -4,9 +4,8 @@ namespace Slothsoft\Unity;
 
 use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
-use Slothsoft\Core\Storage;
-use Slothsoft\Core\Calendar\Seconds;
 use Slothsoft\Core\Configuration\ConfigurationField;
+use Slothsoft\Farah\Daemon\DaemonClient;
 use Generator;
 
 class UnityHub {
@@ -252,10 +251,18 @@ class UnityHub {
 
         if (strpos($version, 'b') !== false) {
             $this->loadChangesetsFromUrl('https://unity3d.com/unity/beta/' . $version);
+
+            if (isset($this->changesets[$version])) {
+                return $this->changesets[$version];
+            }
         }
 
         if (strpos($version, 'a') !== false) {
             $this->loadChangesetsFromUrl('https://unity3d.com/unity/alpha/' . $version);
+
+            if (isset($this->changesets[$version])) {
+                return $this->changesets[$version];
+            }
         }
 
         throw new \LogicException("Failed to determine changeset ID for Unity version '{$version}'!");
@@ -300,7 +307,7 @@ class UnityHub {
         return FileSystem::scanDir($directory, $options);
     }
 
-    const CHANGESET_URL = 'https://unity3d.com/get-unity/download/archive';
+    const CHANGESET_URL = 'http://unity3d.com/get-unity/download/archive';
 
     private function loadChangesets(): void {
         if ($this->changesets === null) {
@@ -310,7 +317,8 @@ class UnityHub {
     }
 
     private function loadChangesetsFromUrl(string $url): void {
-        if ($xpath = Storage::loadExternalXPath($url, Seconds::DAY)) {
+        if ($document = @DOMHelper::loadDocument($url, true)) {
+            $xpath = DOMHelper::loadXPath($document);
             foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
                 // unityhub://2019.4.17f1/667c8606c536
                 $href = $node->getAttribute('href');
