@@ -26,10 +26,7 @@ class HubInstallBuilder implements ExecutableBuilderStrategyInterface {
 
         if ($version === '') {
             // create editor index
-            $generator = $hub->executeStream([
-                'editors',
-                '-r'
-            ]);
+            $generator = $hub->executeStream('editors', '-r');
             $writer = new ChunkWriterFromGenerator($generator);
         } else {
             // actually install editor+modules

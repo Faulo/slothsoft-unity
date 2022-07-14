@@ -19,9 +19,7 @@ class HubHelpBuilder implements ExecutableBuilderStrategyInterface {
             return new ExecutableStrategies(new NullResultBuilder());
         }
 
-        $generator = $hub->executeStream([
-            'help'
-        ]);
+        $generator = $hub->executeStream('help');
         $writer = new ChunkWriterFromGenerator($generator);
         $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt", false);
         return new ExecutableStrategies($resultBuilder);

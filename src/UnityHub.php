@@ -137,10 +137,7 @@ class UnityHub {
     }
 
     private function loadInstalledEditors(): iterable {
-        $editorPaths = $this->execute([
-            'editors',
-            '--installed'
-        ]);
+        $editorPaths = $this->execute('editors', '--installed');
         if (strlen($editorPaths)) {
             foreach (explode(PHP_EOL, $editorPaths) as $line) {
                 $line = explode(', installed at', $line, 2);
@@ -159,10 +156,7 @@ class UnityHub {
 
     private function loadEditorPath(): void {
         if ($this->editorPath === '') {
-            if ($path = $this->execute([
-                'install-path',
-                '--get'
-            ])) {
+            if ($path = $this->execute('install-path', '--get')) {
                 if ($path = realpath($path)) {
                     $this->editorPath = $path;
                 }
@@ -180,7 +174,7 @@ class UnityHub {
 
     public function installEditor(UnityEditor $editor, string ...$modules): void {
         $arguments = $this->createEditorInstallation($editor->version, $modules);
-        $this->execute($arguments);
+        $this->execute(...$arguments);
 
         foreach ($this->loadInstalledEditors() as $version => $path) {
             if ($version === $editor->version) {
@@ -192,7 +186,7 @@ class UnityHub {
 
     public function installEditorModule(UnityEditor $editor, string ...$modules): void {
         $arguments = $this->createModuleInstallation($editor->version, $modules);
-        $this->execute($arguments);
+        $this->execute(...$arguments);
     }
 
     public function findLicenses(string $editorVersion): iterable {
@@ -284,11 +278,11 @@ class UnityHub {
         return $args;
     }
 
-    public function execute(array $arguments): string {
+    public function execute(string ...$arguments): string {
         return $this->createProcessRunner($arguments)->toString();
     }
 
-    public function executeStream(array $arguments): Generator {
+    public function executeStream(string ...$arguments): Generator {
         return $this->createProcessRunner($arguments)->toGenerator();
     }
 

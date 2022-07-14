@@ -25,9 +25,7 @@ class UnityHubTest extends TestCase {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return;
         }
-        $result = $hub->execute([
-            'help'
-        ]);
+        $result = $hub->execute('help');
         $this->assertStringContainsString('editors', $result);
     }
 
@@ -39,10 +37,7 @@ class UnityHubTest extends TestCase {
             return;
         }
 
-        $result = $hub->execute([
-            'install-path',
-            '--get'
-        ]);
+        $result = $hub->execute('install-path', '--get');
 
         $this->assertNotEquals('', $result);
         $this->assertDirectoryExists($result);

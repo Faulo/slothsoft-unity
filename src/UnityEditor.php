@@ -29,9 +29,7 @@ class UnityEditor {
         if (! $this->isInstalled()) {
             return false;
         }
-        $log = $this->execute([
-            '-quit'
-        ]);
+        $log = $this->execute('-quit');
         return strpos($log, self::LICENSE_SUCCESS) !== false;
     }
 
@@ -66,20 +64,13 @@ class UnityEditor {
 
     public function license(): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
-            $this->execute([
-                '-quit',
-                '-manualLicenseFile',
-                $licenseFile
-            ]);
+            $this->execute('-quit', '-manualLicenseFile', $licenseFile);
             if ($this->isLicensed()) {
                 return true;
             }
         }
 
-        $log = $this->execute([
-            '-quit',
-            '-createManualActivationFile'
-        ]);
+        $log = $this->execute('-quit', '-createManualActivationFile');
         $position = strpos($log, self::LICENSE_CREATED);
         if ($position !== false) {
             $log = explode("\n", substr($log, $position + strlen(self::LICENSE_CREATED)), 2);
@@ -92,11 +83,11 @@ class UnityEditor {
         return false;
     }
 
-    public function execute(array $arguments): string {
+    public function execute(string ...$arguments): string {
         return $this->createProcessRunner($arguments)->toString();
     }
 
-    public function executeStream(array $arguments): Generator {
+    public function executeStream(string ...$arguments): Generator {
         return $this->createProcessRunner($arguments)->toGenerator();
     }
 
