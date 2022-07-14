@@ -15,16 +15,9 @@ class UnityProject {
     /** @var UnityEditor */
     private UnityEditor $editor;
 
-    /** @var array */
-    private array $executeParams;
-
     public function __construct(UnityProjectInfo $info, UnityEditor $editor) {
         $this->info = $info;
         $this->editor = $editor;
-        $this->executeParams = [
-            '-projectPath',
-            $this->info->path
-        ];
     }
 
     public function __toString(): string {
@@ -52,10 +45,6 @@ class UnityProject {
                 yield $file;
             }
         }
-    }
-
-    public function executeMethod(string ...$args): string {
-        return $this->execute('-quit', '-executeMethod', ...$args);
     }
 
     public function runTests(string ...$testPlatforms): DOMDocument {
@@ -122,14 +111,16 @@ class UnityProject {
         return $doc;
     }
 
-    private const EDITOR_TIMEOUT = 3600;
+    public function executeMethod(string ...$args): string {
+        return $this->execute('-quit', '-executeMethod', ...$args);
+    }
 
     public function execute(string ...$arguments): string {
-        return $this->editor->execute(...$this->executeParams, ...$arguments);
+        return $this->editor->execute('-projectPath', $this->info->path, ...$arguments);
     }
 
     public function executeStream(string ...$arguments): Generator {
-        return $this->editor->executeStream(...$this->executeParams, ...$arguments);
+        return $this->editor->executeStream('-projectPath', $this->info->path, ...$arguments);
     }
 
     public function ensureEditorIsInstalled(): bool {
