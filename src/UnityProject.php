@@ -15,9 +15,16 @@ class UnityProject {
     /** @var UnityEditor */
     private UnityEditor $editor;
 
+    /** @var array */
+    private array $executeParams;
+
     public function __construct(UnityProjectInfo $info, UnityEditor $editor) {
         $this->info = $info;
         $this->editor = $editor;
+        $this->executeParams = [
+            '-projectPath',
+            $this->info->path
+        ];
     }
 
     public function __toString(): string {
@@ -48,10 +55,7 @@ class UnityProject {
     }
 
     public function executeMethod(string ...$args): string {
-        array_unshift($args, '-executeMethod');
-        array_unshift($args, '-quit');
-
-        return $this->execute(...$args);
+        return $this->execute('-quit', '-executeMethod', ...$args);
     }
 
     public function runTests(string ...$testPlatforms): DOMDocument {
@@ -70,13 +74,7 @@ class UnityProject {
         foreach ($testPlatforms as $testPlatform) {
             $resultsFile = temp_file(__CLASS__);
 
-            $this->execute([
-                '-runTests',
-                '-testResults',
-                $resultsFile,
-                '-testPlatform',
-                $testPlatform
-            ]);
+            $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
 
             if (is_file($resultsFile)) {
                 $resultsDoc = DOMHelper::loadDocument($resultsFile);
@@ -110,11 +108,7 @@ class UnityProject {
         $buildName = FileSystem::filenameSanitize($this->getSetting('productName'));
         $buildFile = $buildPath . DIRECTORY_SEPARATOR . $buildName . '.exe';
 
-        $result = $this->execute([
-            '-quit',
-            '-buildWindows64Player',
-            $buildFile
-        ]);
+        $result = $this->execute('-quit', '-buildWindows64Player', $buildFile);
 
         foreach (self::BUILD_FOLDERS as $folder) {
             FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . $buildName . $folder);
@@ -130,19 +124,12 @@ class UnityProject {
 
     private const EDITOR_TIMEOUT = 3600;
 
-    public function execute(array $arguments): string {
-        return $this->editor->execute($this->createProcessArguments($arguments));
+    public function execute(string ...$arguments): string {
+        return $this->editor->execute(...$this->executeParams, ...$arguments);
     }
 
-    public function executeStream(array $arguments): Generator {
-        return $this->editor->executeStream($this->createProcessArguments($arguments));
-    }
-
-    private function createProcessArguments(array $arguments): array {
-        return array_merge([
-            '-projectPath',
-            $this->info->path
-        ], $arguments);
+    public function executeStream(string ...$arguments): Generator {
+        return $this->editor->executeStream(...$this->executeParams, ...$arguments);
     }
 
     public function ensureEditorIsInstalled(): bool {
