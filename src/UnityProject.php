@@ -47,14 +47,11 @@ class UnityProject {
         }
     }
 
-    public function executeMethod(string ...$args): int {
+    public function executeMethod(string ...$args): string {
         array_unshift($args, '-executeMethod');
         array_unshift($args, '-quit');
 
-        $process = $this->createEditorProcess(...$args);
-        $process->run();
-        $process->wait();
-        return $process->getExitCode();
+        return $this->execute(...$args);
     }
 
     public function runTests(string ...$testPlatforms): DOMDocument {
