@@ -11,7 +11,7 @@ $_SERVER['argc'] --;
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
-if ($_SERVER['argc'] !== 1) {
+if ($_SERVER['argc'] < 2) {
     echo <<<'EOT'
     Run a specific method inside a Unity project.
         
