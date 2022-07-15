@@ -28,12 +28,18 @@ class UnityProjectInfo {
                 return $file->isDir() and $file->getBasename() !== '..';
             });
             foreach ($iterator as $file) {
-                $path = $file->getRealPath();
-                if (is_file($path . self::FILE_VERSION) and is_file($path . self::FILE_SETTINGS) and is_file($path . self::FILE_PACKAGES)) {
-                    yield new UnityProjectInfo($file->getRealPath());
+                if ($project = self::create($file->getRealPath())) {
+                    yield $project;
                 }
             }
         }
+    }
+
+    public static function create(string $directory): ?UnityProjectInfo {
+        if (is_dir($directory) and is_file($directory . self::FILE_VERSION) and is_file($directory . self::FILE_SETTINGS) and is_file($directory . self::FILE_PACKAGES)) {
+            return new UnityProjectInfo($directory);
+        }
+        return null;
     }
 
     /** @var string */
