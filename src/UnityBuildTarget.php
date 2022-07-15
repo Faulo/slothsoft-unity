@@ -10,20 +10,22 @@ class UnityBuildTarget {
     public const LINUX = 'linux';
 
     public const MAC_OSX = 'osx';
-    
+
     public static function getEditoModules(string $target): array {
         switch (strtolower($target)) {
             case self::WINDOWS:
                 return [
-                'windows-mono',
-                    ];
+                    'windows',
+                    'windows-mono'
+                ];
             case self::LINUX:
                 return [
-                'linux-mono',
-                    ];
+                    'linux-mono'
+                ];
             case self::MAC_OSX:
                 return [
-                    ];
+                    'mac-il2cpp'
+                ];
             default:
                 throw new InvalidArgumentException($target);
         }
