@@ -9,7 +9,7 @@ class UnityBuildTarget {
 
     public const LINUX = 'linux';
 
-    public const MAC_OSX = 'osx';
+    public const MAC_OSX = 'mac_os';
 
     public static function getEditoModules(string $target): array {
         switch (strtolower($target)) {
@@ -20,10 +20,12 @@ class UnityBuildTarget {
                 ];
             case self::LINUX:
                 return [
-                    'linux-mono'
+                    'linux-mono',
+                    'linux-il2cpp'
                 ];
             case self::MAC_OSX:
                 return [
+                    'mac-mono',
                     'mac-il2cpp'
                 ];
             default:
