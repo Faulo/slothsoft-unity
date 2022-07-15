@@ -28,8 +28,6 @@ $args = $_SERVER['argv'];
 
 $workspace = array_shift($args);
 
-UnityHub::setLoggingEnabled(true);
-
 $buildDirectory = $workspace . DIRECTORY_SEPARATOR . 'builds';
 
 FileSystem::removeDir($buildDirectory, true);

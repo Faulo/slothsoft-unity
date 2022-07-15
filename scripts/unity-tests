@@ -29,8 +29,6 @@ $args = $_SERVER['argv'];
 $workspace = array_shift($args);
 $modes = $args;
 
-UnityHub::setLoggingEnabled(true);
-
 $testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/tests-junit');
 
 $reportDirectory = $workspace . DIRECTORY_SEPARATOR . 'test-reports';
