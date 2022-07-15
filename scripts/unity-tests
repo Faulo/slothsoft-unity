@@ -29,15 +29,13 @@ $modes = $args;
 
 $project = UnityProjectInfo::create($workspace);
 
-if (!$project) {
+if (! $project) {
     throw new InvalidArgumentException("Failed to find a Unity project at '$workspace'!");
 }
 
-$testsArgs = FarahUrlArguments::createFromValueList([
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/tests-junit', FarahUrlArguments::createFromValueList([
     'workspace' => $project->path,
     'modes' => $modes
-]);
-$testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/tests-junit')
-    ->withQueryArguments($testsArgs);
+]));
 
-readfile((string)$testsUrl);
+readfile((string) $url);

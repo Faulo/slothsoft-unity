@@ -25,13 +25,18 @@ if ($_SERVER['argc'] < 2) {
 $args = $_SERVER['argv'];
 
 $workspace = array_shift($args);
+$method = array_shift($args);
 
-$testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/method');
-foreach (UnityProjectInfo::findAll($workspace) as $project) {
-    $testsArgs = FarahUrlArguments::createFromValueList([
-        'workspace' => $project->path,
-        'args' => $args
-    ]);
-    $url = $testsUrl->withQueryArguments($testsArgs);
-    readfile((string) $url);
+$project = UnityProjectInfo::create($workspace);
+
+if (! $project) {
+    throw new InvalidArgumentException("Failed to find a Unity project at '$workspace'!");
 }
+
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/method', FarahUrlArguments::createFromValueList([
+    'workspace' => $project->path,
+    'method' => $method,
+    'args' => $args
+]));
+
+readfile((string) $url);

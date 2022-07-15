@@ -111,8 +111,8 @@ class UnityProject {
         return $doc;
     }
 
-    public function executeMethod(string ...$args): string {
-        return $this->execute('-quit', '-executeMethod', ...$args);
+    public function executeMethod(string $method, array $args): string {
+        return $this->execute('-quit', '-executeMethod', $method, ...$args);
     }
 
     public function execute(string ...$arguments): string {

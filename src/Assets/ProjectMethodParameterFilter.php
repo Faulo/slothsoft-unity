@@ -11,6 +11,7 @@ class ProjectMethodParameterFilter extends AbstractMapParameterFilter {
     protected function createValueSanitizers(): array {
         return [
             'workspace' => new StringSanitizer(''),
+            'method' => new StringSanitizer(''),
             'args' => new ArraySanitizer()
         ];
     }

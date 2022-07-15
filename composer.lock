@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0727efc43a1fd3b256f25f4fec49f282",
+    "content-hash": "6a6468a5354c36c13bfc65c71ad16e5d",
     "packages": [
         {
             "name": "guzzlehttp/psr7",
@@ -1386,16 +1386,16 @@
         },
         {
             "name": "slothsoft/farah",
-            "version": "1.8.0",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-farah.git",
-                "reference": "98d7f287362fba6d59427e77b4ff994d12c8bc11"
+                "reference": "2b7472673aab6aa44a64e2229cbda4124de1b197"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/98d7f287362fba6d59427e77b4ff994d12c8bc11",
-                "reference": "98d7f287362fba6d59427e77b4ff994d12c8bc11",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-farah/zipball/2b7472673aab6aa44a64e2229cbda4124de1b197",
+                "reference": "2b7472673aab6aa44a64e2229cbda4124de1b197",
                 "shasum": ""
             },
             "require": {
@@ -1427,7 +1427,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "1.8.x-dev"
+                    "dev-develop": "1.9.x-dev"
                 }
             },
             "autoload": {
@@ -1457,9 +1457,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-farah/issues",
-                "source": "https://github.com/Faulo/slothsoft-farah/tree/1.8.0"
+                "source": "https://github.com/Faulo/slothsoft-farah/tree/1.9.0"
             },
-            "time": "2022-07-11T13:18:46+00:00"
+            "time": "2022-07-15T11:15:03+00:00"
         },
         {
             "name": "slothsoft/w3c",

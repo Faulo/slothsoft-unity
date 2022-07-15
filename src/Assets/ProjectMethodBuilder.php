@@ -21,15 +21,24 @@ class ProjectMethodBuilder implements ExecutableBuilderStrategyInterface {
     /** @var UnityProject */
     private UnityProject $project;
 
+    /** @var string */
+    private string $method;
+
     /** @var array */
     private array $arguments;
 
     private function parseArguments(FarahUrlArguments $args): bool {
         $workspace = $args->get('workspace');
+        $this->method = $args->get('method');
         $this->arguments = $args->get('args');
 
         if (! is_dir($workspace)) {
             $this->message = "Workspace '$workspace' is not a directory!";
+            return false;
+        }
+
+        if ($this->method === '') {
+            $this->message = "Missing parameter 'method'!";
             return false;
         }
 
@@ -66,7 +75,7 @@ class ProjectMethodBuilder implements ExecutableBuilderStrategyInterface {
         if ($this->parseArguments($args)) {
             $delegate = function (DOMDocument $document): DOMElement {
                 $node = $document->createElement('result');
-                $node->textContent = $this->project->executeMethod(...$this->arguments);
+                $node->textContent = $this->project->executeMethod($this->method, $this->arguments);
                 return $node;
             };
         } else {
