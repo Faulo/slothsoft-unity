@@ -22,12 +22,12 @@ class ProjectTestsBuilder implements ExecutableBuilderStrategyInterface {
     /** @var UnityProject */
     private UnityProject $project;
 
-    /** @var string */
-    private string $mode;
+    /** @var string[] */
+    private array $modes;
 
     private function parseArguments(FarahUrlArguments $args): bool {
         $workspace = $args->get('workspace');
-        $this->mode = $args->get('mode');
+        $this->modes = $args->get('modes');
 
         if (! is_dir($workspace)) {
             $this->message = "Workspace '$workspace' is not a directory!";
@@ -36,7 +36,7 @@ class ProjectTestsBuilder implements ExecutableBuilderStrategyInterface {
 
         $workspace = realpath($workspace);
 
-        if (! $this->mode) {
+        if (! $this->modes) {
             $this->message = "Mode must not be empty!";
             return false;
         }
@@ -71,7 +71,7 @@ class ProjectTestsBuilder implements ExecutableBuilderStrategyInterface {
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         if ($this->parseArguments($args)) {
             $delegate = function (): DOMDocument {
-                return $this->project->runTests($this->mode);
+                return $this->project->runTests(...$this->modes);
             };
 
             $writer = new DOMWriterFromDocumentDelegate($delegate);

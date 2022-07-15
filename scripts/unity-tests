@@ -2,10 +2,8 @@
 <?php
 declare(strict_types = 1);
 
-use Slothsoft\Core\FileSystem;
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
-use Slothsoft\Unity\UnityHub;
 use Slothsoft\Unity\UnityProjectInfo;
 
 array_shift($_SERVER['argv']);
@@ -29,24 +27,17 @@ $args = $_SERVER['argv'];
 $workspace = array_shift($args);
 $modes = $args;
 
-$testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/tests-junit');
+$project = UnityProjectInfo::create($workspace);
 
-$reportDirectory = $workspace . DIRECTORY_SEPARATOR . 'test-reports';
-
-FileSystem::removeDir($reportDirectory, true);
-if (! is_dir($reportDirectory)) {
-    mkdir($reportDirectory, 0777, true);
+if (!$project) {
+    throw new InvalidArgumentException("Failed to find a Unity project at '$workspace'!");
 }
 
-foreach (UnityProjectInfo::findAll($workspace) as $project) {
-    $name = FileSystem::filenameSanitize($project->settings['productName']);
-    foreach ($modes as $mode) {
-        $reportFile = "{$name}.{$mode}.xml";
-        $testsArgs = FarahUrlArguments::createFromValueList([
-            'workspace' => $project->path,
-            'mode' => $mode
-        ]);
-        $url = $testsUrl->withQueryArguments($testsArgs);
-        copy((string) $url, $reportDirectory . DIRECTORY_SEPARATOR . $reportFile);
-    }
-}
+$testsArgs = FarahUrlArguments::createFromValueList([
+    'workspace' => $project->path,
+    'modes' => $modes
+]);
+$testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/tests-junit')
+    ->withQueryArguments($testsArgs);
+
+readfile((string)$testsUrl);
