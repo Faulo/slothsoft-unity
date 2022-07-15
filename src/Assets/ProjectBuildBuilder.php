@@ -21,10 +21,10 @@ use DOMElement;
 class ProjectBuildBuilder implements ExecutableBuilderStrategyInterface {
 
     /** @var string */
-    private $message;
+    private string $message;
 
     /** @var UnityProject */
-    private $project;
+    private UnityProject $project;
 
     private function parseArguments(FarahUrlArguments $args): bool {
         $workspace = $args->get('workspace');

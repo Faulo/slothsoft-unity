@@ -17,13 +17,13 @@ use Slothsoft\Unity\UnityProject;
 class ProjectTestsBuilder implements ExecutableBuilderStrategyInterface {
 
     /** @var string */
-    private $message;
+    private string $message;
 
     /** @var UnityProject */
-    private $project;
+    private UnityProject $project;
 
     /** @var string */
-    private $mode;
+    private string $mode;
 
     private function parseArguments(FarahUrlArguments $args): bool {
         $workspace = $args->get('workspace');
