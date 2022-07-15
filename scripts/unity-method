@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Unity\UnityProjectInfo;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+if ($_SERVER['argc'] !== 1) {
+    echo <<<'EOT'
+    Run a specific method inside a Unity project.
+        
+    Usage:
+    composer exec unity-method "path/to/project" "Method.To.Execute" ["additional params", ...]
+            
+    EOT;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$workspace = array_shift($args);
+
+$testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/method');
+foreach (UnityProjectInfo::findAll($workspace) as $project) {
+    $testsArgs = FarahUrlArguments::createFromValueList([
+        'workspace' => $project->path,
+        'args' => $args
+    ]);
+    $url = $testsUrl->withQueryArguments($testsArgs);
+    readfile((string) $url);
+}

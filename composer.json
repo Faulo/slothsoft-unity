@@ -47,7 +47,8 @@
 		"scripts/unity-daemon",
 		"scripts/unity-client",
 		"scripts/unity-build",
-		"scripts/unity-tests"
+		"scripts/unity-tests",
+		"scripts/unity-method"
 	],
 	"config" : {
 		"process-timeout" : 0
