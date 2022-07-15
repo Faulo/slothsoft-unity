@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
-use Slothsoft\Unity\UnityProjectInfo;
 
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
@@ -27,14 +26,8 @@ $args = $_SERVER['argv'];
 $workspace = array_shift($args);
 $modes = $args;
 
-$project = UnityProjectInfo::create($workspace);
-
-if (! $project) {
-    throw new InvalidArgumentException("Failed to find a Unity project at '$workspace'!");
-}
-
 $url = FarahUrl::createFromComponents('slothsoft@unity', '/project/tests-junit', FarahUrlArguments::createFromValueList([
-    'workspace' => $project->path,
+    'workspace' => $workspace,
     'modes' => $modes
 ]));
 

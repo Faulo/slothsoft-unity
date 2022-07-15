@@ -2,23 +2,20 @@
 <?php
 declare(strict_types = 1);
 
-use Slothsoft\Core\FileSystem;
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
-use Slothsoft\Unity\UnityHub;
-use Slothsoft\Unity\UnityProjectInfo;
 
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
-if ($_SERVER['argc'] !== 1) {
+if ($_SERVER['argc'] < 1) {
     echo <<<'EOT'
     Run all tests inside a Unity project.
         
     Usage:
-    composer exec unity-build "path/to/project"
+    composer exec unity-build "path/to/project" ["path/to/build"]
             
     EOT;
     return;
@@ -27,22 +24,13 @@ if ($_SERVER['argc'] !== 1) {
 $args = $_SERVER['argv'];
 
 $workspace = array_shift($args);
+$target = $args[0] ?? 'windows';
+$path = $args[1] ?? $workspace . DIRECTORY_SEPARATOR . 'build';
 
-$buildDirectory = $workspace . DIRECTORY_SEPARATOR . 'builds';
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/build', FarahUrlArguments::createFromValueList([
+    'workspace' => $workspace,
+    'target' => $target,
+    'path' => $path
+]));
 
-FileSystem::removeDir($buildDirectory, true);
-if (! is_dir($buildDirectory)) {
-    mkdir($buildDirectory, 0777, true);
-}
-
-$testsUrl = FarahUrl::createFromReference('farah://slothsoft@unity/project/build');
-foreach (UnityProjectInfo::findAll($workspace) as $project) {
-    $name = FileSystem::filenameSanitize($project->settings['productName']);
-    $buildFile = "{$name}.zip";
-    $testsArgs = FarahUrlArguments::createFromValueList([
-        'workspace' => $project->path,
-        'path' => $buildFile
-    ]);
-    $url = $testsUrl->withQueryArguments($testsArgs);
-    copy((string) $url, $buildDirectory . DIRECTORY_SEPARATOR . $buildFile);
-}
+readfile((string) $url);

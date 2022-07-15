@@ -10,6 +10,7 @@ class ProjectBuildParameterFilter extends AbstractMapParameterFilter {
     protected function createValueSanitizers(): array {
         return [
             'workspace' => new StringSanitizer(''),
+            'target' => new StringSanitizer(''),
             'path' => new StringSanitizer('')
         ];
     }

@@ -86,21 +86,20 @@ class UnityProject {
         return $doc;
     }
 
-    const BUILD_FOLDERS = [
+    private const BUILD_FOLDERS = [
         '_BurstDebugInformation_DoNotShip',
         '_BackUpThisFolder_ButDontShipItWithYourGame'
     ];
 
-    public function build(string $buildPath): DOMDocument {
-        $this->editor->installModules('windows', 'windows-mono', 'windows-il2cpp');
+    public function build(string $target, string $buildPath): DOMDocument {
+        $this->editor->installModules(...UnityBuildTarget::getEditoModules($target));
 
-        $buildName = FileSystem::filenameSanitize($this->getSetting('productName'));
-        $buildFile = $buildPath . DIRECTORY_SEPARATOR . $buildName . '.exe';
+        $buildPath .= DIRECTORY_SEPARATOR . FileSystem::filenameSanitize($this->getSetting('productName'));
 
-        $result = $this->execute('-quit', '-buildWindows64Player', $buildFile);
+        $result = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath));
 
         foreach (self::BUILD_FOLDERS as $folder) {
-            FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . $buildName . $folder);
+            FileSystem::removeDir($buildPath . $folder);
         }
 
         $doc = new DOMDocument();
