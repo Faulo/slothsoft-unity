@@ -19,6 +19,9 @@
 			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
 			
 			
+        <custom-asset name="method"
+            executable-builder="Slothsoft\Unity\Assets\ProjectMethodBuilder"
+            parameter-filter="Slothsoft\Unity\Assets\ProjectMethodParameterFilter" />
         <custom-asset name="build"
             executable-builder="Slothsoft\Unity\Assets\ProjectBuildBuilder"
             parameter-filter="Slothsoft\Unity\Assets\ProjectBuildParameterFilter" />
