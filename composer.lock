@@ -1320,16 +1320,16 @@
         },
         {
             "name": "slothsoft/core",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-core.git",
-                "reference": "751b78411c3afbe1739d72a444e860817dc22bf4"
+                "reference": "d679f8d2ffd7642cacf9664179671523299879cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/751b78411c3afbe1739d72a444e860817dc22bf4",
-                "reference": "751b78411c3afbe1739d72a444e860817dc22bf4",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/d679f8d2ffd7642cacf9664179671523299879cb",
+                "reference": "d679f8d2ffd7642cacf9664179671523299879cb",
                 "shasum": ""
             },
             "require": {
@@ -1380,9 +1380,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-core/issues",
-                "source": "https://github.com/Faulo/slothsoft-core/tree/1.8.1"
+                "source": "https://github.com/Faulo/slothsoft-core/tree/1.8.2"
             },
-            "time": "2022-07-13T01:22:08+00:00"
+            "time": "2022-07-15T10:42:40+00:00"
         },
         {
             "name": "slothsoft/farah",
