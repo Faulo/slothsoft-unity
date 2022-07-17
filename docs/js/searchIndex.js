@@ -566,6 +566,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html#method_getProjectPath"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AgetEditorVersion\u0028\u0029",
+            "name": "getEditorVersion",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityProject.html#method_getEditorVersion"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AhasSetting\u0028\u0029",
             "name": "hasSetting",
             "summary": "",
@@ -581,11 +586,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html#method_getAssetFiles"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AexecuteMethod\u0028\u0029",
-            "name": "executeMethod",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityProject.html#method_executeMethod"
-        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003ArunTests\u0028\u0029",
             "name": "runTests",
             "summary": "",
@@ -595,6 +595,11 @@ Search.appendIndex(
             "name": "build",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html#method_build"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AexecuteMethod\u0028\u0029",
+            "name": "executeMethod",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityProject.html#method_executeMethod"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003Aexecute\u0028\u0029",
             "name": "execute",
@@ -616,11 +621,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html#method_ensureEditorIsLicensed"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003ABUILD_FOLDERS",
-            "name": "BUILD_FOLDERS",
-            "summary": "",
-            "url": "classes/Slothsoft-Unity-UnityProject.html#constant_BUILD_FOLDERS"
-        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProjectInfo",
             "name": "UnityProjectInfo",
             "summary": "",
@@ -635,6 +635,11 @@ Search.appendIndex(
             "name": "findAll",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProjectInfo.html#method_findAll"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityProjectInfo\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityProjectInfo.html#method_create"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProjectInfo\u003A\u003AFILE_VERSION",
             "name": "FILE_VERSION",
@@ -676,10 +681,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestsBuilder\u003A\u003AbuildExecutableStrategies\u0028\u0029",
-            "name": "buildExecutableStrategies",
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestsBuilder\u003A\u003AparseArguments\u0028\u0029",
+            "name": "parseArguments",
             "summary": "",
-            "url": "classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#method_buildExecutableStrategies"
+            "url": "classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#method_parseArguments"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestsBuilder\u003A\u003AcreateSuccessResult\u0028\u0029",
+            "name": "createSuccessResult",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#method_createSuccessResult"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectTestsParameterFilter",
             "name": "ProjectTestsParameterFilter",
@@ -766,10 +776,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-ProjectBuildBuilder.html"
         },                {
-            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuildBuilder\u003A\u003AbuildExecutableStrategies\u0028\u0029",
-            "name": "buildExecutableStrategies",
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuildBuilder\u003A\u003AparseArguments\u0028\u0029",
+            "name": "parseArguments",
             "summary": "",
-            "url": "classes/Slothsoft-Unity-Assets-ProjectBuildBuilder.html#method_buildExecutableStrategies"
+            "url": "classes/Slothsoft-Unity-Assets-ProjectBuildBuilder.html#method_parseArguments"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuildBuilder\u003A\u003AcreateSuccessResult\u0028\u0029",
+            "name": "createSuccessResult",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectBuildBuilder.html#method_createSuccessResult"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuildParameterFilter",
             "name": "ProjectBuildParameterFilter",
@@ -810,6 +825,96 @@ Search.appendIndex(
             "name": "outputAsStream",
             "summary": "",
             "url": "classes/Slothsoft-Unity-ZipFileStream.html#method_outputAsStream"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuilderBase",
+            "name": "ProjectBuilderBase",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuilderBase\u003A\u003AparseArguments\u0028\u0029",
+            "name": "parseArguments",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#method_parseArguments"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuilderBase\u003A\u003AbuildExecutableStrategies\u0028\u0029",
+            "name": "buildExecutableStrategies",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#method_buildExecutableStrategies"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuilderBase\u003A\u003AcreateSuccessResult\u0028\u0029",
+            "name": "createSuccessResult",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#method_createSuccessResult"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuilderBase\u003A\u003AcreateErrorResult\u0028\u0029",
+            "name": "createErrorResult",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#method_createErrorResult"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuilderBase\u003A\u003A\u0024message",
+            "name": "message",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#property_message"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectBuilderBase\u003A\u003A\u0024project",
+            "name": "project",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#property_project"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectMethodBuilder",
+            "name": "ProjectMethodBuilder",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectMethodBuilder.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectMethodBuilder\u003A\u003AparseArguments\u0028\u0029",
+            "name": "parseArguments",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectMethodBuilder.html#method_parseArguments"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectMethodBuilder\u003A\u003AcreateSuccessResult\u0028\u0029",
+            "name": "createSuccessResult",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectMethodBuilder.html#method_createSuccessResult"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectMethodParameterFilter",
+            "name": "ProjectMethodParameterFilter",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectMethodParameterFilter.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\ProjectMethodParameterFilter\u003A\u003AcreateValueSanitizers\u0028\u0029",
+            "name": "createValueSanitizers",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-ProjectMethodParameterFilter.html#method_createValueSanitizers"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityBuildTarget",
+            "name": "UnityBuildTarget",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityBuildTarget.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityBuildTarget\u003A\u003AgetEditoModules\u0028\u0029",
+            "name": "getEditoModules",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityBuildTarget.html#method_getEditoModules"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityBuildTarget\u003A\u003AgetBuildParameters\u0028\u0029",
+            "name": "getBuildParameters",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityBuildTarget.html#method_getBuildParameters"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityBuildTarget\u003A\u003AWINDOWS",
+            "name": "WINDOWS",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityBuildTarget.html#constant_WINDOWS"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityBuildTarget\u003A\u003ALINUX",
+            "name": "LINUX",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityBuildTarget.html#constant_LINUX"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityBuildTarget\u003A\u003AMAC_OSX",
+            "name": "MAC_OSX",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityBuildTarget.html#constant_MAC_OSX"
         },                {
             "fqsen": "\\",
             "name": "\\",

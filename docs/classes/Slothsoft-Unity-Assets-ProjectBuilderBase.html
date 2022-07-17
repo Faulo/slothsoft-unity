@@ -91,11 +91,8 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    ProjectTestsBuilder
+    ProjectBuilderBase
 
-        <span class="phpdocumentor-element__extends">
-        extends <a href="classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html"><abbr title="\Slothsoft\Unity\Assets\ProjectBuilderBase">ProjectBuilderBase</abbr></a>
-    </span>
     
             <div class="phpdocumentor-element__package">
             in package
@@ -104,13 +101,16 @@
                             </ul>
         </div>
     
+            <span class="phpdocumentor-element__implements">
+            implements
+                            <abbr title="\Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface">ExecutableBuilderStrategyInterface</abbr>                    </span>
     
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/ProjectTestsBuilder.php"><a href="files/src-assets-projecttestsbuilder.html"><abbr title="src/Assets/ProjectTestsBuilder.php">ProjectTestsBuilder.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/ProjectBuilderBase.php"><a href="files/src-assets-projectbuilderbase.html"><abbr title="src/Assets/ProjectBuilderBase.php">ProjectBuilderBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">11</span>
+    <span class="phpdocumentor-element-found-in__line">17</span>
 
     </aside>
 
@@ -122,6 +122,17 @@
 
 
 
+<h3 id="interfaces_class_traits">
+    Interfaces, Classes and Traits
+    <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
+</h3>
+
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -interface"><abbr title="\Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface">ExecutableBuilderStrategyInterface</abbr></dt>
+        <dd></dd>
+    
+    
+    </dl>
 
 
 <h3 id="toc">
@@ -159,14 +170,14 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#method_createSuccessResult">createSuccessResult()</a>
+    <a href="classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#method_createSuccessResult">createSuccessResult()</a>
     <span>
                         &nbsp;: <abbr title="\Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ResultBuilderStrategyInterface">ResultBuilderStrategyInterface</abbr>    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#method_parseArguments">parseArguments()</a>
+    <a href="classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#method_parseArguments">parseArguments()</a>
     <span>
                         &nbsp;: bool    </span>
 </dt>
@@ -182,7 +193,7 @@
     <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
-            <a href="classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="
@@ -253,7 +264,7 @@
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="phpdocumentor-element
@@ -344,23 +355,23 @@
         class="phpdocumentor-element
             -method
             -protected
-                                                        "
+                        -abstract                                "
 >
     <h4 class="phpdocumentor-element__name" id="method_createSuccessResult">
         createSuccessResult()
-        <a href="classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#method_createSuccessResult" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#method_createSuccessResult" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/ProjectTestsBuilder.php"><a href="files/src-assets-projecttestsbuilder.html"><abbr title="src/Assets/ProjectTestsBuilder.php">ProjectTestsBuilder.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/ProjectBuilderBase.php"><a href="files/src-assets-projectbuilderbase.html"><abbr title="src/Assets/ProjectBuilderBase.php">ProjectBuilderBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">27</span>
+    <span class="phpdocumentor-element-found-in__line">68</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-                <span class="phpdocumentor-signature__name">createSuccessResult</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ResultBuilderStrategyInterface">ResultBuilderStrategyInterface</abbr></span></code>
+    <span class="phpdocumentor-signature__abstract">abstract</span>            <span class="phpdocumentor-signature__name">createSuccessResult</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ResultBuilderStrategyInterface">ResultBuilderStrategyInterface</abbr></span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -381,12 +392,12 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_parseArguments">
         parseArguments()
-        <a href="classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#method_parseArguments" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#method_parseArguments" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/ProjectTestsBuilder.php"><a href="files/src-assets-projecttestsbuilder.html"><abbr title="src/Assets/ProjectTestsBuilder.php">ProjectTestsBuilder.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/ProjectBuilderBase.php"><a href="files/src-assets-projectbuilderbase.html"><abbr title="src/Assets/ProjectBuilderBase.php">ProjectBuilderBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">16</span>
+    <span class="phpdocumentor-element-found-in__line">25</span>
 
     </aside>
 
@@ -495,7 +506,7 @@
 </section>
             </div>
         </div>
-        <a href="classes/Slothsoft-Unity-Assets-ProjectTestsBuilder.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/Slothsoft-Unity-Assets-ProjectBuilderBase.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
