@@ -23,11 +23,11 @@ class UnityProject {
     public function __toString(): string {
         return $this->info->path;
     }
-    
+
     public function getProjectPath(): string {
         return $this->info->path;
     }
-    
+
     public function getEditorVersion(): string {
         return $this->editor->version;
     }
