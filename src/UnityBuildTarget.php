@@ -12,25 +12,53 @@ class UnityBuildTarget {
 
     public const MAC_OSX = 'mac_os';
 
-    public static function getEditoModules(string $target): array {
+    public const BACKEND_MONO = 0;
+
+    public const BACKEND_IL2CPP = 1;
+
+    public static function getEditoModules(string $target, int $backend = self::BACKEND_MONO): array {
         switch (strtolower($target)) {
             case self::WINDOWS:
-                return [
-                    'windows-mono',
-                    'windows-il2cpp'
-                ];
+                switch ($backend) {
+                    case self::BACKEND_MONO:
+                        return [
+                            'windows-mono'
+                        ];
+                    case self::BACKEND_IL2CPP:
+                        return [
+                            'windows-il2cpp'
+                        ];
+                    default:
+                        throw new InvalidArgumentException("Unkown scripting backend '$backend'");
+                }
             case self::LINUX:
-                return [
-                    'linux-mono',
-                    'linux-il2cpp'
-                ];
+                switch ($backend) {
+                    case self::BACKEND_MONO:
+                        return [
+                            'linux-mono'
+                        ];
+                    case self::BACKEND_IL2CPP:
+                        return [
+                            'linux-il2cpp'
+                        ];
+                    default:
+                        throw new InvalidArgumentException("Unkown scripting backend '$backend'");
+                }
             case self::MAC_OSX:
-                return [
-                    'mac-mono',
-                    'mac-il2cpp'
-                ];
+                switch ($backend) {
+                    case self::BACKEND_MONO:
+                        return [
+                            'mac-mono'
+                        ];
+                    case self::BACKEND_IL2CPP:
+                        return [
+                            'mac-il2cpp'
+                        ];
+                    default:
+                        throw new InvalidArgumentException("Unkown scripting backend '$backend'");
+                }
             default:
-                throw new InvalidArgumentException($target);
+                throw new InvalidArgumentException("Unkown build target '$target'");
         }
     }
 

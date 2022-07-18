@@ -32,6 +32,11 @@ class UnityProject {
         return $this->editor->version;
     }
 
+    public function getScriptingBackend(): int {
+        $backends = $this->getSetting('scriptingBackend', []);
+        return $backends['Standalone'] ?? UnityBuildTarget::BACKEND_MONO;
+    }
+
     public function hasSetting(string $key): bool {
         return isset($this->info->settings[$key]);
     }
@@ -96,7 +101,7 @@ class UnityProject {
     ];
 
     public function build(string $target, string $buildPath): DOMDocument {
-        $this->editor->installModules(...UnityBuildTarget::getEditoModules($target));
+        $this->editor->installModules(...UnityBuildTarget::getEditoModules($target, $this->getScriptingBackend()));
 
         $buildPath .= DIRECTORY_SEPARATOR . FileSystem::filenameSanitize($this->getSetting('productName'));
 
