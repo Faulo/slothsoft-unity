@@ -109,15 +109,13 @@ class UnityEditor {
             '-ignorecompilererrors',
             '-accept-apiupdate'
         ], $arguments);
-        
-        /*
+
         if (FileSystem::commandExists('xvfb-run')) {
             $arguments = array_merge([
                 'xvfb-run',
                 '-a'
             ], $arguments);
         }
-        //*/
 
         return new Process($arguments);
     }
