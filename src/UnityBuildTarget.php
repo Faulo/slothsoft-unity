@@ -21,7 +21,7 @@ class UnityBuildTarget {
             case self::WINDOWS:
                 switch ($backend) {
                     case self::BACKEND_MONO:
-                        return [
+                        return PHP_OS === 'WINNT' ? [] : [
                             'windows-mono'
                         ];
                     case self::BACKEND_IL2CPP:
