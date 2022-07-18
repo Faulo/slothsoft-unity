@@ -16,17 +16,17 @@ class UnityBuildTarget {
             case self::WINDOWS:
                 return [
                     'windows-mono',
-                    'windows-il2cpp',
+                    'windows-il2cpp'
                 ];
             case self::LINUX:
                 return [
                     'linux-mono',
-                    'linux-il2cpp',
+                    'linux-il2cpp'
                 ];
             case self::MAC_OSX:
                 return [
                     'mac-mono',
-                    'mac-il2cpp',
+                    'mac-il2cpp'
                 ];
             default:
                 throw new InvalidArgumentException($target);
