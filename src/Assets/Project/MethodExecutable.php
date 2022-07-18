@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Slothsoft\Unity\Assets;
+namespace Slothsoft\Unity\Assets\Project;
 
 use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromElementDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
@@ -9,7 +9,7 @@ use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ResultBuilderStrateg
 use DOMDocument;
 use DOMElement;
 
-class ProjectMethodBuilder extends ProjectBuilderBase {
+class MethodExecutable extends ExecutableBase {
 
     /** @var string */
     private string $method;

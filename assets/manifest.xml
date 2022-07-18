@@ -20,14 +20,14 @@
 			
 			
         <custom-asset name="method"
-            executable-builder="Slothsoft\Unity\Assets\ProjectMethodBuilder"
-            parameter-filter="Slothsoft\Unity\Assets\ProjectMethodParameterFilter" />
+            executable-builder="Slothsoft\Unity\Assets\Project\MethodExecutable"
+            parameter-filter="Slothsoft\Unity\Assets\Project\MethodParameters" />
         <custom-asset name="build"
-            executable-builder="Slothsoft\Unity\Assets\ProjectBuildBuilder"
-            parameter-filter="Slothsoft\Unity\Assets\ProjectBuildParameterFilter" />
+            executable-builder="Slothsoft\Unity\Assets\Project\BuildExecutable"
+            parameter-filter="Slothsoft\Unity\Assets\Project\BuildParameters" />
 		<custom-asset name="tests"
-			executable-builder="Slothsoft\Unity\Assets\ProjectTestsBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectTestsParameterFilter" />
+            executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable"
+            parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
 		<fragment name="tests-junit">
 			<use-template ref="/xsl/to-junit" />
 			<use-document ref="/project/tests" />

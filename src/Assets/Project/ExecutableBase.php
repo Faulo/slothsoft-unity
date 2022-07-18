@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Slothsoft\Unity\Assets;
+namespace Slothsoft\Unity\Assets\Project;
 
 use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromElementDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
@@ -14,13 +14,13 @@ use Slothsoft\Unity\UnityProject;
 use DOMDocument;
 use DOMElement;
 
-abstract class ProjectBuilderBase implements ExecutableBuilderStrategyInterface {
+abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     /** @var string */
     protected string $message;
 
     /** @var UnityProject */
-    protected UnityProject $project;
+    protected ?UnityProject $project;
 
     protected function parseArguments(FarahUrlArguments $args): bool {
         $workspace = $args->get('workspace');
