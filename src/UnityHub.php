@@ -46,7 +46,7 @@ class UnityHub {
     private static function loggingEnabled(): ConfigurationField {
         static $field;
         if ($field === null) {
-            $field = new ConfigurationField(false);
+            $field = new ConfigurationField(true);
         }
         return $field;
     }

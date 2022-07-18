@@ -108,6 +108,7 @@ class UnityProject {
         $result = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath . DIRECTORY_SEPARATOR . $buildExecutable));
 
         foreach (self::BUILD_FOLDERS as $folder) {
+            var_dump($buildPath . DIRECTORY_SEPARATOR . pathinfo($buildExecutable, PATHINFO_FILENAME) . $folder);
             FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . pathinfo($buildExecutable, PATHINFO_FILENAME) . $folder);
         }
 
