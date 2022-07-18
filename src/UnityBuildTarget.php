@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
+use Slothsoft\Core\FileSystem;
 use InvalidArgumentException;
 
 class UnityBuildTarget {
@@ -62,28 +63,42 @@ class UnityBuildTarget {
         }
     }
 
-    public static function getBuildParameters(string $target, string $buildPath): array {
+    public static function getBuildExecutable(string $target, string $productName): string {
+        $buildExecutable = FileSystem::filenameSanitize($productName);
+        switch (strtolower($target)) {
+            case self::WINDOWS:
+                return "$buildExecutable.exe";
+            case self::LINUX:
+                return $buildExecutable;
+            case self::MAC_OSX:
+                return "$buildExecutable.app";
+            default:
+                throw new InvalidArgumentException($target);
+        }
+    }
+
+    public static function getBuildParameters(string $target, string $buildExecutable): array {
         switch (strtolower($target)) {
             case self::WINDOWS:
                 return [
                     '-buildTarget',
                     'Win64',
                     '-buildWindows64Player',
-                    "$buildPath.exe"
+                    $buildExecutable
                 ];
             case self::LINUX:
                 return [
                     '-buildTarget',
                     'Linux64',
                     '-buildLinux64Player',
-                    $buildPath
+                    $buildExecutable
                 ];
             case self::MAC_OSX:
                 return [
                     '-buildTarget',
                     'OSXUniversal',
                     '-buildOSXUniversalPlayer',
-                    "$buildPath.app"
+                    $buildExecutable
                 ];
             default:
                 throw new InvalidArgumentException($target);

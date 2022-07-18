@@ -103,12 +103,12 @@ class UnityProject {
     public function build(string $target, string $buildPath): DOMDocument {
         $this->editor->installModules(...UnityBuildTarget::getEditoModules($target, $this->getScriptingBackend()));
 
-        $buildPath .= DIRECTORY_SEPARATOR . FileSystem::filenameSanitize($this->getSetting('productName'));
+        $buildExecutable = UnityBuildTarget::getBuildExecutable($target, $this->getSetting('productName'));
 
-        $result = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath));
+        $result = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath . DIRECTORY_SEPARATOR . $buildExecutable));
 
         foreach (self::BUILD_FOLDERS as $folder) {
-            FileSystem::removeDir($buildPath . $folder);
+            FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . pathinfo($buildExecutable, PATHINFO_FILENAME) . $folder);
         }
 
         $doc = new DOMDocument();
