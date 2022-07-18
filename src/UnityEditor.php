@@ -25,11 +25,11 @@ class UnityEditor {
         return is_string($this->executable) and is_file($this->executable);
     }
 
-    public function isLicensed(): bool {
+    public function isLicensed(string $projectPath): bool {
         if (! $this->isInstalled()) {
             return false;
         }
-        $log = $this->execute('-quit');
+        $log = $this->execute('-quit', '-projectPath', $projectPath);
         return strpos($log, self::LICENSE_SUCCESS) !== false;
     }
 
@@ -62,10 +62,10 @@ class UnityEditor {
         return true;
     }
 
-    public function license(): bool {
+    public function license(string $projectPath): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
             $this->execute('-quit', '-manualLicenseFile', $licenseFile);
-            if ($this->isLicensed()) {
+            if ($this->isLicensed($projectPath)) {
                 return true;
             }
         }
