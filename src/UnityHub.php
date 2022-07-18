@@ -324,8 +324,8 @@ class UnityHub {
         }
     }
 
-    public function findProject(string $projectPath): ?UnityProject {
-        if ($info = UnityProjectInfo::find($projectPath)) {
+    public function findProject(string $projectPath, bool $includeSubdirectories = false): ?UnityProject {
+        if ($info = UnityProjectInfo::find($projectPath, $includeSubdirectories)) {
             $editor = $this->getEditorByVersion($info->editorVersion);
             return new UnityProject($info, $editor);
         }

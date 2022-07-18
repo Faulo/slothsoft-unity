@@ -15,11 +15,15 @@ class UnityProjectInfo {
 
     const FILE_PACKAGES = '/Packages/packages-lock.json';
 
-    public static function find(string $directory): ?UnityProjectInfo {
-        foreach (self::findAll($directory) as $info) {
-            return $info;
+    public static function find(string $directory, bool $includeSubdirectories = false): ?UnityProjectInfo {
+        if ($includeSubdirectories) {
+            foreach (self::findAll($directory) as $info) {
+                return $info;
+            }
+            return null;
+        } else {
+            return self::create($directory);
         }
-        return null;
     }
 
     public static function findAll(string $directory): iterable {
@@ -35,7 +39,7 @@ class UnityProjectInfo {
         }
     }
 
-    public static function create(string $directory): ?UnityProjectInfo {
+    private static function create(string $directory): ?UnityProjectInfo {
         if (is_dir($directory) and is_file($directory . self::FILE_VERSION) and is_file($directory . self::FILE_SETTINGS) and is_file($directory . self::FILE_PACKAGES)) {
             return new UnityProjectInfo($directory);
         }

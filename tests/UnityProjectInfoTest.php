@@ -20,8 +20,8 @@ class UnityProjectInfoTest extends TestCase {
      *
      * @dataProvider validPathProvider
      */
-    public function testFind(string $path) {
-        $info = UnityProjectInfo::find($path);
+    public function testFind(string $path, bool $includeSubdirectories) {
+        $info = UnityProjectInfo::find($path, $includeSubdirectories);
         $this->assertNotNull($info);
         $this->assertInfoIsValid($info);
     }
@@ -30,8 +30,8 @@ class UnityProjectInfoTest extends TestCase {
      *
      * @dataProvider invalidPathProvider
      */
-    public function testNoFind(string $path) {
-        $info = UnityProjectInfo::find($path);
+    public function testNoFind(string $path, bool $includeSubdirectories) {
+        $info = UnityProjectInfo::find($path, $includeSubdirectories);
         $this->assertNull($info);
     }
 
@@ -57,19 +57,27 @@ class UnityProjectInfoTest extends TestCase {
 
     public function validPathProvider(): iterable {
         yield self::VALID_PROJECT => [
-            self::VALID_PROJECT
+            self::VALID_PROJECT,
+            false
         ];
         yield self::VALID_ROOT => [
-            self::VALID_ROOT
+            self::VALID_ROOT,
+            true
         ];
     }
 
     public function invalidPathProvider(): iterable {
+        yield self::VALID_ROOT => [
+            self::VALID_ROOT,
+            false
+        ];
         yield self::VALID_PROJECT . DIRECTORY_SEPARATOR . 'Assets' => [
-            self::VALID_PROJECT . DIRECTORY_SEPARATOR . 'Assets'
+            self::VALID_PROJECT . DIRECTORY_SEPARATOR . 'Assets',
+            true
         ];
         yield self::VALID_ROOT . DIRECTORY_SEPARATOR . 'DoesNotExist' => [
-            self::VALID_ROOT . DIRECTORY_SEPARATOR . 'DoesNotExist'
+            self::VALID_ROOT . DIRECTORY_SEPARATOR . 'DoesNotExist',
+            true
         ];
     }
 }
