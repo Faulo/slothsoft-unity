@@ -3,9 +3,10 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Slothsoft\Core\DOMHelper;
+use Slothsoft\Core\FileSystem;
 use DOMDocument;
 use Generator;
-use Slothsoft\Core\FileSystem;
+use InvalidArgumentException;
 
 class UnityProject {
 
@@ -101,6 +102,14 @@ class UnityProject {
     ];
 
     public function build(string $target, string $buildPath): DOMDocument {
+        if (! is_dir($buildPath)) {
+            mkdir($buildPath, 0777, true);
+        }
+        if (realpath($buildPath) === false) {
+            throw new InvalidArgumentException("Failed to resolve build path '$buildPath'!");
+        }
+        $buildPath = realpath($buildPath);
+
         $this->editor->installModules(...UnityBuildTarget::getEditoModules($target, $this->getScriptingBackend()));
 
         $buildExecutable = UnityBuildTarget::getBuildExecutable($target, $this->getSetting('productName'));
@@ -108,7 +117,6 @@ class UnityProject {
         $result = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath . DIRECTORY_SEPARATOR . $buildExecutable));
 
         foreach (self::BUILD_FOLDERS as $folder) {
-            var_dump($buildPath . DIRECTORY_SEPARATOR . pathinfo($buildExecutable, PATHINFO_FILENAME) . $folder);
             FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . pathinfo($buildExecutable, PATHINFO_FILENAME) . $folder);
         }
 
