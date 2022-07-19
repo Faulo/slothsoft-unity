@@ -3,7 +3,6 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Symfony\Component\Process\Process;
-use Generator;
 
 class ProcessRunner {
 
@@ -18,31 +17,20 @@ class ProcessRunner {
         $this->loggingEnabled = $loggingEnabled;
     }
 
-    public function toString(): string {
-        $result = '';
-        foreach ($this->toGenerator() as $value) {
-            $result .= $value;
-        }
-        return trim($result);
-    }
-
-    public function toGenerator(): Generator {
+    public function run(): Process {
         if ($this->loggingEnabled) {
-            echo $this->process->getCommandLine() . PHP_EOL;
+            fwrite(STDERR, $this->process->getCommandLine() . PHP_EOL);
         }
+
         $this->process->setTimeout(0);
-        $this->process->start();
-        foreach ($this->process as $type => $data) {
-            if ($this->loggingEnabled) {
-                echo $data;
-            }
-            if ($type === Process::OUT) {
-                yield $data;
-            }
-            if ($type === Process::ERR) {
+
+        $this->process->run(function (string $type, string $data): void {
+            if ($this->loggingEnabled or $type === Process::ERR) {
                 fwrite(STDERR, $data);
             }
-        }
+        });
+
+        return $this->process;
     }
 }
 

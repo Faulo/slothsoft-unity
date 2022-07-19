@@ -17,7 +17,7 @@ class HelpExecutable implements ExecutableBuilderStrategyInterface {
         $delegate = function (): Generator {
             $hub = UnityHub::getInstance();
             if ($hub->isInstalled()) {
-                yield from $hub->executeStream('help');
+                yield $hub->execute('help')->getOuput();
             } else {
                 yield 'Unity Hub is not installed!';
             }

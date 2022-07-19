@@ -10,12 +10,12 @@ $_SERVER['argc'] --;
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
-if ($_SERVER['argc'] < 3) {
+if ($_SERVER['argc'] < 1) {
     echo <<<'EOT'
     Run all tests inside a Unity project.
         
     Usage:
-    composer exec unity-tests "path/to/project" "path/to/results.xml" [EditMode|PlayMode|Platform]+
+    composer exec unity-tests "path/to/project" [EditMode|PlayMode|Platform]+
             
     EOT;
     return;
@@ -24,7 +24,6 @@ if ($_SERVER['argc'] < 3) {
 $args = $_SERVER['argv'];
 
 $workspace = array_shift($args);
-$resultsFile = array_shift($args);
 $modes = $args;
 
 $url = FarahUrl::createFromComponents('slothsoft@unity', '/project/tests-junit', FarahUrlArguments::createFromValueList([
@@ -32,13 +31,4 @@ $url = FarahUrl::createFromComponents('slothsoft@unity', '/project/tests-junit',
     'modes' => $modes
 ]));
 
-$resultsDirectory = dirname($resultsFile);
-if (! is_dir($resultsDirectory)) {
-    mkdir($resultsDirectory, 0777, true);
-}
-
-copy((string) $url, $resultsFile);
-
-if (!is_file($resultsFile)) {
-    exit(1);
-}
+readfile((string) $url);

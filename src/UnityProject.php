@@ -4,9 +4,10 @@ namespace Slothsoft\Unity;
 
 use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
+use Symfony\Component\Process\Process;
 use DOMDocument;
-use Generator;
 use InvalidArgumentException;
+use LogicException;
 
 class UnityProject {
 
@@ -75,16 +76,18 @@ class UnityProject {
 
             $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
 
-            if (is_file($resultsFile)) {
-                $resultsDoc = DOMHelper::loadDocument($resultsFile);
-                foreach ($resultsDoc->documentElement->attributes as $attr) {
-                    if (isset($attributes[$attr->name])) {
-                        $attributes[$attr->name] += (int) $attr->value;
-                    }
+            if (! is_file($resultsFile)) {
+                throw new LogicException("Failed to create test results for test mode '$testPlatform' in file '$resultsFile'.");
+            }
+
+            $resultsDoc = DOMHelper::loadDocument($resultsFile);
+            foreach ($resultsDoc->documentElement->attributes as $attr) {
+                if (isset($attributes[$attr->name])) {
+                    $attributes[$attr->name] += (int) $attr->value;
                 }
-                foreach ($resultsDoc->documentElement->childNodes as $node) {
-                    $rootNode->appendChild($doc->importNode($node, true));
-                }
+            }
+            foreach ($resultsDoc->documentElement->childNodes as $node) {
+                $rootNode->appendChild($doc->importNode($node, true));
             }
         }
 
@@ -101,7 +104,7 @@ class UnityProject {
         '_BackUpThisFolder_ButDontShipItWithYourGame'
     ];
 
-    public function build(string $target, string $buildPath): DOMDocument {
+    public function build(string $target, string $buildPath): Process {
         if (! is_dir($buildPath)) {
             mkdir($buildPath, 0777, true);
         }
@@ -109,6 +112,8 @@ class UnityProject {
             throw new InvalidArgumentException("Failed to resolve build path '$buildPath'!");
         }
         $buildPath = realpath($buildPath);
+
+        FileSystem::removeDir($buildPath, true);
 
         $this->editor->installModules(...UnityBuildTarget::getEditoModules($target, $this->getScriptingBackend()));
 
@@ -120,24 +125,15 @@ class UnityProject {
             FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . pathinfo($buildExecutable, PATHINFO_FILENAME) . $folder);
         }
 
-        $doc = new DOMDocument();
-        $node = $doc->createElement('result');
-        $node->textContent = $result;
-        $doc->appendChild($node);
-
-        return $doc;
+        return $result;
     }
 
-    public function executeMethod(string $method, array $args): string {
+    public function executeMethod(string $method, array $args): Process {
         return $this->execute('-quit', '-executeMethod', $method, ...$args);
     }
 
-    public function execute(string ...$arguments): string {
+    public function execute(string ...$arguments): Process {
         return $this->editor->execute('-projectPath', $this->info->path, ...$arguments);
-    }
-
-    public function executeStream(string ...$arguments): Generator {
-        return $this->editor->executeStream('-projectPath', $this->info->path, ...$arguments);
     }
 
     public function ensureEditorIsInstalled(): bool {
@@ -145,7 +141,7 @@ class UnityProject {
     }
 
     public function ensureEditorIsLicensed(): bool {
-        return $this->editor->isLicensed($this->info->path) or $this->editor->license($this->info->path);
+        return $this->editor->isLicensed($this->info->path) or $this->editor->license();
     }
 }
 

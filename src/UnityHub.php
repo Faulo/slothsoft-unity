@@ -6,7 +6,7 @@ use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\Configuration\ConfigurationField;
 use Slothsoft\Farah\Daemon\DaemonClient;
-use Generator;
+use Symfony\Component\Process\Process;
 
 class UnityHub {
 
@@ -137,9 +137,9 @@ class UnityHub {
     }
 
     private function loadInstalledEditors(): iterable {
-        $editorPaths = $this->execute('editors', '--installed');
+        $editorPaths = $this->execute('editors', '--installed')->getOutput();
         if (strlen($editorPaths)) {
-            foreach (explode(PHP_EOL, $editorPaths) as $line) {
+            foreach (explode(PHP_EOL, trim($editorPaths)) as $line) {
                 $line = explode(', installed at', $line, 2);
                 assert(count($line) === 2);
                 $version = trim($line[0]);
@@ -156,10 +156,9 @@ class UnityHub {
 
     private function loadEditorPath(): void {
         if ($this->editorPath === '') {
-            if ($path = $this->execute('install-path', '--get')) {
-                if ($path = realpath($path)) {
-                    $this->editorPath = $path;
-                }
+            $result = $this->execute('install-path', '--get');
+            if ($path = realpath(trim($result->getOutput()))) {
+                $this->editorPath = $path;
             }
         }
     }
@@ -278,22 +277,14 @@ class UnityHub {
         return $args;
     }
 
-    public function execute(string ...$arguments): string {
-        return $this->createProcessRunner($arguments)->toString();
-    }
-
-    public function executeStream(string ...$arguments): Generator {
-        return $this->createProcessRunner($arguments)->toGenerator();
-    }
-
-    private function createProcessRunner(array $arguments): ProcessRunner {
+    public function execute(string ...$arguments): Process {
         assert($this->isInstalled());
 
         $process = self::getHubLocator()->create($arguments);
 
         $runner = new ProcessRunner($process, self::getLoggingEnabled());
 
-        return $runner;
+        return $runner->run();
     }
 
     private function scanForSubDirectories(string $directory): iterable {

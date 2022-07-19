@@ -26,7 +26,7 @@ $args = $_SERVER['argv'];
 $workspace = array_shift($args);
 $method = array_shift($args);
 
-$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/method', FarahUrlArguments::createFromValueList([
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/method-junit', FarahUrlArguments::createFromValueList([
     'workspace' => $workspace,
     'method' => $method,
     'args' => $args

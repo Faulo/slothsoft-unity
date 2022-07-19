@@ -2,12 +2,8 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Project;
 
-use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromElementDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
-use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\DOMWriterResultBuilder;
-use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ResultBuilderStrategyInterface;
 use DOMDocument;
-use DOMElement;
 
 class MethodExecutable extends ExecutableBase {
 
@@ -29,16 +25,9 @@ class MethodExecutable extends ExecutableBase {
         return parent::parseArguments($args);
     }
 
-    protected function createSuccessResult(): ResultBuilderStrategyInterface {
-        $delegate = function (DOMDocument $document): DOMElement {
-            $node = $document->createElement('result');
-            $node->textContent = $this->project->executeMethod($this->method, $this->arguments);
-            return $node;
-        };
-
-        $writer = new DOMWriterFromElementDelegate($delegate);
-
-        return new DOMWriterResultBuilder($writer, 'result.xml');
+    protected function createSuccessDocument(): DOMDocument {
+        $result = $this->project->executeMethod($this->method, $this->arguments);
+        return $this->createResultDocument($result);
     }
 }
 

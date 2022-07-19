@@ -2,10 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Project;
 
-use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromDocumentDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
-use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\DOMWriterResultBuilder;
-use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ResultBuilderStrategyInterface;
 use DOMDocument;
 
 class BuildExecutable extends ExecutableBase {
@@ -33,14 +30,9 @@ class BuildExecutable extends ExecutableBase {
         return parent::parseArguments($args);
     }
 
-    protected function createSuccessResult(): ResultBuilderStrategyInterface {
-        $delegate = function (): DOMDocument {
-            return $this->project->build($this->target, $this->path);
-        };
-
-        $writer = new DOMWriterFromDocumentDelegate($delegate);
-
-        return new DOMWriterResultBuilder($writer, 'result.xml');
+    protected function createSuccessDocument(): DOMDocument {
+        $result = $this->project->build($this->target, $this->path);
+        return $this->createResultDocument($result);
     }
 }
 

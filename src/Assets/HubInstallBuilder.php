@@ -2,7 +2,6 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets;
 
-use Slothsoft\Core\IO\Writable\Adapter\ChunkWriterFromGenerator;
 use Slothsoft\Core\IO\Writable\Delegates\ChunkWriterFromChunksDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Farah\Module\Asset\AssetInterface;
@@ -26,8 +25,10 @@ class HubInstallBuilder implements ExecutableBuilderStrategyInterface {
 
         if ($version === '') {
             // create editor index
-            $generator = $hub->executeStream('editors', '-r');
-            $writer = new ChunkWriterFromGenerator($generator);
+            $delegate = function () use ($hub): Generator {
+                yield $hub->execute('editors', '-r')->getOutput();
+            };
+            $writer = new ChunkWriterFromChunksDelegate($delegate);
         } else {
             // actually install editor+modules
             $chunkDelegate = function () use ($hub, $version, $modules): Generator {

@@ -28,7 +28,7 @@ $workspace = array_shift($args);
 $path = $args[0] ?? $workspace . DIRECTORY_SEPARATOR . 'build';
 $target = $args[1] ?? UnityBuildTarget::WINDOWS;
 
-$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/build', FarahUrlArguments::createFromValueList([
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/build-junit', FarahUrlArguments::createFromValueList([
     'workspace' => $workspace,
     'target' => $target,
     'path' => $path

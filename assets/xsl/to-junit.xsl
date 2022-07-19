@@ -3,9 +3,31 @@
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:template match="error">
-		<xsl:copy-of select="." />
-	</xsl:template>
+    <xsl:template match="error">
+       <testsuites id="{generate-id()}" name="ERROR"
+            tests="1" failures="0" disabled="0"
+            errors="1" time="1">
+            <testsuite id="{generate-id()}" name="ERROR" hostname="localhost"
+                tests="1" failures="0" disabled="0"
+                errors="1" time="1">
+                <testcase id="{generate-id()}" name="ERROR" time="1">
+                    <failure message="{.}"/>
+                </testcase>
+            </testsuite>
+        </testsuites>
+    </xsl:template>
+
+    <xsl:template match="success">
+       <testsuites id="{generate-id()}" name="SUCCESS"
+            tests="1" failures="0" disabled="0"
+            errors="0" time="1">
+            <testsuite id="{generate-id()}" name="SUCCESS" hostname="localhost"
+                tests="1" failures="0" disabled="0"
+                errors="0" time="1">
+                <testcase id="{generate-id()}" name="SUCCESS" time="1"/>
+            </testsuite>
+        </testsuites>
+    </xsl:template>
 
 	<xsl:template match="test-run">
 		<testsuites id="{generate-id()}" name="TODO: NAME"

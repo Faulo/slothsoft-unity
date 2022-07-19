@@ -4,7 +4,6 @@ namespace Slothsoft\Unity;
 
 use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
-use Generator;
 
 class UnityEditor {
 
@@ -29,7 +28,7 @@ class UnityEditor {
         if (! $this->isInstalled()) {
             return false;
         }
-        $log = $this->execute('-quit', '-projectPath', $projectPath);
+        $log = $this->execute('-quit', '-projectPath', $projectPath)->getOutput();
         return strpos($log, self::LICENSE_SUCCESS) !== false;
     }
 
@@ -62,15 +61,15 @@ class UnityEditor {
         return true;
     }
 
-    public function license(string $projectPath): bool {
+    public function license(): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
-            $this->execute('-quit', '-manualLicenseFile', $licenseFile);
-            if ($this->isLicensed($projectPath)) {
+            $result = $this->execute('-quit', '-manualLicenseFile', $licenseFile)->getExitCode();
+            if ($result === 0) {
                 return true;
             }
         }
 
-        $log = $this->execute('-quit', '-createManualActivationFile');
+        $log = $this->execute('-quit', '-createManualActivationFile')->getOutput();
         $position = strpos($log, self::LICENSE_CREATED);
         if ($position !== false) {
             $log = explode("\n", substr($log, $position + strlen(self::LICENSE_CREATED)), 2);
@@ -83,22 +82,14 @@ class UnityEditor {
         return false;
     }
 
-    public function execute(string ...$arguments): string {
-        return $this->createProcessRunner($arguments)->toString();
-    }
-
-    public function executeStream(string ...$arguments): Generator {
-        return $this->createProcessRunner($arguments)->toGenerator();
-    }
-
-    private function createProcessRunner(array $arguments): ProcessRunner {
+    public function execute(string ...$arguments): Process {
         assert($this->isInstalled());
 
         $process = $this->createProcess($arguments);
 
         $runner = new ProcessRunner($process, UnityHub::getLoggingEnabled());
 
-        return $runner;
+        return $runner->run();
     }
 
     private function createProcess(array $arguments): Process {

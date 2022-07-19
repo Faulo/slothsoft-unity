@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Project;
 
-use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromElementDelegate;
+use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromDocumentDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Farah\Module\Asset\AssetInterface;
 use Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface;
@@ -11,8 +11,9 @@ use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\DOMWriterResultBuild
 use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ResultBuilderStrategyInterface;
 use Slothsoft\Unity\UnityHub;
 use Slothsoft\Unity\UnityProject;
+use Symfony\Component\Process\Process;
 use DOMDocument;
-use DOMElement;
+use Throwable;
 
 abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
@@ -65,18 +66,48 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
         return new ExecutableStrategies($resultBuilder);
     }
 
-    protected abstract function createSuccessResult(): ResultBuilderStrategyInterface;
+    protected abstract function createSuccessDocument(): DOMDocument;
 
-    protected function createErrorResult(): ResultBuilderStrategyInterface {
-        $delegate = function (DOMDocument $document): DOMElement {
-            $node = $document->createElement('error');
-            $node->textContent = $this->message;
-            return $node;
+    protected function createSuccessResult(): ResultBuilderStrategyInterface {
+        $delegate = function (): DOMDocument {
+            try {
+                return $this->createSuccessDocument();
+            } catch (Throwable $e) {
+                return $this->createErrorDocument($e->getMessage());
+            }
         };
 
-        $writer = new DOMWriterFromElementDelegate($delegate);
+        $writer = new DOMWriterFromDocumentDelegate($delegate);
+
+        return new DOMWriterResultBuilder($writer, 'result.xml');
+    }
+
+    protected function createErrorResult(): ResultBuilderStrategyInterface {
+        $delegate = function (): DOMDocument {
+            return $this->createErrorDocument($this->message);
+        };
+
+        $writer = new DOMWriterFromDocumentDelegate($delegate);
 
         return new DOMWriterResultBuilder($writer, 'error.xml');
+    }
+
+    protected function createResultDocument(Process $process): DOMDocument {
+        if ($process->getExitCode() !== 0) {
+            return $this->createErrorDocument($process->getErrorOutput());
+        }
+        $document = new DOMDocument();
+        $node = $document->createElement('success');
+        $document->appendChild($node);
+        return $document;
+    }
+
+    protected function createErrorDocument(string $message): DOMDocument {
+        $document = new DOMDocument();
+        $node = $document->createElement('error');
+        $node->textContent = $message;
+        $document->appendChild($node);
+        return $document;
     }
 }
 

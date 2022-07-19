@@ -26,7 +26,12 @@ class UnityHubTest extends TestCase {
             return;
         }
         $result = $hub->execute('help');
-        $this->assertStringContainsString('editors', $result);
+        $errors = trim($result->getErrorOutput());
+        $ouput = trim($result->getOutput());
+
+        $this->assertEquals('', $errors);
+        $this->assertNotEquals('', $ouput);
+        $this->assertStringContainsString('editors', $ouput);
     }
 
     public function testExecute(): void {
@@ -38,9 +43,12 @@ class UnityHubTest extends TestCase {
         }
 
         $result = $hub->execute('install-path', '--get');
+        $errors = trim($result->getErrorOutput());
+        $ouput = trim($result->getOutput());
 
-        $this->assertNotEquals('', $result);
-        $this->assertDirectoryExists($result);
+        $this->assertEquals('', $errors);
+        $this->assertNotEquals('', $ouput);
+        $this->assertDirectoryExists($ouput);
     }
 
     public function testGetEditors(): void {
