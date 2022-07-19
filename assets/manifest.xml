@@ -5,7 +5,7 @@
 
 	<fragment name="hub">
 		<custom-asset name="help"
-			executable-builder="Slothsoft\Unity\Assets\HubHelpBuilder" />
+			executable-builder="Slothsoft\Unity\Assets\Hub\HelpExecutable" />
 		<custom-asset name="install"
 			executable-builder="Slothsoft\Unity\Assets\HubInstallBuilder"
 			parameter-filter="Slothsoft\Unity\Assets\HubParameterFilter" />
@@ -17,17 +17,17 @@
 		<custom-asset name="install"
 			executable-builder="Slothsoft\Unity\Assets\ProjectInstallBuilder"
 			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-			
-			
-        <custom-asset name="method"
-            executable-builder="Slothsoft\Unity\Assets\Project\MethodExecutable"
-            parameter-filter="Slothsoft\Unity\Assets\Project\MethodParameters" />
-        <custom-asset name="build"
-            executable-builder="Slothsoft\Unity\Assets\Project\BuildExecutable"
-            parameter-filter="Slothsoft\Unity\Assets\Project\BuildParameters" />
+
+
+		<custom-asset name="method"
+			executable-builder="Slothsoft\Unity\Assets\Project\MethodExecutable"
+			parameter-filter="Slothsoft\Unity\Assets\Project\MethodParameters" />
+		<custom-asset name="build"
+			executable-builder="Slothsoft\Unity\Assets\Project\BuildExecutable"
+			parameter-filter="Slothsoft\Unity\Assets\Project\BuildParameters" />
 		<custom-asset name="tests"
-            executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable"
-            parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
+			executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable"
+			parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
 		<fragment name="tests-junit">
 			<use-template ref="/xsl/to-junit" />
 			<use-document ref="/project/tests" />
