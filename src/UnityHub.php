@@ -59,6 +59,22 @@ class UnityHub {
         return self::loggingEnabled()->getValue();
     }
 
+    private static function processTimeout(): ConfigurationField {
+        static $field;
+        if ($field === null) {
+            $field = new ConfigurationField(0);
+        }
+        return $field;
+    }
+
+    public static function setProcessTimeout(int $value): void {
+        self::processTimeout()->setValue($value);
+    }
+
+    public static function getProcessTimeout(): int {
+        return self::processTimeout()->getValue();
+    }
+
     private static function hubLocator(): ConfigurationField {
         static $field;
         if ($field === null) {
@@ -282,9 +298,23 @@ class UnityHub {
 
         $process = self::getHubLocator()->create($arguments);
 
-        $runner = new ProcessRunner($process, self::getLoggingEnabled());
+        self::runUnityProcess($process);
 
-        return $runner->run();
+        return $process;
+    }
+
+    public static function runUnityProcess(Process $process): void {
+        if (self::getLoggingEnabled()) {
+            fwrite(STDERR, $process->getCommandLine() . PHP_EOL);
+        }
+
+        $process->setTimeout(self::getProcessTimeout());
+
+        $process->run(function (string $type, string $data): void {
+            if (self::getLoggingEnabled() or $type === Process::ERR) {
+                fwrite(STDERR, $data);
+            }
+        });
     }
 
     private function scanForSubDirectories(string $directory): iterable {

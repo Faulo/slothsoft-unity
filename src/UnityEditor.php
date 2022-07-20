@@ -87,9 +87,9 @@ class UnityEditor {
 
         $process = $this->createProcess($arguments);
 
-        $runner = new ProcessRunner($process, UnityHub::getLoggingEnabled());
+        UnityHub::runUnityProcess($process);
 
-        return $runner->run();
+        return $process;
     }
 
     private function createProcess(array $arguments): Process {
