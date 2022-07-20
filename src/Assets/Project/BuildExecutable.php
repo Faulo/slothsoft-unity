@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Project;
 
+use Slothsoft\Core\FileSystem;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use DOMDocument;
 
@@ -44,6 +45,9 @@ class BuildExecutable extends ExecutableBase {
 
     protected function createSuccessDocument(): DOMDocument {
         $result = $this->project->build($this->target, $this->path);
+        if ($result->getExitCode() === 0 and count(FileSystem::scanDir($this->path)) === 0) {
+            return $this->createResultDocument(- 1, $result->getOutput(), $result->getErrorOutput(), 'Build failed!');
+        }
         return $this->createResultDocument($result->getExitCode(), $result->getOutput(), $result->getErrorOutput());
     }
 }
