@@ -41,10 +41,18 @@ class BuildExecutable extends ExecutableBase {
 
     protected function createSuccessDocument(): DOMDocument {
         $result = $this->project->build($this->target, $this->path);
-        if ($result->getExitCode() === 0 and count(FileSystem::scanDir($this->path)) === 0) {
-            return $this->createResultDocument(- 1, $result->getOutput(), $result->getErrorOutput(), 'Build failed!');
+        $code = $result->getExitCode();
+        $stdout = $result->getOutput();
+        $stderr = $result->getErrorOutput();
+        $message = 'Build failed!';
+
+        var_dump([$this->path => FileSystem::scanDir($this->path)]);
+        
+        if ($code === 0 and count(FileSystem::scanDir($this->path)) === 0) {
+            $code = - 1;
         }
-        return $this->createResultDocument($result->getExitCode(), $result->getOutput(), $result->getErrorOutput());
+
+        return $this->createResultDocument($code, $stdout, $stderr, $message);
     }
 }
 
