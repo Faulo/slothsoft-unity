@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<result>
+	<process package="Unity.Project.Build" name="Ulisses.Core.Game"
+		result="0" stdout="" stderr="" duration="0" start-time="0" />
+	<process package="Unity.Project.Method"
+		name="Ulisses.Core.Failure" result="255" stdout="" stderr="???"
+		message="FAIL" duration="1" start-time="0" />
+</result>

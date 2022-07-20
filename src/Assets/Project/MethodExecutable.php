@@ -27,7 +27,7 @@ class MethodExecutable extends ExecutableBase {
 
     protected function createSuccessDocument(): DOMDocument {
         $result = $this->project->executeMethod($this->method, $this->arguments);
-        return $this->createResultDocument($result);
+        return $this->createResultDocument($result->getExitCode(), $result->getOutput(), $result->getErrorOutput());
     }
 }
 

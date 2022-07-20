@@ -11,8 +11,8 @@ use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\DOMWriterResultBuild
 use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ResultBuilderStrategyInterface;
 use Slothsoft\Unity\UnityHub;
 use Slothsoft\Unity\UnityProject;
-use Symfony\Component\Process\Process;
 use DOMDocument;
+use DateTime;
 use Throwable;
 
 abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
@@ -22,6 +22,15 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     /** @var UnityProject */
     protected ?UnityProject $project;
+
+    /** @var float */
+    private float $startTime;
+
+    /** @var string */
+    private string $packageName;
+
+    /** @var string */
+    private string $processName;
 
     protected function parseArguments(FarahUrlArguments $args): bool {
         $workspace = $args->get('workspace');
@@ -61,6 +70,10 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
     }
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
+        $this->startTime = microtime(true);
+        $this->packageName = (string) $context->getUrlPath();
+        $this->processName = (string) $args;
+
         $resultBuilder = $this->parseArguments($args) ? $this->createSuccessResult() : $this->createErrorResult();
 
         return new ExecutableStrategies($resultBuilder);
@@ -84,7 +97,7 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     protected function createErrorResult(): ResultBuilderStrategyInterface {
         $delegate = function (): DOMDocument {
-            return $this->createErrorDocument($this->message);
+            return $this->createResultDocument(- 1, '', '', $this->message);
         };
 
         $writer = new DOMWriterFromDocumentDelegate($delegate);
@@ -92,21 +105,22 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
         return new DOMWriterResultBuilder($writer, 'error.xml');
     }
 
-    protected function createResultDocument(Process $process): DOMDocument {
-        if ($process->getExitCode() !== 0) {
-            return $this->createErrorDocument($process->getErrorOutput());
-        }
+    protected function createResultDocument(int $code, string $stdout, string $stderr, string $message): DOMDocument {
         $document = new DOMDocument();
-        $node = $document->createElement('success');
-        $document->appendChild($node);
-        return $document;
-    }
+        $rootNode = $document->createElement('result');
 
-    protected function createErrorDocument(string $message): DOMDocument {
-        $document = new DOMDocument();
-        $node = $document->createElement('error');
-        $node->textContent = $message;
-        $document->appendChild($node);
+        $node = $document->createElement('process');
+        $node->setAttribute('package', $this->packageName);
+        $node->setAttribute('name', $this->processName);
+        $node->setAttribute('result', (string) $code);
+        $node->setAttribute('stdout', $stdout);
+        $node->setAttribute('stderr', $stderr);
+        $node->setAttribute('message', $message);
+        $node->setAttribute('start-time', date(DateTime::W3C, (int) $this->startTime));
+        $node->setAttribute('duration', sprintf('%0.06f', microtime(true) - $this->startTime));
+
+        $rootNode->appendChild($node);
+        $document->appendChild($rootNode);
         return $document;
     }
 }
