@@ -30,7 +30,7 @@ class MethodExecutable extends ExecutableBase {
     }
 
     protected function getExecutablePackage(): string {
-        return 'Slothsoft.Unity.Project.Method';
+        return 'ContinuousIntegration.' . basename($this->workspace);
     }
 
     protected function getExecutableCall(): string {

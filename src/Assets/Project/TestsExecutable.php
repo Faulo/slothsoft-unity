@@ -26,7 +26,7 @@ class TestsExecutable extends ExecutableBase {
     }
 
     protected function getExecutablePackage(): string {
-        return 'Slothsoft.Unity.Project.Tests';
+        return 'ContinuousIntegration.' . basename($this->workspace);
     }
 
     protected function getExecutableCall(): string {
@@ -34,7 +34,7 @@ class TestsExecutable extends ExecutableBase {
         foreach ($this->modes as $arg) {
             $args[] = sprintf('"%s"', $arg);
         }
-        return sprintf('Test(%s)', implode(', ', $args));
+        return sprintf('RunTests(%s)', implode(', ', $args));
     }
 
     protected function createSuccessDocument(): DOMDocument {

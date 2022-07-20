@@ -36,11 +36,11 @@ class BuildExecutable extends ExecutableBase {
     }
 
     protected function getExecutablePackage(): string {
-        return 'Slothsoft.Unity.Project.Build';
+        return 'ContinuousIntegration.' . basename($this->workspace);
     }
 
     protected function getExecutableCall(): string {
-        return sprintf('Build("%s", "%s", "%s")', $this->workspace, $this->path, $this->target);
+        return sprintf('Build("%s")', $this->target);
     }
 
     protected function createSuccessDocument(): DOMDocument {
