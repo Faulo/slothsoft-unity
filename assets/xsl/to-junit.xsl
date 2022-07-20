@@ -65,13 +65,13 @@
 			time="{@duration}">
 			<xsl:choose>
 				<xsl:when test="@label and failure">
-					<error type="{@label}" message="{message}">
-						<xsl:value-of select="stack-trace" />
+					<error type="{@label}" message="{failure/message}">
+						<xsl:value-of select="failure/stack-trace" />
 					</error>
 				</xsl:when>
 				<xsl:when test="failure">
-					<failure type="Assert" message="{message}">
-						<xsl:value-of select="stack-trace" />
+					<failure type="Assert" message="{failure/message}">
+						<xsl:value-of select="failure/stack-trace" />
 					</failure>
 				</xsl:when>
 			</xsl:choose>
