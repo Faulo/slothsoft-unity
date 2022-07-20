@@ -20,23 +20,22 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
     /** @var string */
     protected string $workspace;
 
-    /** @var ExecutionError */
-    protected ?ExecutionError $error;
-
     /** @var UnityProject */
     protected ?UnityProject $project;
 
     /** @var float */
     private float $startTime;
 
+    /** @var ExecutionError */
+    private ?ExecutionError $error;
+
     protected function parseArguments(FarahUrlArguments $args): void {
         $this->workspace = $args->get('workspace');
     }
 
-    protected function validate(): void {
+    protected function validate(): ?ExecutionError {
         if (! is_dir($this->workspace)) {
-            $this->error = ExecutionError::Error('AssertDirectory', "Workspace '{$this->workspace}' is not a directory!");
-            return;
+            return ExecutionError::Error('AssertDirectory', "Workspace '{$this->workspace}' is not a directory!");
         }
 
         $this->workspace = realpath($this->workspace);
@@ -44,37 +43,32 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
         $hub = UnityHub::getInstance();
 
         if (! $hub->isInstalled()) {
-            $this->error = ExecutionError::Error('AssertHub', "Failed to find Unity Hub!");
-            return;
+            return ExecutionError::Error('AssertHub', "Failed to find Unity Hub!");
         }
 
         $this->project = $hub->findProject($this->workspace);
 
         if (! $this->project) {
-            $this->error = ExecutionError::Error('AssertProject', "Workspace '{$this->workspace}' does not contain a Unity project!");
-            return;
+            return ExecutionError::Error('AssertProject', "Workspace '{$this->workspace}' does not contain a Unity project!");
         }
 
         if (! $this->project->ensureEditorIsInstalled()) {
-            $this->error = ExecutionError::Error('AssertEditor', "Editor installation for project '{$this->project}' failed!");
-            return;
+            return ExecutionError::Error('AssertEditor', "Editor installation for project '{$this->project}' failed!");
         }
 
         if (! $this->project->ensureEditorIsLicensed()) {
-            $this->error = ExecutionError::Error('AssertLicense', "Editor for project '{$this->project}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.");
-            return;
+            return ExecutionError::Error('AssertLicense', "Editor for project '{$this->project}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.");
         }
 
-        return;
+        return null;
     }
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $this->startTime = microtime(true);
-        $this->error = null;
 
         $this->parseArguments($args);
 
-        $this->validate();
+        $this->error = $this->validate();
 
         $resultBuilder = $this->error ? $this->createErrorResult() : $this->createSuccessResult();
 
@@ -83,13 +77,13 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     protected abstract function createSuccessDocument(): DOMDocument;
 
-    protected function getExecutablePackage(): string {
+    private function getExecutablePackage(): string {
         return 'ContinuousIntegration.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->workspace));
     }
 
     protected abstract function getExecutableCall(): string;
 
-    protected function createSuccessResult(): ResultBuilderStrategyInterface {
+    private function createSuccessResult(): ResultBuilderStrategyInterface {
         $delegate = function (): DOMDocument {
             try {
                 return $this->createSuccessDocument();
@@ -98,7 +92,7 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
                 if ($code === 0) {
                     $code = - 1;
                 }
-                return $this->createResultDocument($code, '', (string) $e, ExecutionError::Error(get_class($e), $e->getMessage()));
+                return $this->createResultDocument($code, '', (string) $e, ExecutionError::Error(get_class($e), $e->getMessage(), $e->getTraceAsString()));
             }
         };
 
@@ -107,7 +101,7 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
         return new DOMWriterResultBuilder($writer, 'result.xml');
     }
 
-    protected function createErrorResult(): ResultBuilderStrategyInterface {
+    private function createErrorResult(): ResultBuilderStrategyInterface {
         $delegate = function (): DOMDocument {
             return $this->createResultDocument(- 1, '', '', $this->error);
         };

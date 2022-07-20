@@ -20,13 +20,12 @@ class MethodExecutable extends ExecutableBase {
         $this->arguments = $args->get('args');
     }
 
-    protected function validate(): void {
+    protected function validate(): ?ExecutionError {
         if ($this->method === '') {
-            $this->error = ExecutionError::Error('AssertParameter', "Missing parameter 'method'!");
-            return;
+            return ExecutionError::Error('AssertParameter', "Missing parameter 'method'!");
         }
 
-        parent::validate();
+        return parent::validate();
     }
 
     protected function getExecutableCall(): string {
@@ -42,12 +41,13 @@ class MethodExecutable extends ExecutableBase {
         $code = $result->getExitCode();
         $stdout = $result->getOutput();
         $stderr = $result->getErrorOutput();
+        $error = null;
 
         if ($code !== 0) {
-            $this->error = ExecutionError::Failure('AssertMethod', "Calling method '{$this->method}' failed!");
+            $error = ExecutionError::Failure('AssertMethod', "Calling method '{$this->method}' failed!");
         }
 
-        return $this->createResultDocument($code, $stdout, $stderr, $this->error);
+        return $this->createResultDocument($code, $stdout, $stderr, $error);
     }
 }
 

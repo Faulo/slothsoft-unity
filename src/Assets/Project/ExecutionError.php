@@ -6,12 +6,12 @@ use DOMElement;
 
 class ExecutionError {
 
-    public static function Failure(string $type, string $message): ExecutionError {
-        return new self('failure', $type, $message);
+    public static function Failure(string $type, string $message, string $stackTrace = ''): ExecutionError {
+        return new self('failure', $type, $message, $stackTrace);
     }
 
-    public static function Error(string $type, string $message): ExecutionError {
-        return new self('error', $type, $message);
+    public static function Error(string $type, string $message, string $stackTrace = ''): ExecutionError {
+        return new self('error', $type, $message, $stackTrace);
     }
 
     /** @var string */
@@ -23,16 +23,23 @@ class ExecutionError {
     /** @var string */
     private string $message;
 
-    private function __construct(string $tag, string $type, string $message) {
+    /** @var string */
+    private string $stackTrace;
+
+    private function __construct(string $tag, string $type, string $message, string $stackTrace) {
         $this->tag = $tag;
         $this->type = $type;
         $this->message = $message;
+        $this->stackTrace = $stackTrace;
     }
 
     public function asNode(DOMDocument $document): DOMElement {
         $node = $document->createElement($this->tag);
         $node->setAttribute('type', $this->type);
-        $node->textContent = $this->message;
+        $node->setAttribute('message', $this->message);
+        if ($this->stackTrace !== '') {
+            $node->textContent = $this->stackTrace;
+        }
         return $node;
     }
 }

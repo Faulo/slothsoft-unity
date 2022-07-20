@@ -21,18 +21,16 @@ class BuildExecutable extends ExecutableBase {
         $this->path = $args->get('path');
     }
 
-    protected function validate(): void {
+    protected function validate(): ?ExecutionError {
         if ($this->target === '') {
-            $this->error = ExecutionError::Error('AssertParameter', "Missing parameter 'target'!");
-            return;
+            return ExecutionError::Error('AssertParameter', "Missing parameter 'target'!");
         }
 
         if ($this->path === '') {
-            $this->error = ExecutionError::Error('AssertParameter', "Missing parameter 'path'!");
-            return;
+            return ExecutionError::Error('AssertParameter', "Missing parameter 'path'!");
         }
 
-        parent::validate();
+        return parent::validate();
     }
 
     protected function getExecutableCall(): string {
@@ -44,16 +42,17 @@ class BuildExecutable extends ExecutableBase {
         $code = $result->getExitCode();
         $stdout = $result->getOutput();
         $stderr = $result->getErrorOutput();
+        $error = null;
 
         if ($code === 0 and count(FileSystem::scanDir($this->path)) === 0) {
             $code = - 1;
         }
 
         if ($code !== 0) {
-            $this->error = ExecutionError::Failure('AssertBuild', 'Build failed!');
+            $error = ExecutionError::Failure('AssertBuild', 'Build failed!');
         }
 
-        return $this->createResultDocument($code, $stdout, $stderr, $this->error);
+        return $this->createResultDocument($code, $stdout, $stderr, $error);
     }
 }
 
