@@ -15,20 +15,16 @@
 	<xsl:template match="result">
 		<testsuites>
 			<xsl:for-each select="process">
-				<xsl:variable name="errors"
-					select="count(self::*[@result != 0])" />
 				<testsuite id="{position() - 1}" package=""
-					name="{@package}" hostname="localhost" tests="1" failures="0"
-					skipped="0" errors="{$errors}" time="{@duration}"
+					name="{@package}" hostname="localhost" tests="1" failures="{count(failure)}"
+					skipped="{count(skipped)}" errors="{count(error)}" time="{@duration}"
 					timestamp="{php:format-date(@start-time)}">
 					<properties />
 					<testcase classname="{@package}" name="{@name}"
 						time="{@duration}">
-						<xsl:if test="$errors != 0">
-							<error>
-								<xsl:value-of select="@message" />
-							</error>
-						</xsl:if>
+                       <xsl:copy-of select="skipped"/>
+                       <xsl:copy-of select="failure"/>
+                       <xsl:copy-of select="error"/>
 					</testcase>
 					<system-out>
 						<xsl:value-of select="@stdout" />
@@ -66,6 +62,9 @@
 	<xsl:template match="test-case">
 		<testcase classname="{@classname}" name="{@name}"
 			time="{@duration}">
+            <xsl:copy-of select="skipped"/>
+            <xsl:copy-of select="failure"/>
+            <xsl:copy-of select="error"/>
 		</testcase>
 	</xsl:template>
 </xsl:stylesheet>

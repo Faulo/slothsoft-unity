@@ -4,6 +4,18 @@
 		name="Build($quot;/path/to/project$quot;, $quot;/path/to/build$quot;, $quot;Windows$quot;)"
 		result="0" stdout="" stderr="" duration="0" start-time="0" />
 	<process package="Slothsoft.Unity.Project.Method"
-		name="Win64()" result="255" stdout="" stderr="???" message="FAIL"
-		duration="1" start-time="0" />
+		name="Win64()" result="255" stdout="" stderr="???" duration="1"
+		start-time="0">
+		<skipped>Skipped for some reason.</skipped>
+	</process>
+	<process package="Slothsoft.Unity.Project.Method"
+		name="Win64()" result="255" stdout="" stderr="???" duration="1"
+		start-time="0">
+		<failure type="Error">Failed for some reason.</failure>
+	</process>
+	<process package="Slothsoft.Unity.Project.Method"
+		name="Win64()" result="255" stdout="" stderr="???" duration="1"
+		start-time="0">
+		<error type="Error">Errored for some reason.</error>
+	</process>
 </result>

@@ -16,13 +16,13 @@ class TestsExecutable extends ExecutableBase {
         $this->modes = $args->get('modes');
     }
 
-    protected function validate(): bool {
+    protected function validate(): void {
         if (! $this->modes) {
-            $this->message = "Parameter 'modes' must not be empty!";
-            return false;
+            $this->error = ExecutionError::Error('AssertParameter', "Parameter 'modes' must not be empty!");
+            return;
         }
 
-        return parent::validate();
+        parent::validate();
     }
 
     protected function getExecutableCall(): string {
