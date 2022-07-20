@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <assets xmlns="http://schema.slothsoft.net/farah/module">
+	<resource-directory name="xsd"
+		type="application/x-xsd+xml" />
 	<resource-directory name="xsl"
 		type="application/xslt+xml" />
 
@@ -28,21 +30,21 @@
 		<custom-asset name="tests"
 			executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable"
 			parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
-            
-        <fragment name="method-junit">
-            <use-template ref="/xsl/to-junit" />
-            <use-document ref="/project/method" />
-        </fragment>
-            
-        <fragment name="build-junit">
-            <use-template ref="/xsl/to-junit" />
-            <use-document ref="/project/build" />
-        </fragment>
-        
-        <fragment name="tests-junit">
-            <use-template ref="/xsl/to-junit" />
-            <use-document ref="/project/tests" />
-        </fragment>
+
+		<fragment name="method-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/project/method" />
+		</fragment>
+
+		<fragment name="build-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/project/build" />
+		</fragment>
+
+		<fragment name="tests-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/project/tests" />
+		</fragment>
 	</fragment>
 	<fragment name="git">
 		<custom-asset name="clone"
