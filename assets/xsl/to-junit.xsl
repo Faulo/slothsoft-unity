@@ -16,15 +16,16 @@
 		<testsuites>
 			<xsl:for-each select="process">
 				<testsuite id="{position() - 1}" package=""
-					name="{@package}" hostname="localhost" tests="1" failures="{count(failure)}"
-					skipped="{count(skipped)}" errors="{count(error)}" time="{@duration}"
+					name="{@package}" hostname="localhost" tests="1"
+					failures="{count(failure)}" skipped="{count(skipped)}"
+					errors="{count(error)}" time="{@duration}"
 					timestamp="{php:format-date(@start-time)}">
 					<properties />
 					<testcase classname="{@package}" name="{@name}"
 						time="{@duration}">
-                       <xsl:copy-of select="skipped"/>
-                       <xsl:copy-of select="failure"/>
-                       <xsl:copy-of select="error"/>
+						<xsl:copy-of select="skipped" />
+						<xsl:copy-of select="failure" />
+						<xsl:copy-of select="error" />
 					</testcase>
 					<system-out>
 						<xsl:value-of select="@stdout" />
@@ -62,9 +63,18 @@
 	<xsl:template match="test-case">
 		<testcase classname="{@classname}" name="{@name}"
 			time="{@duration}">
-            <xsl:copy-of select="skipped"/>
-            <xsl:copy-of select="failure"/>
-            <xsl:copy-of select="error"/>
+			<xsl:choose>
+				<xsl:when test="@label and failure">
+					<error type="{@label}" message="{message}">
+						<xsl:value-of select="stack-trace" />
+					</error>
+				</xsl:when>
+				<xsl:when test="failure">
+					<failure type="Assert" message="{message}">
+						<xsl:value-of select="stack-trace" />
+					</failure>
+				</xsl:when>
+			</xsl:choose>
 		</testcase>
 	</xsl:template>
 </xsl:stylesheet>
