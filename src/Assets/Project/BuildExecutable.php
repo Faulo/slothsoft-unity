@@ -32,7 +32,7 @@ class BuildExecutable extends ExecutableBase {
 
     protected function createSuccessDocument(): DOMDocument {
         $result = $this->project->build($this->target, $this->path);
-        return $this->createResultDocument($result);
+        return $this->createResultDocument($result->getExitCode(), $result->getOutput(), $result->getErrorOutput());
     }
 }
 

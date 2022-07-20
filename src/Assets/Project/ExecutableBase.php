@@ -105,7 +105,7 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
         return new DOMWriterResultBuilder($writer, 'error.xml');
     }
 
-    protected function createResultDocument(int $code, string $stdout, string $stderr, string $message): DOMDocument {
+    protected function createResultDocument(int $code, string $stdout, string $stderr, string $message = 'ERROR'): DOMDocument {
         $document = new DOMDocument();
         $rootNode = $document->createElement('result');
 
