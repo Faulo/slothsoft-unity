@@ -70,6 +70,7 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $this->startTime = microtime(true);
+        $this->error = null;
 
         $this->parseArguments($args);
 
