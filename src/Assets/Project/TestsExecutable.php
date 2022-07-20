@@ -25,10 +25,6 @@ class TestsExecutable extends ExecutableBase {
         return parent::validate();
     }
 
-    protected function getExecutablePackage(): string {
-        return 'ContinuousIntegration.' . basename($this->workspace);
-    }
-
     protected function getExecutableCall(): string {
         $args = [];
         foreach ($this->modes as $arg) {

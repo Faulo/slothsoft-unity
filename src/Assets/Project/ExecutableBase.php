@@ -80,7 +80,9 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     protected abstract function createSuccessDocument(): DOMDocument;
 
-    protected abstract function getExecutablePackage(): string;
+    protected function getExecutablePackage(): string {
+        return 'ContinuousIntegration.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->workspace));
+    }
 
     protected abstract function getExecutableCall(): string;
 

@@ -35,10 +35,6 @@ class BuildExecutable extends ExecutableBase {
         return parent::validate();
     }
 
-    protected function getExecutablePackage(): string {
-        return 'ContinuousIntegration.' . basename($this->workspace);
-    }
-
     protected function getExecutableCall(): string {
         return sprintf('Build("%s")', $this->target);
     }
