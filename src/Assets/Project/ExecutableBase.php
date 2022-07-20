@@ -35,7 +35,7 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     protected function validate(): bool {
         if (! is_dir($this->workspace)) {
-            $this->message = "Workspace 'this->workspace' is not a directory!";
+            $this->message = "Workspace '{$this->workspace}' is not a directory!";
             return false;
         }
 
@@ -51,17 +51,17 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
         $this->project = $hub->findProject($this->workspace);
 
         if (! $this->project) {
-            $this->message = "Workspace '$this->workspace' does not contain a Unity project!";
+            $this->message = "Workspace '{$this->workspace}' does not contain a Unity project!";
             return false;
         }
 
         if (! $this->project->ensureEditorIsInstalled()) {
-            $this->message = "Editor installation for project '$this->project' failed!";
+            $this->message = "Editor installation for project '{$this->project}' failed!";
             return false;
         }
 
         if (! $this->project->ensureEditorIsLicensed()) {
-            $this->message = "Editor for project '$this->project' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.";
+            $this->message = "Editor for project '{$this->project}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.";
             return false;
         }
 
