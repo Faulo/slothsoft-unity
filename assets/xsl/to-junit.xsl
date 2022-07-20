@@ -16,7 +16,7 @@
 		<testsuites>
 			<xsl:for-each select="process">
 				<xsl:variable name="errors"
-					select="count(self::*[@code!= 0])" />
+					select="count(self::*[@result != 0])" />
 				<testsuite id="{position() - 1}" package=""
 					name="{@package}" hostname="localhost" tests="1" failures="0"
 					skipped="0" errors="{$errors}" time="{@duration}"
