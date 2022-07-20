@@ -86,7 +86,11 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
             try {
                 return $this->createSuccessDocument();
             } catch (Throwable $e) {
-                return $this->createErrorDocument($e->getMessage());
+                $code = $e->getCode();
+                if ($code === 0) {
+                    $code = - 1;
+                }
+                return $this->createResultDocument($code, '', (string) $e, $e->getMessage());
             }
         };
 
