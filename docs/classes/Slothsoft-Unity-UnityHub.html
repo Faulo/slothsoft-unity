@@ -157,14 +157,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Slothsoft-Unity-UnityHub.html#method_execute">execute()</a>
     <span>
-                        &nbsp;: string    </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityHub.html#method_executeStream">executeStream()</a>
-    <span>
-                        &nbsp;: <abbr title="\Generator">Generator</abbr>    </span>
+                        &nbsp;: <abbr title="\Symfony\Component\Process\Process">Process</abbr>    </span>
 </dt>
 <dd></dd>
 
@@ -225,6 +218,13 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Slothsoft-Unity-UnityHub.html#method_getProcessTimeout">getProcessTimeout()</a>
+    <span>
+                        &nbsp;: int    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Slothsoft-Unity-UnityHub.html#method_getUseDaemon">getUseDaemon()</a>
     <span>
                         &nbsp;: bool    </span>
@@ -260,6 +260,13 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Slothsoft-Unity-UnityHub.html#method_runUnityProcess">runUnityProcess()</a>
+    <span>
+                        &nbsp;: void    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Slothsoft-Unity-UnityHub.html#method_setHubLocator">setHubLocator()</a>
     <span>
                         &nbsp;: void    </span>
@@ -268,6 +275,13 @@
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Slothsoft-Unity-UnityHub.html#method_setLoggingEnabled">setLoggingEnabled()</a>
+    <span>
+                        &nbsp;: void    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Slothsoft-Unity-UnityHub.html#method_setProcessTimeout">setProcessTimeout()</a>
     <span>
                         &nbsp;: void    </span>
 </dt>
@@ -299,7 +313,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">304</span>
+    <span class="phpdocumentor-element-found-in__line">325</span>
 
     </aside>
 
@@ -385,7 +399,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">217</span>
+    <span class="phpdocumentor-element-found-in__line">232</span>
 
     </aside>
 
@@ -437,7 +451,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">265</span>
+    <span class="phpdocumentor-element-found-in__line">280</span>
 
     </aside>
 
@@ -489,14 +503,14 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">281</span>
+    <span class="phpdocumentor-element-found-in__line">296</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">execute</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__variadic-operator">...</span><span class="phpdocumentor-signature__argument__name">$arguments</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+                <span class="phpdocumentor-signature__name">execute</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__variadic-operator">...</span><span class="phpdocumentor-signature__argument__name">$arguments</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Symfony\Component\Process\Process">Process</abbr></span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -515,51 +529,7 @@
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_executeStream">
-        executeStream()
-        <a href="classes/Slothsoft-Unity-UnityHub.html#method_executeStream" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">285</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">executeStream</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__variadic-operator">...</span><span class="phpdocumentor-signature__argument__name">$arguments</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Generator">Generator</abbr></span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$arguments</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-            </dl>
-
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><abbr title="\Generator">Generator</abbr></span>
+    <span class="phpdocumentor-signature__response_type"><abbr title="\Symfony\Component\Process\Process">Process</abbr></span>
             &mdash;
         
     
@@ -577,7 +547,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">192</span>
+    <span class="phpdocumentor-element-found-in__line">207</span>
 
     </aside>
 
@@ -621,14 +591,14 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">327</span>
+    <span class="phpdocumentor-element-found-in__line">348</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">findProject</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$projectPath</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/Slothsoft-Unity-UnityProject.html"><abbr title="\Slothsoft\Unity\UnityProject">UnityProject</abbr></a>|null</span></code>
+                <span class="phpdocumentor-signature__name">findProject</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$projectPath</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$includeSubdirectories</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/Slothsoft-Unity-UnityProject.html"><abbr title="\Slothsoft\Unity\UnityProject">UnityProject</abbr></a>|null</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -638,6 +608,14 @@
                 <span class="phpdocumentor-signature__argument__name">$projectPath</span>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$includeSubdirectories</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
 
@@ -665,7 +643,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">167</span>
+    <span class="phpdocumentor-element-found-in__line">182</span>
 
     </aside>
 
@@ -709,7 +687,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">152</span>
+    <span class="phpdocumentor-element-found-in__line">168</span>
 
     </aside>
 
@@ -742,7 +720,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">124</span>
+    <span class="phpdocumentor-element-found-in__line">140</span>
 
     </aside>
 
@@ -774,7 +752,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">93</span>
+    <span class="phpdocumentor-element-found-in__line">109</span>
 
     </aside>
 
@@ -866,6 +844,39 @@
             -public
                                     -static                    "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getProcessTimeout">
+        getProcessTimeout()
+        <a href="classes/Slothsoft-Unity-UnityHub.html#method_getProcessTimeout" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">74</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__name">getProcessTimeout</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">int</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                    -static                    "
+>
     <h4 class="phpdocumentor-element__name" id="method_getUseDaemon">
         getUseDaemon()
         <a href="classes/Slothsoft-Unity-UnityHub.html#method_getUseDaemon" class="headerlink"><i class="fas fa-link"></i></a>
@@ -906,7 +917,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">175</span>
+    <span class="phpdocumentor-element-found-in__line">190</span>
 
     </aside>
 
@@ -958,7 +969,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">187</span>
+    <span class="phpdocumentor-element-found-in__line">202</span>
 
     </aside>
 
@@ -1010,7 +1021,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">98</span>
+    <span class="phpdocumentor-element-found-in__line">114</span>
 
     </aside>
 
@@ -1042,7 +1053,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">208</span>
+    <span class="phpdocumentor-element-found-in__line">223</span>
 
     </aside>
 
@@ -1079,6 +1090,50 @@
             -public
                                     -static                    "
 >
+    <h4 class="phpdocumentor-element__name" id="method_runUnityProcess">
+        runUnityProcess()
+        <a href="classes/Slothsoft-Unity-UnityHub.html#method_runUnityProcess" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">306</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__name">runUnityProcess</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Symfony\Component\Process\Process">Process</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$process</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$process</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Symfony\Component\Process\Process">Process</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">void</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                    -static                    "
+>
     <h4 class="phpdocumentor-element__name" id="method_setHubLocator">
         setHubLocator()
         <a href="classes/Slothsoft-Unity-UnityHub.html#method_setHubLocator" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1086,7 +1141,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">89</span>
+    <span class="phpdocumentor-element-found-in__line">105</span>
 
     </aside>
 
@@ -1146,6 +1201,50 @@
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$value</span>
                 : <span class="phpdocumentor-signature__argument__return-type">bool</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">void</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                    -static                    "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setProcessTimeout">
+        setProcessTimeout()
+        <a href="classes/Slothsoft-Unity-UnityHub.html#method_setProcessTimeout" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">70</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__name">setProcessTimeout</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$value</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
