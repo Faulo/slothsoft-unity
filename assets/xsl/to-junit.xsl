@@ -50,8 +50,8 @@
 	</xsl:template>
 
 	<xsl:template match="test-suite">
-		<testsuite package="@classname"
-			id="{count(preceding::test-run)}" name="{@name}" hostname="localhost"
+		<testsuite package="{ancestor-or-self::test-suite[@type='Assembly']/@name}"
+			id="{count(preceding::test-run)}" name="{@classname}" hostname="localhost"
 			tests="{@testcasecount}" failures="{@failed}" skipped="{@skipped}"
 			errors="{@inconclusive}" time="{@duration}"
 			timestamp="{php:format-date(@start-time)}">

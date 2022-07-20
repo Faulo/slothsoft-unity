@@ -71,7 +71,7 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $this->startTime = microtime(true);
-        $this->packageName = (string) $context->getUrlPath();
+        $this->packageName = substr(str_replace('/', '.', (string) $context->getUrlPath()), 1);
         $this->processName = (string) $args;
 
         $resultBuilder = $this->parseArguments($args) ? $this->createSuccessResult() : $this->createErrorResult();
