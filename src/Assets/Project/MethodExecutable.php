@@ -13,16 +13,32 @@ class MethodExecutable extends ExecutableBase {
     /** @var array */
     private array $arguments;
 
-    protected function parseArguments(FarahUrlArguments $args): bool {
+    protected function parseArguments(FarahUrlArguments $args): void {
+        parent::parseArguments($args);
+
         $this->method = $args->get('method');
         $this->arguments = $args->get('args');
+    }
 
+    protected function validate(): bool {
         if ($this->method === '') {
             $this->message = "Missing parameter 'method'!";
             return false;
         }
 
-        return parent::parseArguments($args);
+        return parent::validate();
+    }
+
+    protected function getExecutablePackage(): string {
+        return 'Slothsoft.Unity.Project.Method';
+    }
+
+    protected function getExecutableCall(): string {
+        $args = [];
+        foreach ($this->arguments as $arg) {
+            $args[] = sprintf('"%s"', $arg);
+        }
+        return sprintf('%s(%s)', $this->method, implode(', ', $args));
     }
 
     protected function createSuccessDocument(): DOMDocument {

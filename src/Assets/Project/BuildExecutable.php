@@ -13,10 +13,14 @@ class BuildExecutable extends ExecutableBase {
     /** @var string */
     private string $path;
 
-    protected function parseArguments(FarahUrlArguments $args): bool {
+    protected function parseArguments(FarahUrlArguments $args): void {
+        parent::parseArguments($args);
+
         $this->target = $args->get('target');
         $this->path = $args->get('path');
+    }
 
+    protected function validate(): bool {
         if ($this->target === '') {
             $this->message = "Missing parameter 'target'!";
             return false;
@@ -27,7 +31,15 @@ class BuildExecutable extends ExecutableBase {
             return false;
         }
 
-        return parent::parseArguments($args);
+        return parent::validate();
+    }
+
+    protected function getExecutablePackage(): string {
+        return 'Slothsoft.Unity.Project.Build';
+    }
+
+    protected function getExecutableCall(): string {
+        return sprintf('Build("%s", "%s", "%s")', $this->workspace, $this->path, $this->target);
     }
 
     protected function createSuccessDocument(): DOMDocument {

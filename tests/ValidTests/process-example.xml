@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <result>
-	<process package="Unity.Project.Build" name="Ulisses.Core.Game"
+	<process package="Slothsoft.Unity.Project.Build"
+		name="Build($quot;/path/to/project$quot;, $quot;/path/to/build$quot;, $quot;Windows$quot;)"
 		result="0" stdout="" stderr="" duration="0" start-time="0" />
-	<process package="Unity.Project.Method"
-		name="Ulisses.Core.Failure" result="255" stdout="" stderr="???"
-		message="FAIL" duration="1" start-time="0" />
+	<process package="Slothsoft.Unity.Project.Method"
+		name="Win64()" result="255" stdout="" stderr="???" message="FAIL"
+		duration="1" start-time="0" />
 </result>

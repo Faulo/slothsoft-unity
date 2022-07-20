@@ -17,8 +17,8 @@
 			<xsl:for-each select="process">
 				<xsl:variable name="errors"
 					select="count(self::*[@code!= 0])" />
-				<testsuite id="{position() - 1}" package="{@package}"
-					name="{@name}" hostname="localhost" tests="1" failures="0"
+				<testsuite id="{position() - 1}" package=""
+					name="{@package}" hostname="localhost" tests="1" failures="0"
 					skipped="0" errors="{$errors}" time="{@duration}"
 					timestamp="{php:format-date(@start-time)}">
 					<properties />
@@ -50,7 +50,7 @@
 	</xsl:template>
 
 	<xsl:template match="test-suite">
-		<testsuite package="{ancestor-or-self::test-suite[@type='Assembly']/@name}"
+		<testsuite package=""
 			id="{count(preceding::test-run)}" name="{@classname}" hostname="localhost"
 			tests="{@testcasecount}" failures="{@failed}" skipped="{@skipped}"
 			errors="{@inconclusive}" time="{@duration}"

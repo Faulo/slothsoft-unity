@@ -18,7 +18,10 @@ use Throwable;
 abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     /** @var string */
-    protected string $message;
+    protected string $workspace;
+
+    /** @var string */
+    protected string $message = '';
 
     /** @var UnityProject */
     protected ?UnityProject $project;
@@ -26,21 +29,17 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
     /** @var float */
     private float $startTime;
 
-    /** @var string */
-    private string $packageName;
+    protected function parseArguments(FarahUrlArguments $args): void {
+        $this->workspace = $args->get('workspace');
+    }
 
-    /** @var string */
-    private string $processName;
-
-    protected function parseArguments(FarahUrlArguments $args): bool {
-        $workspace = $args->get('workspace');
-
-        if (! is_dir($workspace)) {
-            $this->message = "Workspace '$workspace' is not a directory!";
+    protected function validate(): bool {
+        if (! is_dir($this->workspace)) {
+            $this->message = "Workspace 'this->workspace' is not a directory!";
             return false;
         }
 
-        $workspace = realpath($workspace);
+        $this->workspace = realpath($this->workspace);
 
         $hub = UnityHub::getInstance();
 
@@ -49,10 +48,10 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
             return false;
         }
 
-        $this->project = $hub->findProject($workspace);
+        $this->project = $hub->findProject($this->workspace);
 
         if (! $this->project) {
-            $this->message = "Workspace '$workspace' does not contain a Unity project!";
+            $this->message = "Workspace '$this->workspace' does not contain a Unity project!";
             return false;
         }
 
@@ -71,15 +70,19 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $this->startTime = microtime(true);
-        $this->packageName = substr(str_replace('/', '.', (string) $context->getUrlPath()), 1);
-        $this->processName = (string) $args;
 
-        $resultBuilder = $this->parseArguments($args) ? $this->createSuccessResult() : $this->createErrorResult();
+        $this->parseArguments($args);
+
+        $resultBuilder = $this->validate() ? $this->createSuccessResult() : $this->createErrorResult();
 
         return new ExecutableStrategies($resultBuilder);
     }
 
     protected abstract function createSuccessDocument(): DOMDocument;
+
+    protected abstract function getExecutablePackage(): string;
+
+    protected abstract function getExecutableCall(): string;
 
     protected function createSuccessResult(): ResultBuilderStrategyInterface {
         $delegate = function (): DOMDocument {
@@ -114,8 +117,8 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
         $rootNode = $document->createElement('result');
 
         $node = $document->createElement('process');
-        $node->setAttribute('package', $this->packageName);
-        $node->setAttribute('name', $this->processName);
+        $node->setAttribute('package', $this->getExecutablePackage());
+        $node->setAttribute('name', $this->getExecutableCall());
         $node->setAttribute('result', (string) $code);
         $node->setAttribute('stdout', $stdout);
         $node->setAttribute('stderr', $stderr);
