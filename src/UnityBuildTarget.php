@@ -35,7 +35,7 @@ class UnityBuildTarget {
             case self::LINUX:
                 switch ($backend) {
                     case self::BACKEND_MONO:
-                        return [
+                        return PHP_OS === 'Linux' ? [] : [
                             'linux-mono'
                         ];
                     case self::BACKEND_IL2CPP:
