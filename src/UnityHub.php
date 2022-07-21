@@ -153,9 +153,9 @@ class UnityHub {
     }
 
     private function loadInstalledEditors(): iterable {
-        $editorPaths = $this->execute('editors', '--installed')->getOutput();
+        $editorPaths = trim($this->execute('editors', '--installed')->getOutput());
         if (strlen($editorPaths)) {
-            foreach (explode(PHP_EOL, trim($editorPaths)) as $line) {
+            foreach (explode(PHP_EOL, $editorPaths) as $line) {
                 $line = explode(', installed at', $line, 2);
                 assert(count($line) === 2);
                 $version = trim($line[0]);
