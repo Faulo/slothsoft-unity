@@ -5,7 +5,6 @@ namespace Slothsoft\Unity;
 use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\Configuration\ConfigurationField;
-use Slothsoft\Farah\Daemon\DaemonClient;
 use Symfony\Component\Process\Process;
 
 class UnityHub {
@@ -16,22 +15,6 @@ class UnityHub {
             $instance = new self();
         }
         return $instance;
-    }
-
-    private static function useDaemon(): ConfigurationField {
-        static $field;
-        if ($field === null) {
-            $field = new ConfigurationField(false);
-        }
-        return $field;
-    }
-
-    public static function setUseDaemon(bool $value): void {
-        self::useDaemon()->setValue($value);
-    }
-
-    public static function getUseDaemon(): bool {
-        return self::useDaemon()->getValue();
     }
 
     private static $licenseFolders = [];
@@ -123,15 +106,6 @@ class UnityHub {
 
     /** @var string[] */
     private ?array $changesets = null;
-
-    /** @var DaemonClient */
-    private ?DaemonClient $daemon = null;
-
-    private function __construct() {
-        if (self::getUseDaemon()) {
-            $this->daemon = new DaemonClient(5050);
-        }
-    }
 
     /**
      *

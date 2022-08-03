@@ -44,8 +44,6 @@
 		}
 	},
 	"bin" : [
-		"scripts/unity-daemon",
-		"scripts/unity-client",
 		"scripts/unity-build",
 		"scripts/unity-tests",
 		"scripts/unity-method"

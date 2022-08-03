@@ -10,16 +10,7 @@ class UnityHubTest extends TestCase {
         $this->assertTrue(class_exists(UnityHub::class));
     }
 
-    public function testUseDaemon(): void {
-        UnityHub::setUseDaemon(true);
-        $this->assertEquals(true, UnityHub::getUseDaemon());
-
-        UnityHub::setUseDaemon(false);
-        $this->assertEquals(false, UnityHub::getUseDaemon());
-    }
-
     public function testHubIsInstalled(): void {
-        UnityHub::setUseDaemon(false);
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
@@ -35,7 +26,6 @@ class UnityHubTest extends TestCase {
     }
 
     public function testExecute(): void {
-        UnityHub::setUseDaemon(false);
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
@@ -52,7 +42,6 @@ class UnityHubTest extends TestCase {
     }
 
     public function testGetEditors(): void {
-        UnityHub::setUseDaemon(false);
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
@@ -73,7 +62,6 @@ class UnityHubTest extends TestCase {
     }
 
     public function testGetEditorPath(): void {
-        UnityHub::setUseDaemon(false);
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
@@ -85,7 +73,6 @@ class UnityHubTest extends TestCase {
     }
 
     public function testGetEditorByVersion(): void {
-        UnityHub::setUseDaemon(false);
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
@@ -109,7 +96,6 @@ class UnityHubTest extends TestCase {
      * @dataProvider validUnityVersions
      */
     public function testCreateEditorInstallation(string $version) {
-        UnityHub::setUseDaemon(false);
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
@@ -135,7 +121,6 @@ class UnityHubTest extends TestCase {
         $licenseFolder = __DIR__ . DIRECTORY_SEPARATOR . 'ValidLicenses';
         $licenseFile = realpath($licenseFolder . DIRECTORY_SEPARATOR . 'Unity_v2022.x.ulf');
 
-        UnityHub::setUseDaemon(false);
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
