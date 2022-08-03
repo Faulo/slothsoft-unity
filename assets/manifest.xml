@@ -8,19 +8,9 @@
 	<fragment name="hub">
 		<custom-asset name="help"
 			executable-builder="Slothsoft\Unity\Assets\Hub\HelpExecutable" />
-		<custom-asset name="install"
-			executable-builder="Slothsoft\Unity\Assets\HubInstallBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\HubParameterFilter" />
 	</fragment>
+
 	<fragment name="project">
-		<custom-asset name="test"
-			executable-builder="Slothsoft\Unity\Assets\ProjectTestBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-		<custom-asset name="install"
-			executable-builder="Slothsoft\Unity\Assets\ProjectInstallBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-
-
 		<custom-asset name="method"
 			executable-builder="Slothsoft\Unity\Assets\Project\MethodExecutable"
 			parameter-filter="Slothsoft\Unity\Assets\Project\MethodParameters" />
@@ -45,19 +35,5 @@
 			<use-template ref="/xsl/to-junit" />
 			<use-document ref="/project/tests" />
 		</fragment>
-	</fragment>
-	<fragment name="git">
-		<custom-asset name="clone"
-			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-		<custom-asset name="fetch"
-			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-		<custom-asset name="pull"
-			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-		<custom-asset name="checkout"
-			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
 	</fragment>
 </assets>
