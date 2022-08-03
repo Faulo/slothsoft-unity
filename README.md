@@ -4,6 +4,7 @@ Farah Module: Unity Stuff
 [![PHP Version Support](https://img.shields.io/packagist/php-v/slothsoft/unity)](https://www.php.net/)
 [![Documentation](https://img.shields.io/badge/docs-reference-blue.svg)](https://faulo.github.io/slothsoft-unity/)
 [![Test Status](../../actions/workflows/ci-tests.yml/badge.svg)](../../actions/workflows/ci-tests.yml)
+[![license badge](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 An API for common Unity problems.
 

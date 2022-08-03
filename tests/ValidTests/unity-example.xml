@@ -1,0 +1,939 @@
+<?xml version="1.0"?>
+<test-run testcasecount="68" total="68" passed="68" failed="0"
+	inconclusive="0" skipped="0" asserts="0">
+	<test-suite type="TestSuite" id="1089" name="Cursed Broom"
+		fullname="Cursed Broom" runstate="Runnable" testcasecount="65"
+		result="Passed" start-time="2022-07-20 09:20:15Z"
+		end-time="2022-07-20 09:20:15Z" duration="0.528513" total="65"
+		passed="65" failed="0" inconclusive="0" skipped="0" asserts="0">
+		<properties />
+		<test-suite type="Assembly" id="1169"
+			name="CursedBroom.Tests.EditMode.dll"
+			fullname="C:/Users/Daniel Schulz/Desktop/Unity/Slothsoft.CursedBroom/Library/ScriptAssemblies/CursedBroom.Tests.EditMode.dll"
+			runstate="Runnable" testcasecount="65" result="Passed"
+			start-time="2022-07-20 09:20:15Z" end-time="2022-07-20 09:20:15Z"
+			duration="0.494761" total="65" passed="65" failed="0"
+			inconclusive="0" skipped="0" asserts="0">
+			<properties>
+				<property name="_PID" value="2848" />
+				<property name="_APPDOMAIN" value="Unity Child Domain" />
+				<property name="platform" value="EditMode" />
+			</properties>
+			<test-suite type="TestSuite" id="1170" name="CursedBroom"
+				fullname="CursedBroom" runstate="Runnable" testcasecount="65"
+				result="Passed" start-time="2022-07-20 09:20:15Z"
+				end-time="2022-07-20 09:20:15Z" duration="0.493617" total="65"
+				passed="65" failed="0" inconclusive="0" skipped="0" asserts="0">
+				<properties />
+				<test-suite type="TestSuite" id="1171" name="Tests"
+					fullname="CursedBroom.Tests" runstate="Runnable" testcasecount="65"
+					result="Passed" start-time="2022-07-20 09:20:15Z"
+					end-time="2022-07-20 09:20:15Z" duration="0.490505" total="65"
+					passed="65" failed="0" inconclusive="0" skipped="0" asserts="0">
+					<properties />
+					<test-suite type="TestSuite" id="1172" name="EditMode"
+						fullname="CursedBroom.Tests.EditMode" runstate="Runnable"
+						testcasecount="65" result="Passed"
+						start-time="2022-07-20 09:20:15Z" end-time="2022-07-20 09:20:15Z"
+						duration="0.487096" total="65" passed="65" failed="0"
+						inconclusive="0" skipped="0" asserts="0">
+						<properties />
+						<test-suite type="TestFixture" id="1090"
+							name="AngleUtilTests"
+							fullname="CursedBroom.Tests.EditMode.AngleUtilTests"
+							classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+							runstate="Runnable" testcasecount="40" result="Passed"
+							start-time="2022-07-20 09:20:15Z" end-time="2022-07-20 09:20:15Z"
+							duration="0.054921" total="40" passed="40" failed="0"
+							inconclusive="0" skipped="0" asserts="0">
+							<properties />
+							<test-suite type="ParameterizedMethod" id="1137"
+								name="TestAlignment"
+								fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestAlignment"
+								classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+								runstate="Runnable" testcasecount="5" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.024123" total="5"
+								passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1132" name="TestAlignment(0,0,1)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestAlignment(0,0,1)"
+									methodname="TestAlignment"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1362470525" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.015388" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1133" name="TestAlignment(0,45,0.707f)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestAlignment(0,45,0.707f)"
+									methodname="TestAlignment"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1590628238" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000160" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1134" name="TestAlignment(0,90,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestAlignment(0,90,0)"
+									methodname="TestAlignment"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1238994323" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000207" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1135"
+									name="TestAlignment(0,135,-0.707f)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestAlignment(0,135,-0.707f)"
+									methodname="TestAlignment"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1058566861" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000108" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1136" name="TestAlignment(0,180,-1)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestAlignment(0,180,-1)"
+									methodname="TestAlignment"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1756580620" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000090" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+							<test-suite type="ParameterizedMethod" id="1115"
+								name="TestDirectionalAngle"
+								fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestDirectionalAngle"
+								classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+								runstate="Runnable" testcasecount="5" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.002552" total="5"
+								passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1110"
+									name="TestDirectionalAngle(0,0,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestDirectionalAngle(0,0,0)"
+									methodname="TestDirectionalAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="666692813" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000278" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1111"
+									name="TestDirectionalAngle(0,1,90)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestDirectionalAngle(0,1,90)"
+									methodname="TestDirectionalAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1649855646" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000503" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1112"
+									name="TestDirectionalAngle(1,0,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestDirectionalAngle(1,0,0)"
+									methodname="TestDirectionalAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1553330170" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000088" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1113"
+									name="TestDirectionalAngle(0,-1,270)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestDirectionalAngle(0,-1,270)"
+									methodname="TestDirectionalAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1953134371" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000082" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1114"
+									name="TestDirectionalAngle(-1,0,180)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestDirectionalAngle(-1,0,180)"
+									methodname="TestDirectionalAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1308869058" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000086" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+							<test-suite type="ParameterizedMethod" id="1117"
+								name="TestDirectionalRotation"
+								fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestDirectionalRotation"
+								classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+								runstate="Runnable" testcasecount="1" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.003077" total="1"
+								passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1116"
+									name="TestDirectionalRotation(0,0,0,0,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestDirectionalRotation(0,0,0,0,0)"
+									methodname="TestDirectionalRotation"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1161469389" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.002016" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+							<test-suite type="ParameterizedMethod" id="1130"
+								name="TestHorizontalAngle"
+								fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalAngle"
+								classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+								runstate="Runnable" testcasecount="2" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.001793" total="2"
+								passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1128" name="TestHorizontalAngle(1,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalAngle(1,0)"
+									methodname="TestHorizontalAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1253575101" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000763" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1129"
+									name="TestHorizontalAngle(-1,180)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalAngle(-1,180)"
+									methodname="TestHorizontalAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="497164391" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000113" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+							<test-case id="1131"
+								name="TestHorizontalAngleThrowsException"
+								fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalAngleThrowsException"
+								methodname="TestHorizontalAngleThrowsException"
+								classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+								runstate="Runnable" seed="417916872" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.003353" asserts="0">
+								<properties />
+							</test-case>
+							<test-suite type="ParameterizedMethod" id="1127"
+								name="TestHorizontalSign"
+								fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign"
+								classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+								runstate="Runnable" testcasecount="9" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.003185" total="9"
+								passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1118" name="TestHorizontalSign(0,0,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign(0,0,0)"
+									methodname="TestHorizontalSign"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="61278227" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000605" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1119" name="TestHorizontalSign(0,1,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign(0,1,0)"
+									methodname="TestHorizontalSign"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1572912890" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000192" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1120" name="TestHorizontalSign(0,-1,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign(0,-1,0)"
+									methodname="TestHorizontalSign"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1681640375" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000092" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1121" name="TestHorizontalSign(1,0,1)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign(1,0,1)"
+									methodname="TestHorizontalSign"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1933662252" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000084" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1122" name="TestHorizontalSign(1,1,1)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign(1,1,1)"
+									methodname="TestHorizontalSign"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1065317332" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000078" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1123" name="TestHorizontalSign(1,-1,1)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign(1,-1,1)"
+									methodname="TestHorizontalSign"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1960612296" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000080" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1124"
+									name="TestHorizontalSign(-1,0,-1)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign(-1,0,-1)"
+									methodname="TestHorizontalSign"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1328854401" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000078" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1125"
+									name="TestHorizontalSign(-1,1,-1)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign(-1,1,-1)"
+									methodname="TestHorizontalSign"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="981840871" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000082" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1126"
+									name="TestHorizontalSign(-1,-1,-1)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestHorizontalSign(-1,-1,-1)"
+									methodname="TestHorizontalSign"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1766484116" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000080" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+							<test-suite type="ParameterizedMethod" id="1099"
+								name="TestNormalizeAngle"
+								fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestNormalizeAngle"
+								classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+								runstate="Runnable" testcasecount="8" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.002310" total="8"
+								passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1091" name="TestNormalizeAngle(-720,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestNormalizeAngle(-720,0)"
+									methodname="TestNormalizeAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="318585444" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000232" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1092" name="TestNormalizeAngle(-360,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestNormalizeAngle(-360,0)"
+									methodname="TestNormalizeAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="442779455" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000083" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1093" name="TestNormalizeAngle(0,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestNormalizeAngle(0,0)"
+									methodname="TestNormalizeAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="586479634" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000079" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1094" name="TestNormalizeAngle(360,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestNormalizeAngle(360,0)"
+									methodname="TestNormalizeAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="228547803" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000077" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1095" name="TestNormalizeAngle(720,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestNormalizeAngle(720,0)"
+									methodname="TestNormalizeAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="321824555" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000079" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1096"
+									name="TestNormalizeAngle(-540,180)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestNormalizeAngle(-540,180)"
+									methodname="TestNormalizeAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="378287672" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000081" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1097"
+									name="TestNormalizeAngle(180,180)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestNormalizeAngle(180,180)"
+									methodname="TestNormalizeAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1291712208" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000077" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1098"
+									name="TestNormalizeAngle(540,180)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestNormalizeAngle(540,180)"
+									methodname="TestNormalizeAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1154966458" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000078" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+							<test-suite type="ParameterizedMethod" id="1109"
+								name="TestRoundAngle"
+								fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle"
+								classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+								runstate="Runnable" testcasecount="9" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.004567" total="9"
+								passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1100" name="TestRoundAngle(0,1,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle(0,1,0)"
+									methodname="TestRoundAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1322282477" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000482" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1101" name="TestRoundAngle(180,1,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle(180,1,0)"
+									methodname="TestRoundAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1243298909" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000116" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1102" name="TestRoundAngle(360,1,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle(360,1,0)"
+									methodname="TestRoundAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="156980546" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000083" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1103" name="TestRoundAngle(45,2,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle(45,2,0)"
+									methodname="TestRoundAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1925984966" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000083" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1104" name="TestRoundAngle(120,2,180)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle(120,2,180)"
+									methodname="TestRoundAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="2110807865" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000081" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1105" name="TestRoundAngle(180,2,180)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle(180,2,180)"
+									methodname="TestRoundAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="2035096047" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000082" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1106" name="TestRoundAngle(45,3,0)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle(45,3,0)"
+									methodname="TestRoundAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1497503671" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000103" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1107" name="TestRoundAngle(120,3,120)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle(120,3,120)"
+									methodname="TestRoundAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="662448038" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000079" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1108" name="TestRoundAngle(-120,3,240)"
+									fullname="CursedBroom.Tests.EditMode.AngleUtilTests.TestRoundAngle(-120,3,240)"
+									methodname="TestRoundAngle"
+									classname="CursedBroom.Tests.EditMode.AngleUtilTests"
+									runstate="Runnable" seed="1314929053" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000084" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+						</test-suite>
+						<test-suite type="TestFixture" id="1138"
+							name="BoundsIntTest"
+							fullname="CursedBroom.Tests.EditMode.BoundsIntTest"
+							classname="CursedBroom.Tests.EditMode.BoundsIntTest"
+							runstate="Runnable" testcasecount="1" result="Passed"
+							start-time="2022-07-20 09:20:15Z" end-time="2022-07-20 09:20:15Z"
+							duration="0.006413" total="1" passed="1" failed="0"
+							inconclusive="0" skipped="0" asserts="0">
+							<properties />
+							<test-case id="1139" name="TestAllPositionsWithin"
+								fullname="CursedBroom.Tests.EditMode.BoundsIntTest.TestAllPositionsWithin"
+								methodname="TestAllPositionsWithin"
+								classname="CursedBroom.Tests.EditMode.BoundsIntTest"
+								runstate="Runnable" seed="965980142" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.005676" asserts="0">
+								<properties />
+							</test-case>
+						</test-suite>
+						<test-suite type="TestSuite" id="1174" name="Level"
+							fullname="CursedBroom.Tests.EditMode.Level" runstate="Runnable"
+							testcasecount="22" result="Passed"
+							start-time="2022-07-20 09:20:15Z" end-time="2022-07-20 09:20:15Z"
+							duration="0.415598" total="22" passed="22" failed="0"
+							inconclusive="0" skipped="0" asserts="0">
+							<properties />
+							<test-suite type="TestFixture" id="1143"
+								name="TileShapeMeshTests"
+								fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+								classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+								runstate="Runnable" testcasecount="10" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.022208" total="10"
+								passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1151" name="TestBigCube"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestBigCube"
+									methodname="TestBigCube"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+									runstate="Runnable" seed="695439696" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.014291" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1147" name="TestEmpty"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestEmpty"
+									methodname="TestEmpty"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+									runstate="Runnable" seed="642545880" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000462" asserts="0">
+									<properties />
+								</test-case>
+								<test-suite type="ParameterizedMethod" id="1146"
+									name="TestExtrusion"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestExtrusion"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+									runstate="Runnable" testcasecount="2" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.001159" total="2"
+									passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+									<properties />
+									<test-case id="1144" name="TestExtrusion(0)"
+										fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestExtrusion(0)"
+										methodname="TestExtrusion"
+										classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+										runstate="Runnable" seed="1484869985" result="Passed"
+										start-time="2022-07-20 09:20:15Z"
+										end-time="2022-07-20 09:20:15Z" duration="0.000366"
+										asserts="0">
+										<properties />
+									</test-case>
+									<test-case id="1145" name="TestExtrusion(1)"
+										fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestExtrusion(1)"
+										methodname="TestExtrusion"
+										classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+										runstate="Runnable" seed="719950712" result="Passed"
+										start-time="2022-07-20 09:20:15Z"
+										end-time="2022-07-20 09:20:15Z" duration="0.000106"
+										asserts="0">
+										<properties />
+									</test-case>
+								</test-suite>
+								<test-case id="1153" name="TestL"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestL"
+									methodname="TestL"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+									runstate="Runnable" seed="623874587" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000472" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1154" name="TestMultiShape"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestMultiShape"
+									methodname="TestMultiShape"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+									runstate="Runnable" seed="2127667491" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000462" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1148" name="TestSmallCube"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestSmallCube"
+									methodname="TestSmallCube"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+									runstate="Runnable" seed="948215771" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000396" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1150" name="TestSmallCubeWithExtrusion"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestSmallCubeWithExtrusion"
+									methodname="TestSmallCubeWithExtrusion"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+									runstate="Runnable" seed="349213649" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000429" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1149" name="TestSmallCubeWithIntrusion"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestSmallCubeWithIntrusion"
+									methodname="TestSmallCubeWithIntrusion"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+									runstate="Runnable" seed="9242464" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000361" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1152" name="TestT"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests.TestT"
+									methodname="TestT"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeMeshTests"
+									runstate="Runnable" seed="1976943192" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000427" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+							<test-suite type="TestFixture" id="1155"
+								name="TileShapeTests"
+								fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+								classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+								runstate="Runnable" testcasecount="12" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.391907" total="12"
+								passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1168"
+									name="MeasureCrossContainsPosition"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.MeasureCrossContainsPosition"
+									methodname="MeasureCrossContainsPosition"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" seed="273107297" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.373787" asserts="0">
+									<properties>
+										<property name="Category" value="Performance" />
+									</properties>
+									<output><![CDATA[Time Millisecond Median:0,06 Min:0,06 Max:0,06 Avg:0,06 Std:0,00 SampleCount: 9 Sum: 0,51
+
+##performancetestresult2:{"Name":"CursedBroom.Tests.EditMode.Level.TileShapeTests.MeasureCrossContainsPosition","Version":"1","Categories":["Performance"],"SampleGroups":[{"Name":"Time","Unit":2,"IncreaseIsBetter":false,"Samples":[0.05819999999999936,0.05819999999999936,0.056300000000021558,0.05660000000000309,0.056199999999989817,0.056300000000021558,0.056100000000014919,0.05660000000000309,0.05639999999999645],"Min":0.056100000000014919,"Max":0.05819999999999936,"Median":0.05639999999999645,"Average":0.056766666666672137,"StandardDeviation":0.0007817359599668983,"Sum":0.5109000000000492}]}
+##performancetestruninfo2:{"TestSuite":"Editmode","Date":1658308815212,"Player":{"Development":true,"ScreenWidth":1920,"ScreenHeight":1080,"ScreenRefreshRate":60,"Fullscreen":false,"Vsync":1,"AntiAliasing":0,"Batchmode":true,"RenderThreadingMode":"GraphicsJobs","GpuSkinning":true,"Platform":"WindowsEditor","ColorSpace":"Linear","AnisotropicFiltering":"Disable","BlendWeights":"TwoBones","GraphicsApi":"Null","ScriptingBackend":"IL2CPP","AndroidTargetSdkVersion":"AndroidApiLevelAuto","AndroidBuildSystem":"Gradle","BuildTarget":"StandaloneWindows64","StereoRenderingPath":"MultiPass"},"Hardware":{"OperatingSystem":"Windows 10  (10.0.17763) 64bit","DeviceModel":"System Product Name (System manufacturer)","DeviceName":"GIL_THALION","ProcessorType":"Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz","ProcessorCount":8,"GraphicsDeviceName":"Null Device","SystemMemorySizeMB":32680},"Editor":{"Version":"2022.1.4f1","Branch":"2022.1/staging","Changeset":"76dd1f94b339","Date":1654065469},"Dependencies":["com.domybest.mybox@1.7.0","com.unity.2d.sprite@1.0.0","com.unity.2d.tilemap@1.0.0","com.unity.2d.tilemap.extras@3.0.2","com.unity.cinemachine@2.8.6","com.unity.editorcoroutines@1.0.0","com.unity.ide.visualstudio@2.0.16","com.unity.inputsystem@1.3.0","com.unity.recorder@3.0.3","com.unity.render-pipelines.universal@13.1.8","com.unity.test-framework@1.1.31","com.unity.test-framework.performance@2.8.1-preview","com.unity.textmeshpro@3.0.6","com.unity.timeline@1.7.1","com.unity.ugui@1.0.0","com.unity.vectorgraphics@2.0.0-preview.19","net.slothsoft.unity-extensions@1.5.2","com.unity.modules.animation@1.0.0","com.unity.modules.audio@1.0.0","com.unity.modules.director@1.0.0","com.unity.modules.imageconversion@1.0.0","com.unity.modules.imgui@1.0.0","com.unity.modules.particlesystem@1.0.0","com.unity.modules.physics@1.0.0","com.unity.modules.physics2d@1.0.0","com.unity.modules.screencapture@1.0.0","com.unity.modules.tilemap@1.0.0","com.unity.modules.ui@1.0.0","com.unity.modules.uielements@1.0.0","com.unity.modules.jsonserialize@1.0.0","com.unity.modules.uielementsnative@1.0.0","com.unity.settings-manager@2.0.1","com.unity.modules.unitywebrequest@1.0.0","com.unity.modules.unitywebrequesttexture@1.0.0","com.unity.modules.unitywebrequestwww@1.0.0","com.unity.ext.nunit@1.0.6","com.unity.mathematics@1.2.6","com.unity.burst@1.7.1","com.unity.render-pipelines.core@13.1.8","com.unity.shadergraph@13.1.8","com.unity.modules.ai@1.0.0","com.unity.modules.unitywebrequestassetbundle@1.0.0","com.unity.modules.unitywebrequestaudio@1.0.0","com.unity.modules.assetbundle@1.0.0","com.unity.searcher@4.9.2"],"Results":[]}
+]]></output>
+								</test-case>
+								<test-case id="1164"
+									name="TestCrossDoesContainCorners"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestCrossDoesContainCorners"
+									methodname="TestCrossDoesContainCorners"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" seed="461436296" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000607" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1165"
+									name="TestCrossDoesNotContainBorders"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestCrossDoesNotContainBorders"
+									methodname="TestCrossDoesNotContainBorders"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" seed="28878392" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000331" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1166"
+									name="TestCrossDoesNotContainOutside"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestCrossDoesNotContainOutside"
+									methodname="TestCrossDoesNotContainOutside"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" seed="407336860" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000237" asserts="0">
+									<properties />
+								</test-case>
+								<test-suite type="ParameterizedMethod" id="1159"
+									name="TestGetShapesNonAlloc"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestGetShapesNonAlloc"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" testcasecount="3" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.008679" total="3"
+									passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+									<properties />
+									<test-case id="1156"
+										name="TestGetShapesNonAlloc(0,4)"
+										fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestGetShapesNonAlloc(0,4)"
+										methodname="TestGetShapesNonAlloc"
+										classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+										runstate="Runnable" seed="1202328279" result="Passed"
+										start-time="2022-07-20 09:20:15Z"
+										end-time="2022-07-20 09:20:15Z" duration="0.006127"
+										asserts="0">
+										<properties />
+									</test-case>
+									<test-case id="1157"
+										name="TestGetShapesNonAlloc(1,1)"
+										fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestGetShapesNonAlloc(1,1)"
+										methodname="TestGetShapesNonAlloc"
+										classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+										runstate="Runnable" seed="934248221" result="Passed"
+										start-time="2022-07-20 09:20:15Z"
+										end-time="2022-07-20 09:20:15Z" duration="0.000258"
+										asserts="0">
+										<properties />
+									</test-case>
+									<test-case id="1158"
+										name="TestGetShapesNonAlloc(2,21)"
+										fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestGetShapesNonAlloc(2,21)"
+										methodname="TestGetShapesNonAlloc"
+										classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+										runstate="Runnable" seed="1142185357" result="Passed"
+										start-time="2022-07-20 09:20:15Z"
+										end-time="2022-07-20 09:20:15Z" duration="0.000824"
+										asserts="0">
+										<properties />
+									</test-case>
+								</test-suite>
+								<test-case id="1161"
+									name="TestSquareDoesContainBorders"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestSquareDoesContainBorders"
+									methodname="TestSquareDoesContainBorders"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" seed="1328300662" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000205" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1160"
+									name="TestSquareDoesContainCorners"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestSquareDoesContainCorners"
+									methodname="TestSquareDoesContainCorners"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" seed="69101950" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000223" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1162"
+									name="TestSquareDoesContainInside"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestSquareDoesContainInside"
+									methodname="TestSquareDoesContainInside"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" seed="1334966538" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000146" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1163"
+									name="TestSquareDoesNotContainOutside"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestSquareDoesNotContainOutside"
+									methodname="TestSquareDoesNotContainOutside"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" seed="1973850300" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000217" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1167" name="TestWeirdDoesContainInside"
+									fullname="CursedBroom.Tests.EditMode.Level.TileShapeTests.TestWeirdDoesContainInside"
+									methodname="TestWeirdDoesContainInside"
+									classname="CursedBroom.Tests.EditMode.Level.TileShapeTests"
+									runstate="Runnable" seed="2054986821" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000153" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+						</test-suite>
+						<test-suite type="TestSuite" id="1173" name="Unity"
+							fullname="CursedBroom.Tests.EditMode.Unity" runstate="Runnable"
+							testcasecount="2" result="Passed"
+							start-time="2022-07-20 09:20:15Z" end-time="2022-07-20 09:20:15Z"
+							duration="0.004625" total="2" passed="2" failed="0"
+							inconclusive="0" skipped="0" asserts="0">
+							<properties />
+							<test-suite type="TestFixture" id="1140"
+								name="StructTests"
+								fullname="CursedBroom.Tests.EditMode.Unity.StructTests"
+								classname="CursedBroom.Tests.EditMode.Unity.StructTests"
+								runstate="Runnable" testcasecount="2" result="Passed"
+								start-time="2022-07-20 09:20:15Z"
+								end-time="2022-07-20 09:20:15Z" duration="0.004161" total="2"
+								passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1141" name="TestStructInField"
+									fullname="CursedBroom.Tests.EditMode.Unity.StructTests.TestStructInField"
+									methodname="TestStructInField"
+									classname="CursedBroom.Tests.EditMode.Unity.StructTests"
+									runstate="Runnable" seed="1690664657" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000231" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1142" name="TestStructInFieldWithRef"
+									fullname="CursedBroom.Tests.EditMode.Unity.StructTests.TestStructInFieldWithRef"
+									methodname="TestStructInFieldWithRef"
+									classname="CursedBroom.Tests.EditMode.Unity.StructTests"
+									runstate="Runnable" seed="324850820" result="Passed"
+									start-time="2022-07-20 09:20:15Z"
+									end-time="2022-07-20 09:20:15Z" duration="0.000185" asserts="0">
+									<properties />
+									<output><![CDATA[Executing cleanup for: Unity.PerformanceTesting.Editor.TestRunBuilder
+]]></output>
+								</test-case>
+							</test-suite>
+						</test-suite>
+					</test-suite>
+				</test-suite>
+			</test-suite>
+		</test-suite>
+	</test-suite>
+
+	<test-suite type="TestSuite" id="1000" name="Cursed Broom"
+		fullname="Cursed Broom" runstate="Runnable" testcasecount="3"
+		result="Passed" start-time="2022-07-20 09:20:35Z"
+		end-time="2022-07-20 09:20:35Z" duration="0.560376" total="3"
+		passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+		<properties />
+		<test-suite type="Assembly" id="1007"
+			name="CursedBroom.Tests.PlayMode.dll"
+			fullname="C:/Users/Daniel Schulz/Desktop/Unity/Slothsoft.CursedBroom/Library/ScriptAssemblies/CursedBroom.Tests.PlayMode.dll"
+			runstate="Runnable" testcasecount="3" result="Passed"
+			start-time="2022-07-20 09:20:35Z" end-time="2022-07-20 09:20:35Z"
+			duration="0.553872" total="3" passed="3" failed="0" inconclusive="0"
+			skipped="0" asserts="0">
+			<properties>
+				<property name="_PID" value="9452" />
+				<property name="_APPDOMAIN" value="Unity Child Domain" />
+				<property name="platform" value="PlayMode" />
+			</properties>
+			<test-suite type="TestSuite" id="1008" name="CursedBroom"
+				fullname="CursedBroom" runstate="Runnable" testcasecount="3"
+				result="Passed" start-time="2022-07-20 09:20:35Z"
+				end-time="2022-07-20 09:20:35Z" duration="0.553127" total="3"
+				passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+				<properties />
+				<test-suite type="TestSuite" id="1009" name="Tests"
+					fullname="CursedBroom.Tests" runstate="Runnable" testcasecount="3"
+					result="Passed" start-time="2022-07-20 09:20:35Z"
+					end-time="2022-07-20 09:20:35Z" duration="0.552799" total="3"
+					passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+					<properties />
+					<test-suite type="TestSuite" id="1010" name="PlayMode"
+						fullname="CursedBroom.Tests.PlayMode" runstate="Runnable"
+						testcasecount="3" result="Passed"
+						start-time="2022-07-20 09:20:35Z" end-time="2022-07-20 09:20:35Z"
+						duration="0.552474" total="3" passed="3" failed="0"
+						inconclusive="0" skipped="0" asserts="0">
+						<properties />
+						<test-suite type="TestSuite" id="1011" name="Unity"
+							fullname="CursedBroom.Tests.PlayMode.Unity" runstate="Runnable"
+							testcasecount="1" result="Passed"
+							start-time="2022-07-20 09:20:35Z" end-time="2022-07-20 09:20:35Z"
+							duration="0.545862" total="1" passed="1" failed="0"
+							inconclusive="0" skipped="0" asserts="0">
+							<properties />
+							<test-suite type="TestFixture" id="1005"
+								name="UpdateTests"
+								fullname="CursedBroom.Tests.PlayMode.Unity.UpdateTests"
+								classname="CursedBroom.Tests.PlayMode.Unity.UpdateTests"
+								runstate="Runnable" testcasecount="1" result="Passed"
+								start-time="2022-07-20 09:20:35Z"
+								end-time="2022-07-20 09:20:35Z" duration="0.544700" total="1"
+								passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1006" name="TestFixedUpdate"
+									fullname="CursedBroom.Tests.PlayMode.Unity.UpdateTests.TestFixedUpdate"
+									methodname="TestFixedUpdate"
+									classname="CursedBroom.Tests.PlayMode.Unity.UpdateTests"
+									runstate="Runnable" seed="854910785" result="Passed"
+									start-time="2022-07-20 09:20:35Z"
+									end-time="2022-07-20 09:20:35Z" duration="0.531328" asserts="0">
+									<properties>
+										<property name="_JOINTYPE" value="UnityCombinatorial" />
+									</properties>
+								</test-case>
+							</test-suite>
+						</test-suite>
+						<test-suite type="TestFixture" id="1001"
+							name="Vector2ExtensionsTests"
+							fullname="CursedBroom.Tests.PlayMode.Vector2ExtensionsTests"
+							classname="CursedBroom.Tests.PlayMode.Vector2ExtensionsTests"
+							runstate="Runnable" testcasecount="2" result="Passed"
+							start-time="2022-07-20 09:20:35Z" end-time="2022-07-20 09:20:35Z"
+							duration="0.006037" total="2" passed="2" failed="0"
+							inconclusive="0" skipped="0" asserts="0">
+							<properties />
+							<test-suite type="ParameterizedMethod" id="1004"
+								name="TestSum"
+								fullname="CursedBroom.Tests.PlayMode.Vector2ExtensionsTests.TestSum"
+								classname="CursedBroom.Tests.PlayMode.Vector2ExtensionsTests"
+								runstate="Runnable" testcasecount="2" result="Passed"
+								start-time="2022-07-20 09:20:35Z"
+								end-time="2022-07-20 09:20:35Z" duration="0.005137" total="2"
+								passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+								<properties />
+								<test-case id="1002"
+									name="TestSum((0.00, 0.00) = (0.00, 0.00))"
+									fullname="CursedBroom.Tests.PlayMode.Vector2ExtensionsTests.TestSum((0.00, 0.00) = (0.00, 0.00))"
+									methodname="TestSum"
+									classname="CursedBroom.Tests.PlayMode.Vector2ExtensionsTests"
+									runstate="Runnable" seed="1431785313" result="Passed"
+									start-time="2022-07-20 09:20:35Z"
+									end-time="2022-07-20 09:20:35Z" duration="0.003610" asserts="0">
+									<properties />
+								</test-case>
+								<test-case id="1003"
+									name="TestSum((0.00, 1.00)+(1.00, 0.00) = (1.00, 1.00))"
+									fullname="CursedBroom.Tests.PlayMode.Vector2ExtensionsTests.TestSum((0.00, 1.00)+(1.00, 0.00) = (1.00, 1.00))"
+									methodname="TestSum"
+									classname="CursedBroom.Tests.PlayMode.Vector2ExtensionsTests"
+									runstate="Runnable" seed="69205033" result="Passed"
+									start-time="2022-07-20 09:20:35Z"
+									end-time="2022-07-20 09:20:35Z" duration="0.000160" asserts="0">
+									<properties />
+								</test-case>
+							</test-suite>
+						</test-suite>
+					</test-suite>
+				</test-suite>
+			</test-suite>
+		</test-suite>
+	</test-suite>
+</test-run>

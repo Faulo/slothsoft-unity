@@ -1,32 +1,39 @@
 <?xml version="1.0"?>
 <assets xmlns="http://schema.slothsoft.net/farah/module">
+	<resource-directory name="xsd"
+		type="application/x-xsd+xml" />
+	<resource-directory name="xsl"
+		type="application/xslt+xml" />
+
 	<fragment name="hub">
 		<custom-asset name="help"
-			executable-builder="Slothsoft\Unity\Assets\HubHelpBuilder" />
-		<custom-asset name="install"
-			executable-builder="Slothsoft\Unity\Assets\HubInstallBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\HubParameterFilter" />
+			executable-builder="Slothsoft\Unity\Assets\Hub\HelpExecutable" />
 	</fragment>
+
 	<fragment name="project">
-		<custom-asset name="test"
-			executable-builder="Slothsoft\Unity\Assets\ProjectTestBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-		<custom-asset name="install"
-			executable-builder="Slothsoft\Unity\Assets\ProjectInstallBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-	</fragment>
-	<fragment name="git">
-		<custom-asset name="clone"
-			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-		<custom-asset name="fetch"
-			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-		<custom-asset name="pull"
-			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
-		<custom-asset name="checkout"
-			executable-builder="Slothsoft\Unity\Assets\GitBuilder"
-			parameter-filter="Slothsoft\Unity\Assets\ProjectParameterFilter" />
+		<custom-asset name="method"
+			executable-builder="Slothsoft\Unity\Assets\Project\MethodExecutable"
+			parameter-filter="Slothsoft\Unity\Assets\Project\MethodParameters" />
+		<custom-asset name="build"
+			executable-builder="Slothsoft\Unity\Assets\Project\BuildExecutable"
+			parameter-filter="Slothsoft\Unity\Assets\Project\BuildParameters" />
+		<custom-asset name="tests"
+			executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable"
+			parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
+
+		<fragment name="method-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/project/method" />
+		</fragment>
+
+		<fragment name="build-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/project/build" />
+		</fragment>
+
+		<fragment name="tests-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/project/tests" />
+		</fragment>
 	</fragment>
 </assets>

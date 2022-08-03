@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Unity\UnityBuildTarget;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+if ($_SERVER['argc'] < 1) {
+    echo <<<'EOT'
+    Run all tests inside a Unity project.
+        
+    Usage:
+    composer exec unity-build "path/to/project" ["path/to/build"] [Platform]
+            
+    EOT;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$workspace = array_shift($args);
+$path = $args[0] ?? $workspace . DIRECTORY_SEPARATOR . 'build';
+$target = $args[1] ?? UnityBuildTarget::WINDOWS;
+
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/build-junit', FarahUrlArguments::createFromValueList([
+    'workspace' => $workspace,
+    'target' => $target,
+    'path' => $path
+]));
+
+readfile((string) $url);

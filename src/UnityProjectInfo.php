@@ -15,11 +15,15 @@ class UnityProjectInfo {
 
     const FILE_PACKAGES = '/Packages/packages-lock.json';
 
-    public static function find(string $directory): ?UnityProjectInfo {
-        foreach (self::findAll($directory) as $info) {
-            return $info;
+    public static function find(string $directory, bool $includeSubdirectories = false): ?UnityProjectInfo {
+        if ($includeSubdirectories) {
+            foreach (self::findAll($directory) as $info) {
+                return $info;
+            }
+            return null;
+        } else {
+            return self::create($directory);
         }
-        return null;
     }
 
     public static function findAll(string $directory): iterable {
@@ -28,25 +32,31 @@ class UnityProjectInfo {
                 return $file->isDir() and $file->getBasename() !== '..';
             });
             foreach ($iterator as $file) {
-                $path = $file->getRealPath();
-                if (is_file($path . self::FILE_VERSION) and is_file($path . self::FILE_SETTINGS) and is_file($path . self::FILE_PACKAGES)) {
-                    yield new UnityProjectInfo($file->getRealPath());
+                if ($project = self::create($file->getRealPath())) {
+                    yield $project;
                 }
             }
         }
     }
 
-    /** @var string */
-    public $path;
+    private static function create(string $directory): ?UnityProjectInfo {
+        if (is_dir($directory) and is_file($directory . self::FILE_VERSION) and is_file($directory . self::FILE_SETTINGS) and is_file($directory . self::FILE_PACKAGES)) {
+            return new UnityProjectInfo($directory);
+        }
+        return null;
+    }
 
     /** @var string */
-    public $editorVersion;
+    public string $path;
+
+    /** @var string */
+    public string $editorVersion;
 
     /** @var array */
-    public $settings;
+    public array $settings;
 
     /** @var array */
-    public $packages;
+    public array $packages;
 
     private function __construct(string $path) {
         $this->path = $path;
