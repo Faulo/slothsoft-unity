@@ -1,0 +1,53 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Unity\Steam\AppBuild;
+use Slothsoft\Core\FileSystem;
+use Slothsoft\Core\Calendar\DateTimeFormatter;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+if ($_SERVER['argc'] < 4) {
+    echo <<<'EOT'
+    Create a steam build file.
+        
+    Usage:
+    composer exec steam-buildfile "path/to/build" "path/to/logs" AppID DepotID [SetLive]
+            
+    EOT;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$buildPath = array_shift($args);
+$logPath = array_shift($args);
+$appId = array_shift($args);
+$depotId = array_shift($args);
+$setLive = $args[0] ?? '';
+
+if (! is_dir($buildPath) or ! FileSystem::scanDir($buildPath)) {
+    throw new InvalidArgumentException("Missing build path '$buildPath'!");
+}
+$buildPath = realpath($buildPath);
+
+if (! is_dir($logPath)) {
+    mkdir($logPath, 0777, true);
+}
+$logPath = realpath($logPath);
+
+$app = new AppBuild($appId, date(DateTimeFormatter::FORMAT_DATETIME), $buildPath, $logPath);
+
+$app->addDepot($depotId);
+
+if ($setLive !== '') {
+    $app->setLive($setLive);
+}
+
+echo (string) $app;
