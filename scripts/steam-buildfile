@@ -39,7 +39,7 @@ foreach ($args as $depot) {
 }
 
 if (! is_dir($buildPath) or ! FileSystem::scanDir($buildPath)) {
-    throw new InvalidArgumentException("Missing build path '$buildPath'!");
+    throw new InvalidArgumentException("Missing root path '$buildPath'!");
 }
 $buildPath = realpath($buildPath);
 
@@ -51,7 +51,11 @@ $logPath = realpath($logPath);
 $app = new AppBuild($appId, date(DateTimeFormatter::FORMAT_DATETIME), $buildPath, $logPath);
 
 foreach ($depots as $id => $path) {
-    $app->addDepot($id, $path);
+    if (! is_dir($buildPath . DIRECTORY_SEPARATOR . $path) or ! FileSystem::scanDir($buildPath . DIRECTORY_SEPARATOR . $path)) {
+        throw new InvalidArgumentException("Missing depot path '$buildPath/$path'!");
+    }
+
+    $app->addDepot((string) $id, $path);
 }
 
 if ($setLive !== '') {
