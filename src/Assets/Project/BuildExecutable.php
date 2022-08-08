@@ -50,7 +50,7 @@ class BuildExecutable extends ExecutableBase {
 
         if ($code !== 0) {
             $result = [];
-            $message = preg_match('~(Build Finished, .+)Cleanup mono~mu', $stdout, $result) ? $result[1] : 'Build failed!';
+            $message = preg_match('~(Build Finished, .+)Cleanup mono~sui', $stdout, $result) ? $result[1] : 'Build failed!';
             $error = ExecutionError::Failure('AssertBuild', $message);
         }
 
