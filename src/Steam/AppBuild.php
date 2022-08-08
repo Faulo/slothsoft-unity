@@ -41,9 +41,9 @@ class AppBuild {
     public function addDepot(string $depotId, string $localPath = '*', string $depotPath = '.', string $recursive = '1'): void {
         $this->data['Depots'][$depotId] = [
             "FileMapping" => [
-                "LocalPath" => "*",
-                "DepotPath" => ".",
-                "recursive" => "1"
+                "LocalPath" => $localPath,
+                "DepotPath" => $depotPath,
+                "recursive" => $recursive
             ]
         ];
     }
