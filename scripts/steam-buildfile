@@ -55,7 +55,7 @@ foreach ($depots as $id => $path) {
         throw new InvalidArgumentException("Missing depot path '$buildPath/$path'!");
     }
 
-    $app->addDepot((string) $id, $path);
+    $app->addDepot((string) $id, "$path/*");
 }
 
 if ($setLive !== '') {
