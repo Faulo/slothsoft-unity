@@ -1,0 +1,65 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Unity\Steam\AppBuild;
+use Slothsoft\Core\FileSystem;
+use Slothsoft\Core\Calendar\DateTimeFormatter;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+if ($_SERVER['argc'] < 4) {
+    echo <<<'EOT'
+    Create a steam build file.
+        
+    Usage:
+    composer exec steam-buildfile "path/to/root" "path/to/logs" AppID [DepotID=path/to/depot]+ [SetLive]
+            
+    EOT;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$buildPath = array_shift($args);
+$logPath = array_shift($args);
+$appId = array_shift($args);
+$depots = [];
+$setLive = '';
+foreach ($args as $depot) {
+    $depot = explode('=', $depot, 2);
+    if (count($depot) === 2) {
+        $depots[$depot[0]] = $depot[1];
+    } else {
+        $setLive = $depot[0];
+    }
+}
+
+if (! is_dir($buildPath) or ! FileSystem::scanDir($buildPath)) {
+    throw new InvalidArgumentException("Missing root path '$buildPath'!");
+}
+$buildPath = realpath($buildPath);
+
+if (! is_dir($logPath)) {
+    mkdir($logPath, 0777, true);
+}
+$logPath = realpath($logPath);
+
+$app = new AppBuild($appId, date(DateTimeFormatter::FORMAT_DATETIME), $buildPath, $logPath);
+
+foreach ($depots as $id => $path) {
+    if (! is_dir($buildPath . DIRECTORY_SEPARATOR . $path) or ! FileSystem::scanDir($buildPath . DIRECTORY_SEPARATOR . $path)) {
+        throw new InvalidArgumentException("Missing depot path '$buildPath/$path'!");
+    }
+
+    $app->addDepot((string) $id, "$path/*");
+}
+
+if ($setLive !== '') {
+    $app->setLive($setLive);
+}
+
+echo (string) $app;

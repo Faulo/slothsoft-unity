@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94c31bf75c2bd2620561a7501fecae03",
+    "content-hash": "127f3d231bc29b8d7cd01fce34cc620c",
     "packages": [
         {
             "name": "guzzlehttp/psr7",
@@ -838,6 +838,46 @@
             "time": "2019-02-05T23:41:09+00:00"
         },
         {
+            "name": "mintopia/vdfkeyvalue",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mintopia/vdfkeyvalue.git",
+                "reference": "57e8e60ea808c50a2078b21e0f2d51b6230f3206"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mintopia/vdfkeyvalue/zipball/57e8e60ea808c50a2078b21e0f2d51b6230f3206",
+                "reference": "57e8e60ea808c50a2078b21e0f2d51b6230f3206",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mintopia\\VDFKeyValue\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jessica Smith",
+                    "email": "jess@mintopia.net"
+                }
+            ],
+            "description": "Encoder for Valve Software's KeyValue data format",
+            "support": {
+                "issues": "https://github.com/mintopia/vdfkeyvalue/issues",
+                "source": "https://github.com/mintopia/vdfkeyvalue/tree/master"
+            },
+            "time": "2017-05-05T09:21:24+00:00"
+        },
+        {
             "name": "mustangostang/spyc",
             "version": "0.6.3",
             "source": {
@@ -1246,16 +1286,16 @@
         },
         {
             "name": "slothsoft/core",
-            "version": "1.8.2",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-core.git",
-                "reference": "d679f8d2ffd7642cacf9664179671523299879cb"
+                "reference": "6fdc348251f7f146121e5686224416907abc44fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/d679f8d2ffd7642cacf9664179671523299879cb",
-                "reference": "d679f8d2ffd7642cacf9664179671523299879cb",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/6fdc348251f7f146121e5686224416907abc44fe",
+                "reference": "6fdc348251f7f146121e5686224416907abc44fe",
                 "shasum": ""
             },
             "require": {
@@ -1274,10 +1314,13 @@
                 "ext-com_dotnet": "*",
                 "ext-curl": "*"
             },
+            "bin": [
+                "scripts/server-clean"
+            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "1.8.x-dev"
+                    "dev-develop": "1.9.x-dev"
                 }
             },
             "autoload": {
@@ -1306,9 +1349,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-core/issues",
-                "source": "https://github.com/Faulo/slothsoft-core/tree/1.8.2"
+                "source": "https://github.com/Faulo/slothsoft-core/tree/1.9.0"
             },
-            "time": "2022-07-15T10:42:40+00:00"
+            "time": "2022-08-06T10:01:26+00:00"
         },
         {
             "name": "slothsoft/farah",

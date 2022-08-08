@@ -86,6 +86,11 @@
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
+	<buildpathentry kind="src" path="vendor/mintopia/vdfkeyvalue/src">
+		<attributes>
+			<attribute name="composer" value="vendor"/>
+		</attributes>
+	</buildpathentry>
 	<buildpathentry kind="src" path="vendor/mustangostang/spyc">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
