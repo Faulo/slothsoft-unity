@@ -521,6 +521,31 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-MLAgents-MLTraining.html#property_runId"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\Steam\\AppBuild",
+            "name": "AppBuild",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Steam-AppBuild.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Steam\\AppBuild\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Steam-AppBuild.html#method___construct"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Steam\\AppBuild\u003A\u003AaddDepot\u0028\u0029",
+            "name": "addDepot",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Steam-AppBuild.html#method_addDepot"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Steam\\AppBuild\u003A\u003AsetLive\u0028\u0029",
+            "name": "setLive",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Steam-AppBuild.html#method_setLive"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Steam\\AppBuild\u003A\u003A__toString\u0028\u0029",
+            "name": "__toString",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Steam-AppBuild.html#method___toString"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityBuildTarget",
             "name": "UnityBuildTarget",
             "summary": "",
@@ -910,5 +935,10 @@ Search.appendIndex(
             "name": "MLAgents",
             "summary": "",
             "url": "namespaces/slothsoft-unity-mlagents.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Steam",
+            "name": "Steam",
+            "summary": "",
+            "url": "namespaces/slothsoft-unity-steam.html"
         }            ]
 );

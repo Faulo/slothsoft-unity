@@ -1286,16 +1286,16 @@
         },
         {
             "name": "slothsoft/core",
-            "version": "1.8.2",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-core.git",
-                "reference": "d679f8d2ffd7642cacf9664179671523299879cb"
+                "reference": "6fdc348251f7f146121e5686224416907abc44fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/d679f8d2ffd7642cacf9664179671523299879cb",
-                "reference": "d679f8d2ffd7642cacf9664179671523299879cb",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/6fdc348251f7f146121e5686224416907abc44fe",
+                "reference": "6fdc348251f7f146121e5686224416907abc44fe",
                 "shasum": ""
             },
             "require": {
@@ -1314,10 +1314,13 @@
                 "ext-com_dotnet": "*",
                 "ext-curl": "*"
             },
+            "bin": [
+                "scripts/server-clean"
+            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "1.8.x-dev"
+                    "dev-develop": "1.9.x-dev"
                 }
             },
             "autoload": {
@@ -1346,9 +1349,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-core/issues",
-                "source": "https://github.com/Faulo/slothsoft-core/tree/1.8.2"
+                "source": "https://github.com/Faulo/slothsoft-core/tree/1.9.0"
             },
-            "time": "2022-07-15T10:42:40+00:00"
+            "time": "2022-08-06T10:01:26+00:00"
         },
         {
             "name": "slothsoft/farah",
