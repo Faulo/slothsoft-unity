@@ -9,8 +9,6 @@ class UnityEditor {
 
     private const LICENSE_SUCCESS = '[Licensing::Module] Serial number assigned to:';
 
-    private const LICENSE_CREATED = '[LicensingClient] Successfully processed ALF generation request:';
-
     /** @var UnityHub */
     public UnityHub $hub;
 
@@ -71,10 +69,9 @@ class UnityEditor {
         }
 
         $log = $this->execute('-quit', '-createManualActivationFile')->getOutput();
-        $position = strpos($log, self::LICENSE_CREATED);
-        if ($position !== false) {
-            $log = explode("\n", substr($log, $position + strlen(self::LICENSE_CREATED)), 2);
-            $log = trim($log[0]);
+        $match = [];
+        if (preg_match('~(Unity_v[^\s]+\.alf)~', $log, $match)) {
+            $log = trim($match[1]);
             if (is_file($log)) {
                 $this->hub->prepareLicense($log);
             }
