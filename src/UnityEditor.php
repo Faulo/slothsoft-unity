@@ -9,8 +9,6 @@ class UnityEditor {
 
     private const LICENSE_SUCCESS = '[Licensing::Module] Serial number assigned to:';
 
-    private const LICENSE_CREATED = '[LicensingClient] Successfully processed ALF generation request:';
-
     /** @var UnityHub */
     public UnityHub $hub;
 
