@@ -32,5 +32,9 @@ class UnityPackage {
 
         return $project;
     }
+
+    public function ensureEditorIsInstalled(): bool {
+        return $this->editor->isInstalled() or $this->editor->install();
+    }
 }
 

@@ -57,6 +57,10 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
             return ExecutionError::Error('AssertPackage', "Workspace '{$this->workspace}' does not contain a Unity package!");
         }
 
+        if (! $this->package->ensureEditorIsInstalled()) {
+            return ExecutionError::Error('AssertEditor', "Editor installation for package '{$this->package}' failed!");
+        }
+
         $this->project = $this->package->createEmptyProject(temp_dir(__NAMESPACE__));
 
         if (! $this->project->ensureEditorIsInstalled()) {

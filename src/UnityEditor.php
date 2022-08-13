@@ -91,11 +91,7 @@ class UnityEditor {
     }
 
     public function createEmptyProject(string $path): UnityProject {
-        $process = $this->execute([
-            '-createProject',
-            $path,
-            '-quit'
-        ]);
+        $process = $this->execute('-createProject', $path, '-quit');
 
         $project = $this->hub->findProject($path, true);
 
