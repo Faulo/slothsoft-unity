@@ -14,6 +14,6 @@ use PHPUnit\Framework\TestCase;
 class ExecutionErrorTest extends TestCase {
 
     public function testClassExists(): void {
-        $this->assertTrue(class_exists(ExecutionError::class), "Failed to load class 'Slothsoft\Unity\Assets\Project\ExecutionError'!");
+        $this->assertTrue(class_exists(ExecutionError::class), "Failed to load class 'Slothsoft\Unity\Assets\ExecutionError'!");
     }
 }
