@@ -54,8 +54,16 @@ class UnityPackage {
         return $project;
     }
 
+    public function getEditorVersion(): string {
+        return $this->editor->version;
+    }
+
     public function ensureEditorIsInstalled(): bool {
         return $this->editor->isInstalled() or $this->editor->install();
+    }
+
+    public function ensureEditorIsLicensed(string $projectPath): bool {
+        return $this->editor->isLicensed($projectPath) or $this->editor->license($projectPath);
     }
 }
 
