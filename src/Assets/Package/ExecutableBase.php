@@ -65,6 +65,11 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
             return ExecutionError::Error('AssertEditor', "Editor installation for package '{$this->package}' failed!");
         }
 
+        if (! is_dir($this->workspace)) {
+            mkdir($this->workspace, 0777, true);
+        }
+        $this->workspace = realpath($this->workspace);
+
         if (! $this->package->ensureEditorIsLicensed($this->workspace)) {
             return ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->package->getEditorVersion()}'.");
         }
