@@ -48,7 +48,7 @@
 		"scripts/unity-build",
 		"scripts/unity-tests",
 		"scripts/unity-method",
-		"scripts/unity-package-tests"
+		"scripts/unity-package-install"
 	],
 	"config" : {
 		"process-timeout" : 0

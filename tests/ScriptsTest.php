@@ -29,14 +29,20 @@ class ScriptsTest extends TestCase {
     }
 
     public function validBinaries(): iterable {
-        yield 'unity-tests' => [
-            'unity-tests'
+        yield 'steam-buildfile' => [
+            'steam-buildfile'
         ];
         yield 'unity-build' => [
             'unity-build'
         ];
         yield 'unity-method' => [
             'unity-method'
+        ];
+        yield 'unity-package-install' => [
+            'unity-package-install'
+        ];
+        yield 'unity-tests' => [
+            'unity-tests'
         ];
     }
 }

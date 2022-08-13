@@ -38,13 +38,13 @@
 	</fragment>
 
 	<fragment name="package">
-		<custom-asset name="tests"
-			executable-builder="Slothsoft\Unity\Assets\Package\TestsExecutable"
-			parameter-filter="Slothsoft\Unity\Assets\Package\TestsParameters" />
+		<custom-asset name="install"
+			executable-builder="Slothsoft\Unity\Assets\Package\InstallExecutable"
+			parameter-filter="Slothsoft\Unity\Assets\Package\InstallParameters" />
 
-		<fragment name="tests-junit">
+		<fragment name="install-junit">
 			<use-template ref="/xsl/to-junit" />
-			<use-document ref="/package/tests" />
+			<use-document ref="/package/install" />
 		</fragment>
 	</fragment>
 </assets>
