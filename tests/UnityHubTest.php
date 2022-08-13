@@ -133,4 +133,18 @@ class UnityHubTest extends TestCase {
             $licenseFile
         ], iterator_to_array($hub->findLicenses('2022.1.4')));
     }
+
+    public function testFindPackage(): void {
+        $packageFolder = __DIR__ . DIRECTORY_SEPARATOR . 'ValidPackage';
+
+        $hub = UnityHub::getInstance();
+        if (! $hub->isInstalled()) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
+
+        $package = $hub->findPackage($packageFolder);
+
+        $this->assertNotNull($package, "Failed to find package!");
+    }
 }

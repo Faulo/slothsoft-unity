@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Slothsoft\Unity\Assets\Project;
+namespace Slothsoft\Unity\Assets\Package;
 
 use Slothsoft\Core\IO\Writable\Delegates\DOMWriterFromDocumentDelegate;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
@@ -10,6 +10,7 @@ use Slothsoft\Farah\Module\Executable\ExecutableStrategies;
 use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\DOMWriterResultBuilder;
 use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ResultBuilderStrategyInterface;
 use Slothsoft\Unity\UnityHub;
+use Slothsoft\Unity\UnityPackage;
 use Slothsoft\Unity\UnityProject;
 use Slothsoft\Unity\Assets\ExecutionError;
 use DOMDocument;
@@ -20,6 +21,9 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
     /** @var string */
     protected string $workspace;
+
+    /** @var UnityPackage */
+    protected ?UnityPackage $package;
 
     /** @var UnityProject */
     protected ?UnityProject $project;
@@ -47,18 +51,20 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
             return ExecutionError::Error('AssertHub', "Failed to find Unity Hub!");
         }
 
-        $this->project = $hub->findProject($this->workspace);
+        $this->package = $hub->findPackage($this->workspace);
 
-        if (! $this->project) {
-            return ExecutionError::Error('AssertProject', "Workspace '{$this->workspace}' does not contain a Unity project!");
+        if (! $this->package) {
+            return ExecutionError::Error('AssertPackage', "Workspace '{$this->workspace}' does not contain a Unity package!");
         }
 
+        $this->project = $this->package->createEmptyProject(temp_dir(__NAMESPACE__));
+
         if (! $this->project->ensureEditorIsInstalled()) {
-            return ExecutionError::Error('AssertEditor', "Editor installation for project '{$this->project}' failed!");
+            return ExecutionError::Error('AssertEditor', "Editor installation for package '{$this->package}' failed!");
         }
 
         if (! $this->project->ensureEditorIsLicensed()) {
-            return ExecutionError::Error('AssertLicense', "Editor for project '{$this->project}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.");
+            return ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.");
         }
 
         return null;
@@ -69,7 +75,11 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
 
         $this->parseArguments($args);
 
-        $this->error = $this->validate();
+        try {
+            $this->error = $this->validate();
+        } catch (Throwable $e) {
+            $this->error = ExecutionError::Error(get_class($e), $e->getMessage(), $e->getTraceAsString());
+        }
 
         $resultBuilder = $this->error ? $this->createErrorResult() : $this->createSuccessResult();
 

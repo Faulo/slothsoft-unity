@@ -4,6 +4,7 @@ namespace Slothsoft\Unity\Assets\Project;
 
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Unity\Assets\ExecutionError;
 use DOMDocument;
 
 class BuildExecutable extends ExecutableBase {

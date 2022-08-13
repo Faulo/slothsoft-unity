@@ -90,6 +90,22 @@ class UnityEditor {
         return $process;
     }
 
+    public function createEmptyProject(string $path): UnityProject {
+        $process = $this->execute([
+            '-createProject',
+            $path,
+            '-quit'
+        ]);
+
+        $project = $this->hub->findProject($path, true);
+
+        if (! $project) {
+            throw new \Exception("Failed to create empty project at '$path'!", $process->getExitCode());
+        }
+
+        return $project;
+    }
+
     private function createProcess(array $arguments): Process {
         $arguments = array_merge([
             $this->executable,

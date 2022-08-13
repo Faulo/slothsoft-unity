@@ -225,6 +225,16 @@ class UnityHub {
         return $args;
     }
 
+    private function inventStableEditorVersion(string $minVersion): string {
+        $this->loadChangesets();
+        foreach (array_keys($this->changesets) as $version) {
+            if (strpos($version, $minVersion) === 0) {
+                return $version;
+            }
+        }
+        throw new \Exception("Failed to find editor that satisfies mininum version requirement '$minVersion'!");
+    }
+
     private function inventChangeset(string $version): string {
         $this->loadChangesets();
 
@@ -323,6 +333,15 @@ class UnityHub {
         if ($info = UnityProjectInfo::find($projectPath, $includeSubdirectories)) {
             $editor = $this->getEditorByVersion($info->editorVersion);
             return new UnityProject($info, $editor);
+        }
+        return null;
+    }
+
+    public function findPackage(string $projectPath, bool $includeSubdirectories = false): ?UnityPackage {
+        if ($info = UnityPackageInfo::find($projectPath, $includeSubdirectories)) {
+            $editorVersion = $this->inventStableEditorVersion($info->getMinEditorVersion());
+            $editor = $this->getEditorByVersion($editorVersion);
+            return new UnityPackage($info, $editor);
         }
         return null;
     }

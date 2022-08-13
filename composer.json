@@ -10,7 +10,7 @@
 	"type" : "library",
 	"require" : {
 		"php" : "7.4 - 8.0",
-		"slothsoft/core" : "^1.8",
+		"slothsoft/core" : "^1.10",
 		"slothsoft/farah" : "^1.9",
 		"symfony/process" : "^5.0",
 		"symfony/filesystem" : "^5.0",
@@ -47,7 +47,8 @@
 		"scripts/steam-buildfile",
 		"scripts/unity-build",
 		"scripts/unity-tests",
-		"scripts/unity-method"
+		"scripts/unity-method",
+		"scripts/unity-package-tests"
 	],
 	"config" : {
 		"process-timeout" : 0

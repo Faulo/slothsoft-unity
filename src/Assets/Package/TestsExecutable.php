@@ -1,6 +1,5 @@
 <?php
-declare(strict_types = 1);
-namespace Slothsoft\Unity\Assets\Project;
+namespace Slothsoft\Unity\Assets\Package;
 
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Unity\Assets\ExecutionError;
@@ -37,4 +36,3 @@ class TestsExecutable extends ExecutableBase {
         return $this->project->runTests(...$this->modes);
     }
 }
-

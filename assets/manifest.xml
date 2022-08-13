@@ -36,4 +36,15 @@
 			<use-document ref="/project/tests" />
 		</fragment>
 	</fragment>
+
+	<fragment name="package">
+		<custom-asset name="tests"
+			executable-builder="Slothsoft\Unity\Assets\Package\TestsExecutable"
+			parameter-filter="Slothsoft\Unity\Assets\Package\TestsParameters" />
+
+		<fragment name="tests-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/package/tests" />
+		</fragment>
+	</fragment>
 </assets>
