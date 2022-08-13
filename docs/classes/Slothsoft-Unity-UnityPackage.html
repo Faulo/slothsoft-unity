@@ -90,7 +90,7 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    UnityEditor
+    UnityPackage
 
     
             <div class="phpdocumentor-element__package">
@@ -104,7 +104,7 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">8</span>
 
@@ -126,94 +126,73 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
-                <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#property_executable">$executable</a>
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#constant_MANIFEST_FILE">MANIFEST_FILE</a>
     <span>
-                &nbsp;: string|null            </span>
+        &nbsp;= DIRECTORY_SEPARATOR . &#039;Packages&#039; . DIRECTORY_SEPARATOR . &#039;manifest.json&#039;                    </span>
 </dt>
 <dd></dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#property_hub">$hub</a>
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#constant_PACKAGES_DIRECTORY">PACKAGES_DIRECTORY</a>
     <span>
-                &nbsp;: <a href="classes/Slothsoft-Unity-UnityHub.html"><abbr title="\Slothsoft\Unity\UnityHub">UnityHub</abbr></a>            </span>
+        &nbsp;= DIRECTORY_SEPARATOR . &#039;Packages&#039; . DIRECTORY_SEPARATOR                    </span>
 </dt>
 <dd></dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#property_version">$version</a>
-    <span>
-                &nbsp;: string            </span>
-</dt>
-<dd></dd>
-
-                <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method___construct">__construct()</a>
+                    <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#method___construct">__construct()</a>
     <span>
                         &nbsp;: mixed    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method___toString">__toString()</a>
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#method___toString">__toString()</a>
     <span>
                         &nbsp;: string    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method_createEmptyProject">createEmptyProject()</a>
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#method_createEmptyProject">createEmptyProject()</a>
     <span>
                         &nbsp;: <a href="classes/Slothsoft-Unity-UnityProject.html"><abbr title="\Slothsoft\Unity\UnityProject">UnityProject</abbr></a>    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method_execute">execute()</a>
-    <span>
-                        &nbsp;: <abbr title="\Symfony\Component\Process\Process">Process</abbr>    </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method_install">install()</a>
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#method_ensureEditorIsInstalled">ensureEditorIsInstalled()</a>
     <span>
                         &nbsp;: bool    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method_installModules">installModules()</a>
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#method_ensureEditorIsLicensed">ensureEditorIsLicensed()</a>
     <span>
                         &nbsp;: bool    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method_isInstalled">isInstalled()</a>
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#method_getEditorVersion">getEditorVersion()</a>
     <span>
-                        &nbsp;: bool    </span>
+                        &nbsp;: string    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method_isLicensed">isLicensed()</a>
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#method_getEmptyManifestFile">getEmptyManifestFile()</a>
     <span>
-                        &nbsp;: bool    </span>
+                        &nbsp;: string    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method_license">license()</a>
+    <a href="classes/Slothsoft-Unity-UnityPackage.html#method_setEmptyManifestFile">setEmptyManifestFile()</a>
     <span>
-                        &nbsp;: bool    </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/Slothsoft-Unity-UnityEditor.html#method_setExecutable">setExecutable()</a>
-    <span>
-                        &nbsp;: mixed    </span>
+                        &nbsp;: void    </span>
 </dt>
 <dd></dd>
 
@@ -222,115 +201,77 @@
 
 
         
-
-        
-    <section class="phpdocumentor-properties">
-        <h3 class="phpdocumentor-elements__header" id="properties">
-            Properties
-            <a href="classes/Slothsoft-Unity-UnityEditor.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+    <section class="phpdocumentor-constants">
+        <h3 class="phpdocumentor-elements__header" id="constants">
+            Constants
+            <a href="classes/Slothsoft-Unity-UnityPackage.html#constants" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_executable">
-        $executable
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#property_executable" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_MANIFEST_FILE">
+        MANIFEST_FILE
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#constant_MANIFEST_FILE" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
+
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">28</span>
 
     </aside>
 
     
-    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string|null</span>
-    <span class="phpdocumentor-signature__name">$executable</span>
-     = <span class="phpdocumentor-signature__default-value">null</span></code>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">MANIFEST_FILE</span>
+    = <span class="phpdocumentor-signature__default-value">DIRECTORY_SEPARATOR . &#039;Packages&#039; . DIRECTORY_SEPARATOR . &#039;manifest.json&#039;</span>
+</code>
 
-    
-    
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
     
 
 </article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_hub">
-        $hub
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#property_hub" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_PACKAGES_DIRECTORY">
+        PACKAGES_DIRECTORY
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#constant_PACKAGES_DIRECTORY" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
+
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">13</span>
+    <span class="phpdocumentor-element-found-in__line">26</span>
 
     </aside>
 
     
-    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <code class="phpdocumentor-signature phpdocumentor-code ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type"><a href="classes/Slothsoft-Unity-UnityHub.html"><abbr title="\Slothsoft\Unity\UnityHub">UnityHub</abbr></a></span>
-    <span class="phpdocumentor-signature__name">$hub</span>
-    </code>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">PACKAGES_DIRECTORY</span>
+    = <span class="phpdocumentor-signature__default-value">DIRECTORY_SEPARATOR . &#039;Packages&#039; . DIRECTORY_SEPARATOR</span>
+</code>
 
-    
-    
-    
 
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_version">
-        $version
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#property_version" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">16</span>
+        <section class="phpdocumentor-description"></section>
 
-    </aside>
+        <section class="phpdocumentor-description"></section>
 
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$version</span>
-    </code>
-
-    
-    
     
 
 </article>
             </section>
 
+        
+
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/Slothsoft-Unity-UnityEditor.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/Slothsoft-Unity-UnityPackage.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="phpdocumentor-element
@@ -340,35 +281,35 @@
 >
     <h4 class="phpdocumentor-element__name" id="method___construct">
         __construct()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">33</span>
+    <span class="phpdocumentor-element-found-in__line">36</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/Slothsoft-Unity-UnityHub.html"><abbr title="\Slothsoft\Unity\UnityHub">UnityHub</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$hub</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/Slothsoft-Unity-UnityPackageInfo.html"><abbr title="\Slothsoft\Unity\UnityPackageInfo">UnityPackageInfo</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$info</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/Slothsoft-Unity-UnityEditor.html"><abbr title="\Slothsoft\Unity\UnityEditor">UnityEditor</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$editor</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$hub</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/Slothsoft-Unity-UnityHub.html"><abbr title="\Slothsoft\Unity\UnityHub">UnityHub</abbr></a></span>
+                <span class="phpdocumentor-signature__argument__name">$info</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/Slothsoft-Unity-UnityPackageInfo.html"><abbr title="\Slothsoft\Unity\UnityPackageInfo">UnityPackageInfo</abbr></a></span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$version</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                <span class="phpdocumentor-signature__argument__name">$editor</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/Slothsoft-Unity-UnityEditor.html"><abbr title="\Slothsoft\Unity\UnityEditor">UnityEditor</abbr></a></span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
@@ -392,12 +333,12 @@
 >
     <h4 class="phpdocumentor-element__name" id="method___toString">
         __toString()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method___toString" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#method___toString" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">38</span>
+    <span class="phpdocumentor-element-found-in__line">41</span>
 
     </aside>
 
@@ -425,12 +366,12 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_createEmptyProject">
         createEmptyProject()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method_createEmptyProject" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#method_createEmptyProject" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">93</span>
+    <span class="phpdocumentor-element-found-in__line">45</span>
 
     </aside>
 
@@ -467,65 +408,21 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_execute">
-        execute()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method_execute" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_ensureEditorIsInstalled">
+        ensureEditorIsInstalled()
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#method_ensureEditorIsInstalled" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">83</span>
+    <span class="phpdocumentor-element-found-in__line">61</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">execute</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__variadic-operator">...</span><span class="phpdocumentor-signature__argument__name">$arguments</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Symfony\Component\Process\Process">Process</abbr></span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$arguments</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-            </dl>
-
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><abbr title="\Symfony\Component\Process\Process">Process</abbr></span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_install">
-        install()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method_install" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">47</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">install</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+                <span class="phpdocumentor-signature__name">ensureEditorIsInstalled</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -544,98 +441,21 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_installModules">
-        installModules()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method_installModules" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_ensureEditorIsLicensed">
+        ensureEditorIsLicensed()
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#method_ensureEditorIsLicensed" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">52</span>
+    <span class="phpdocumentor-element-found-in__line">65</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">installModules</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__variadic-operator">...</span><span class="phpdocumentor-signature__argument__name">$modules</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$modules</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-            </dl>
-
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_isInstalled">
-        isInstalled()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method_isInstalled" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">21</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">isInstalled</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-    
-    
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_isLicensed">
-        isLicensed()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method_isLicensed" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">25</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">isLicensed</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$projectPath</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+                <span class="phpdocumentor-signature__name">ensureEditorIsLicensed</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$projectPath</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -665,40 +485,29 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_license">
-        license()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method_license" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_getEditorVersion">
+        getEditorVersion()
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#method_getEditorVersion" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">62</span>
+    <span class="phpdocumentor-element-found-in__line">57</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">license</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$projectPath</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+                <span class="phpdocumentor-signature__name">getEditorVersion</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
         <section class="phpdocumentor-description"></section>
 
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$projectPath</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
-            </dd>
-            </dl>
-
+    
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
+    <span class="phpdocumentor-signature__response_type">string</span>
             &mdash;
         
     
@@ -707,30 +516,63 @@
         class="phpdocumentor-element
             -method
             -public
-                                                        "
+                                    -static                    "
 >
-    <h4 class="phpdocumentor-element__name" id="method_setExecutable">
-        setExecutable()
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#method_setExecutable" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_getEmptyManifestFile">
+        getEmptyManifestFile()
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#method_getEmptyManifestFile" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityEditor.php"><a href="files/src-unityeditor.html"><abbr title="src/UnityEditor.php">UnityEditor.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">42</span>
+    <span class="phpdocumentor-element-found-in__line">22</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">setExecutable</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$executable</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+            <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__name">getEmptyManifestFile</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                    -static                    "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setEmptyManifestFile">
+        setEmptyManifestFile()
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#method_setEmptyManifestFile" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityPackage.php"><a href="files/src-unitypackage.html"><abbr title="src/UnityPackage.php">UnityPackage.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">18</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__name">setEmptyManifestFile</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
         <section class="phpdocumentor-description"></section>
 
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$executable</span>
+                <span class="phpdocumentor-signature__argument__name">$value</span>
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
@@ -742,7 +584,7 @@
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
+    <span class="phpdocumentor-signature__response_type">void</span>
             &mdash;
         
     
@@ -825,7 +667,7 @@
 </section>
             </div>
         </div>
-        <a href="classes/Slothsoft-Unity-UnityEditor.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/Slothsoft-Unity-UnityPackage.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

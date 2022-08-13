@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Project;
 
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Unity\Assets\ExecutionError;
 use DOMDocument;
 
 class TestsExecutable extends ExecutableBase {

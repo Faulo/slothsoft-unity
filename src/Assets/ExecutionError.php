@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Slothsoft\Unity\Assets\Project;
+namespace Slothsoft\Unity\Assets;
 
 use DOMDocument;
 use DOMElement;

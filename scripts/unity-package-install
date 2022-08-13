@@ -1,0 +1,34 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+if ($_SERVER['argc'] < 2) {
+    echo <<<'EOT'
+    Install a package in a new Unity project.
+        
+    Usage:
+    composer exec unity-package-install "path/to/project/Packages/path-to-package" "path/to/new-project"
+            
+    EOT;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$package = array_shift($args);
+$workspace = array_shift($args);
+
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/package/install-junit', FarahUrlArguments::createFromValueList([
+    'package' => $package,
+    'workspace' => $workspace
+]));
+
+readfile((string) $url);

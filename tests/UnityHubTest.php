@@ -117,9 +117,11 @@ class UnityHubTest extends TestCase {
         ];
     }
 
+    const VALID_LICENSE_DIRECTORY = __DIR__ . '/../test-files/ValidLicenses';
+
     public function testFindLicenses(): void {
-        $licenseFolder = __DIR__ . DIRECTORY_SEPARATOR . 'ValidLicenses';
-        $licenseFile = realpath($licenseFolder . DIRECTORY_SEPARATOR . 'Unity_v2022.x.ulf');
+        $licenseFolder = self::VALID_LICENSE_DIRECTORY;
+        $licenseFile = realpath(self::VALID_LICENSE_DIRECTORY . DIRECTORY_SEPARATOR . 'Unity_v2022.x.ulf');
 
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
@@ -132,5 +134,21 @@ class UnityHubTest extends TestCase {
         $this->assertEquals([
             $licenseFile
         ], iterator_to_array($hub->findLicenses('2022.1.4')));
+    }
+
+    const VALID_PACKAGE_DIRECTORY = __DIR__ . '/../test-files/ValidPackage';
+
+    public function testFindPackage(): void {
+        $packageFolder = self::VALID_PACKAGE_DIRECTORY;
+
+        $hub = UnityHub::getInstance();
+        if (! $hub->isInstalled()) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
+
+        $package = $hub->findPackage($packageFolder);
+
+        $this->assertNotNull($package, "Failed to find package!");
     }
 }

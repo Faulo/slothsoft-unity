@@ -12,7 +12,7 @@ class JUnitTest extends TestCase {
 
     const TEMPLATE_DOCUMENT = 'farah://slothsoft@unity/xsl/to-junit';
 
-    const EXAMPLE_DIRECTORY = __DIR__ . DIRECTORY_SEPARATOR . 'ValidTests';
+    const EXAMPLE_DIRECTORY = __DIR__ . '/../test-files/ValidTests';
 
     /**
      *
