@@ -3,10 +3,29 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Slothsoft\Core\FileSystem;
+use Slothsoft\Core\Configuration\ConfigurationField;
 
 class UnityPackage {
 
-    const DIRECTORY_PACKAGE = DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR;
+    private static function emptyManifestFile(): ConfigurationField {
+        static $field;
+        if ($field === null) {
+            $field = new ConfigurationField();
+        }
+        return $field;
+    }
+
+    public static function setEmptyManifestFile(string $value): void {
+        self::emptyManifestFile()->setValue($value);
+    }
+
+    public static function getEmptyManifestFile(): string {
+        return self::emptyManifestFile()->getValue();
+    }
+
+    const PACKAGES_DIRECTORY = DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR;
+
+    const MANIFEST_FILE = DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'manifest.json';
 
     /** @var UnityPackageInfo */
     private UnityPackageInfo $info;
@@ -28,7 +47,9 @@ class UnityPackage {
 
         $path = $project->getProjectPath();
 
-        FileSystem::copy($this->info->path, $path . self::DIRECTORY_PACKAGE . $this->info->getPackageName());
+        FileSystem::copy(self::getEmptyManifestFile(), $path . self::MANIFEST_FILE);
+
+        FileSystem::copy($this->info->path, $path . self::PACKAGES_DIRECTORY . $this->info->getPackageName());
 
         return $project;
     }

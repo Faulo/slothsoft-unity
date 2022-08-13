@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "com.unity.test-framework": "1.1.33"
+  },
+  "scopedRegistries": [
+    {  
+      "name": "Ulisses",  
+      "url": "http://85.215.209.193:4873/",  
+      "scopes": [ "de.ulisses-spiele" ]
+    }
+  ]
+}
