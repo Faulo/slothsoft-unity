@@ -10,6 +10,6 @@ class InstallExecutable extends ExecutableBase {
     }
 
     protected function createSuccessDocument(): DOMDocument {
-        return $this->createResultDocument(0, '', '');
+        return $this->createResultDocument(0, '', '', null);
     }
 }
