@@ -19,7 +19,7 @@ class ExecutionError extends Exception {
     }
 
     private static function FromProcess(string $tag, string $type, string $message, ?Process $process): ExecutionError {
-        return $process ? new self($tag, $type, $message) : new self($tag, $type, $message, $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput());
+        return $process ? new self($tag, $type, $message, $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput()) : new self($tag, $type, $message);
     }
 
     public static function Exception(Throwable $e): ExecutionError {
