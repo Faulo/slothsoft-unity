@@ -23,7 +23,7 @@ class ExecutionError extends Exception {
     }
 
     public static function Exception(Throwable $e): ExecutionError {
-        return new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString());
+        return new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), 'STDOUT', 'STDERR');
     }
 
     /** @var string */
