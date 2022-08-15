@@ -3,10 +3,10 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Project;
 
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
-use Slothsoft\Unity\Assets\ExecutionError;
+use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class MethodExecutable extends ExecutableBase {
+class MethodExecutable extends ProjectExecutableBase {
 
     /** @var string */
     private string $method;
@@ -21,12 +21,12 @@ class MethodExecutable extends ExecutableBase {
         $this->arguments = $args->get('args');
     }
 
-    protected function validate(): ?ExecutionError {
-        if ($this->method === '') {
-            return ExecutionError::Error('AssertParameter', "Missing parameter 'method'!");
-        }
+    protected function validate(): void {
+        parent::validate();
 
-        return parent::validate();
+        if ($this->method === '') {
+            throw ExecutionError::Error('AssertParameter', "Missing parameter 'method'!");
+        }
     }
 
     protected function getExecutableCall(): string {
@@ -37,18 +37,14 @@ class MethodExecutable extends ExecutableBase {
         return sprintf('%s(%s)', $this->method, implode(', ', $args));
     }
 
-    protected function createSuccessDocument(): DOMDocument {
+    protected function createResultDocument(): ?DOMDocument {
         $result = $this->project->executeMethod($this->method, $this->arguments);
-        $code = $result->getExitCode();
-        $stdout = $result->getOutput();
-        $stderr = $result->getErrorOutput();
-        $error = null;
 
-        if ($code !== 0) {
-            $error = ExecutionError::Failure('AssertMethod', "Calling method '{$this->method}' failed!");
+        if ($result->getExitCode() !== 0) {
+            throw ExecutionError::Failure('AssertMethod', "Calling method '{$this->method}' failed!", $result);
         }
 
-        return $this->createResultDocument($code, $stdout, $stderr, $error);
+        return null;
     }
 }
 

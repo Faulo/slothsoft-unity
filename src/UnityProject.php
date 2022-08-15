@@ -121,6 +121,12 @@ class UnityProject {
 
         $result = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath . DIRECTORY_SEPARATOR . $buildExecutable));
 
+        if ($result->getExitCode() !== 0 or count(FileSystem::scanDir($this->path)) === 0) {
+            $matches = [];
+            $message = preg_match('~(Build Finished, .+)Cleanup mono~sui', $result->getOutput(), $matches) ? $matches[1] : 'Build failed!';
+            throw ExecutionError::Error('AssertBuild', $message, $result);
+        }
+
         foreach (self::BUILD_FOLDERS as $folder) {
             FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . pathinfo($buildExecutable, PATHINFO_FILENAME) . $folder);
         }

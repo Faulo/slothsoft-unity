@@ -2,12 +2,11 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Project;
 
-use Slothsoft\Core\FileSystem;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
-use Slothsoft\Unity\Assets\ExecutionError;
+use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class BuildExecutable extends ExecutableBase {
+class BuildExecutable extends ProjectExecutableBase {
 
     /** @var string */
     private string $target;
@@ -22,40 +21,25 @@ class BuildExecutable extends ExecutableBase {
         $this->path = $args->get('path');
     }
 
-    protected function validate(): ?ExecutionError {
+    protected function validate(): void {
+        parent::validate();
+
         if ($this->target === '') {
-            return ExecutionError::Error('AssertParameter', "Missing parameter 'target'!");
+            throw ExecutionError::Error('AssertParameter', "Missing parameter 'target'!");
         }
 
         if ($this->path === '') {
-            return ExecutionError::Error('AssertParameter', "Missing parameter 'path'!");
+            throw ExecutionError::Error('AssertParameter', "Missing parameter 'path'!");
         }
-
-        return parent::validate();
     }
 
     protected function getExecutableCall(): string {
         return sprintf('Build("%s")', $this->target);
     }
 
-    protected function createSuccessDocument(): DOMDocument {
-        $result = $this->project->build($this->target, $this->path);
-        $code = $result->getExitCode();
-        $stdout = $result->getOutput();
-        $stderr = $result->getErrorOutput();
-        $error = null;
-
-        if ($code === 0 and count(FileSystem::scanDir($this->path)) === 0) {
-            $code = - 1;
-        }
-
-        if ($code !== 0) {
-            $result = [];
-            $message = preg_match('~(Build Finished, .+)Cleanup mono~sui', $stdout, $result) ? $result[1] : 'Build failed!';
-            $error = ExecutionError::Failure('AssertBuild', $message);
-        }
-
-        return $this->createResultDocument($code, $stdout, $stderr, $error);
+    protected function createResultDocument(): ?DOMDocument {
+        $this->project->build($this->target, $this->path);
+        return null;
     }
 }
 

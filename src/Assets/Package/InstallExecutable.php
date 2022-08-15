@@ -1,15 +1,51 @@
 <?php
 namespace Slothsoft\Unity\Assets\Package;
 
+use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class InstallExecutable extends ExecutableBase {
+class InstallExecutable extends PackageExecutableBase {
 
-    protected function getExecutableCall(): string {
-        return 'InstallPackage()';
+    /** @var string */
+    private string $workspace;
+
+    protected function parseArguments(FarahUrlArguments $args): void {
+        parent::parseArguments($args);
+
+        $this->workspace = $args->get('workspace');
     }
 
-    protected function createSuccessDocument(): DOMDocument {
-        return $this->createResultDocument(0, '', '', null);
+    protected function validate(): void {
+        parent::validate();
+
+        if (! is_dir($this->workspace)) {
+            mkdir($this->workspace, 0777, true);
+        }
+        $this->workspace = realpath($this->workspace);
+
+        if (! $this->package->ensureEditorIsLicensed($this->workspace)) {
+            throw ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->package->getEditorVersion()}'.");
+        }
+    }
+
+    protected function getExecutableCall(): string {
+        return sprintf('CreateProjectWithPackage("%s")', $this->workspace);
+    }
+
+    protected function createResultDocument(): ?DOMDocument {
+        $this->project = $this->package->createEmptyProject($this->workspace);
+
+        $this->workspace = $this->project->getProjectPath();
+
+        if (! $this->project->ensureEditorIsInstalled()) {
+            throw ExecutionError::Error('AssertEditor', "Editor installation for package '{$this->package}' failed!");
+        }
+
+        if (! $this->project->ensureEditorIsLicensed()) {
+            throw ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.");
+        }
+
+        return null;
     }
 }

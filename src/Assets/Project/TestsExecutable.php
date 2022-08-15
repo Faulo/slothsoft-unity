@@ -3,10 +3,10 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Project;
 
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
-use Slothsoft\Unity\Assets\ExecutionError;
+use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class TestsExecutable extends ExecutableBase {
+class TestsExecutable extends ProjectExecutableBase {
 
     /** @var string[] */
     private array $modes;
@@ -17,12 +17,12 @@ class TestsExecutable extends ExecutableBase {
         $this->modes = $args->get('modes');
     }
 
-    protected function validate(): ?ExecutionError {
-        if (! $this->modes) {
-            return ExecutionError::Error('AssertParameter', "Parameter 'modes' must not be empty!");
-        }
+    protected function validate(): void {
+        parent::validate();
 
-        return parent::validate();
+        if (! $this->modes) {
+            throw ExecutionError::Error('AssertParameter', "Parameter 'modes' must not be empty!");
+        }
     }
 
     protected function getExecutableCall(): string {
@@ -33,7 +33,7 @@ class TestsExecutable extends ExecutableBase {
         return sprintf('RunTests(%s)', implode(', ', $args));
     }
 
-    protected function createSuccessDocument(): DOMDocument {
+    protected function createResultDocument(): ?DOMDocument {
         return $this->project->runTests(...$this->modes);
     }
 }
