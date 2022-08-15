@@ -15,7 +15,7 @@ class ExecutionError extends Exception {
     }
 
     public static function Error(string $type, string $message, ?Process $process = null): ExecutionError {
-        return self::FromProcess('error', $type, $message, $process);
+        return self::FromProcess('failure', $type, $message, $process);
     }
 
     private static function FromProcess(string $tag, string $type, string $message, ?Process $process): ExecutionError {
