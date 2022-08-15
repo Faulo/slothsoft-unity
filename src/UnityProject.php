@@ -7,7 +7,6 @@ use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 use DOMDocument;
 use InvalidArgumentException;
-use LogicException;
 
 class UnityProject {
 
@@ -74,10 +73,10 @@ class UnityProject {
         foreach ($testPlatforms as $testPlatform) {
             $resultsFile = temp_file(__CLASS__);
 
-            $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
+            $process = $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
 
             if (! is_file($resultsFile)) {
-                throw new LogicException("Failed to create test results for test mode '$testPlatform' in file '$resultsFile'.");
+                throw ExecutionError::Error('AssertTestResult', "Failed to create test results for test mode '$testPlatform' in file '$resultsFile'.", $process);
             }
 
             $resultsDoc = DOMHelper::loadDocument($resultsFile);
