@@ -11,15 +11,15 @@ use Throwable;
 class ExecutionError extends Exception {
 
     public static function Failure(string $type, string $message, ?Process $process = null): ExecutionError {
-        return self::FromProcess('failure', $type, $message);
+        return self::FromProcess('failure', $type, $message, $process);
     }
 
     public static function Error(string $type, string $message, ?Process $process = null): ExecutionError {
-        return self::FromProcess('error', $type, $message);
+        return self::FromProcess('error', $type, $message, $process);
     }
 
     private static function FromProcess(string $tag, string $type, string $message, ?Process $process): ExecutionError {
-        return $process ? new self('error', $type, $message) : new self('error', $type, $message, $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput());
+        return $process ? new self($tag, $type, $message) : new self($tag, $type, $message, $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput());
     }
 
     public static function Exception(Throwable $e): ExecutionError {
