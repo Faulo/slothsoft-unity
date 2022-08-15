@@ -76,7 +76,7 @@ class UnityProject {
             $process = $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
 
             if (! is_file($resultsFile)) {
-                throw ExecutionError::Error('AssertTestResult', "Failed to create test results for test mode '$testPlatform' in file '$resultsFile'.", $process);
+                throw ExecutionError::Error('AssertTestResult', "Failed to create test results for test mode '$testPlatform' in file '$resultsFile'. Output: " . $process->getOutput(), $process);
             }
 
             $resultsDoc = DOMHelper::loadDocument($resultsFile);
@@ -108,7 +108,7 @@ class UnityProject {
             mkdir($buildPath, 0777, true);
         }
         if (realpath($buildPath) === false) {
-            throw new InvalidArgumentException("Failed to resolve build path '$buildPath'!");
+            throw ExecutionError::Error('AssertDirectory', "Failed to resolve build path '$buildPath'!");
         }
         $buildPath = realpath($buildPath);
 
