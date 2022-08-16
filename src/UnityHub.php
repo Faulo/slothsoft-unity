@@ -229,12 +229,18 @@ class UnityHub {
 
     private function inventStableEditorVersion(string $minVersion): string {
         $this->loadChangesets();
+        $maxVersion = null;
         foreach (array_keys($this->changesets) as $version) {
-            if (strpos($version, $minVersion) === 0) {
-                return $version;
+            if (version_compare($version, $minVersion, '>=')) {
+                if ($maxVersion === null or version_compare($version, $maxVersion, '<')) {
+                    $maxVersion = $version;
+                }
             }
         }
-        throw ExecutionError::Error('AssertEditorVersion', "Failed to find editor that satisfies mininum version requirement '$minVersion'!");
+        if ($maxVersion === null) {
+            throw ExecutionError::Error('AssertEditorVersion', "Failed to find editor that satisfies mininum version requirement '$minVersion'!");
+        }
+        return $maxVersion;
     }
 
     private function inventChangeset(string $version): string {
