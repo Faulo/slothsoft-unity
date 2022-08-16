@@ -15,15 +15,15 @@ class ExecutionError extends Exception {
     }
 
     public static function Error(string $type, string $message, ?Process $process = null): ExecutionError {
-        return self::FromProcess('failure', $type, $message, $process);
+        return self::FromProcess('error', $type, $message, $process);
     }
 
     private static function FromProcess(string $tag, string $type, string $message, ?Process $process): ExecutionError {
         return $process ? new self($tag, $type, $message, $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput()) : new self($tag, $type, $message);
     }
 
-    public static function Exception(Throwable $e): ExecutionError {
-        return new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), 'STDOUT', 'STDERR');
+    public static function Exception(Throwable $e, ?Process $process = null): ExecutionError {
+        return $process ? new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), $process->getOutput(), $process->getErrorOutput()) : new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), '', (string) $e);
     }
 
     /** @var string */

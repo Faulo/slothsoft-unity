@@ -4,7 +4,6 @@ namespace Slothsoft\Unity;
 
 use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
-use RuntimeException;
 
 class UnityPackageInfo {
 
@@ -65,7 +64,7 @@ class UnityPackageInfo {
         if (is_array($package)) {
             return $package;
         }
-        throw new RuntimeException("Unable to determine packages for project '$this->path'!");
+        throw ExecutionError::Error('AssertPackageInfo', "Unable to determine packages for project '$this->path'!");
     }
 }
 

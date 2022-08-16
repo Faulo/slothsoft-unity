@@ -24,7 +24,7 @@ class TestsExecutable extends ProjectExecutableBase {
             throw ExecutionError::Error('AssertParameter', "Parameter 'modes' must not be empty!");
         }
     }
-    
+
     protected function getExecutablePackage(): string {
         return 'ContinuousIntegration.Project.RunTests.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->workspace));
     }

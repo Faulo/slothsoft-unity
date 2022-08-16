@@ -6,6 +6,8 @@ use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\Configuration\ConfigurationField;
 use Symfony\Component\Process\Process;
+use InvalidArgumentException;
+use Throwable;
 
 class UnityHub {
 
@@ -21,7 +23,7 @@ class UnityHub {
 
     public static function addLicenseFolder(string $folder): void {
         if (! is_dir($folder)) {
-            throw new \InvalidArgumentException("Folder '$folder' does not exist!");
+            throw new InvalidArgumentException("Folder '$folder' does not exist!");
         }
         self::$licenseFolders[] = $folder;
     }
@@ -232,7 +234,7 @@ class UnityHub {
                 return $version;
             }
         }
-        throw new \Exception("Failed to find editor that satisfies mininum version requirement '$minVersion'!");
+        throw ExecutionError::Error('AssertEditorVersion', "Failed to find editor that satisfies mininum version requirement '$minVersion'!");
     }
 
     private function inventChangeset(string $version): string {
@@ -258,7 +260,7 @@ class UnityHub {
             }
         }
 
-        throw new \LogicException("Failed to determine changeset ID for Unity version '{$version}'!");
+        throw ExecutionError::Error('AssertEditorChangeset', "Failed to determine changeset ID for Unity version '{$version}'!");
     }
 
     public function createModuleInstallation(string $version, array $modules = []): array {
@@ -294,11 +296,15 @@ class UnityHub {
 
         $process->setTimeout(self::getProcessTimeout());
 
-        $process->run(function (string $type, string $data): void {
-            if (self::getLoggingEnabled() or $type === Process::ERR) {
-                fwrite(STDERR, $data);
-            }
-        });
+        try {
+            $process->run(function (string $type, string $data): void {
+                if (self::getLoggingEnabled() or $type === Process::ERR) {
+                    fwrite(STDERR, $data);
+                }
+            });
+        } catch (Throwable $e) {
+            throw ExecutionError::Exception($e, $process);
+        }
     }
 
     private function scanForSubDirectories(string $directory): iterable {
