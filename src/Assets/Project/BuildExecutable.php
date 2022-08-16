@@ -32,6 +32,10 @@ class BuildExecutable extends ProjectExecutableBase {
             throw ExecutionError::Error('AssertParameter', "Missing parameter 'path'!");
         }
     }
+    
+    protected function getExecutablePackage(): string {
+        return 'ContinuousIntegration.Project.Build.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->workspace));
+    }
 
     protected function getExecutableCall(): string {
         return sprintf('Build("%s")', $this->target);

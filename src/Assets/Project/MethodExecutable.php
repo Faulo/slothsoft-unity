@@ -28,6 +28,10 @@ class MethodExecutable extends ProjectExecutableBase {
             throw ExecutionError::Error('AssertParameter', "Missing parameter 'method'!");
         }
     }
+    
+    protected function getExecutablePackage(): string {
+        return 'ContinuousIntegration.Project.CallMethod.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->workspace));
+    }
 
     protected function getExecutableCall(): string {
         $args = [];

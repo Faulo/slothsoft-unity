@@ -48,9 +48,5 @@ abstract class ProjectExecutableBase extends ExecutableBase implements Executabl
             throw ExecutionError::Error('AssertLicense', "Editor for project '{$this->project}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.");
         }
     }
-
-    protected function getExecutablePackage(): string {
-        return 'ContinuousIntegration.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->workspace));
-    }
 }
 

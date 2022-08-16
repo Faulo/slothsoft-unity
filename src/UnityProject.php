@@ -6,7 +6,6 @@ use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 use DOMDocument;
-use InvalidArgumentException;
 
 class UnityProject {
 

@@ -29,9 +29,13 @@ class InstallExecutable extends PackageExecutableBase {
             throw ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->package->getEditorVersion()}'.");
         }
     }
+    
+    protected function getExecutablePackage(): string {
+        return 'ContinuousIntegration.Package.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->packageDirectory));
+    }
 
     protected function getExecutableCall(): string {
-        return sprintf('CreateProjectWithPackage("%s")', $this->workspace);
+        return sprintf('CreateEmptyProject("%s")', $this->workspace);
     }
 
     protected function createResultDocument(): ?DOMDocument {

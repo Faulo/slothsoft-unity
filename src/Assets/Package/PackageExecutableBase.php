@@ -44,9 +44,5 @@ abstract class PackageExecutableBase extends ExecutableBase implements Executabl
             throw ExecutionError::Error('AssertEditor', "Editor installation for package '{$this->package}' failed!");
         }
     }
-
-    protected function getExecutablePackage(): string {
-        return 'ContinuousIntegration.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->packageDirectory));
-    }
 }
 
