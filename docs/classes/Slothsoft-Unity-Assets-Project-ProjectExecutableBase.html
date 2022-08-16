@@ -92,10 +92,10 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    MethodExecutable
+    ProjectExecutableBase
 
         <span class="phpdocumentor-element__extends">
-        extends <a href="classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html"><abbr title="\Slothsoft\Unity\Assets\Project\ProjectExecutableBase">ProjectExecutableBase</abbr></a>
+        extends <a href="classes/Slothsoft-Unity-Assets-ExecutableBase.html"><abbr title="\Slothsoft\Unity\Assets\ExecutableBase">ExecutableBase</abbr></a>
     </span>
     
             <div class="phpdocumentor-element__package">
@@ -105,13 +105,16 @@
                             </ul>
         </div>
     
+            <span class="phpdocumentor-element__implements">
+            implements
+                            <abbr title="\Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface">ExecutableBuilderStrategyInterface</abbr>                    </span>
     
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/Project/MethodExecutable.php"><a href="files/src-assets-project-methodexecutable.html"><abbr title="src/Assets/Project/MethodExecutable.php">MethodExecutable.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/Project/ProjectExecutableBase.php"><a href="files/src-assets-project-projectexecutablebase.html"><abbr title="src/Assets/Project/ProjectExecutableBase.php">ProjectExecutableBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">9</span>
+    <span class="phpdocumentor-element-found-in__line">12</span>
 
     </aside>
 
@@ -123,6 +126,17 @@
 
 
 
+<h3 id="interfaces_class_traits">
+    Interfaces, Classes and Traits
+    <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
+</h3>
+
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -interface"><abbr title="\Slothsoft\Farah\Module\Asset\ExecutableBuilderStrategy\ExecutableBuilderStrategyInterface">ExecutableBuilderStrategyInterface</abbr></dt>
+        <dd></dd>
+    
+    
+    </dl>
 
 
 <h3 id="toc">
@@ -153,35 +167,35 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_createResultDocument">createResultDocument()</a>
+    <a href="classes/Slothsoft-Unity-Assets-ExecutableBase.html#method_createResultDocument">createResultDocument()</a>
     <span>
                         &nbsp;: <abbr title="\DOMDocument">DOMDocument</abbr>|null    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_getExecutableCall">getExecutableCall()</a>
+    <a href="classes/Slothsoft-Unity-Assets-ExecutableBase.html#method_getExecutableCall">getExecutableCall()</a>
     <span>
                         &nbsp;: string    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_getExecutablePackage">getExecutablePackage()</a>
+    <a href="classes/Slothsoft-Unity-Assets-ExecutableBase.html#method_getExecutablePackage">getExecutablePackage()</a>
     <span>
                         &nbsp;: string    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_parseArguments">parseArguments()</a>
+    <a href="classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#method_parseArguments">parseArguments()</a>
     <span>
                         &nbsp;: void    </span>
 </dt>
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
-    <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_validate">validate()</a>
+    <a href="classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#method_validate">validate()</a>
     <span>
                         &nbsp;: void    </span>
 </dt>
@@ -197,7 +211,7 @@
     <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
-            <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="
@@ -268,7 +282,7 @@
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="phpdocumentor-element
@@ -326,23 +340,23 @@
         class="phpdocumentor-element
             -method
             -protected
-                                                        "
+                        -abstract                                "
 >
     <h4 class="phpdocumentor-element__name" id="method_createResultDocument">
         createResultDocument()
-        <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_createResultDocument" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-Assets-ExecutableBase.html#method_createResultDocument" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/Project/MethodExecutable.php"><a href="files/src-assets-project-methodexecutable.html"><abbr title="src/Assets/Project/MethodExecutable.php">MethodExecutable.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/ExecutableBase.php"><a href="files/src-assets-executablebase.html"><abbr title="src/Assets/ExecutableBase.php">ExecutableBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">44</span>
+    <span class="phpdocumentor-element-found-in__line">54</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-                <span class="phpdocumentor-signature__name">createResultDocument</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\DOMDocument">DOMDocument</abbr>|null</span></code>
+    <span class="phpdocumentor-signature__abstract">abstract</span>            <span class="phpdocumentor-signature__name">createResultDocument</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\DOMDocument">DOMDocument</abbr>|null</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -363,12 +377,12 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_getExecutableCall">
         getExecutableCall()
-        <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_getExecutableCall" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-Assets-ExecutableBase.html#method_getExecutableCall" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/Project/MethodExecutable.php"><a href="files/src-assets-project-methodexecutable.html"><abbr title="src/Assets/Project/MethodExecutable.php">MethodExecutable.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/ExecutableBase.php"><a href="files/src-assets-executablebase.html"><abbr title="src/Assets/ExecutableBase.php">ExecutableBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">36</span>
+    <span class="phpdocumentor-element-found-in__line">60</span>
 
     </aside>
 
@@ -396,12 +410,12 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_getExecutablePackage">
         getExecutablePackage()
-        <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_getExecutablePackage" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-Assets-ExecutableBase.html#method_getExecutablePackage" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/Project/MethodExecutable.php"><a href="files/src-assets-project-methodexecutable.html"><abbr title="src/Assets/Project/MethodExecutable.php">MethodExecutable.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/ExecutableBase.php"><a href="files/src-assets-executablebase.html"><abbr title="src/Assets/ExecutableBase.php">ExecutableBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">32</span>
+    <span class="phpdocumentor-element-found-in__line">56</span>
 
     </aside>
 
@@ -429,12 +443,12 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_parseArguments">
         parseArguments()
-        <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_parseArguments" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#method_parseArguments" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/Project/MethodExecutable.php"><a href="files/src-assets-project-methodexecutable.html"><abbr title="src/Assets/Project/MethodExecutable.php">MethodExecutable.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/Project/ProjectExecutableBase.php"><a href="files/src-assets-project-projectexecutablebase.html"><abbr title="src/Assets/Project/ProjectExecutableBase.php">ProjectExecutableBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">20</span>
 
     </aside>
 
@@ -473,10 +487,10 @@
 >
     <h4 class="phpdocumentor-element__name" id="method_validate">
         validate()
-        <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_validate" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#method_validate" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/Project/MethodExecutable.php"><a href="files/src-assets-project-methodexecutable.html"><abbr title="src/Assets/Project/MethodExecutable.php">MethodExecutable.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Assets/Project/ProjectExecutableBase.php"><a href="files/src-assets-project-projectexecutablebase.html"><abbr title="src/Assets/Project/ProjectExecutableBase.php">ProjectExecutableBase.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">24</span>
 
@@ -576,7 +590,7 @@
 </section>
             </div>
         </div>
-        <a href="classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
