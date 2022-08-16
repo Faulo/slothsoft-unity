@@ -107,7 +107,6 @@ class UnityEditor {
             $this->executable,
             '-batchmode',
             '-nographics',
-            '-ignorecompilererrors',
             '-accept-apiupdate'
         ], $arguments);
 
