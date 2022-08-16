@@ -138,7 +138,7 @@ class UnityProject {
             if (preg_match('~(An error occurred.+)~sui', $process->getOutput(), $matches)) {
                 $message .= PHP_EOL . trim($matches[1]);
             }
-            if (preg_match('~(Build Finished, .+)Cleanup mono~sui', $process->getOutput(), $matches)) {
+            if (preg_match('~(Build Finished, .+)Aborting batchmode due to failure~sui', $process->getOutput(), $matches)) {
                 $message .= PHP_EOL . trim($matches[1]);
             }
             throw ExecutionError::Error('AssertBuild', $message, $process);
