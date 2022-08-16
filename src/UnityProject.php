@@ -77,7 +77,7 @@ class UnityProject {
                 if (! is_file($resultsFile)) {
                     $message = "Failed to create results for test mode '$testPlatform'!";
                     $matches = [];
-                    if (preg_match('~(##### Output.+)(Cleanup mono)?~sui', $process->getOutput(), $matches)) {
+                    if (preg_match('~(##### Output.+?)(Cleanup mono)?~sui', $process->getOutput(), $matches)) {
                         $message .= PHP_EOL . trim($matches[1]);
                     }
                     throw ExecutionError::Error('AssertTestResult', $message, $process);
@@ -132,7 +132,7 @@ class UnityProject {
         if ($process->getExitCode() !== 0 or ! is_file($buildPath . DIRECTORY_SEPARATOR . $buildExecutable)) {
             $message = "Failed to compile build target '$target'!";
             $matches = [];
-            if (preg_match('~(Build Finished, .+)(Cleanup mono)?~sui', $process->getOutput(), $matches)) {
+            if (preg_match('~(Build Finished, .+?)(Cleanup mono)?~sui', $process->getOutput(), $matches)) {
                 $message .= PHP_EOL . trim($matches[1]);
             }
             throw ExecutionError::Error('AssertBuild', $message, $process);
