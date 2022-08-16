@@ -78,10 +78,10 @@ class UnityProject {
                     $message = "Failed to create results for test mode '$testPlatform'!";
                     $matches = [];
                     if (preg_match('~(An error occurred.+)~sui', $process->getOutput(), $matches)) {
-                        $message .= PHP_EOL . trim($matches[1]);
+                        $message .= PHP_EOL . PHP_EOL . trim($matches[1]);
                     }
                     if (preg_match('~(##### Output.+)Aborting batchmode due to failure~sui', $process->getOutput(), $matches)) {
-                        $message .= PHP_EOL . trim($matches[1]);
+                        $message .= PHP_EOL . PHP_EOL . trim($matches[1]);
                     }
                     throw ExecutionError::Error('AssertTestResult', $message, $process);
                 }
@@ -136,10 +136,10 @@ class UnityProject {
             $message = "Failed to compile build target '$target'!";
             $matches = [];
             if (preg_match('~(An error occurred.+)~sui', $process->getOutput(), $matches)) {
-                $message .= PHP_EOL . trim($matches[1]);
+                $message .= PHP_EOL . PHP_EOL . trim($matches[1]);
             }
             if (preg_match('~(Build Finished, .+)Aborting batchmode due to failure~sui', $process->getOutput(), $matches)) {
-                $message .= PHP_EOL . trim($matches[1]);
+                $message .= PHP_EOL . PHP_EOL . trim($matches[1]);
             }
             throw ExecutionError::Error('AssertBuild', $message, $process);
         }
