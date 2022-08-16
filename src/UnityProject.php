@@ -6,8 +6,6 @@ use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 use DOMDocument;
-use InvalidArgumentException;
-use LogicException;
 
 class UnityProject {
 
@@ -74,10 +72,20 @@ class UnityProject {
         foreach ($testPlatforms as $testPlatform) {
             $resultsFile = temp_file(__CLASS__);
 
-            $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
-
-            if (! is_file($resultsFile)) {
-                throw new LogicException("Failed to create test results for test mode '$testPlatform' in file '$resultsFile'.");
+            try {
+                $process = $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
+                if (! is_file($resultsFile)) {
+                    $message = "Failed to create results for test mode '$testPlatform'!";
+                    $matches = [];
+                    if (preg_match('~(##### Output.+)(Cleanup mono)?~sui', $process->getOutput(), $matches)) {
+                        $message .= PHP_EOL . trim($matches[1]);
+                    }
+                    throw ExecutionError::Error('AssertTestResult', $message, $process);
+                }
+            } catch (ExecutionError $e) {
+                if (! is_file($resultsFile)) {
+                    throw $e;
+                }
             }
 
             $resultsDoc = DOMHelper::loadDocument($resultsFile);
@@ -109,7 +117,7 @@ class UnityProject {
             mkdir($buildPath, 0777, true);
         }
         if (realpath($buildPath) === false) {
-            throw new InvalidArgumentException("Failed to resolve build path '$buildPath'!");
+            throw ExecutionError::Error('AssertDirectory', "Failed to resolve build path '$buildPath'!");
         }
         $buildPath = realpath($buildPath);
 
@@ -119,13 +127,22 @@ class UnityProject {
 
         $buildExecutable = UnityBuildTarget::getBuildExecutable($target, $this->getSetting('productName'));
 
-        $result = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath . DIRECTORY_SEPARATOR . $buildExecutable));
+        $process = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath . DIRECTORY_SEPARATOR . $buildExecutable));
+
+        if ($process->getExitCode() !== 0 or count(FileSystem::scanDir($this->path)) === 0) {
+            $message = "Failed to compile build target '$target'!";
+            $matches = [];
+            if (preg_match('~(Build Finished, .+)(Cleanup mono)?~sui', $process->getOutput(), $matches)) {
+                $message .= PHP_EOL . trim($matches[1]);
+            }
+            throw ExecutionError::Error('AssertBuild', $message, $process);
+        }
 
         foreach (self::BUILD_FOLDERS as $folder) {
             FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . pathinfo($buildExecutable, PATHINFO_FILENAME) . $folder);
         }
 
-        return $result;
+        return $process;
     }
 
     public function executeMethod(string $method, array $args): Process {

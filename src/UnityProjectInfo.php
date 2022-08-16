@@ -4,7 +4,6 @@ namespace Slothsoft\Unity;
 
 use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
-use RuntimeException;
 use Spyc;
 
 class UnityProjectInfo {
@@ -71,7 +70,7 @@ class UnityProjectInfo {
         if (preg_match('~m_EditorVersion: (.+)~', $unityVersion, $match)) {
             return trim($match[1]);
         }
-        throw new RuntimeException("Unable to determine editor version for project '$this->path'!");
+        throw ExecutionError::Error('AssertEditorVersion', "Unable to determine editor version for project '$this->path'!");
     }
 
     private function loadSettings(): array {
@@ -79,7 +78,7 @@ class UnityProjectInfo {
         if (is_array($settings) and isset($settings['PlayerSettings'])) {
             return $settings['PlayerSettings'];
         }
-        throw new RuntimeException("Unable to determine settings for project '$this->path'!");
+        throw ExecutionError::Error('AssertProjectSettings', "Unable to determine settings for project '$this->path'!");
     }
 
     private function loadPackages(): array {
@@ -87,7 +86,7 @@ class UnityProjectInfo {
         if (is_array($packages) and isset($packages['dependencies'])) {
             return $packages['dependencies'];
         }
-        throw new RuntimeException("Unable to determine packages for project '$this->path'!");
+        throw ExecutionError::Error('AssertDependencies', "Unable to determine packages for project '$this->path'!");
     }
 }
 

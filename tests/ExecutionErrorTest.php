@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace Slothsoft\Unity\Assets;
+namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
 
@@ -14,6 +14,6 @@ use PHPUnit\Framework\TestCase;
 class ExecutionErrorTest extends TestCase {
 
     public function testClassExists(): void {
-        $this->assertTrue(class_exists(ExecutionError::class), "Failed to load class 'Slothsoft\Unity\Assets\ExecutionError'!");
+        $this->assertTrue(class_exists(ExecutionError::class), "Failed to load class 'Slothsoft\Unity\ExecutionError'!");
     }
 }

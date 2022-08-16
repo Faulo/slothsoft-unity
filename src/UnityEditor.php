@@ -96,7 +96,7 @@ class UnityEditor {
         $project = $this->hub->findProject($path, true);
 
         if (! $project) {
-            throw new \Exception("Failed to create empty project at '$path'!", $process->getExitCode());
+            throw ExecutionError::Error('AssertProject', "Failed to create empty project at '$path'!", $process);
         }
 
         return $project;
@@ -107,7 +107,6 @@ class UnityEditor {
             $this->executable,
             '-batchmode',
             '-nographics',
-            '-ignorecompilererrors',
             '-accept-apiupdate'
         ], $arguments);
 
