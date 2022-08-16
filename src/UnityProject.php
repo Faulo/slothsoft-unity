@@ -72,10 +72,15 @@ class UnityProject {
         foreach ($testPlatforms as $testPlatform) {
             $resultsFile = temp_file(__CLASS__);
 
-            $process = $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
-
-            if (! is_file($resultsFile)) {
-                throw ExecutionError::Error('AssertTestResult', "Failed to create test results for test mode '$testPlatform' in file '$resultsFile'.", $process);
+            try {
+                $process = $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
+                if (! is_file($resultsFile)) {
+                    throw ExecutionError::Error('AssertTestResult', "Failed to create test results for test mode '$testPlatform' in file '$resultsFile'.", $process);
+                }
+            } catch (ExecutionError $e) {
+                if (! is_file($resultsFile)) {
+                    throw $e;
+                }
             }
 
             $resultsDoc = DOMHelper::loadDocument($resultsFile);
