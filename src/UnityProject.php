@@ -75,7 +75,12 @@ class UnityProject {
             try {
                 $process = $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
                 if (! is_file($resultsFile)) {
-                    throw ExecutionError::Error('AssertTestResult', "Failed to create test results for test mode '$testPlatform' in file '$resultsFile'.", $process);
+                    $message = "Failed to create results for test mode '$testPlatform'!";
+                    $matches = [];
+                    if (preg_match('~(##### Output[^\n\n]+)~sui', $process->getOutput(), $matches)) {
+                        $message .= PHP_EOL . $matches[1];
+                    }
+                    throw ExecutionError::Error('AssertTestResult', $message, $process);
                 }
             } catch (ExecutionError $e) {
                 if (! is_file($resultsFile)) {
@@ -122,19 +127,22 @@ class UnityProject {
 
         $buildExecutable = UnityBuildTarget::getBuildExecutable($target, $this->getSetting('productName'));
 
-        $result = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath . DIRECTORY_SEPARATOR . $buildExecutable));
+        $process = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath . DIRECTORY_SEPARATOR . $buildExecutable));
 
-        if ($result->getExitCode() !== 0 or count(FileSystem::scanDir($this->path)) === 0) {
+        if ($process->getExitCode() !== 0 or count(FileSystem::scanDir($this->path)) === 0) {
+            $message = "Failed to compile build target '$target'!";
             $matches = [];
-            $message = preg_match('~(Build Finished, .+)Cleanup mono~sui', $result->getOutput(), $matches) ? $matches[1] : 'Build failed!';
-            throw ExecutionError::Error('AssertBuild', $message, $result);
+            if (preg_match('~(Build Finished, .+)Cleanup mono~sui', $process->getOutput(), $matches)) {
+                $message .= PHP_EOL . $matches[1];
+            }
+            throw ExecutionError::Error('AssertBuild', $message, $process);
         }
 
         foreach (self::BUILD_FOLDERS as $folder) {
             FileSystem::removeDir($buildPath . DIRECTORY_SEPARATOR . pathinfo($buildExecutable, PATHINFO_FILENAME) . $folder);
         }
 
-        return $result;
+        return $process;
     }
 
     public function executeMethod(string $method, array $args): Process {
