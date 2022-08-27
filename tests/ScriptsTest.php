@@ -4,6 +4,7 @@ namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
+use Slothsoft\Core\FileSystem;
 
 class ScriptsTest extends TestCase {
 
@@ -61,6 +62,10 @@ class ScriptsTest extends TestCase {
      * @dataProvider validAssets
      */
     public function testUnityAssets(string $url): void {
+        if (! FileSystem::commandExists('composer')) {
+            $this->markTestSkipped('Composer is not available from the command line!');
+        }
+
         $process = new Process([
             'composer',
             'exec',
