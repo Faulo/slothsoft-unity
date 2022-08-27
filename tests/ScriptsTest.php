@@ -64,6 +64,7 @@ class ScriptsTest extends TestCase {
     public function testUnityAssets(string $url): void {
         if (! FileSystem::commandExists('composer')) {
             $this->markTestSkipped('Composer is not available from the command line!');
+            return;
         }
 
         $process = new Process([
