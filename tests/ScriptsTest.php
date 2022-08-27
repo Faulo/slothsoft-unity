@@ -45,4 +45,30 @@ class ScriptsTest extends TestCase {
             'unity-tests'
         ];
     }
+    
+    /**
+     *
+     * @dataProvider validAssets
+     */
+    public function testUnityAssets(string $url): void {
+        $process = new Process([
+            'composer',
+            'exec',
+            'farah-asset',
+            $url
+        ]);
+        
+        $code = $process->run();
+        $errors = $process->getErrorOutput();
+        
+        $this->assertEquals('', $errors, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
+        
+        $this->assertEquals(0, $code, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
+    }
+    
+    public function validAssets(): iterable {
+        yield 'unity-hub-help' => [
+            'farah://slothsoft@unity/hub/help'
+        ];
+    }
 }
