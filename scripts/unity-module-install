@@ -27,7 +27,7 @@ $args = $_SERVER['argv'];
 $workspace = array_shift($args);
 $modules = $args;
 
-$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/module', FarahUrlArguments::createFromValueList([
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/module-junit', FarahUrlArguments::createFromValueList([
     'workspace' => $workspace,
     'modules' => $modules
 ]));

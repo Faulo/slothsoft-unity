@@ -34,10 +34,15 @@
 			<use-document ref="/project/build" />
 		</fragment>
 
-		<fragment name="tests-junit">
-			<use-template ref="/xsl/to-junit" />
-			<use-document ref="/project/tests" />
-		</fragment>
+        <fragment name="tests-junit">
+            <use-template ref="/xsl/to-junit" />
+            <use-document ref="/project/tests" />
+        </fragment>
+
+        <fragment name="module-junit">
+            <use-template ref="/xsl/to-junit" />
+            <use-document ref="/project/module" />
+        </fragment>
 	</fragment>
 
 	<fragment name="package">
