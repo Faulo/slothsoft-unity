@@ -13,7 +13,6 @@ class ModuleExecutable extends ProjectExecutableBase {
 
     protected function parseArguments(FarahUrlArguments $args): void {
         parent::parseArguments($args);
-        my_dump($args);
         $this->modules = $args->get('modules', []);
     }
 
