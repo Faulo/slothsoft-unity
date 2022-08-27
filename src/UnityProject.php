@@ -166,5 +166,9 @@ class UnityProject {
     public function ensureEditorIsLicensed(): bool {
         return $this->editor->isLicensed($this->info->path) or $this->editor->license($this->info->path);
     }
+
+    public function installModules(string ...$modules): bool {
+        return $this->editor->installModules(...$modules);
+    }
 }
 

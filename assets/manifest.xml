@@ -17,9 +17,12 @@
 		<custom-asset name="build"
 			executable-builder="Slothsoft\Unity\Assets\Project\BuildExecutable"
 			parameter-filter="Slothsoft\Unity\Assets\Project\BuildParameters" />
-		<custom-asset name="tests"
-			executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable"
-			parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
+        <custom-asset name="tests"
+            executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable"
+            parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
+        <custom-asset name="module"
+            executable-builder="Slothsoft\Unity\Assets\Project\ModuleExecutable"
+            parameter-filter="Slothsoft\Unity\Assets\Project\ModuleParameters" />
 
 		<fragment name="method-junit">
 			<use-template ref="/xsl/to-junit" />
