@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Unity\UnityBuildTarget;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+if ($_SERVER['argc'] < 1) {
+    echo <<<'EOT'
+    Install modules for use in a Unity project. Check for available modules by using the "unity-help" command.
+        
+    Usage:
+    composer exec unity-module-install "path/to/project" [module-id]+
+            
+    EOT;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$workspace = array_shift($args);
+$modules = $args;
+
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/module-junit', FarahUrlArguments::createFromValueList([
+    'workspace' => $workspace,
+    'modules' => $modules
+]));
+
+readfile((string) $url);

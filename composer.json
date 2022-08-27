@@ -46,8 +46,10 @@
 	"bin" : [
 		"scripts/steam-buildfile",
 		"scripts/unity-build",
+		"scripts/unity-help",
 		"scripts/unity-tests",
 		"scripts/unity-method",
+		"scripts/unity-module-install",
 		"scripts/unity-package-install"
 	],
 	"config" : {

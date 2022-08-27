@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+if ($_SERVER['argc'] > 0) {
+    echo <<<'EOT'
+    Shortcut for calling "unityhub help".
+        
+    Usage:
+    composer exec unity-help
+            
+    EOT;
+    return;
+}
+
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/hub/help');
+
+readfile((string) $url);

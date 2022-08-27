@@ -22,12 +22,17 @@ class UnityEditor {
         return is_string($this->executable) and is_file($this->executable);
     }
 
+    private bool $wasLicensed = false;
+
     public function isLicensed(string $projectPath): bool {
         if (! $this->isInstalled()) {
             return false;
         }
-        $log = $this->execute('-quit', '-projectPath', $projectPath)->getOutput();
-        return strpos($log, self::LICENSE_SUCCESS) !== false;
+        if (! $this->wasLicensed) {
+            $log = $this->execute('-quit', '-projectPath', $projectPath)->getOutput();
+            $this->wasLicensed = strpos($log, self::LICENSE_SUCCESS) !== false;
+        }
+        return $this->wasLicensed;
     }
 
     public function __construct(UnityHub $hub, string $version) {

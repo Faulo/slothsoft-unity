@@ -11,10 +11,11 @@ class ScriptsTest extends TestCase {
      *
      * @dataProvider validBinaries
      */
-    public function testUnityTests(string $script): void {
+    public function testUnityTests(string $script, array $args = []): void {
         $process = new Process([
             PHP_BINARY,
-            "scripts/$script"
+            "scripts/$script",
+            ...$args
         ]);
 
         $code = $process->run();
@@ -43,6 +44,41 @@ class ScriptsTest extends TestCase {
         ];
         yield 'unity-tests' => [
             'unity-tests'
+        ];
+        yield 'unity-help' => [
+            'unity-help',
+            [
+                ''
+            ]
+        ];
+        yield 'unity-module-install' => [
+            'unity-module-install'
+        ];
+    }
+
+    /**
+     *
+     * @dataProvider validAssets
+     */
+    public function testUnityAssets(string $url): void {
+        $process = new Process([
+            'composer',
+            'exec',
+            'farah-asset',
+            $url
+        ]);
+
+        $code = $process->run();
+        $errors = $process->getErrorOutput();
+
+        $this->assertEquals('', $errors, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
+
+        $this->assertEquals(0, $code, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
+    }
+
+    public function validAssets(): iterable {
+        yield 'unity-hub-help' => [
+            'farah://slothsoft@unity/hub/help'
         ];
     }
 }
