@@ -11,7 +11,7 @@ class UnityBuildTarget {
 
     public const LINUX = 'linux';
 
-    public const MAC_OSX = 'mac_os';
+    public const MAC_OSX = 'mac';
 
     public const BACKEND_MONO = 0;
 
