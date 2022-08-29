@@ -132,7 +132,7 @@ class UnityProject {
 
         $process = $this->execute('-quit', ...UnityBuildTarget::getBuildParameters($target, $buildPath . DIRECTORY_SEPARATOR . $buildExecutable));
 
-        if ($process->getExitCode() !== 0 or ! is_file($buildPath . DIRECTORY_SEPARATOR . $buildExecutable)) {
+        if ($process->getExitCode() !== 0 or ! file_exists($buildPath . DIRECTORY_SEPARATOR . $buildExecutable)) {
             $message = "Failed to compile build target '$target'!";
             $matches = [];
             if (preg_match('~(An error occurred.+)~sui', $process->getOutput(), $matches)) {
