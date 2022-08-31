@@ -31,7 +31,7 @@ class InstallExecutable extends PackageExecutableBase {
     }
 
     protected function getExecutablePackage(): string {
-        return 'ContinuousIntegration.Package.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->packageDirectory));
+        return 'ContinuousIntegration.Package.' . $this->packageName;
     }
 
     protected function getExecutableCall(): string {
