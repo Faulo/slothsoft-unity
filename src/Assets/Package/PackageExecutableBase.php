@@ -14,11 +14,15 @@ abstract class PackageExecutableBase extends ExecutableBase implements Executabl
     /** @var string */
     protected string $packageDirectory;
 
+    /** @var string */
+    protected string $packageName;
+
     /** @var UnityPackage */
     protected ?UnityPackage $package;
 
     protected function parseArguments(FarahUrlArguments $args): void {
         $this->packageDirectory = $args->get('package');
+        $this->packageName = preg_replace('~\s+~', '', basename($this->packageDirectory));
     }
 
     protected function validate(): void {

@@ -34,7 +34,7 @@ class BuildExecutable extends ProjectExecutableBase {
     }
 
     protected function getExecutablePackage(): string {
-        return 'ContinuousIntegration.Project.Build.' . preg_replace('~[^a-zA-Z0-9]~', '', basename($this->workspace));
+        return 'ContinuousIntegration.Project.Build.' . $this->workspaceName;
     }
 
     protected function getExecutableCall(): string {
