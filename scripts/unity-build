@@ -11,14 +11,16 @@ $_SERVER['argc'] --;
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
+const HELP = <<<'EOT'
+Run all tests inside a Unity project.
+    
+Usage:
+composer exec unity-build "path/to/project" ["path/to/build"] [Platform]
+
+EOT;
+
 if ($_SERVER['argc'] < 1) {
-    echo <<<'EOT'
-    Run all tests inside a Unity project.
-        
-    Usage:
-    composer exec unity-build "path/to/project" ["path/to/build"] [Platform]
-            
-    EOT;
+    echo HELP;
     return;
 }
 

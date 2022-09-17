@@ -10,14 +10,16 @@ $_SERVER['argc'] --;
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
+const HELP = <<<'EOT'
+Run a specific method inside a Unity project.
+    
+Usage:
+composer exec unity-method "path/to/project" "Method.To.Execute" ["additional params", ...]
+
+EOT;
+
 if ($_SERVER['argc'] < 2) {
-    echo <<<'EOT'
-    Run a specific method inside a Unity project.
-        
-    Usage:
-    composer exec unity-method "path/to/project" "Method.To.Execute" ["additional params", ...]
-            
-    EOT;
+    echo HELP;
     return;
 }
 

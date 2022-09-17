@@ -11,14 +11,16 @@ $_SERVER['argc'] --;
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
+const HELP = <<<'EOT'
+Create a steam build file.
+    
+Usage:
+composer exec steam-buildfile "path/to/root" "path/to/logs" AppID [DepotID=path/to/depot]+ [SetLive]
+
+EOT;
+
 if ($_SERVER['argc'] < 4) {
-    echo <<<'EOT'
-    Create a steam build file.
-        
-    Usage:
-    composer exec steam-buildfile "path/to/root" "path/to/logs" AppID [DepotID=path/to/depot]+ [SetLive]
-            
-    EOT;
+    echo HELP;
     return;
 }
 

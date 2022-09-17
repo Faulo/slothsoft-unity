@@ -11,14 +11,16 @@ $_SERVER['argc'] --;
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
+const HELP = <<<'EOT'
+Determine the version of a repository based on its tags and commits.
+    
+Usage:
+composer exec autoversion plastic|git ["path/to/repository"]
+
+EOT;
+
 if ($_SERVER['argc'] < 1) {
-    echo <<<'EOT'
-    Determine the version of a repository based on its tags and commits.
-        
-    Usage:
-    composer exec autoversion plastic|git ["path/to/repository"]
-            
-    EOT;
+    echo HELP;
     return;
 }
 

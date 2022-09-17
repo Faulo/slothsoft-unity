@@ -10,14 +10,16 @@ $_SERVER['argc'] --;
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
+const HELP = <<<'EOT'
+Install a package in a new Unity project.
+    
+Usage:
+composer exec unity-package-install "path/to/project/Packages/path-to-package" "path/to/new-project"
+
+EOT;
+
 if ($_SERVER['argc'] < 2) {
-    echo <<<'EOT'
-    Install a package in a new Unity project.
-        
-    Usage:
-    composer exec unity-package-install "path/to/project/Packages/path-to-package" "path/to/new-project"
-            
-    EOT;
+    echo HELP;
     return;
 }
 
