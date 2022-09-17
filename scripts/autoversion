@@ -15,11 +15,11 @@ const HELP = <<<'EOT'
 Determine the version of a repository based on its tags and commits.
     
 Usage:
-composer exec autoversion plastic|git ["path/to/repository"]
+composer exec autoversion plastic|git "path/to/repository"
 
 EOT;
 
-if ($_SERVER['argc'] < 1) {
+if ($_SERVER['argc'] < 2) {
     echo HELP;
     return;
 }
@@ -27,7 +27,7 @@ if ($_SERVER['argc'] < 1) {
 $args = $_SERVER['argv'];
 
 $vcs = array_shift($args);
-$workspace = $args[0] ?? getcwd();
+$workspace = array_shift($args);
 
 if (! is_dir($workspace)) {
     throw new FileNotFoundException("Workspace '$workspace' is not a directory.");
