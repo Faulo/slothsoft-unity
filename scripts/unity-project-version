@@ -11,10 +11,10 @@ $_SERVER['argc'] --;
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
 const HELP = <<<'EOT'
-Install a package in a new Unity project.
+Get or set the projectVersion of a Unity project.
     
 Usage:
-composer exec unity-package-install "path/to/project/Packages/path-to-package" "path/to/new-project"
+composer exec unity-project-version "path/to/project" get|set ["new-version"]
 
 EOT;
 
@@ -25,12 +25,14 @@ if ($_SERVER['argc'] < 2) {
 
 $args = $_SERVER['argv'];
 
-$package = array_shift($args);
 $workspace = array_shift($args);
+$mode = array_shift($args);
+$version = $args[0] ?? '';
 
-$url = FarahUrl::createFromComponents('slothsoft@unity', '/package/install-junit', FarahUrlArguments::createFromValueList([
-    'package' => $package,
-    'workspace' => $workspace
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/version', FarahUrlArguments::createFromValueList([
+    'workspace' => $workspace,
+    'mode' => $mode,
+    'version' => $version
 ]));
 
 readfile((string) $url);

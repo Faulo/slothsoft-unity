@@ -9,14 +9,16 @@ $_SERVER['argc'] --;
 
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
+const HELP = <<<'EOT'
+Shortcut for calling "unityhub help".
+    
+Usage:
+composer exec unity-help
+
+EOT;
+
 if ($_SERVER['argc'] > 0) {
-    echo <<<'EOT'
-    Shortcut for calling "unityhub help".
-        
-    Usage:
-    composer exec unity-help
-            
-    EOT;
+    echo HELP;
     return;
 }
 

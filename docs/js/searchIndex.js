@@ -106,6 +106,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-Package-PackageExecutableBase.html#property_packageDirectory"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Package\\PackageExecutableBase\u003A\u003A\u0024packageName",
+            "name": "packageName",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Package-PackageExecutableBase.html#property_packageName"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\Package\\PackageExecutableBase\u003A\u003A\u0024package",
             "name": "package",
             "summary": "",
@@ -135,6 +140,11 @@ Search.appendIndex(
             "name": "getExecutableCall",
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-Project-BuildExecutable.html#method_getExecutableCall"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\BuildExecutable\u003A\u003ArequiresEditor\u0028\u0029",
+            "name": "requiresEditor",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-BuildExecutable.html#method_requiresEditor"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\BuildExecutable\u003A\u003AcreateResultDocument\u0028\u0029",
             "name": "createResultDocument",
@@ -176,6 +186,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_getExecutableCall"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\MethodExecutable\u003A\u003ArequiresEditor\u0028\u0029",
+            "name": "requiresEditor",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-MethodExecutable.html#method_requiresEditor"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\MethodExecutable\u003A\u003AcreateResultDocument\u0028\u0029",
             "name": "createResultDocument",
             "summary": "",
@@ -216,6 +231,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-Project-ModuleExecutable.html#method_getExecutableCall"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\ModuleExecutable\u003A\u003ArequiresEditor\u0028\u0029",
+            "name": "requiresEditor",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-ModuleExecutable.html#method_requiresEditor"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\ModuleExecutable\u003A\u003AcreateResultDocument\u0028\u0029",
             "name": "createResultDocument",
             "summary": "",
@@ -246,10 +266,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#method_validate"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\ProjectExecutableBase\u003A\u003ArequiresEditor\u0028\u0029",
+            "name": "requiresEditor",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#method_requiresEditor"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\ProjectExecutableBase\u003A\u003A\u0024workspace",
             "name": "workspace",
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#property_workspace"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\ProjectExecutableBase\u003A\u003A\u0024workspaceName",
+            "name": "workspaceName",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-ProjectExecutableBase.html#property_workspaceName"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\ProjectExecutableBase\u003A\u003A\u0024project",
             "name": "project",
@@ -280,6 +310,11 @@ Search.appendIndex(
             "name": "getExecutableCall",
             "summary": "",
             "url": "classes/Slothsoft-Unity-Assets-Project-TestsExecutable.html#method_getExecutableCall"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\TestsExecutable\u003A\u003ArequiresEditor\u0028\u0029",
+            "name": "requiresEditor",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-TestsExecutable.html#method_requiresEditor"
         },                {
             "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\TestsExecutable\u003A\u003AcreateResultDocument\u0028\u0029",
             "name": "createResultDocument",
@@ -1066,6 +1101,16 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProject.html#method_getProjectPath"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AsetProjectVersion\u0028\u0029",
+            "name": "setProjectVersion",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityProject.html#method_setProjectVersion"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AgetProjectVersion\u0028\u0029",
+            "name": "getProjectVersion",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityProject.html#method_getProjectVersion"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProject\u003A\u003AgetEditorVersion\u0028\u0029",
             "name": "getEditorVersion",
             "summary": "",
@@ -1141,6 +1186,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProjectInfo.html#method_findAll"
         },                {
+            "fqsen": "\\Slothsoft\\Unity\\UnityProjectInfo\u003A\u003AwriteSetting\u0028\u0029",
+            "name": "writeSetting",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-UnityProjectInfo.html#method_writeSetting"
+        },                {
             "fqsen": "\\Slothsoft\\Unity\\UnityProjectInfo\u003A\u003AFILE_VERSION",
             "name": "FILE_VERSION",
             "summary": "",
@@ -1175,6 +1225,46 @@ Search.appendIndex(
             "name": "packages",
             "summary": "",
             "url": "classes/Slothsoft-Unity-UnityProjectInfo.html#property_packages"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\VersionExecutable",
+            "name": "VersionExecutable",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-VersionExecutable.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\VersionExecutable\u003A\u003AparseArguments\u0028\u0029",
+            "name": "parseArguments",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-VersionExecutable.html#method_parseArguments"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\VersionExecutable\u003A\u003Avalidate\u0028\u0029",
+            "name": "validate",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-VersionExecutable.html#method_validate"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\VersionExecutable\u003A\u003AgetExecutablePackage\u0028\u0029",
+            "name": "getExecutablePackage",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-VersionExecutable.html#method_getExecutablePackage"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\VersionExecutable\u003A\u003AgetExecutableCall\u0028\u0029",
+            "name": "getExecutableCall",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-VersionExecutable.html#method_getExecutableCall"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\VersionExecutable\u003A\u003AcreateResultDocument\u0028\u0029",
+            "name": "createResultDocument",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-VersionExecutable.html#method_createResultDocument"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\VersionParameters",
+            "name": "VersionParameters",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-VersionParameters.html"
+        },                {
+            "fqsen": "\\Slothsoft\\Unity\\Assets\\Project\\VersionParameters\u003A\u003AcreateValueSanitizers\u0028\u0029",
+            "name": "createValueSanitizers",
+            "summary": "",
+            "url": "classes/Slothsoft-Unity-Assets-Project-VersionParameters.html#method_createValueSanitizers"
         },                {
             "fqsen": "\\",
             "name": "\\",

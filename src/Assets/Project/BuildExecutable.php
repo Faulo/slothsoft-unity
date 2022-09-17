@@ -41,6 +41,10 @@ class BuildExecutable extends ProjectExecutableBase {
         return sprintf('Build("%s")', $this->target);
     }
 
+    protected function requiresEditor(): bool {
+        return true;
+    }
+
     protected function createResultDocument(): ?DOMDocument {
         $this->project->build($this->target, $this->path);
         return null;

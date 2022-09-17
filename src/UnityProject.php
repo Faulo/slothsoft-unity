@@ -28,6 +28,14 @@ class UnityProject {
         return $this->info->path;
     }
 
+    public function setProjectVersion(string $version): void {
+        $this->info->writeSetting('bundleVersion', $version);
+    }
+
+    public function getProjectVersion(): string {
+        return $this->getSetting('bundleVersion', '');
+    }
+
     public function getEditorVersion(): string {
         return $this->editor->version;
     }

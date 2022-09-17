@@ -37,6 +37,10 @@ class TestsExecutable extends ProjectExecutableBase {
         return sprintf('RunTests(%s)', implode(', ', $args));
     }
 
+    protected function requiresEditor(): bool {
+        return true;
+    }
+
     protected function createResultDocument(): ?DOMDocument {
         return $this->project->runTests(...$this->modes);
     }

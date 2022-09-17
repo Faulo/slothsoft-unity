@@ -36,12 +36,13 @@ class ModuleExecutable extends ProjectExecutableBase {
         return sprintf('InstallModules(%s)', implode(', ', $args));
     }
 
+    protected function requiresEditor(): bool {
+        return true;
+    }
+
     protected function createResultDocument(): ?DOMDocument {
-        if ($this->project->ensureEditorIsInstalled()) {
-            $this->project->installModules(...$this->modules);
-        }
+        $this->project->installModules(...$this->modules);
         return null;
-        ;
     }
 }
 

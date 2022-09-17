@@ -44,13 +44,19 @@ abstract class ProjectExecutableBase extends ExecutableBase implements Executabl
             throw ExecutionError::Error('AssertProject', "Workspace '{$this->workspace}' does not contain a Unity project!");
         }
 
-        if (! $this->project->ensureEditorIsInstalled()) {
-            throw ExecutionError::Error('AssertEditor', "Editor installation for project '{$this->project}' failed!");
-        }
+        if ($this->requiresEditor()) {
+            if (! $this->project->ensureEditorIsInstalled()) {
+                throw ExecutionError::Error('AssertEditor', "Editor installation for project '{$this->project}' failed!");
+            }
 
-        if (! $this->project->ensureEditorIsLicensed()) {
-            throw ExecutionError::Error('AssertLicense', "Editor for project '{$this->project}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.");
+            if (! $this->project->ensureEditorIsLicensed()) {
+                throw ExecutionError::Error('AssertLicense', "Editor for project '{$this->project}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.");
+            }
         }
+    }
+
+    protected function requiresEditor(): bool {
+        return false;
     }
 }
 
