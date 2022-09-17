@@ -48,10 +48,11 @@
 		"scripts/steam-buildfile",
 		"scripts/unity-build",
 		"scripts/unity-help",
-		"scripts/unity-tests",
 		"scripts/unity-method",
 		"scripts/unity-module-install",
-		"scripts/unity-package-install"
+		"scripts/unity-package-install",
+		"scripts/unity-project-version",
+		"scripts/unity-tests"
 	],
 	"config" : {
 		"process-timeout" : 0

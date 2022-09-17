@@ -41,6 +41,10 @@ class MethodExecutable extends ProjectExecutableBase {
         return sprintf('%s(%s)', $this->method, implode(', ', $args));
     }
 
+    protected function requiresEditor(): bool {
+        return true;
+    }
+
     protected function createResultDocument(): ?DOMDocument {
         $result = $this->project->executeMethod($this->method, $this->arguments);
 

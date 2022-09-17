@@ -1,0 +1,38 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+const HELP = <<<'EOT'
+Get or set the projectVersion of a Unity project.
+    
+Usage:
+composer exec unity-project-version "path/to/project" get|set ["new-version"]
+
+EOT;
+
+if ($_SERVER['argc'] < 2) {
+    echo HELP;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$workspace = array_shift($args);
+$mode = array_shift($args);
+$version = $args[0] ?? '';
+
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/version', FarahUrlArguments::createFromValueList([
+    'workspace' => $workspace,
+    'mode' => $mode,
+    'version' => $version
+]));
+
+readfile((string) $url);

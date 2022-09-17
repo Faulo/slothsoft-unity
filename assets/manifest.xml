@@ -23,6 +23,9 @@
         <custom-asset name="module"
             executable-builder="Slothsoft\Unity\Assets\Project\ModuleExecutable"
             parameter-filter="Slothsoft\Unity\Assets\Project\ModuleParameters" />
+        <custom-asset name="version"
+            executable-builder="Slothsoft\Unity\Assets\Project\VersionExecutable"
+            parameter-filter="Slothsoft\Unity\Assets\Project\VersionParameters" />
 
 		<fragment name="method-junit">
 			<use-template ref="/xsl/to-junit" />

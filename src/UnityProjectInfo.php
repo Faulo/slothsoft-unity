@@ -64,6 +64,16 @@ class UnityProjectInfo {
         $this->packages = $this->loadPackages();
     }
 
+    public function writeSetting(string $key, string $value): void {
+        if (! isset($this->settings[$key])) {
+            return;
+        }
+        $yaml = file_get_contents($this->path . self::FILE_SETTINGS);
+        $yaml = str_replace(" $key: {$this->settings[$key]}", " $key: $value", $yaml);
+        file_put_contents($this->path . self::FILE_SETTINGS, $yaml);
+        $this->settings = $this->loadSettings();
+    }
+
     private function loadEditorVersion(): string {
         $unityVersion = file_get_contents($this->path . self::FILE_VERSION);
         $match = [];
