@@ -97,6 +97,20 @@ function findVersion(string $vcs, string $workspace): string {
             if (! FileSystem::commandExists('git')) {
                 throw new FileNotFoundException("Command 'git' is not available.");
             }
+            $version = executeAndTrim([
+                'git',
+                'describe',
+                '--tags',
+                '--long'
+            ], $workspace);
+            if ($version !== '') {
+                $version = explode('-', $version);
+                if (count($version) > 1) {
+                    array_pop($version);
+                }
+                $version = implode('.', $version);
+                return $version;
+            }
             break;
         default:
             throw new InvalidArgumentException("VCS '$vcs' is not supported by this implementation.");
