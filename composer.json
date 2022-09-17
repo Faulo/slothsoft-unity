@@ -44,6 +44,7 @@
 		}
 	},
 	"bin" : [
+		"scripts/autoversion",
 		"scripts/steam-buildfile",
 		"scripts/unity-build",
 		"scripts/unity-help",

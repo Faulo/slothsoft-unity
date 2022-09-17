@@ -1,0 +1,111 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Symfony\Component\Process\Process;
+use Slothsoft\Core\FileSystem;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+if ($_SERVER['argc'] < 1) {
+    echo <<<'EOT'
+    Determine the version of a repository based on its tags and commits.
+        
+    Usage:
+    composer exec autoversion plastic|git ["path/to/repository"]
+            
+    EOT;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$vcs = array_shift($args);
+$workspace = $args[0] ?? getcwd();
+
+if (! is_dir($workspace)) {
+    throw new FileNotFoundException("Workspace '$workspace' is not a directory.");
+}
+
+$workspace = realpath($workspace);
+
+echo findVersion($vcs, $workspace);
+
+function findVersion(string $vcs, string $workspace): string {
+    switch ($vcs) {
+        case 'plastic':
+            if (! FileSystem::commandExists('cm')) {
+                throw new FileNotFoundException("Command 'cm' is not available.");
+            }
+
+            $baseVersion = executeAndTrim([
+                'cm',
+                'find',
+                'label',
+                'order',
+                'by',
+                'date',
+                'desc',
+                'limit',
+                1,
+                '--nototal',
+                '--format={name}'
+            ], $workspace);
+            if ($baseVersion === '') {
+                $baseVersion = '0';
+            }
+            $lastChangeset = executeAndTrim([
+                'cm',
+                'find',
+                'label',
+                'order',
+                'by',
+                'date',
+                'desc',
+                'limit',
+                1,
+                '--nototal',
+                '--format={changeset}'
+            ], $workspace);
+            $total = executeAndTrim([
+                'cm',
+                'find',
+                'changeset',
+                'where',
+                "changesetid > $lastChangeset",
+                'order',
+                'by',
+                'date',
+                'desc',
+                '--format='
+            ], $workspace);
+            $match = [];
+            if (preg_match('~\d+~', $total, $match)) {
+                $revision = $match[0];
+                return "$baseVersion.$revision";
+            }
+
+            return $baseVersion;
+            break;
+        case 'git':
+            if (! FileSystem::commandExists('git')) {
+                throw new FileNotFoundException("Command 'git' is not available.");
+            }
+            break;
+        default:
+            throw new InvalidArgumentException("VCS '$vcs' is not supported by this implementation.");
+    }
+    return '0';
+}
+
+function executeAndTrim(array $args, string $cwd): string {
+    $process = new Process($args, $cwd);
+    // echo $process->getCommandLine() . PHP_EOL;
+    $process->run();
+    // echo $process->getOutput() . PHP_EOL;
+    return trim($process->getOutput());
+}

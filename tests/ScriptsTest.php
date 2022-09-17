@@ -31,6 +31,9 @@ class ScriptsTest extends TestCase {
     }
 
     public function validBinaries(): iterable {
+        yield 'autoversion' => [
+            'autoversion'
+        ];
         yield 'steam-buildfile' => [
             'steam-buildfile'
         ];
