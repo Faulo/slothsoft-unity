@@ -65,7 +65,7 @@ class UnityProject {
     }
 
     public function runTests(string ...$testPlatforms): DOMDocument {
-        $doc = new DOMDocument();
+        $doc = new DOMDocument('1.0', 'UTF-8');
 
         $rootNode = $doc->createElement('test-run');
         $attributes = [];

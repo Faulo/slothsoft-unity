@@ -33,7 +33,7 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
                 $result->setError(ExecutionError::Exception($e));
             }
 
-            $document = new DOMDocument();
+            $document = new DOMDocument('1.0', 'UTF-8');
 
             $document->appendChild($result->asNode($document));
 
