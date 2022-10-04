@@ -44,7 +44,7 @@ class VersionExecutable extends ProjectExecutableBase {
                 break;
         }
 
-        $document = new DOMDocument();
+        $document = new DOMDocument('1.0', 'UTF-8');
         $node = $document->createElement('version');
         $node->textContent = $this->project->getProjectVersion();
         $document->appendChild($node);
