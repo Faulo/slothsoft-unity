@@ -33,7 +33,7 @@ class UnityProject {
     }
 
     public function getProjectVersion(): string {
-        return $this->getSetting('bundleVersion', '');
+        return (string) $this->getSetting('bundleVersion', '');
     }
 
     public function getEditorVersion(): string {
@@ -42,7 +42,7 @@ class UnityProject {
 
     public function getScriptingBackend(): int {
         $backends = $this->getSetting('scriptingBackend', []);
-        return $backends['Standalone'] ?? UnityBuildTarget::BACKEND_MONO;
+        return (int) $backends['Standalone'] ?? UnityBuildTarget::BACKEND_MONO;
     }
 
     public function hasSetting(string $key): bool {
