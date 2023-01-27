@@ -42,7 +42,7 @@ class UnityProject {
 
     public function getScriptingBackend(): int {
         $backends = $this->getSetting('scriptingBackend', []);
-        return (int) $backends['Standalone'] ?? UnityBuildTarget::BACKEND_MONO;
+        return isset($backends['Standalone']) ? (int) $backends['Standalone'] : UnityBuildTarget::BACKEND_MONO;
     }
 
     public function hasSetting(string $key): bool {
