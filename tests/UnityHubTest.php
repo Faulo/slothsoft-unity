@@ -12,8 +12,8 @@ class UnityHubTest extends TestCase {
 
     public function testLoggingEnabled() {
         foreach ([
-            false,
-            true
+            true,
+            false
         ] as $value) {
             UnityHub::setLoggingEnabled($value);
             $this->assertEquals($value, UnityHub::getLoggingEnabled());
@@ -22,8 +22,8 @@ class UnityHubTest extends TestCase {
 
     public function testThrowOnFailure() {
         foreach ([
-            false,
-            true
+            true,
+            false
         ] as $value) {
             UnityHub::setThrowOnFailure($value);
             $this->assertEquals($value, UnityHub::getThrowOnFailure());
