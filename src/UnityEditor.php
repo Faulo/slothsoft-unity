@@ -29,7 +29,7 @@ class UnityEditor {
             return false;
         }
         if (! $this->wasLicensed) {
-            $log = $this->execute('-quit', '-projectPath', $projectPath)->getOutput();
+            $log = $this->execute(false, '-quit', '-projectPath', $projectPath)->getOutput();
             $this->wasLicensed = strpos($log, self::LICENSE_SUCCESS) !== false;
         }
         return $this->wasLicensed;
@@ -71,14 +71,14 @@ class UnityEditor {
 
     public function license(string $projectPath): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
-            $result = $this->execute('-quit', '-manualLicenseFile', $licenseFile)->getExitCode();
+            $result = $this->execute(false, '-quit', '-manualLicenseFile', $licenseFile)->getExitCode();
             sleep(1);
             if ($result === 0 or $this->isLicensed($projectPath)) {
                 return true;
             }
         }
 
-        $log = $this->execute('-quit', '-createManualActivationFile')->getOutput();
+        $log = $this->execute(false, '-quit', '-createManualActivationFile')->getOutput();
         $match = [];
         if (preg_match('~(Unity_v[^\s]+\.alf)~', $log, $match)) {
             $log = trim($match[1]);
@@ -90,18 +90,18 @@ class UnityEditor {
         return false;
     }
 
-    public function execute(string ...$arguments): Process {
+    public function execute(bool $validateExitCode, string ...$arguments): Process {
         assert($this->isInstalled());
 
         $process = $this->createProcess($arguments);
 
-        UnityHub::runUnityProcess($process);
+        UnityHub::runUnityProcess($process, $validateExitCode);
 
         return $process;
     }
 
     public function createEmptyProject(string $path): UnityProject {
-        $process = $this->execute('-createProject', $path, '-quit');
+        $process = $this->execute(true, '-createProject', $path, '-quit');
 
         $project = $this->hub->findProject($path, true);
 
