@@ -44,6 +44,22 @@ class UnityHub {
         return self::loggingEnabled()->getValue();
     }
 
+    private static function throwOnFailure(): ConfigurationField {
+        static $field;
+        if ($field === null) {
+            $field = new ConfigurationField(false);
+        }
+        return $field;
+    }
+
+    public static function setThrowOnFailure(bool $value): void {
+        self::throwOnFailure()->setValue($value);
+    }
+
+    public static function getThrowOnFailure(): bool {
+        return self::throwOnFailure()->getValue();
+    }
+
     private static function processTimeout(): ConfigurationField {
         static $field;
         if ($field === null) {

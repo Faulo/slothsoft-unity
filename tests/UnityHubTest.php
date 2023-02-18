@@ -10,6 +10,36 @@ class UnityHubTest extends TestCase {
         $this->assertTrue(class_exists(UnityHub::class));
     }
 
+    public function testLoggingEnabled() {
+        foreach ([
+            false,
+            true
+        ] as $value) {
+            UnityHub::setLoggingEnabled($value);
+            $this->assertEquals($value, UnityHub::getLoggingEnabled());
+        }
+    }
+
+    public function testThrowOnFailure() {
+        foreach ([
+            false,
+            true
+        ] as $value) {
+            UnityHub::setThrowOnFailure($value);
+            $this->assertEquals($value, UnityHub::getThrowOnFailure());
+        }
+    }
+
+    public function testProcessTimeout() {
+        foreach ([
+            0,
+            60
+        ] as $value) {
+            UnityHub::setProcessTimeout($value);
+            $this->assertEquals($value, UnityHub::getProcessTimeout());
+        }
+    }
+
     public function testHubIsInstalled(): void {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
