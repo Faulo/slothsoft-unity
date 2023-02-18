@@ -306,12 +306,12 @@ class UnityHub {
 
         $process = self::getHubLocator()->create($arguments);
 
-        self::runUnityProcess($process, 1);
+        self::runUnityProcess($process, false);
 
         return $process;
     }
 
-    public static function runUnityProcess(Process $process, int $expectedExitCode = 0): void {
+    public static function runUnityProcess(Process $process, bool $validateExitCode = true): void {
         if (self::getLoggingEnabled()) {
             fwrite(STDERR, $process->getCommandLine() . PHP_EOL);
         }
@@ -328,7 +328,7 @@ class UnityHub {
             throw ExecutionError::Exception($e, $process);
         }
 
-        if ($process->getExitCode() !== $expectedExitCode) {
+        if ($validateExitCode and $process->getExitCode() !== 0) {
             $code = json_encode($process->getExitCode());
             $text = $process->getExitCodeText();
             throw ExecutionError::Error("AssertExitCode", "Process finished with exit code '$code': $text.", $process);
