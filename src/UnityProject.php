@@ -164,7 +164,7 @@ class UnityProject {
     }
 
     public function execute(string ...$arguments): Process {
-        return $this->editor->execute('-projectPath', $this->info->path, ...$arguments);
+        return $this->editor->execute(true, '-projectPath', $this->info->path, ...$arguments);
     }
 
     public function ensureEditorIsInstalled(): bool {
