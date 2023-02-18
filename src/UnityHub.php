@@ -44,6 +44,22 @@ class UnityHub {
         return self::loggingEnabled()->getValue();
     }
 
+    private static function throwOnFailure(): ConfigurationField {
+        static $field;
+        if ($field === null) {
+            $field = new ConfigurationField(false);
+        }
+        return $field;
+    }
+
+    public static function setThrowOnFailure(bool $value): void {
+        self::throwOnFailure()->setValue($value);
+    }
+
+    public static function getThrowOnFailure(): bool {
+        return self::throwOnFailure()->getValue();
+    }
+
     private static function processTimeout(): ConfigurationField {
         static $field;
         if ($field === null) {
@@ -290,12 +306,12 @@ class UnityHub {
 
         $process = self::getHubLocator()->create($arguments);
 
-        self::runUnityProcess($process);
+        self::runUnityProcess($process, 1);
 
         return $process;
     }
 
-    public static function runUnityProcess(Process $process): void {
+    public static function runUnityProcess(Process $process, int $expectedExitCode = 0): void {
         if (self::getLoggingEnabled()) {
             fwrite(STDERR, $process->getCommandLine() . PHP_EOL);
         }
@@ -310,6 +326,12 @@ class UnityHub {
             });
         } catch (Throwable $e) {
             throw ExecutionError::Exception($e, $process);
+        }
+
+        if ($process->getExitCode() !== $expectedExitCode) {
+            $code = json_encode($process->getExitCode());
+            $text = $process->getExitCodeText();
+            throw ExecutionError::Error("AssertExitCode", "Process finished with exit code '$code': $text.", $process);
         }
     }
 

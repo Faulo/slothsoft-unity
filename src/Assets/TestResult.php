@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets;
 
 use Slothsoft\Unity\ExecutionError;
+use Slothsoft\Unity\UnityHub;
 use DOMDocument;
 use DOMElement;
 use DateTime;
@@ -29,7 +30,10 @@ class TestResult {
         $this->startTime = microtime(true);
     }
 
-    public function setError(?ExecutionError $error = null) {
+    public function setError(ExecutionError $error) {
+        if (UnityHub::getThrowOnFailure()) {
+            throw $error;
+        }
         $this->error = $error;
     }
 
