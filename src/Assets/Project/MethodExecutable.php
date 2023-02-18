@@ -46,11 +46,7 @@ class MethodExecutable extends ProjectExecutableBase {
     }
 
     protected function createResultDocument(): ?DOMDocument {
-        $result = $this->project->executeMethod($this->method, $this->arguments);
-
-        if ($result->getExitCode() !== 0) {
-            throw ExecutionError::Failure('AssertMethod', "Calling method '{$this->method}' failed!", $result);
-        }
+        $this->project->executeMethod($this->method, $this->arguments);
 
         return null;
     }
