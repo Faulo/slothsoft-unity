@@ -7,8 +7,10 @@ use PHPUnit\Framework\TestCase;
 class UnityProjectInfoTest extends TestCase {
 
     public const VALID_ROOT = __DIR__ . '/../test-files';
-
+    
     public const VALID_PROJECT = __DIR__ . '/../test-files/ValidProject';
+    
+    public const VALID_DOCUMENTATION = __DIR__ . '/../test-files/ValidDocumentation';
 
     public const VALID_PROJECT_VERSION = '2021.2.7f1';
 

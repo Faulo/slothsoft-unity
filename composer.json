@@ -40,13 +40,14 @@
 	},
 	"extra" : {
 		"branch-alias" : {
-			"dev-develop" : "2.4.x-dev"
+			"dev-develop" : "2.5.x-dev"
 		}
 	},
 	"bin" : [
 		"scripts/autoversion",
 		"scripts/steam-buildfile",
 		"scripts/unity-build",
+        "scripts/unity-documentation",
 		"scripts/unity-help",
 		"scripts/unity-method",
 		"scripts/unity-module-install",
