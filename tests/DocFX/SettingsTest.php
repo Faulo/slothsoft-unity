@@ -34,15 +34,16 @@ class SettingsTest extends TestCase {
     public function testExport(): void {
         $settings = new Settings(UnityProjectInfoTest::VALID_PROJECT);
 
-        $target = temp_dir(__CLASS);
+        $target = temp_dir(__CLASS__);
 
         $settings->export($target);
 
         $this->assertDirectoryExists($target);
-        $this->assertDirectoryExists($target . DIRECTORY_SEPARATOR . '.config');
-
         $this->assertFileExists($target . DIRECTORY_SEPARATOR . 'docfx.json');
         $this->assertFileExists($target . DIRECTORY_SEPARATOR . 'index.md');
         $this->assertFileExists($target . DIRECTORY_SEPARATOR . 'toc.yml');
+
+        $this->assertDirectoryExists($target . DIRECTORY_SEPARATOR . '.config');
+        $this->assertFileExists($target . DIRECTORY_SEPARATOR . '.config' . DIRECTORY_SEPARATOR . 'dotnet-tools.json');
     }
 }

@@ -3,6 +3,8 @@ namespace Slothsoft\Unity\DocFX;
 
 class Settings {
 
+    private string $path;
+
     private array $config = [
         'version' => 1,
         'isRoot' => true,
@@ -29,6 +31,11 @@ class Settings {
             ],
             'content' => [
                 [
+                    'src' => '.',
+                    'files' => '*',
+                    'dest' => '.'
+                ],
+                [
                     'src' => 'api~',
                     'files' => '*',
                     'dest' => 'api'
@@ -45,7 +52,9 @@ class Settings {
     ];
 
     public function __construct(string $path) {
-        $directory = new \RecursiveDirectoryIterator($path);
+        $this->path = realpath($path);
+
+        $directory = new \RecursiveDirectoryIterator($this->path);
         $iterator = new \RecursiveIteratorIterator($directory);
 
         $src = [
@@ -60,8 +69,33 @@ class Settings {
         $this->data['metadata']['src'][] = $src;
     }
 
+    public function export(string $target = null): void {
+        if ($target === null) {
+            $target = $this->path . DIRECTORY_SEPARATOR . 'Documentation~';
+        }
+
+        $this->ensureDirectory($target);
+        file_put_contents($target . DIRECTORY_SEPARATOR . 'docfx.json', $this->encode($this->data));
+        file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', '');
+        file_put_contents($target . DIRECTORY_SEPARATOR . 'toc.yml', '');
+
+        $configDir = $target . DIRECTORY_SEPARATOR . '.config';
+        $this->ensureDirectory($configDir);
+        file_put_contents($configDir . DIRECTORY_SEPARATOR . 'dotnet-tools.json', $this->encode($this->config));
+    }
+
+    private function ensureDirectory(string $directory): void {
+        if (! is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+    }
+
+    private function encode(array $data): string {
+        return json_encode($data, JSON_PRETTY_PRINT);
+    }
+
     public function __toString(): string {
-        return json_encode($this->data, JSON_PRETTY_PRINT);
+        return $this->encode($this->data);
     }
 }
 
