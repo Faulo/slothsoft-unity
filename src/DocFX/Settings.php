@@ -1,6 +1,8 @@
 <?php
 namespace Slothsoft\Unity\DocFX;
 
+use Spyc;
+
 class Settings {
 
     private string $path;
@@ -20,19 +22,24 @@ class Settings {
 
     private array $data = [
         'metadata' => [
-            'src' => [],
-            'dest' => 'api~'
+            [
+                'src' => [],
+                'dest' => 'api~'
+            ]
         ],
         'build' => [
             'globalMetadata' => [
                 '_appTitle' => 'App Title',
                 '_appFooter' => 'App Footer',
-                '_enableSearch' => ''
+                '_enableSearch' => true
             ],
             'content' => [
                 [
                     'src' => '.',
-                    'files' => '*',
+                    'files' => [
+                        '*.yml',
+                        '*.md'
+                    ],
                     'dest' => '.'
                 ],
                 [
@@ -40,15 +47,19 @@ class Settings {
                     'files' => '*',
                     'dest' => 'api'
                 ]
-            ]
-        ],
-        'xref' => [
-            'https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml'
-        ],
-        'xrefService' => [
-            'https://xref.docs.microsoft.com/query?uid={uid}'
-        ],
-        'dest' => 'html'
+            ],
+            'xref' => [
+                'https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml'
+            ],
+            'xrefService' => [
+                'https://xref.docs.microsoft.com/query?uid={uid}'
+            ],
+            'dest' => 'html'
+        ]
+    ];
+
+    private array $toc = [
+        'api~/' => 'Scripting API'
     ];
 
     public function __construct(string $path) {
@@ -63,10 +74,10 @@ class Settings {
         ];
         foreach ($iterator as $file) {
             if ($file->isFile() and $file->getExtension() === 'asmdef') {
-                $src[] = $file->getBasename('.asmdef') . '.csproj';
+                $src['files'][] = $file->getBasename('.asmdef') . '.csproj';
             }
         }
-        $this->data['metadata']['src'][] = $src;
+        $this->data['metadata'][0]['src'][] = $src;
     }
 
     public function export(string $target = null): void {
@@ -76,8 +87,8 @@ class Settings {
 
         $this->ensureDirectory($target);
         file_put_contents($target . DIRECTORY_SEPARATOR . 'docfx.json', $this->encode($this->data));
-        file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', '');
-        file_put_contents($target . DIRECTORY_SEPARATOR . 'toc.yml', '');
+        file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', '# Documentation');
+        file_put_contents($target . DIRECTORY_SEPARATOR . 'toc.yml', $this->encodeToC($this->toc));
 
         $configDir = $target . DIRECTORY_SEPARATOR . '.config';
         $this->ensureDirectory($configDir);
@@ -92,6 +103,17 @@ class Settings {
 
     private function encode(array $data): string {
         return json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    private function encodeToC(array $toc): string {
+        $yaml = [];
+        foreach ($toc as $key => $val) {
+            $yaml[] = [
+                'name' => $val,
+                'href' => $key
+            ];
+        }
+        return Spyc::YAMLDump($yaml);
     }
 
     public function __toString(): string {

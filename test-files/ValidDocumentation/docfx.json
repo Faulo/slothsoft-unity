@@ -1,0 +1,44 @@
+{
+    "metadata": [
+        {
+            "src": [
+                {
+                    "src": "..",
+                    "files": [
+                        "Project.csproj"
+                    ]
+                }
+            ],
+            "dest": "api~"
+        }
+    ],
+    "build": {
+        "globalMetadata": {
+            "_appTitle": "App Title",
+            "_appFooter": "App Footer",
+            "_enableSearch": true
+        },
+        "content": [
+            {
+				"src": ".",
+                "files": [
+                    "*.yml",
+                    "*.md"
+                ],
+				"dest": "."
+            },
+            {
+                "src": "api~",
+                "files": "*",
+                "dest": "api"
+            }
+        ],
+        "xref": [
+            "https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml"
+        ],
+        "xrefService": [
+            "https://xref.docs.microsoft.com/query?uid={uid}"
+        ],
+        "dest": "html"
+    }
+}

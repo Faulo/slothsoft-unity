@@ -5,6 +5,7 @@ namespace Slothsoft\Unity\DocFX;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Unity\UnityProjectInfoTest;
 use SebastianBergmann\CodeCoverage\Node\Directory;
+use Spyc;
 
 /**
  * SettingsTest
@@ -38,12 +39,26 @@ class SettingsTest extends TestCase {
 
         $settings->export($target);
 
-        $this->assertDirectoryExists($target);
-        $this->assertFileExists($target . DIRECTORY_SEPARATOR . 'docfx.json');
-        $this->assertFileExists($target . DIRECTORY_SEPARATOR . 'index.md');
-        $this->assertFileExists($target . DIRECTORY_SEPARATOR . 'toc.yml');
+        $files = [];
+        $files[] = DIRECTORY_SEPARATOR . 'docfx.json';
+        $files[] = DIRECTORY_SEPARATOR . 'index.md';
+        $files[] = DIRECTORY_SEPARATOR . 'toc.yml';
+        $files[] = DIRECTORY_SEPARATOR . '.config' . DIRECTORY_SEPARATOR . 'dotnet-tools.json';
 
-        $this->assertDirectoryExists($target . DIRECTORY_SEPARATOR . '.config');
-        $this->assertFileExists($target . DIRECTORY_SEPARATOR . '.config' . DIRECTORY_SEPARATOR . 'dotnet-tools.json');
+        foreach ($files as $file) {
+            $this->assertFileExists($target . $file);
+
+            switch (pathinfo($file, PATHINFO_EXTENSION)) {
+                case 'json':
+                    $this->assertJsonFileEqualsJsonFile(UnityProjectInfoTest::VALID_DOCUMENTATION . $file, $target . $file);
+                    break;
+                case 'yml':
+                    $this->assertEquals(Spyc::YAMLLoad(UnityProjectInfoTest::VALID_DOCUMENTATION . $file), Spyc::YAMLLoad($target . $file));
+                    break;
+                default:
+                    $this->assertFileEquals(UnityProjectInfoTest::VALID_DOCUMENTATION . $file, $target . $file);
+                    break;
+            }
+        }
     }
 }
