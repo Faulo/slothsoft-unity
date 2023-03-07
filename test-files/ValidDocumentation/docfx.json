@@ -7,9 +7,15 @@
                     "files": [
                         "Project.csproj"
                     ]
+                },
+                {
+                    "src": "..",
+                    "files": [
+                        "Package.csproj"
+                    ]
                 }
             ],
-            "dest": "api~"
+            "dest": "api"
         }
     ],
     "build": {
@@ -28,7 +34,7 @@
 				"dest": "."
             },
             {
-                "src": "api~",
+                "src": "api",
                 "files": "*",
                 "dest": "api"
             }

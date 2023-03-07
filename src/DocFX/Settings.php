@@ -24,7 +24,7 @@ class Settings {
         'metadata' => [
             [
                 'src' => [],
-                'dest' => 'api~'
+                'dest' => 'api'
             ]
         ],
         'build' => [
@@ -43,7 +43,7 @@ class Settings {
                     'dest' => '.'
                 ],
                 [
-                    'src' => 'api~',
+                    'src' => 'api',
                     'files' => '*',
                     'dest' => 'api'
                 ]
@@ -59,13 +59,18 @@ class Settings {
     ];
 
     private array $toc = [
-        'api~/' => 'Scripting API'
+        'api/' => 'Scripting API'
     ];
 
     public function __construct(string $path) {
         $this->path = realpath($path);
 
-        $directory = new \RecursiveDirectoryIterator($this->path);
+        $this->addDirectory('Assets');
+        $this->addDirectory('Packages');
+    }
+
+    private function addDirectory(string $directory) {
+        $directory = new \RecursiveDirectoryIterator($this->path . DIRECTORY_SEPARATOR . $directory);
         $iterator = new \RecursiveIteratorIterator($directory);
 
         $src = [

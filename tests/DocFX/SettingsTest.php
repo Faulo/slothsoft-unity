@@ -4,7 +4,6 @@ namespace Slothsoft\Unity\DocFX;
 
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Unity\UnityProjectInfoTest;
-use SebastianBergmann\CodeCoverage\Node\Directory;
 use Spyc;
 
 /**
@@ -28,8 +27,11 @@ class SettingsTest extends TestCase {
 
     public function testContainsCSProj(): void {
         $settings = new Settings(UnityProjectInfoTest::VALID_PROJECT);
+        $data = (string) $settings;
 
-        $this->assertStringContainsString('Project.csproj', (string) $settings);
+        $this->assertStringContainsString('Project.csproj', $data);
+        $this->assertStringContainsString('Package.csproj', $data);
+        $this->assertStringNotContainsString('NotInProject.csproj', $data);
     }
 
     public function testExport(): void {
