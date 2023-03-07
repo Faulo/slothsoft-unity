@@ -63,4 +63,14 @@ class SettingsTest extends TestCase {
             }
         }
     }
+
+    public function testExportDirectory(): void {
+        $settings = new Settings(UnityProjectInfoTest::VALID_PROJECT);
+
+        $target = temp_dir(__CLASS__);
+
+        $actual = $settings->export($target);
+
+        $this->assertEquals(realpath($target), $actual);
+    }
 }

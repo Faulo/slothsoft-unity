@@ -85,7 +85,7 @@ class Settings {
         $this->data['metadata'][0]['src'][] = $src;
     }
 
-    public function export(string $target = null): void {
+    public function export(string $target = null): string {
         if ($target === null) {
             $target = $this->path . DIRECTORY_SEPARATOR . 'Documentation~';
         }
@@ -98,6 +98,8 @@ class Settings {
         $configDir = $target . DIRECTORY_SEPARATOR . '.config';
         $this->ensureDirectory($configDir);
         file_put_contents($configDir . DIRECTORY_SEPARATOR . 'dotnet-tools.json', $this->encode($this->config));
+
+        return realpath($target);
     }
 
     private function ensureDirectory(string $directory): void {

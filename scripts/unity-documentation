@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+const HELP = <<<'EOT'
+Create a documentation template for DocFX. The template will be created in a "Documentation~" folder in the project root and can be called from there with "dotnet tool run docfx". The generated documentation will be placed in "Documentation~/html".
+    
+Usage:
+composer exec unity-documentation "path/to/project"
+
+EOT;
+
+if ($_SERVER['argc'] !== 1) {
+    echo HELP;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$workspace = array_shift($args);
+
+$settings = new Slothsoft\Unity\DocFX\Settings($workspace);
+
+$directory = $settings->export();
+
+echo "Created DocFX template at '$directory', run it with 'dotnet tool run docfx'!";

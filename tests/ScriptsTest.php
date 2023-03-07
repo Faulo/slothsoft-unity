@@ -43,6 +43,9 @@ class ScriptsTest extends TestCase {
         yield 'unity-method' => [
             'unity-method'
         ];
+        yield 'unity-documentation' => [
+            'unity-documentation'
+        ];
         yield 'unity-package-install' => [
             'unity-package-install'
         ];
