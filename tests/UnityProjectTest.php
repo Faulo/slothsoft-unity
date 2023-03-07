@@ -44,9 +44,13 @@ class UnityProjectTest extends TestCase {
 
         $assets = iterator_to_array($project->getAssetFiles());
 
-        $this->assertCount(1, $assets);
-
+        $this->assertCount(2, $assets);
+        
         $asset = $assets[0];
+        $this->assertInstanceof(\SplFileInfo::class, $asset);
+        $this->assertEquals('Project.asmdef', $asset->getBasename());
+        
+        $asset = $assets[1];
         $this->assertInstanceof(\SplFileInfo::class, $asset);
         $this->assertEquals('Script.cs', $asset->getBasename());
     }
