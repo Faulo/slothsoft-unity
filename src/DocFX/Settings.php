@@ -107,6 +107,8 @@ class Settings {
 
         $this->addDirectory('Packages');
 
+        $this->addRootDirectory();
+
         if ($this->documentation) {
             $this->addManual();
         }
@@ -144,7 +146,7 @@ class Settings {
         ];
     }
 
-    private function addDirectory(string $directory, callable $include = null) {
+    private function addDirectory(string $directory, callable $include = null): void {
         $directory = new \RecursiveDirectoryIterator($this->path . DIRECTORY_SEPARATOR . $directory);
         $iterator = new \RecursiveIteratorIterator($directory);
 
@@ -153,6 +155,16 @@ class Settings {
                 continue;
             }
             $this->processFile($file);
+        }
+    }
+
+    private function addRootDirectory(): void {
+        $directory = new \DirectoryIterator($this->path);
+        foreach ($directory as $file) {
+            if ($file->isDot()) {
+                continue;
+            }
+            $this->processFile(new \SplFileInfo($file->getRealPath()));
         }
     }
 
@@ -166,7 +178,8 @@ class Settings {
                     $this->markdowns[] = $file;
                     break;
             }
-        } else {
+        }
+        if ($file->isDir()) {
             switch ($file->getFilename()) {
                 case 'Documentation~':
                 case 'Documentation':
@@ -176,7 +189,7 @@ class Settings {
         }
     }
 
-    private function addManual() {}
+    private function addManual(): void {}
 
     public function export(string $target = null): string {
         if ($target === null) {
