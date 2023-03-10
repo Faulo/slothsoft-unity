@@ -151,7 +151,7 @@ class Settings {
 
     private function addDirectory(string $directory, callable $include = null): void {
         $directory = new \RecursiveDirectoryIterator($this->path . DIRECTORY_SEPARATOR . $directory);
-        $iterator = new \RecursiveIteratorIterator($directory);
+        $iterator = new \RecursiveIteratorIterator($directory, \RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($iterator as $file) {
             if ($include !== null and ! $include($file)) {
