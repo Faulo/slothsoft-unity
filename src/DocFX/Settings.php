@@ -71,11 +71,19 @@ class Settings {
     public function __construct(string $path) {
         $this->path = realpath($path);
 
-        $this->addDirectory('Assets');
+        $plugins = realpath($this->path . DIRECTORY_SEPARATOR . 'Assets' . DIRECTORY_SEPARATOR . 'Plugins');
+        if ($plugins) {
+            $this->addDirectory('Assets', function (\SplFileInfo $file) use ($plugins): bool {
+                return strpos($file->getRealPath(), $plugins) === false;
+            });
+        } else {
+            $this->addDirectory('Assets');
+        }
+
         $this->addDirectory('Packages');
     }
 
-    private function addDirectory(string $directory) {
+    private function addDirectory(string $directory, callable $include = null) {
         $directory = new \RecursiveDirectoryIterator($this->path . DIRECTORY_SEPARATOR . $directory);
         $iterator = new \RecursiveIteratorIterator($directory);
 
@@ -84,6 +92,9 @@ class Settings {
             'files' => []
         ];
         foreach ($iterator as $file) {
+            if ($include !== null and ! $include($file)) {
+                continue;
+            }
             if ($file->isFile() and $file->getExtension() === 'asmdef') {
                 $src['files'][] = $file->getBasename('.asmdef') . '.csproj';
             }
