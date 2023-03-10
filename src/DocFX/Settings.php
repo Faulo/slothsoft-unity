@@ -217,7 +217,7 @@ class Settings {
 
     public function export(string $target = null): string {
         if ($target === null) {
-            $target = $this->path . DIRECTORY_SEPARATOR . 'Documentation~';
+            $target = $this->path . DIRECTORY_SEPARATOR . '.Documentation';
         }
 
         $this->ensureDirectory($target);
