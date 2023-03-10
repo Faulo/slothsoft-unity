@@ -34,8 +34,12 @@ class SettingsTest extends TestCase {
         $this->assertStringNotContainsString('NotInProject.csproj', $data);
     }
 
-    public function testExport(): void {
-        $settings = new Settings(UnityProjectInfoTest::VALID_PROJECT);
+    /**
+     *
+     * @dataProvider validDocumentations
+     */
+    public function testExport(string $project, string $documentation): void {
+        $settings = new Settings($project);
 
         $target = temp_dir(__CLASS__);
 
@@ -52,13 +56,13 @@ class SettingsTest extends TestCase {
 
             switch (pathinfo($file, PATHINFO_EXTENSION)) {
                 case 'json':
-                    $this->assertJsonFileEqualsJsonFile(UnityProjectInfoTest::VALID_DOCUMENTATION . $file, $target . $file);
+                    $this->assertJsonFileEqualsJsonFile($documentation . $file, $target . $file);
                     break;
                 case 'yml':
-                    $this->assertEquals(Spyc::YAMLLoad(UnityProjectInfoTest::VALID_DOCUMENTATION . $file), Spyc::YAMLLoad($target . $file));
+                    $this->assertEquals(Spyc::YAMLLoad($documentation . $file), Spyc::YAMLLoad($target . $file));
                     break;
                 default:
-                    $this->assertFileEquals(UnityProjectInfoTest::VALID_DOCUMENTATION . $file, $target . $file);
+                    $this->assertFileEquals($documentation . $file, $target . $file);
                     break;
             }
         }
@@ -72,5 +76,18 @@ class SettingsTest extends TestCase {
         $actual = $settings->export($target);
 
         $this->assertEquals(realpath($target), $actual);
+    }
+
+    public function validDocumentations(): iterable {
+        return [
+            [
+                UnityProjectInfoTest::VALID_PROJECT,
+                UnityProjectInfoTest::VALID_DOCUMENTATION
+            ],
+            [
+                UnityProjectInfoTest::VALID_PROJECT_WITH_MDS,
+                UnityProjectInfoTest::VALID_DOCUMENTATION_WITH_MDS
+            ]
+        ];
     }
 }
