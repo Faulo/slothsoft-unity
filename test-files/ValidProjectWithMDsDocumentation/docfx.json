@@ -5,12 +5,7 @@
                 {
                     "src": "..",
                     "files": [
-                        "Project.csproj"
-                    ]
-                },
-                {
-                    "src": "..",
-                    "files": [
+                        "Project.csproj",
                         "Package.csproj"
                     ]
                 }

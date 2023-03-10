@@ -19,6 +19,10 @@ class Settings {
 
     const FILE_LICENSE = 'LICENSE.md';
 
+    const FILE_TOC = 'toc.yml';
+
+    const FILE_DOCFX = 'docfx.json';
+
     const SPECIAL_MDS = [
         self::FILE_README,
         self::FILE_CHANGELOG,
@@ -41,12 +45,7 @@ class Settings {
     ];
 
     private array $data = [
-        'metadata' => [
-            [
-                'src' => [],
-                'dest' => 'api'
-            ]
-        ],
+        'metadata' => [],
         'build' => [
             'globalMetadata' => [
                 '_appTitle' => 'App Title',
@@ -92,6 +91,8 @@ class Settings {
 
     private array $markdowns = [];
 
+    private array $projects = [];
+
     public function __construct(string $path) {
         $this->path = realpath($path);
 
@@ -131,39 +132,48 @@ class Settings {
         if ($this->license) {
             $this->toc[self::FILE_LICENSE] = 'License';
         }
+
+        $this->data['metadata'][] = [
+            'src' => [
+                [
+                    'src' => '..',
+                    'files' => array_keys($this->projects)
+                ]
+            ],
+            'dest' => 'api'
+        ];
     }
 
     private function addDirectory(string $directory, callable $include = null) {
         $directory = new \RecursiveDirectoryIterator($this->path . DIRECTORY_SEPARATOR . $directory);
         $iterator = new \RecursiveIteratorIterator($directory);
 
-        $src = [
-            'src' => '..',
-            'files' => []
-        ];
         foreach ($iterator as $file) {
             if ($include !== null and ! $include($file)) {
                 continue;
             }
-            if ($file->isFile()) {
-                switch ($file->getExtension()) {
-                    case 'asmdef':
-                        $src['files'][] = $file->getBasename('.asmdef') . '.csproj';
-                        break;
-                    case 'md':
-                        $this->markdowns[] = $file;
-                        break;
-                }
-            } else {
-                switch ($file->getFilename()) {
-                    case 'Documentation~':
-                    case 'Documentation':
-                        $this->documentation = $file;
-                        break;
-                }
+            $this->processFile($file);
+        }
+    }
+
+    private function processFile(\SplFileInfo $file): void {
+        if ($file->isFile()) {
+            switch ($file->getExtension()) {
+                case 'asmdef':
+                    $this->projects[$file->getBasename('.asmdef') . '.csproj'] = null;
+                    break;
+                case 'md':
+                    $this->markdowns[] = $file;
+                    break;
+            }
+        } else {
+            switch ($file->getFilename()) {
+                case 'Documentation~':
+                case 'Documentation':
+                    $this->documentation = $file;
+                    break;
             }
         }
-        $this->data['metadata'][0]['src'][] = $src;
     }
 
     private function addManual() {}
@@ -174,7 +184,7 @@ class Settings {
         }
 
         $this->ensureDirectory($target);
-        file_put_contents($target . DIRECTORY_SEPARATOR . 'docfx.json', $this->encode($this->data));
+        file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_DOCFX, $this->encode($this->data));
         if ($this->readme) {
             copy($this->readme->getRealpath(), $target . DIRECTORY_SEPARATOR . self::FILE_INDEX);
         } else {
@@ -186,7 +196,7 @@ class Settings {
         if ($this->license) {
             copy($this->license->getRealpath(), $target . DIRECTORY_SEPARATOR . self::FILE_LICENSE);
         }
-        file_put_contents($target . DIRECTORY_SEPARATOR . 'toc.yml', $this->encodeToC($this->toc));
+        file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_TOC, $this->encodeToC($this->toc));
 
         $configDir = $target . DIRECTORY_SEPARATOR . '.config';
         $this->ensureDirectory($configDir);
