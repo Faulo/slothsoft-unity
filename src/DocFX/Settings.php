@@ -48,9 +48,8 @@ class Settings {
         'metadata' => [],
         'build' => [
             'globalMetadata' => [
-                '_appTitle' => 'App Title',
-                '_appFooter' => 'App Footer',
-                '_enableSearch' => true
+                '_enableSearch' => true,
+                '_enableNewTab' => true
             ],
             'content' => [
                 [
@@ -78,7 +77,7 @@ class Settings {
     ];
 
     private array $toc = [
-        'api/' => 'Scripting API'
+        'api/' => 'API'
     ];
 
     private ?\SplFileInfo $documentation = null;
