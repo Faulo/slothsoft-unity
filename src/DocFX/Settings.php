@@ -68,6 +68,14 @@ class Settings {
         'api/' => 'Scripting API'
     ];
 
+    private ?\SplFileInfo $documentation = null;
+
+    private ?\SplFileInfo $readme = null;
+
+    private ?\SplFileInfo $changelog = null;
+
+    private array $markdowns = [];
+
     public function __construct(string $path) {
         $this->path = realpath($path);
 
@@ -81,6 +89,25 @@ class Settings {
         }
 
         $this->addDirectory('Packages');
+
+        if ($this->documentation) {
+            $this->addManual();
+        }
+
+        foreach ($this->markdowns as $file) {
+            switch ($file->getFilename()) {
+                case 'README.md':
+                    $this->readme = $file;
+                    break;
+                case 'CHANGELOG.md':
+                    $this->changelog = $file;
+                    break;
+            }
+        }
+
+        if ($this->changelog) {
+            $this->toc['CHANGELOG.md'] = 'Changelog';
+        }
     }
 
     private function addDirectory(string $directory, callable $include = null) {
@@ -95,12 +122,27 @@ class Settings {
             if ($include !== null and ! $include($file)) {
                 continue;
             }
-            if ($file->isFile() and $file->getExtension() === 'asmdef') {
-                $src['files'][] = $file->getBasename('.asmdef') . '.csproj';
+            if ($file->isFile()) {
+                switch ($file->getExtension()) {
+                    case 'asmdef':
+                        $src['files'][] = $file->getBasename('.asmdef') . '.csproj';
+                        break;
+                    case 'md':
+                        $this->markdowns[] = $file;
+                        break;
+                }
+            } else {
+                switch ($file->getFilename()) {
+                    case 'Documentation':
+                        $this->documentation = $file;
+                        break;
+                }
             }
         }
         $this->data['metadata'][0]['src'][] = $src;
     }
+
+    private function addManual() {}
 
     public function export(string $target = null): string {
         if ($target === null) {
@@ -109,7 +151,14 @@ class Settings {
 
         $this->ensureDirectory($target);
         file_put_contents($target . DIRECTORY_SEPARATOR . 'docfx.json', $this->encode($this->data));
-        file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', self::DEFAULT_INDEX);
+        if ($this->readme) {
+            copy($this->readme->getRealpath(), $target . DIRECTORY_SEPARATOR . 'index.md');
+        } else {
+            file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', self::DEFAULT_INDEX);
+        }
+        if ($this->changelog) {
+            copy($this->changelog->getRealpath(), $target . DIRECTORY_SEPARATOR . 'CHANGELOG.md');
+        }
         file_put_contents($target . DIRECTORY_SEPARATOR . 'toc.yml', $this->encodeToC($this->toc));
 
         $configDir = $target . DIRECTORY_SEPARATOR . '.config';
