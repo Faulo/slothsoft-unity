@@ -5,6 +5,12 @@ use Spyc;
 
 class Settings {
 
+    const DEFAULT_INDEX = <<<EOT
+    # Documentation
+    
+    Add a README.md to your repository to change this page.
+    EOT;
+
     private string $path;
 
     private array $config = [
@@ -92,7 +98,7 @@ class Settings {
 
         $this->ensureDirectory($target);
         file_put_contents($target . DIRECTORY_SEPARATOR . 'docfx.json', $this->encode($this->data));
-        file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', '# Documentation');
+        file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', self::DEFAULT_INDEX);
         file_put_contents($target . DIRECTORY_SEPARATOR . 'toc.yml', $this->encodeToC($this->toc));
 
         $configDir = $target . DIRECTORY_SEPARATOR . '.config';

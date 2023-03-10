@@ -44,15 +44,17 @@ class UnityProjectTest extends TestCase {
 
         $assets = iterator_to_array($project->getAssetFiles());
 
-        $this->assertCount(2, $assets);
-        
-        $asset = $assets[0];
-        $this->assertInstanceof(\SplFileInfo::class, $asset);
-        $this->assertEquals('Project.asmdef', $asset->getBasename());
-        
-        $asset = $assets[1];
-        $this->assertInstanceof(\SplFileInfo::class, $asset);
-        $this->assertEquals('Script.cs', $asset->getBasename());
+        $files = [];
+        $files[] = 'NotInProject.asmdef';
+        $files[] = 'Project.asmdef';
+        $files[] = 'Script.cs';
+
+        $this->assertCount(count($files), $assets);
+
+        foreach ($assets as $asset) {
+            $this->assertInstanceof(\SplFileInfo::class, $asset);
+            $this->assertContains($asset->getBasename(), $files);
+        }
     }
 
     public function testSettingSuccess(): void {

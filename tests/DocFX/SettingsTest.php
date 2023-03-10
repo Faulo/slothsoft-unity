@@ -80,11 +80,11 @@ class SettingsTest extends TestCase {
 
     public function validDocumentations(): iterable {
         return [
-            [
+            UnityProjectInfoTest::VALID_PROJECT => [
                 UnityProjectInfoTest::VALID_PROJECT,
                 UnityProjectInfoTest::VALID_DOCUMENTATION
             ],
-            [
+            UnityProjectInfoTest::VALID_PROJECT_WITH_MDS => [
                 UnityProjectInfoTest::VALID_PROJECT_WITH_MDS,
                 UnityProjectInfoTest::VALID_DOCUMENTATION_WITH_MDS
             ]
