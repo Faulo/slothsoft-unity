@@ -5,6 +5,12 @@ use Spyc;
 
 class Settings {
 
+    const DEFAULT_INDEX = <<<EOT
+    # Documentation
+    
+    Add a README.md to your repository to change this page.
+    EOT;
+
     private string $path;
 
     private array $config = [
@@ -62,14 +68,49 @@ class Settings {
         'api/' => 'Scripting API'
     ];
 
+    private ?\SplFileInfo $documentation = null;
+
+    private ?\SplFileInfo $readme = null;
+
+    private ?\SplFileInfo $changelog = null;
+
+    private array $markdowns = [];
+
     public function __construct(string $path) {
         $this->path = realpath($path);
 
-        $this->addDirectory('Assets');
+        $plugins = realpath($this->path . DIRECTORY_SEPARATOR . 'Assets' . DIRECTORY_SEPARATOR . 'Plugins');
+        if ($plugins) {
+            $this->addDirectory('Assets', function (\SplFileInfo $file) use ($plugins): bool {
+                return strpos($file->getRealPath(), $plugins) === false;
+            });
+        } else {
+            $this->addDirectory('Assets');
+        }
+
         $this->addDirectory('Packages');
+
+        if ($this->documentation) {
+            $this->addManual();
+        }
+
+        foreach ($this->markdowns as $file) {
+            switch ($file->getFilename()) {
+                case 'README.md':
+                    $this->readme = $file;
+                    break;
+                case 'CHANGELOG.md':
+                    $this->changelog = $file;
+                    break;
+            }
+        }
+
+        if ($this->changelog) {
+            $this->toc['CHANGELOG.md'] = 'Changelog';
+        }
     }
 
-    private function addDirectory(string $directory) {
+    private function addDirectory(string $directory, callable $include = null) {
         $directory = new \RecursiveDirectoryIterator($this->path . DIRECTORY_SEPARATOR . $directory);
         $iterator = new \RecursiveIteratorIterator($directory);
 
@@ -78,12 +119,30 @@ class Settings {
             'files' => []
         ];
         foreach ($iterator as $file) {
-            if ($file->isFile() and $file->getExtension() === 'asmdef') {
-                $src['files'][] = $file->getBasename('.asmdef') . '.csproj';
+            if ($include !== null and ! $include($file)) {
+                continue;
+            }
+            if ($file->isFile()) {
+                switch ($file->getExtension()) {
+                    case 'asmdef':
+                        $src['files'][] = $file->getBasename('.asmdef') . '.csproj';
+                        break;
+                    case 'md':
+                        $this->markdowns[] = $file;
+                        break;
+                }
+            } else {
+                switch ($file->getFilename()) {
+                    case 'Documentation':
+                        $this->documentation = $file;
+                        break;
+                }
             }
         }
         $this->data['metadata'][0]['src'][] = $src;
     }
+
+    private function addManual() {}
 
     public function export(string $target = null): string {
         if ($target === null) {
@@ -92,7 +151,14 @@ class Settings {
 
         $this->ensureDirectory($target);
         file_put_contents($target . DIRECTORY_SEPARATOR . 'docfx.json', $this->encode($this->data));
-        file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', '# Documentation');
+        if ($this->readme) {
+            copy($this->readme->getRealpath(), $target . DIRECTORY_SEPARATOR . 'index.md');
+        } else {
+            file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', self::DEFAULT_INDEX);
+        }
+        if ($this->changelog) {
+            copy($this->changelog->getRealpath(), $target . DIRECTORY_SEPARATOR . 'CHANGELOG.md');
+        }
         file_put_contents($target . DIRECTORY_SEPARATOR . 'toc.yml', $this->encodeToC($this->toc));
 
         $configDir = $target . DIRECTORY_SEPARATOR . '.config';

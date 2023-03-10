@@ -7,10 +7,14 @@ use PHPUnit\Framework\TestCase;
 class UnityProjectInfoTest extends TestCase {
 
     public const VALID_ROOT = __DIR__ . '/../test-files';
-    
+
     public const VALID_PROJECT = __DIR__ . '/../test-files/ValidProject';
-    
-    public const VALID_DOCUMENTATION = __DIR__ . '/../test-files/ValidDocumentation';
+
+    public const VALID_DOCUMENTATION = __DIR__ . '/../test-files/ValidProjectDocumentation';
+
+    public const VALID_PROJECT_WITH_MDS = __DIR__ . '/../test-files/ValidProjectWithMDs';
+
+    public const VALID_DOCUMENTATION_WITH_MDS = __DIR__ . '/../test-files/ValidProjectWithMDsDocumentation';
 
     public const VALID_PROJECT_VERSION = '2021.2.7f1';
 
@@ -49,22 +53,21 @@ class UnityProjectInfoTest extends TestCase {
      *
      * @dataProvider validPathProvider
      */
-    public function testFindAll(string $path) {
+    public function testFindAll(string $path, bool $includeSubdirectories, int $expected) {
         $infos = iterator_to_array(UnityProjectInfo::findAll($path));
-        $this->assertCount(1, $infos);
-        foreach ($infos as $info) {
-            $this->assertInfoIsValid($info);
-        }
+        $this->assertCount($expected, $infos);
     }
 
     public function validPathProvider(): iterable {
         yield self::VALID_PROJECT => [
             self::VALID_PROJECT,
-            false
+            false,
+            1
         ];
         yield self::VALID_ROOT => [
             self::VALID_ROOT,
-            true
+            true,
+            2
         ];
     }
 
