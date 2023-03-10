@@ -52,6 +52,9 @@ class SettingsTest extends TestCase {
         $files[] = DIRECTORY_SEPARATOR . Settings::FILE_LICENSE;
         $files[] = DIRECTORY_SEPARATOR . Settings::FILE_TOC;
         $files[] = DIRECTORY_SEPARATOR . '.config' . DIRECTORY_SEPARATOR . 'dotnet-tools.json';
+        $files[] = DIRECTORY_SEPARATOR . Settings::DIR_DOCS . DIRECTORY_SEPARATOR . Settings::FILE_TOC;
+        $files[] = DIRECTORY_SEPARATOR . Settings::DIR_DOCS . DIRECTORY_SEPARATOR . 'Basics.md';
+        $files[] = DIRECTORY_SEPARATOR . Settings::DIR_DOCS . DIRECTORY_SEPARATOR . 'subfolder/logo.svg';
 
         foreach ($files as $file) {
             if (! file_exists($documentation . $file)) {

@@ -32,8 +32,28 @@
                 "src": "api",
                 "files": "*",
                 "dest": "api"
+            },
+            {
+                "src": "docs",
+                "files": [
+					"**/*.yml",
+					"**/*.md"
+                ],
+                "dest": "docs"
             }
         ],
+		"resource": [
+            {
+                "src": "docs",
+                "files": [
+					"**/*.png",
+					"**/*.jpg",
+					"**/*.svg",
+					"**/*.webp"
+                ],
+				"dest": "docs"
+            }
+		],
         "xref": [
             "https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml"
         ],

@@ -1,6 +1,7 @@
 <?php
 namespace Slothsoft\Unity\DocFX;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Spyc;
 
 class Settings {
@@ -23,11 +24,11 @@ class Settings {
 
     const FILE_DOCFX = 'docfx.json';
 
-    const SPECIAL_MDS = [
-        self::FILE_README,
-        self::FILE_CHANGELOG,
-        self::FILE_LICENSE
-    ];
+    const DIR_API = 'api';
+
+    const DIR_DOCS = 'docs';
+
+    private Filesystem $fileSystem;
 
     private string $path;
 
@@ -62,9 +63,9 @@ class Settings {
                     'dest' => '.'
                 ],
                 [
-                    'src' => 'api',
+                    'src' => self::DIR_API,
                     'files' => '*',
-                    'dest' => 'api'
+                    'dest' => self::DIR_API
                 ]
             ],
             'xref' => [
@@ -78,10 +79,10 @@ class Settings {
     ];
 
     private array $toc = [
-        'api/' => 'API'
+        self::DIR_API . '/' => 'API'
     ];
 
-    private ?\SplFileInfo $documentation = null;
+    private ?\SplFileInfo $docs = null;
 
     private ?\SplFileInfo $readme = null;
 
@@ -94,6 +95,7 @@ class Settings {
     private array $projects = [];
 
     public function __construct(string $path) {
+        $this->fileSystem = new Filesystem();
         $this->path = realpath($path);
 
         $plugins = realpath($this->path . DIRECTORY_SEPARATOR . 'Assets' . DIRECTORY_SEPARATOR . 'Plugins');
@@ -109,7 +111,8 @@ class Settings {
 
         $this->addRootDirectory();
 
-        if ($this->documentation) {
+        if ($this->docs) {
+            $this->toc[self::DIR_DOCS . '/'] = 'Docs';
             $this->addManual();
         }
 
@@ -142,7 +145,7 @@ class Settings {
                     'files' => array_keys($this->projects)
                 ]
             ],
-            'dest' => 'api'
+            'dest' => self::DIR_API
         ];
     }
 
@@ -183,13 +186,34 @@ class Settings {
             switch ($file->getFilename()) {
                 case 'Documentation~':
                 case 'Documentation':
-                    $this->documentation = $file;
+                    $this->docs = $file;
                     break;
             }
         }
     }
 
-    private function addManual(): void {}
+    private function addManual(): void {
+        $this->data['build']['content'][] = [
+            'src' => 'docs',
+            'files' => [
+                '**/*.yml',
+                '**/*.md'
+            ],
+            'dest' => 'docs'
+        ];
+        $this->data['build']['resource'] = [
+            [
+                'src' => 'docs',
+                'files' => [
+                    '**/*.png',
+                    '**/*.jpg',
+                    '**/*.svg',
+                    '**/*.webp'
+                ],
+                'dest' => 'docs'
+            ]
+        ];
+    }
 
     public function export(string $target = null): string {
         if ($target === null) {
@@ -215,6 +239,15 @@ class Settings {
         $this->ensureDirectory($configDir);
         file_put_contents($configDir . DIRECTORY_SEPARATOR . 'dotnet-tools.json', $this->encode($this->config));
 
+        if ($this->docs) {
+            $docsDir = $target . DIRECTORY_SEPARATOR . self::DIR_DOCS;
+            $this->fileSystem->mirror($this->docs->getRealPath(), $docsDir);
+            if (! file_exists($docsDir . DIRECTORY_SEPARATOR . self::FILE_TOC)) {
+                $toc = $this->createToc($this->docs);
+                file_put_contents($docsDir . DIRECTORY_SEPARATOR . self::FILE_TOC, $this->encodeToC($toc));
+            }
+        }
+
         return realpath($target);
     }
 
@@ -237,6 +270,23 @@ class Settings {
             ];
         }
         return Spyc::YAMLDump($yaml);
+    }
+
+    private function createToC(\SplFileInfo $dir): array {
+        $toc = [];
+        $directory = new \DirectoryIterator($dir->getRealPath());
+        foreach ($directory as $file) {
+            if ($file->isFile()) {
+                $ext = $file->getExtension();
+                switch ($ext) {
+                    case 'yml':
+                    case 'md':
+                        $toc[$file->getFilename()] = $file->getBasename(".$ext");
+                        break;
+                }
+            }
+        }
+        return $toc;
     }
 
     public function __toString(): string {
