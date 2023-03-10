@@ -142,6 +142,7 @@ class Settings {
                 }
             } else {
                 switch ($file->getFilename()) {
+                    case 'Documentation~':
                     case 'Documentation':
                         $this->documentation = $file;
                         break;
