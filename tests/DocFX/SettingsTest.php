@@ -48,10 +48,16 @@ class SettingsTest extends TestCase {
         $files = [];
         $files[] = DIRECTORY_SEPARATOR . 'docfx.json';
         $files[] = DIRECTORY_SEPARATOR . 'index.md';
+        $files[] = DIRECTORY_SEPARATOR . 'CHANGELOG.md';
+        $files[] = DIRECTORY_SEPARATOR . 'LICENSE.md';
         $files[] = DIRECTORY_SEPARATOR . 'toc.yml';
         $files[] = DIRECTORY_SEPARATOR . '.config' . DIRECTORY_SEPARATOR . 'dotnet-tools.json';
 
         foreach ($files as $file) {
+            if (! file_exists($documentation . $file)) {
+                continue;
+            }
+
             $this->assertFileExists($target . $file);
 
             switch (pathinfo($file, PATHINFO_EXTENSION)) {

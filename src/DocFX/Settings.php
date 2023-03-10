@@ -74,6 +74,8 @@ class Settings {
 
     private ?\SplFileInfo $changelog = null;
 
+    private ?\SplFileInfo $license = null;
+
     private array $markdowns = [];
 
     public function __construct(string $path) {
@@ -102,11 +104,18 @@ class Settings {
                 case 'CHANGELOG.md':
                     $this->changelog = $file;
                     break;
+                case 'LICENSE.md':
+                    $this->license = $file;
+                    break;
             }
         }
 
         if ($this->changelog) {
             $this->toc['CHANGELOG.md'] = 'Changelog';
+        }
+
+        if ($this->license) {
+            $this->toc['LICENSE.md'] = 'License';
         }
     }
 
@@ -158,6 +167,9 @@ class Settings {
         }
         if ($this->changelog) {
             copy($this->changelog->getRealpath(), $target . DIRECTORY_SEPARATOR . 'CHANGELOG.md');
+        }
+        if ($this->license) {
+            copy($this->license->getRealpath(), $target . DIRECTORY_SEPARATOR . 'LICENSE.md');
         }
         file_put_contents($target . DIRECTORY_SEPARATOR . 'toc.yml', $this->encodeToC($this->toc));
 

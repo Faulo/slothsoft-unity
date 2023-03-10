@@ -2,3 +2,5 @@
   href: api/
 - name: Changelog
   href: CHANGELOG.md
+- name: License
+  href: LICENSE.md
