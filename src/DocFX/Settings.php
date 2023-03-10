@@ -11,6 +11,20 @@ class Settings {
     Add a README.md to your repository to change this page.
     EOT;
 
+    const FILE_INDEX = 'index.md';
+
+    const FILE_README = 'README.md';
+
+    const FILE_CHANGELOG = 'CHANGELOG.md';
+
+    const FILE_LICENSE = 'LICENSE.md';
+
+    const SPECIAL_MDS = [
+        self::FILE_README,
+        self::FILE_CHANGELOG,
+        self::FILE_LICENSE
+    ];
+
     private string $path;
 
     private array $config = [
@@ -98,24 +112,24 @@ class Settings {
 
         foreach ($this->markdowns as $file) {
             switch ($file->getFilename()) {
-                case 'README.md':
+                case self::FILE_README:
                     $this->readme = $file;
                     break;
-                case 'CHANGELOG.md':
+                case self::FILE_CHANGELOG:
                     $this->changelog = $file;
                     break;
-                case 'LICENSE.md':
+                case self::FILE_LICENSE:
                     $this->license = $file;
                     break;
             }
         }
 
         if ($this->changelog) {
-            $this->toc['CHANGELOG.md'] = 'Changelog';
+            $this->toc[self::FILE_CHANGELOG] = 'Changelog';
         }
 
         if ($this->license) {
-            $this->toc['LICENSE.md'] = 'License';
+            $this->toc[self::FILE_LICENSE] = 'License';
         }
     }
 
@@ -162,15 +176,15 @@ class Settings {
         $this->ensureDirectory($target);
         file_put_contents($target . DIRECTORY_SEPARATOR . 'docfx.json', $this->encode($this->data));
         if ($this->readme) {
-            copy($this->readme->getRealpath(), $target . DIRECTORY_SEPARATOR . 'index.md');
+            copy($this->readme->getRealpath(), $target . DIRECTORY_SEPARATOR . self::FILE_INDEX);
         } else {
-            file_put_contents($target . DIRECTORY_SEPARATOR . 'index.md', self::DEFAULT_INDEX);
+            file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_INDEX, self::DEFAULT_INDEX);
         }
         if ($this->changelog) {
-            copy($this->changelog->getRealpath(), $target . DIRECTORY_SEPARATOR . 'CHANGELOG.md');
+            copy($this->changelog->getRealpath(), $target . DIRECTORY_SEPARATOR . self::FILE_CHANGELOG);
         }
         if ($this->license) {
-            copy($this->license->getRealpath(), $target . DIRECTORY_SEPARATOR . 'LICENSE.md');
+            copy($this->license->getRealpath(), $target . DIRECTORY_SEPARATOR . self::FILE_LICENSE);
         }
         file_put_contents($target . DIRECTORY_SEPARATOR . 'toc.yml', $this->encodeToC($this->toc));
 
