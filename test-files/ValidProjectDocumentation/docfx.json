@@ -5,12 +5,7 @@
                 {
                     "src": "..",
                     "files": [
-                        "Project.csproj"
-                    ]
-                },
-                {
-                    "src": "..",
-                    "files": [
+                        "Project.csproj",
                         "Package.csproj"
                     ]
                 }
@@ -20,9 +15,9 @@
     ],
     "build": {
         "globalMetadata": {
-            "_appTitle": "App Title",
-            "_appFooter": "App Footer",
-            "_enableSearch": true
+            "_enableSearch": true,
+            "_enableNewTab": true,
+			"_disableContribution": true
         },
         "content": [
             {

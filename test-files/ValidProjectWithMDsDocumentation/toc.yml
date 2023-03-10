@@ -1,4 +1,8 @@
-- name: Scripting API
+- name: API
   href: api/
+- name: Docs
+  href: docs/
 - name: Changelog
   href: CHANGELOG.md
+- name: License
+  href: LICENSE.md

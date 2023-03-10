@@ -8,7 +8,7 @@ $_SERVER['argc'] --;
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
 const HELP = <<<'EOT'
-Create a documentation template for DocFX. The template will be created in a "Documentation~" folder in the project root and can be called from there with "dotnet tool run docfx". The generated documentation will be placed in "Documentation~/html".
+Create a documentation template for DocFX. The template will be created in a ".Documentation" folder in the project root and can be called from there with "dotnet tool run docfx". The generated documentation will be placed in ".Documentation/html".
     
 Usage:
 composer exec unity-documentation "path/to/project"
