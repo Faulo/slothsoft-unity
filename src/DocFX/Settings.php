@@ -49,7 +49,8 @@ class Settings {
         'build' => [
             'globalMetadata' => [
                 '_enableSearch' => true,
-                '_enableNewTab' => true
+                '_enableNewTab' => true,
+                '_disableContribution' => true
             ],
             'content' => [
                 [
