@@ -99,7 +99,7 @@ class UnityEditor {
             $process = $this->createProcess($arguments);
             UnityHub::runUnityProcess($process, $validateExitCode);
         } catch (ExecutionError $error) {
-            if ($error->process->getExitCode() === 199) {
+            if ($error->getExitCode() === 199) {
                 $this->retryCount ++;
                 if ($this->retryCount < 3) {
                     return $this->execute($validateExitCode, ...$arguments);
