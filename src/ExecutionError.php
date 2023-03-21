@@ -19,11 +19,11 @@ class ExecutionError extends Exception {
     }
 
     private static function FromProcess(string $tag, string $type, string $message, ?Process $process): ExecutionError {
-        return $process ? new self($tag, $type, $message, $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput()) : new self($tag, $type, $message);
+        return $process ? new self($tag, $type, $message, $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput(), $process->getExitCode()) : new self($tag, $type, $message);
     }
 
     public static function Exception(Throwable $e, ?Process $process = null): ExecutionError {
-        return $process ? new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), $process->getOutput(), $process->getErrorOutput()) : new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), '', (string) $e);
+        return $process ? new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), $process->getOutput(), $process->getErrorOutput(), $process->getExitCode()) : new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), '', (string) $e);
     }
 
     /** @var string */
@@ -38,10 +38,13 @@ class ExecutionError extends Exception {
     /** @var string */
     private string $stderr;
 
+    /** @var int */
+    private int $exitCode;
+
     /** @var string */
     private string $stackTrace;
 
-    private function __construct(string $tag, string $type, string $message, string $stackTrace = '', string $stdout = '', string $stderr = '') {
+    private function __construct(string $tag, string $type, string $message, string $stackTrace = '', string $stdout = '', string $stderr = '', int $exitCode = - 1) {
         parent::__construct($message);
 
         $this->tag = $tag;
@@ -49,6 +52,7 @@ class ExecutionError extends Exception {
         $this->stackTrace = $stackTrace;
         $this->stdout = $stdout;
         $this->stderr = $stderr;
+        $this->exitCode = $exitCode;
     }
 
     public function getStdOut(): string {
@@ -57,6 +61,10 @@ class ExecutionError extends Exception {
 
     public function getStdErr(): string {
         return $this->stderr;
+    }
+
+    public function getExitCode(): int {
+        return $this->exitCode;
     }
 
     public function asNode(DOMDocument $document): DOMElement {

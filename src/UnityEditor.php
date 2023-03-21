@@ -90,12 +90,23 @@ class UnityEditor {
         return false;
     }
 
+    private int $retryCount = 0;
+
     public function execute(bool $validateExitCode, string ...$arguments): Process {
         assert($this->isInstalled());
 
-        $process = $this->createProcess($arguments);
-
-        UnityHub::runUnityProcess($process, $validateExitCode);
+        try {
+            $process = $this->createProcess($arguments);
+            UnityHub::runUnityProcess($process, $validateExitCode);
+        } catch (ExecutionError $error) {
+            if ($error->getExitCode() === 199) {
+                $this->retryCount ++;
+                if ($this->retryCount < 3) {
+                    return $this->execute($validateExitCode, ...$arguments);
+                }
+            }
+            throw $error;
+        }
 
         return $process;
     }
