@@ -56,6 +56,9 @@ class UnityPackageInfo {
     }
 
     public function getMinEditorVersion(): string {
+        if (isset($this->package['unityRelease']) and strlen($this->package['unityRelease'])) {
+            return $this->package['unity'] . '.' . $this->package['unity'];
+        }
         return $this->package['unity'];
     }
 
