@@ -24,10 +24,6 @@ class InstallExecutable extends PackageExecutableBase {
             mkdir($this->workspace, 0777, true);
         }
         $this->workspace = realpath($this->workspace);
-
-        if (! $this->package->ensureEditorIsLicensed($this->workspace)) {
-            throw ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->package->getEditorVersion()}'.");
-        }
     }
 
     protected function getExecutablePackage(): string {
