@@ -199,9 +199,13 @@ class UnityHubTest extends TestCase {
     }
 
     public function editorVersions(): iterable {
-        yield '2022.1' => [
-            '2022.1',
-            '2022.1.0f1'
+        yield '2020.1' => [
+            '2020.1',
+            '2020.1.0f1'
+        ];
+        yield '2019.3' => [
+            '2019.3',
+            '2019.3.0f1'
         ];
         yield '2019.4' => [
             '2019.4',
