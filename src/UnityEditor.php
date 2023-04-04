@@ -69,11 +69,11 @@ class UnityEditor {
         return true;
     }
 
-    public function license(string $projectPath): bool {
+    public function license(string $projectPath, $assumeSuccess = false): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
             $result = $this->execute(false, '-quit', '-manualLicenseFile', $licenseFile)->getExitCode();
             sleep(1);
-            if ($result === 0 or $this->isLicensed($projectPath)) {
+            if ($result === 0 or $assumeSuccess or $this->isLicensed($projectPath)) {
                 return true;
             }
         }
