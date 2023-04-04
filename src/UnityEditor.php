@@ -32,6 +32,7 @@ class UnityEditor {
         }
         if (! $this->wasLicensed) {
             $log = $this->execute(false, '-quit', '-projectPath', $projectPath)->getOutput();
+            var_dump($log);
             $this->wasLicensed = strpos($log, self::LICENSE_SUCCESS_2020) !== false or strpos($log, self::LICENSE_SUCCESS_2019) !== false;
         }
         return $this->wasLicensed;
