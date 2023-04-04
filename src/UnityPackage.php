@@ -63,7 +63,7 @@ class UnityPackage {
     }
 
     public function ensureEditorIsLicensed(string $projectPath): bool {
-        return $this->editor->isLicensed($projectPath) or $this->editor->license($projectPath);
+        return $this->editor->license($projectPath);
     }
 }
 
