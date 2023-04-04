@@ -35,10 +35,6 @@ class InstallExecutable extends PackageExecutableBase {
     }
 
     protected function createResultDocument(): ?DOMDocument {
-        if (! $this->package->ensureEditorIsInstalled()) {
-            throw ExecutionError::Error('AssertEditor', "Editor installation for package '{$this->package}' failed!");
-        }
-
         if (! $this->package->ensureEditorIsLicensed($this->workspace)) {
             throw ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->package->getEditorVersion()}'.");
         }
