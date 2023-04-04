@@ -24,6 +24,10 @@ class InstallExecutable extends PackageExecutableBase {
             mkdir($this->workspace, 0777, true);
         }
         $this->workspace = realpath($this->workspace);
+
+        if (! $this->package->ensureEditorIsLicensed($this->workspace)) {
+            throw ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->package->getEditorVersion()}'.");
+        }
     }
 
     protected function getExecutablePackage(): string {
@@ -38,14 +42,6 @@ class InstallExecutable extends PackageExecutableBase {
         $this->project = $this->package->createEmptyProject($this->workspace);
 
         $this->workspace = $this->project->getProjectPath();
-
-        if (! $this->project->ensureEditorIsInstalled()) {
-            throw ExecutionError::Error('AssertEditor', "Editor installation for package '{$this->package}' failed!");
-        }
-
-        if (! $this->project->ensureEditorIsLicensed()) {
-            throw ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->project->getEditorVersion()}'.");
-        }
 
         return null;
     }

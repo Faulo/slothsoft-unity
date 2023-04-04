@@ -243,7 +243,7 @@ class UnityHub {
         return $args;
     }
 
-    private function inventStableEditorVersion(string $minVersion): string {
+    public function inventStableEditorVersion(string $minVersion): string {
         $this->loadChangesets();
         $maxVersion = null;
         foreach (array_keys($this->changesets) as $version) {

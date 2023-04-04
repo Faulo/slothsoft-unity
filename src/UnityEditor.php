@@ -7,7 +7,9 @@ use Symfony\Component\Process\Process;
 
 class UnityEditor {
 
-    private const LICENSE_SUCCESS = '[Licensing::Module] Serial number assigned to:';
+    private const LICENSE_SUCCESS_2020 = '[Licensing::Module] Serial number assigned to:';
+
+    private const LICENSE_SUCCESS_2019 = 'Next license update check is after';
 
     /** @var UnityHub */
     public UnityHub $hub;
@@ -30,7 +32,12 @@ class UnityEditor {
         }
         if (! $this->wasLicensed) {
             $log = $this->execute(false, '-quit', '-projectPath', $projectPath)->getOutput();
-            $this->wasLicensed = strpos($log, self::LICENSE_SUCCESS) !== false;
+            if (strpos($log, self::LICENSE_SUCCESS_2019) !== false) {
+                $this->wasLicensed = true;
+            }
+            if (strpos($log, self::LICENSE_SUCCESS_2020) !== false) {
+                $this->wasLicensed = true;
+            }
         }
         return $this->wasLicensed;
     }
@@ -69,11 +76,11 @@ class UnityEditor {
         return true;
     }
 
-    public function license(string $projectPath): bool {
+    public function license(string $projectPath, $assumeSuccess = false): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
             $result = $this->execute(false, '-quit', '-manualLicenseFile', $licenseFile)->getExitCode();
             sleep(1);
-            if ($result === 0 or $this->isLicensed($projectPath)) {
+            if ($result === 0 or $assumeSuccess or $this->isLicensed($projectPath)) {
                 return true;
             }
         }

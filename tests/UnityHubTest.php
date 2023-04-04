@@ -181,4 +181,39 @@ class UnityHubTest extends TestCase {
 
         $this->assertNotNull($package, "Failed to find package!");
     }
+
+    /**
+     *
+     * @dataProvider editorVersions
+     */
+    public function testInventStableEditorVersion(string $minVersion, $expectedVersion) {
+        $hub = UnityHub::getInstance();
+        if (! $hub->isInstalled()) {
+            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
+            return;
+        }
+
+        $actualVersion = $hub->inventStableEditorVersion($minVersion);
+
+        $this->assertEquals($expectedVersion, $actualVersion);
+    }
+
+    public function editorVersions(): iterable {
+        yield '2020.1' => [
+            '2020.1',
+            '2020.1.0f1'
+        ];
+        yield '2019.3' => [
+            '2019.3',
+            '2019.3.0f1'
+        ];
+        yield '2019.4' => [
+            '2019.4',
+            '2019.4.0f1'
+        ];
+        yield '2019.4.40f1' => [
+            '2019.4.40f1',
+            '2019.4.40f1'
+        ];
+    }
 }

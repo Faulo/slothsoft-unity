@@ -39,7 +39,7 @@ class UnityProjectInfo {
     }
 
     private static function create(string $directory): ?UnityProjectInfo {
-        if (is_dir($directory) and is_file($directory . self::FILE_VERSION) and is_file($directory . self::FILE_SETTINGS) and is_file($directory . self::FILE_PACKAGES)) {
+        if (is_dir($directory) and is_file($directory . self::FILE_VERSION) and is_file($directory . self::FILE_SETTINGS)) {
             return new UnityProjectInfo($directory);
         }
         return null;
@@ -92,6 +92,9 @@ class UnityProjectInfo {
     }
 
     private function loadPackages(): array {
+        if (! file_exists($this->path . self::FILE_PACKAGES)) {
+            return [];
+        }
         $packages = json_decode(file_get_contents($this->path . self::FILE_PACKAGES), true);
         if (is_array($packages) and isset($packages['dependencies'])) {
             return $packages['dependencies'];

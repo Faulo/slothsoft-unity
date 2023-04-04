@@ -47,7 +47,7 @@
 		"scripts/autoversion",
 		"scripts/steam-buildfile",
 		"scripts/unity-build",
-        "scripts/unity-documentation",
+		"scripts/unity-documentation",
 		"scripts/unity-help",
 		"scripts/unity-method",
 		"scripts/unity-module-install",
