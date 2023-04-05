@@ -83,7 +83,7 @@ class Settings {
             'dest' => 'html',
             'template' => [
                 'default',
-                'templates/unity'
+                'templates/singulinkfx'
             ]
         ]
     ];

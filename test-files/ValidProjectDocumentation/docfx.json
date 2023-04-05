@@ -41,6 +41,6 @@
             "https://xref.docs.microsoft.com/query?uid={uid}"
         ],
         "dest": "html",
-		"template": [ "default", "templates/unity" ]
+		"template": [ "default", "templates/singulinkfx" ]
     }
 }
