@@ -1,10 +1,14 @@
 <?php
 namespace Slothsoft\Unity\DocFX;
 
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Farah\Module\Module;
 use Symfony\Component\Filesystem\Filesystem;
 use Spyc;
 
 class Settings {
+
+    const ASSET_TEMPLATES = 'farah://slothsoft@unity/docfx-templates';
 
     const DEFAULT_INDEX = <<<EOT
     # Documentation
@@ -27,6 +31,8 @@ class Settings {
     const DIR_API = 'api';
 
     const DIR_DOCS = 'docs';
+
+    const DIR_TEMPLATE = 'templates' . DIRECTORY_SEPARATOR . 'unity';
 
     private Filesystem $fileSystem;
 
@@ -74,7 +80,11 @@ class Settings {
             'xrefService' => [
                 'https://xref.docs.microsoft.com/query?uid={uid}'
             ],
-            'dest' => 'html'
+            'dest' => 'html',
+            'template' => [
+                'default',
+                'templates/unity'
+            ]
         ]
     ];
 
@@ -221,6 +231,11 @@ class Settings {
         }
 
         $this->ensureDirectory($target);
+
+        $templatesDirectory = Module::resolveToAsset(FarahUrl::createFromReference(self::ASSET_TEMPLATES))->getManifestElement()->getAttribute('realpath');
+        $fileSystem = new Filesystem();
+        $fileSystem->mirror($templatesDirectory, $target . DIRECTORY_SEPARATOR . 'templates');
+
         file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_DOCFX, $this->encode($this->data));
         if ($this->readme) {
             copy($this->readme->getRealpath(), $target . DIRECTORY_SEPARATOR . self::FILE_INDEX);

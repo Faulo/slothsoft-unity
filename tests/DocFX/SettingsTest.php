@@ -25,6 +25,22 @@ class SettingsTest extends TestCase {
         $this->assertNotNull(json_decode((string) $settings, true));
     }
 
+    /**
+     *
+     * @dataProvider assets
+     */
+    public function testAssetExists(string $url): void {
+        $this->assertFileExists($url);
+    }
+
+    public function assets(): iterable {
+        return [
+            Settings::ASSET_TEMPLATES => [
+                Settings::ASSET_TEMPLATES
+            ]
+        ];
+    }
+
     public function testContainsCSProj(): void {
         $settings = new Settings(UnityProjectInfoTest::VALID_PROJECT);
         $data = (string) $settings;
@@ -51,6 +67,9 @@ class SettingsTest extends TestCase {
         $files[] = DIRECTORY_SEPARATOR . Settings::FILE_CHANGELOG;
         $files[] = DIRECTORY_SEPARATOR . Settings::FILE_LICENSE;
         $files[] = DIRECTORY_SEPARATOR . Settings::FILE_TOC;
+        $files[] = DIRECTORY_SEPARATOR . Settings::DIR_TEMPLATE . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'head.tmpl.partial';
+        $files[] = DIRECTORY_SEPARATOR . Settings::DIR_TEMPLATE . DIRECTORY_SEPARATOR . 'styles' . DIRECTORY_SEPARATOR . 'docfx.js';
+        $files[] = DIRECTORY_SEPARATOR . Settings::DIR_TEMPLATE . DIRECTORY_SEPARATOR . 'styles' . DIRECTORY_SEPARATOR . 'main.css';
         $files[] = DIRECTORY_SEPARATOR . '.config' . DIRECTORY_SEPARATOR . 'dotnet-tools.json';
         $files[] = DIRECTORY_SEPARATOR . Settings::DIR_DOCS . DIRECTORY_SEPARATOR . Settings::FILE_TOC;
         $files[] = DIRECTORY_SEPARATOR . Settings::DIR_DOCS . DIRECTORY_SEPARATOR . 'Basics.md';

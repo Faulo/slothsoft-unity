@@ -2,8 +2,10 @@
 <assets xmlns="http://schema.slothsoft.net/farah/module">
 	<resource-directory name="xsd"
 		type="application/x-xsd+xml" />
-	<resource-directory name="xsl"
-		type="application/xslt+xml" />
+    <resource-directory name="xsl"
+        type="application/xslt+xml" />
+        
+    <directory name="docfx-templates" />
 
 	<fragment name="hub">
 		<custom-asset name="help"
