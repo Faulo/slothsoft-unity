@@ -254,10 +254,10 @@ class Settings {
         file_put_contents($configDir . DIRECTORY_SEPARATOR . 'dotnet-tools.json', $this->encode($this->config));
 
         $docsDir = $target . DIRECTORY_SEPARATOR . self::DIR_DOCS;
-        $hasOwnToC = file_exists($docsDir . DIRECTORY_SEPARATOR . self::FILE_TOC);
-        if ($this->docs and ($hasOwnToC or $toc = $this->createToc($this->docs))) {
+        if ($this->docs) {
             $this->fileSystem->mirror($this->docs->getRealPath(), $docsDir);
-            if (! $hasOwnToC) {
+            $hasOwnToC = file_exists($docsDir . DIRECTORY_SEPARATOR . self::FILE_TOC);
+            if (! $hasOwnToC and $toc = $this->createToc($this->docs)) {
                 file_put_contents($docsDir . DIRECTORY_SEPARATOR . self::FILE_TOC, $this->encodeToC($toc));
             }
         }
