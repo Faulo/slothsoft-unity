@@ -60,6 +60,7 @@
         "xrefService": [
             "https://xref.docs.microsoft.com/query?uid={uid}"
         ],
-        "dest": "html"
+        "dest": "html",
+		"template": [ "default", "templates/singulinkfx" ]
     }
 }
