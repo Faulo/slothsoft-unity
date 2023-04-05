@@ -233,8 +233,7 @@ class Settings {
         $this->ensureDirectory($target);
 
         $templatesDirectory = Module::resolveToAsset(FarahUrl::createFromReference(self::ASSET_TEMPLATES))->getManifestElement()->getAttribute('realpath');
-        $fileSystem = new Filesystem();
-        $fileSystem->mirror($templatesDirectory, $target . DIRECTORY_SEPARATOR . 'templates');
+        $this->fileSystem->mirror($templatesDirectory, $target . DIRECTORY_SEPARATOR . 'templates');
 
         file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_DOCFX, $this->encode($this->data));
         if ($this->readme) {
