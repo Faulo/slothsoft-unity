@@ -30,8 +30,13 @@ class UnityProjectInfo {
             $iterator = new RecursiveCallbackFilterIterator(new RecursiveDirectoryIterator($directory), function (\SplFileInfo $file, string $path, RecursiveDirectoryIterator $iterator): bool {
                 return $file->isDir() and $file->getBasename() !== '..';
             });
+            $directories = [];
             foreach ($iterator as $file) {
-                if ($project = self::create($file->getRealPath())) {
+                $directories[] = $file->getRealPath();
+            }
+            sort($directories);
+            foreach ($directories as $projectDirectory) {
+                if ($project = self::create($projectDirectory)) {
                     yield $project;
                 }
             }
