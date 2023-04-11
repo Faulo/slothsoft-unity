@@ -10,7 +10,7 @@ $_SERVER['argc'] --;
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
 const HELP = <<<'EOT'
-Shortcut for calling "unityhub help".
+Shortcut for calling "unityhub help". Can be used to verify that your Unity Hub installation was succesully located.
     
 Usage:
 composer exec unity-help

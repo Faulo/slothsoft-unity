@@ -11,7 +11,7 @@ $_SERVER['argc'] --;
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
 const HELP = <<<'EOT'
-Install a package in a new Unity project.
+Create a new Unity project and install a local package into it.
     
 Usage:
 composer exec unity-package-install "path/to/project/Packages/path-to-package" "path/to/new-project"
