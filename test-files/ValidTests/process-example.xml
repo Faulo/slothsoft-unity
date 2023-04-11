@@ -1,21 +1,14 @@
 <?xml version="1.0"?>
 <result>
-	<process package="Slothsoft.Unity.Project.Build"
-		name="Build($quot;/path/to/project$quot;, $quot;/path/to/build$quot;, $quot;Windows$quot;)"
-		result="0" stdout="" stderr="" duration="0" start-time="2022-01-01" />
-	<process package="Slothsoft.Unity.Project.Method"
-		name="Win64()" result="255" stdout="" stderr="???" duration="1"
-		start-time="01.01.2022">
+	<process package="Slothsoft.Unity.Project.Build" name="Build($quot;/path/to/project$quot;, $quot;/path/to/build$quot;, $quot;Windows$quot;)" result="0"
+		stdout="" stderr="" duration="0" start-time="2022-01-01" />
+	<process package="Slothsoft.Unity.Project.Method" name="Win64()" result="255" stdout="" stderr="???" duration="1" start-time="01.01.2022">
 		<skipped>Skipped for some reason.</skipped>
 	</process>
-	<process package="Slothsoft.Unity.Project.Method"
-		name="Win64()" result="255" stdout="" stderr="???" duration="1"
-		start-time="10:00">
+	<process package="Slothsoft.Unity.Project.Method" name="Win64()" result="255" stdout="" stderr="???" duration="1" start-time="10:00">
 		<failure type="Error">Failed for some reason.</failure>
 	</process>
-	<process package="Slothsoft.Unity.Project.Method"
-		name="Win64()" result="255" stdout="" stderr="???" duration="1"
-		start-time="2022-01-01 10:00">
+	<process package="Slothsoft.Unity.Project.Method" name="Win64()" result="255" stdout="" stderr="???" duration="1" start-time="2022-01-01 10:00">
 		<error type="Error">Errored for some reason.</error>
 	</process>
 </result>

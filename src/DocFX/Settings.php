@@ -80,11 +80,7 @@ class Settings {
             'xrefService' => [
                 'https://xref.docs.microsoft.com/query?uid={uid}'
             ],
-            'dest' => 'html',
-            'template' => [
-                'default',
-                'templates/singulinkfx'
-            ]
+            'dest' => 'html'
         ]
     ];
 
@@ -157,6 +153,20 @@ class Settings {
             ],
             'dest' => self::DIR_API
         ];
+    }
+
+    private string $template = 'default';
+
+    public function setTemplate(string $template): void {
+        $this->template = $template;
+        if ($this->template === 'default') {
+            unset($this->data['build']['template']);
+        } else {
+            $this->data['build']['template'] = [
+                'default',
+                "templates/$this->template"
+            ];
+        }
     }
 
     private function addDirectory(string $directory, callable $include = null): void {

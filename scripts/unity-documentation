@@ -11,11 +11,17 @@ const HELP = <<<'EOT'
 Create a documentation template for DocFX. The template will be created in a ".Documentation" folder in the project root and can be called from there with "dotnet tool run docfx". The generated documentation will be placed in ".Documentation/html".
     
 Usage:
-composer exec unity-documentation "path/to/project"
+composer exec unity-documentation "path/to/project" [template=default+mermaid]
+
+Supported templates:
+- default
+- default+mermaid
+- unity
+- singulinkfx+mermaid
 
 EOT;
 
-if ($_SERVER['argc'] !== 1) {
+if ($_SERVER['argc'] < 1) {
     echo HELP;
     return;
 }
@@ -23,8 +29,11 @@ if ($_SERVER['argc'] !== 1) {
 $args = $_SERVER['argv'];
 
 $workspace = array_shift($args);
+$template = $args[0] ?? 'default+mermaid';
 
 $settings = new Slothsoft\Unity\DocFX\Settings($workspace);
+
+$settings->setTemplate($template);
 
 $directory = $settings->export();
 

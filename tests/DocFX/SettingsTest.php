@@ -54,8 +54,12 @@ class SettingsTest extends TestCase {
      *
      * @dataProvider validDocumentations
      */
-    public function testExport(string $project, string $documentation): void {
+    public function testExport(string $project, string $documentation, ?string $template): void {
         $settings = new Settings($project);
+
+        if ($template !== null) {
+            $settings->setTemplate($template);
+        }
 
         $target = temp_dir(__CLASS__);
 
@@ -110,11 +114,13 @@ class SettingsTest extends TestCase {
         return [
             UnityProjectInfoTest::VALID_PROJECT => [
                 UnityProjectInfoTest::VALID_PROJECT,
-                UnityProjectInfoTest::VALID_DOCUMENTATION
+                UnityProjectInfoTest::VALID_DOCUMENTATION,
+                null
             ],
             UnityProjectInfoTest::VALID_PROJECT_WITH_MDS => [
                 UnityProjectInfoTest::VALID_PROJECT_WITH_MDS,
-                UnityProjectInfoTest::VALID_DOCUMENTATION_WITH_MDS
+                UnityProjectInfoTest::VALID_DOCUMENTATION_WITH_MDS,
+                'singulinkfx+mermaid'
             ]
         ];
     }
