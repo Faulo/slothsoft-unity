@@ -16,6 +16,16 @@ class Settings {
     Add a README.md to your repository to change this page.
     EOT;
 
+    const DEFAULT_FILTER = <<<EOT
+    apiRules:
+    - exclude:
+          uidRegex: ^System\.Object
+          type: Type
+    - exclude:
+          uidRegex: ^UnityEngine\.Object
+          type: Type
+    EOT;
+
     const FILE_INDEX = 'index.md';
 
     const FILE_README = 'README.md';
@@ -27,6 +37,8 @@ class Settings {
     const FILE_TOC = 'toc.yml';
 
     const FILE_DOCFX = 'docfx.json';
+
+    const FILE_FILTER = 'filterConfig.yml';
 
     const DIR_API = 'api';
 
@@ -145,6 +157,7 @@ class Settings {
         }
 
         $this->data['metadata'][] = [
+            'filter' => 'filterConfig.yml',
             'src' => [
                 [
                     'src' => '..',
@@ -258,6 +271,8 @@ class Settings {
             copy($this->license->getRealpath(), $target . DIRECTORY_SEPARATOR . self::FILE_LICENSE);
         }
         file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_TOC, $this->encodeToC($this->toc));
+
+        file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_FILTER, self::DEFAULT_FILTER);
 
         $configDir = $target . DIRECTORY_SEPARATOR . '.config';
         $this->ensureDirectory($configDir);
