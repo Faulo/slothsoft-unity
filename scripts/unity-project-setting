@@ -14,7 +14,7 @@ const HELP = <<<'EOT'
 Get one of the project settings of a Unity project.
     
 Usage:
-composer exec unity-project-setting "path/to/project" ["setting-name"]
+composer exec unity-project-setting "path/to/project" "setting-name"
 
 EOT;
 
