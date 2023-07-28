@@ -52,7 +52,8 @@
 		"scripts/unity-method",
 		"scripts/unity-module-install",
 		"scripts/unity-package-install",
-		"scripts/unity-project-version",
+        "scripts/unity-project-setting",
+        "scripts/unity-project-version",
 		"scripts/unity-tests"
 	],
 	"config" : {
