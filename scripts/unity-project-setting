@@ -11,7 +11,7 @@ $_SERVER['argc'] --;
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
 const HELP = <<<'EOT'
-Get or set the projectVersion of a Unity project.
+Get one of the project settings of a Unity project.
     
 Usage:
 composer exec unity-project-setting "path/to/project" ["setting-name"]
