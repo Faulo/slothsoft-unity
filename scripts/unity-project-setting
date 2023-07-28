@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Farah\Module\Module;
 
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
@@ -33,4 +34,6 @@ $url = FarahUrl::createFromComponents('slothsoft@unity', '/project/setting', Far
     'name' => $name
 ]));
 
-readfile((string) $url);
+$document = Module::resolveToDOMWriter($url)->toDocument();
+
+echo $document->textContent;
