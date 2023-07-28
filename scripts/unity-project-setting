@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+
+const HELP = <<<'EOT'
+Get one of the project settings of a Unity project.
+    
+Usage:
+composer exec unity-project-setting "path/to/project" "setting-name"
+
+EOT;
+
+if ($_SERVER['argc'] < 2) {
+    echo HELP;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$workspace = array_shift($args);
+$name = array_shift($args);
+
+$url = FarahUrl::createFromComponents('slothsoft@unity', '/project/setting', FarahUrlArguments::createFromValueList([
+    'workspace' => $workspace,
+    'name' => $name
+]));
+
+readfile((string) $url);

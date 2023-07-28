@@ -96,6 +96,15 @@ Usage:
 composer exec unity-package-install "path/to/project/Packages/path-to-package" "path/to/new-project"
 ```
 
+### unity-project-setting
+
+```
+Get one of the project settings of a Unity project.
+    
+Usage:
+composer exec unity-project-setting "path/to/project" "setting-name"
+```
+
 ### unity-project-version
 
 ```
