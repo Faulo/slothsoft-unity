@@ -9,7 +9,7 @@
 	],
 	"type" : "library",
 	"require" : {
-		"php" : "7.4 - 8.0",
+		"php" : "7.4 - 8.2",
 		"slothsoft/core" : "^1.10",
 		"slothsoft/farah" : "^1.9",
 		"symfony/process" : "^5.0",
