@@ -14,7 +14,7 @@
 		"slothsoft/farah" : "^1.9",
 		"symfony/process" : "^5.0",
 		"symfony/filesystem" : "^5.0",
-		"mustangostang/spyc" : "~0.6",
+		"mustangostang/spyc" : "0.6.2",
 		"mintopia/vdfkeyvalue" : "~1.0"
 	},
 	"require-dev" : {
@@ -52,8 +52,8 @@
 		"scripts/unity-method",
 		"scripts/unity-module-install",
 		"scripts/unity-package-install",
-        "scripts/unity-project-setting",
-        "scripts/unity-project-version",
+		"scripts/unity-project-setting",
+		"scripts/unity-project-version",
 		"scripts/unity-tests"
 	],
 	"config" : {
