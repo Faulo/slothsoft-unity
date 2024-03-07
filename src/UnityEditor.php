@@ -52,7 +52,7 @@ class UnityEditor {
     }
 
     public function setExecutable(string $executable) {
-        assert(is_file($executable));
+        assert(is_file($executable), "Failed to find Unity Editor executable at '$executable'!");
         $this->executable = $executable;
     }
 
