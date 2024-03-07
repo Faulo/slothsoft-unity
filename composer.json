@@ -9,12 +9,12 @@
 	],
 	"type" : "library",
 	"require" : {
-		"php" : "7.4 - 8.0",
+		"php" : ">=7.4",
 		"slothsoft/core" : "^1.10",
 		"slothsoft/farah" : "^1.9",
 		"symfony/process" : "^5.0",
 		"symfony/filesystem" : "^5.0",
-		"mustangostang/spyc" : "~0.6",
+		"mustangostang/spyc" : "0.6.2",
 		"mintopia/vdfkeyvalue" : "~1.0"
 	},
 	"require-dev" : {
@@ -40,7 +40,7 @@
 	},
 	"extra" : {
 		"branch-alias" : {
-			"dev-develop" : "2.6.x-dev"
+			"dev-develop" : "2.8.x-dev"
 		}
 	},
 	"bin" : [
@@ -52,8 +52,8 @@
 		"scripts/unity-method",
 		"scripts/unity-module-install",
 		"scripts/unity-package-install",
-        "scripts/unity-project-setting",
-        "scripts/unity-project-version",
+		"scripts/unity-project-setting",
+		"scripts/unity-project-version",
 		"scripts/unity-tests"
 	],
 	"config" : {
