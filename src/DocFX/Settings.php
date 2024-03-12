@@ -90,7 +90,7 @@ class Settings {
                 'https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml'
             ],
             'xrefService' => [
-                'https://xref.docs.microsoft.com/query?uid={uid}'
+                'https://learn.microsoft.com/api/xref/query?uid={uid}'
             ],
             'dest' => 'html'
         ]
