@@ -130,7 +130,21 @@ class UnityEditor {
         return $project;
     }
 
+    const ENV_UNITY_ACCELERATOR_ENDPOINT = 'UNITY_ACCELERATOR_ENDPOINT';
+
     private function createProcess(array $arguments): Process {
+        if ($endpoint = getenv(self::ENV_UNITY_ACCELERATOR_ENDPOINT)) {
+            $arguments = array_merge([
+                '-EnableCacheServer',
+                '-cacheServerEndpoint',
+                $endpoint,
+                '-cacheServerEnableDownload',
+                'true',
+                '-cacheServerEnableUpload',
+                'true'
+            ], $arguments);
+        }
+
         $arguments = array_merge([
             $this->executable,
             '-batchmode',

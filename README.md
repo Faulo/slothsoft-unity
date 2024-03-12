@@ -122,3 +122,7 @@ Run all tests inside a Unity project.
 Usage:
 composer exec unity-tests "path/to/project" [EditMode|PlayMode|Platform]+
 ```
+
+## Unity Accelerator
+
+In order to use a [Unity Accelerator](https://docs.unity3d.com/Manual/UnityAccelerator.html), set the environment variable "UNITY_ACCELERATOR_ENDPOINT" to an "ip:port".
