@@ -339,8 +339,8 @@ class UnityHub {
         $options = FileSystem::SCANDIR_SORT | FileSystem::SCANDIR_EXCLUDE_FILES;
         return FileSystem::scanDir($directory, $options);
     }
-
-    const CHANGESET_URL = 'http://unity3d.com/get-unity/download/archive';
+    
+    const CHANGESET_URL = 'https://unity.com/releases/editor/archive';
 
     private function loadChangesets(): void {
         if ($this->changesets === null) {
