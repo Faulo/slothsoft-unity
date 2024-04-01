@@ -1,0 +1,14 @@
+# == Eclipse ==
+.settings export-ignore
+.buildpath export-ignore
+.project export-ignore
+.derived export-ignore
+
+# == Git ==
+.github export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
+
+# == Composer ==
+composer.lock export-ignore
+composer.phar export-ignore
