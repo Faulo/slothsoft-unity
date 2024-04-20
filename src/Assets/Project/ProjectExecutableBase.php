@@ -15,14 +15,16 @@ abstract class ProjectExecutableBase extends ExecutableBase implements Executabl
     protected string $workspace;
 
     /** @var string */
-    protected string $workspaceName;
+    protected string $workspaceName = 'Unknown';
 
     /** @var UnityProject */
     protected ?UnityProject $project;
 
     protected function parseArguments(FarahUrlArguments $args): void {
         $this->workspace = $args->get('workspace');
-        $this->workspaceName = preg_replace('~\s+~', '', basename($this->workspace));
+        if ($workspace = realpath($this->workspace)) {
+            $this->workspaceName = preg_replace('~\s+~', '', basename($workspace));
+        }
     }
 
     protected function validate(): void {

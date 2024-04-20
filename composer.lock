@@ -1287,16 +1287,16 @@
         },
         {
             "name": "slothsoft/core",
-            "version": "1.11.2",
+            "version": "1.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Faulo/slothsoft-core.git",
-                "reference": "16624e8ef515fe3f8312ce8976a690e341310f2c"
+                "reference": "0df253da7d27bbcbded2ae008fca68da56b3348a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/16624e8ef515fe3f8312ce8976a690e341310f2c",
-                "reference": "16624e8ef515fe3f8312ce8976a690e341310f2c",
+                "url": "https://api.github.com/repos/Faulo/slothsoft-core/zipball/0df253da7d27bbcbded2ae008fca68da56b3348a",
+                "reference": "0df253da7d27bbcbded2ae008fca68da56b3348a",
                 "shasum": ""
             },
             "require": {
@@ -1350,9 +1350,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Faulo/slothsoft-core/issues",
-                "source": "https://github.com/Faulo/slothsoft-core/tree/1.11.2"
+                "source": "https://github.com/Faulo/slothsoft-core/tree/1.11.4"
             },
-            "time": "2024-03-31T23:16:08+00:00"
+            "time": "2024-04-12T15:07:46+00:00"
         },
         {
             "name": "slothsoft/farah",
@@ -1486,16 +1486,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.4.35",
+            "version": "v5.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "5a553607d4ffbfa9c0ab62facadea296c9db7086"
+                "reference": "899330a01056077271e2f614c7b28b0379a671eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/5a553607d4ffbfa9c0ab62facadea296c9db7086",
-                "reference": "5a553607d4ffbfa9c0ab62facadea296c9db7086",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/899330a01056077271e2f614c7b28b0379a671eb",
+                "reference": "899330a01056077271e2f614c7b28b0379a671eb",
                 "shasum": ""
             },
             "require": {
@@ -1530,7 +1530,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v5.4.35"
+                "source": "https://github.com/symfony/filesystem/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -1546,7 +1546,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-23T13:51:25+00:00"
+            "time": "2024-03-21T08:05:07+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2397,16 +2397,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.5.37",
+            "version": "8.5.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fce30f306cee78be33ba00c8f9a853f41db0491b"
+                "reference": "1ecad678646c817a29e55a32c930f3601c3f5a8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fce30f306cee78be33ba00c8f9a853f41db0491b",
-                "reference": "fce30f306cee78be33ba00c8f9a853f41db0491b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1ecad678646c817a29e55a32c930f3601c3f5a8c",
+                "reference": "1ecad678646c817a29e55a32c930f3601c3f5a8c",
                 "shasum": ""
             },
             "require": {
@@ -2475,7 +2475,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/8.5.37"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/8.5.38"
             },
             "funding": [
                 {
@@ -2491,7 +2491,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-06T06:27:42+00:00"
+            "time": "2024-04-05T04:31:23+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
