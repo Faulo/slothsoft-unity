@@ -1,0 +1,56 @@
+[
+  {
+    "DocumentId": {
+      "ProjectId": {
+        "Id": "74c074d7-6964-41f1-8bc3-7f21a1134f09"
+      },
+      "Id": "b2f2aca9-918a-4718-ae3a-218635dcb754"
+    },
+    "FileName": "AIEnemyActionUiState_old.cs",
+    "FilePath": "R:\\Ulisses\\Ulisses.HeXXen1733.Battle\\Packages\\de.ulisses-spiele.hexxen1733.battle\\Runtime\\UI\\States\\AIEnemyActionUiState_old.cs",
+    "FileChanges": [
+      {
+        "LineNumber": 96,
+        "CharNumber": 17,
+        "DiagnosticId": "IDE0019",
+        "FormatDescription": "warning IDE0019: Musterabgleich verwenden"
+      }
+    ]
+  },
+  {
+    "DocumentId": {
+      "ProjectId": {
+        "Id": "74c074d7-6964-41f1-8bc3-7f21a1134f09"
+      },
+      "Id": "586d7c71-2d8d-4763-a17e-084e24f8506e"
+    },
+    "FileName": "EncounterModel.cs",
+    "FilePath": "R:\\Ulisses\\Ulisses.HeXXen1733.Battle\\Packages\\de.ulisses-spiele.hexxen1733.battle\\Runtime\\Gameplay\\EncounterModel.cs",
+    "FileChanges": [
+      {
+        "LineNumber": 158,
+        "CharNumber": 13,
+        "DiagnosticId": "IDE0019",
+        "FormatDescription": "warning IDE0019: Musterabgleich verwenden"
+      }
+    ]
+  },
+  {
+    "DocumentId": {
+      "ProjectId": {
+        "Id": "74c074d7-6964-41f1-8bc3-7f21a1134f09"
+      },
+      "Id": "b841cc54-5508-4a3e-9fb1-4b3a42bc309b"
+    },
+    "FileName": "ICombatBindingVisualIndicator.cs",
+    "FilePath": "R:\\Ulisses\\Ulisses.HeXXen1733.Battle\\Packages\\de.ulisses-spiele.hexxen1733.battle\\Runtime\\Gameplay\\ICombatBindingVisualIndicator.cs",
+    "FileChanges": [
+      {
+        "LineNumber": 27,
+        "CharNumber": 27,
+        "DiagnosticId": "IDE1006",
+        "FormatDescription": "warning IDE1006: Versto\u00DF gegen Benennungsregel: Diese W\u00F6rter m\u00FCssen mit Gro\u00DFbuchstaben beginnen: gameObject"
+      }
+    ]
+  }
+]
