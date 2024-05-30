@@ -8,7 +8,8 @@ use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
 
-include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+$_composer_autoload_path ??= __DIR__ . '/../vendor/autoload.php';
+include $_composer_autoload_path;
 
 const HELP = <<<'EOT'
 Create a new Unity project and install a local package into it.

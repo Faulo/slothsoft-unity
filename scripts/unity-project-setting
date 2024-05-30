@@ -9,7 +9,8 @@ use Slothsoft\Farah\Module\Module;
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
 
-include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+$_composer_autoload_path ??= __DIR__ . '/../vendor/autoload.php';
+include $_composer_autoload_path;
 
 const HELP = <<<'EOT'
 Get one of the project settings of a Unity project.
