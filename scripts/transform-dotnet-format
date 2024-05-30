@@ -29,4 +29,6 @@ $jsonPath = array_shift($args);
 
 $log = new FormatLog($jsonPath);
 
-$log->asDocument()->save('php://output');
+$document = $log->asDocument();
+$document->formatOutput = true;
+$document->save('php://output');
