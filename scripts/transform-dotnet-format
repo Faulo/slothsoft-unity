@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Unity\DotNet\FormatLog;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+$_composer_autoload_path ??= __DIR__ . '/../vendor/autoload.php';
+include $_composer_autoload_path;
+
+const HELP = <<<'EOT'
+Transforms a dotnet format JSON log to a JUnit tests XML. Returns the generated XML.
+    
+Usage:
+composer exec transform-dotnet-format "path/to/format-report.json"
+
+EOT;
+
+if ($_SERVER['argc'] < 1) {
+    echo HELP;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$jsonPath = array_shift($args);
+
+$log = new FormatLog($jsonPath);
+
+$log->asDocument()->saveXML('php://output');

@@ -54,7 +54,8 @@
 		"scripts/unity-package-install",
 		"scripts/unity-project-setting",
 		"scripts/unity-project-version",
-		"scripts/unity-tests"
+		"scripts/unity-tests",
+		"scripts/transform-dotnet-format"
 	],
 	"config" : {
 		"process-timeout" : 0
