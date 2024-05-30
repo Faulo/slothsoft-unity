@@ -9,13 +9,22 @@ use Slothsoft\Unity\UnityBuildTarget;
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
 
-include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+$_composer_autoload_path ??= __DIR__ . '/../vendor/autoload.php';
+include $_composer_autoload_path;
 
 const HELP = <<<'EOT'
-Run all tests inside a Unity project.
+Instruct Unity to create the executable for a project.
     
 Usage:
-composer exec unity-build "path/to/project" ["path/to/build"] [Platform]
+composer exec unity-build "path/to/project" ["path/to/build"] [platform]
+
+path/to/build defaults to a "build" directory inside the project directory.
+platform defaults to "windows".
+
+Supported platforms:
+ - windows
+ - linux
+ - mac
 
 EOT;
 
