@@ -31,14 +31,17 @@ class FormatLogTest extends TestCase {
     public function testEmptyJsonGeneratesRoot(): void {
         $file = temp_file(__NAMESPACE__);
         file_put_contents($file, '[]');
+        touch($file, 1640991600);
 
         $log = new FormatLog($file);
 
         $actual = $log->asDocument();
 
-        $this->assertNotEmpty($actual->documentElement);
-        $this->assertEquals('Reports', $actual->documentElement->tagName);
-        $this->assertEquals(0, $actual->documentElement->childNodes->length);
+        $node = $actual->documentElement;
+        $this->assertNotEmpty($node);
+        $this->assertEquals('Reports', $node->tagName);
+        $this->assertEquals(date(DATE_W3C, 1640991600), $node->getAttribute('Time'));
+        $this->assertEquals(0, $node->childNodes->length);
     }
 
     public function testJsonGeneratesReport(): void {

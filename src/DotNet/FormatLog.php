@@ -2,7 +2,11 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\DotNet;
 
+use Slothsoft\Core\FileSystem;
+
 class FormatLog {
+
+    private int $time;
 
     private array $reports = [];
 
@@ -25,6 +29,8 @@ class FormatLog {
 
         $path = realpath($path);
 
+        $this->time = FileSystem::changetime($path);
+
         $json = file_get_contents($path);
         $reports = json_decode($json, true);
         if (! is_array($reports)) {
@@ -38,6 +44,8 @@ class FormatLog {
         $document = new \DOMDocument();
 
         $rootNode = $document->createElement('Reports');
+
+        $rootNode->setAttribute('Time', date(DATE_W3C, $this->time));
 
         foreach ($this->reports as $report) {
             $node = $document->createElement('Report');

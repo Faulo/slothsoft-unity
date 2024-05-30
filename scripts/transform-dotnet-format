@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Slothsoft\Unity\DotNet\FormatLog;
+use Slothsoft\Core\DOMHelper;
 
 array_shift($_SERVER['argv']);
 $_SERVER['argc'] --;
@@ -30,5 +31,9 @@ $jsonPath = array_shift($args);
 $log = new FormatLog($jsonPath);
 
 $document = $log->asDocument();
+
+$dom = new DOMHelper();
+$document = $dom->transformToDocument($document, 'farah://slothsoft@unity/xsl/to-junit');
+
 $document->formatOutput = true;
 $document->save('php://output');

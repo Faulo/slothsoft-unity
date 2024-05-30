@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-	xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:func="http://exslt.org/functions" xmlns:php="http://php.net/xsl"
-	extension-element-prefixes="func php">
+<xsl:stylesheet version="1.0" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:func="http://exslt.org/functions"
+	xmlns:php="http://php.net/xsl" extension-element-prefixes="func php">
 
 	<func:function name="php:format-date">
 		<xsl:param name="date" />
 
-		<func:result
-			select="php:function('Slothsoft\Unity\JUnit::formatDate', string($date))" />
+		<func:result select="php:function('Slothsoft\Unity\JUnit::formatDate', string($date))" />
 	</func:function>
 
+
+	<!-- Slothsoft process XML -->
 	<xsl:template match="result">
 		<testsuites>
 			<xsl:for-each select="process">
-				<testsuite id="{position() - 1}" package=""
-					name="{@package}" hostname="localhost" tests="1"
-					failures="{count(failure)}" skipped="{count(skipped)}"
-					errors="{count(error)}" time="{@duration}"
-					timestamp="{php:format-date(@start-time)}">
+				<testsuite id="{position() - 1}" package="" name="{@package}" hostname="localhost" tests="1" failures="{count(failure)}" skipped="{count(skipped)}" errors="{count(error)}"
+					time="{@duration}" timestamp="{php:format-date(@start-time)}">
 					<properties />
-					<testcase classname="{@package}" name="{@name}"
-						time="{@duration}">
+					<testcase classname="{@package}" name="{@name}" time="{@duration}">
 						<xsl:copy-of select="skipped" />
 						<xsl:copy-of select="failure" />
 						<xsl:copy-of select="error" />
@@ -39,17 +33,16 @@
 		</testsuites>
 	</xsl:template>
 
+
+	<!-- Unity Test Runner XML -->
 	<xsl:template match="test-run">
 		<testsuites>
-			<xsl:apply-templates
-				select=".//test-suite[test-case]" />
+			<xsl:apply-templates select=".//test-suite[test-case]" />
 		</testsuites>
 	</xsl:template>
 
 	<xsl:template match="test-suite">
-		<testsuite package="" id="{count(preceding::test-run)}"
-			name="{@classname}" hostname="localhost" tests="{@testcasecount}"
-			failures="{@failed}" skipped="{@skipped}" errors="{@inconclusive}"
+		<testsuite package="" id="{count(preceding::test-run)}" name="{@classname}" hostname="localhost" tests="{@testcasecount}" failures="{@failed}" skipped="{@skipped}" errors="{@inconclusive}"
 			time="{@duration}" timestamp="{php:format-date(@start-time)}">
 			<properties>
 				<xsl:copy-of select="properties/*" />
@@ -61,8 +54,7 @@
 	</xsl:template>
 
 	<xsl:template match="test-case">
-		<testcase classname="{@classname}" name="{@name}"
-			time="{@duration}">
+		<testcase classname="{@classname}" name="{@name}" time="{@duration}">
 			<xsl:choose>
 				<xsl:when test="@label and failure">
 					<error type="{@label}" message="{failure/message}">
@@ -75,6 +67,31 @@
 					</failure>
 				</xsl:when>
 			</xsl:choose>
+		</testcase>
+	</xsl:template>
+
+
+	<!-- dotnet format XML -->
+	<xsl:template match="Reports">
+		<testsuites>
+			<testsuite package="" id="0" name="ContinuousIntegration.DotNet.Format" hostname="localhost" tests="{count(.//FileChange)}" failures="{count(.//FileChange)}" skipped="0" errors="0"
+				time="0" timestamp="{php:format-date(@Time)}">
+				<properties />
+				<xsl:apply-templates select=".//FileChange" />
+				<system-out />
+				<system-err />
+			</testsuite>
+		</testsuites>
+	</xsl:template>
+
+	<xsl:template match="FileChange">
+		<testcase classname="{../@FileName}" name="VerifyNoChanges(&quot;{../@FileName}:{@LineNumber}&quot;)" time="0">
+			<failure type="{@DiagnosticId}" message="{@FormatDescription}">
+				<xsl:text>in </xsl:text>
+				<xsl:value-of select="../@FilePath" />
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="@LineNumber" />
+			</failure>
 		</testcase>
 	</xsl:template>
 </xsl:stylesheet>
