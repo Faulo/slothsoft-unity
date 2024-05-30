@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:func="http://exslt.org/functions"
-	xmlns:php="http://php.net/xsl" extension-element-prefixes="func php">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:func="http://exslt.org/functions" xmlns:php="http://php.net/xsl"
+	extension-element-prefixes="func php">
 
 	<func:function name="php:format-date">
 		<xsl:param name="date" />
