@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:func="http://exslt.org/functions" xmlns:php="http://php.net/xsl"
-	extension-element-prefixes="func php">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:func="http://exslt.org/functions" xmlns:php="http://php.net/xsl" xmlns:set="http://exslt.org/sets"
+	extension-element-prefixes="func php set">
 
 	<func:function name="php:format-date">
 		<xsl:param name="date" />
@@ -73,15 +73,43 @@
 
 	<!-- dotnet format XML -->
 	<xsl:template match="Reports">
+		<xsl:variable name="files" select="set:distinct(.//@FilePath)" />
 		<testsuites>
-			<testsuite package="" id="0" name="ContinuousIntegration.DotNet.Format" hostname="localhost" tests="{count(.//FileChange)}" failures="{count(.//FileChange)}" skipped="0" errors="0"
-				time="0" timestamp="{php:format-date(@Time)}">
+			<testsuite package="" id="0" name="ContinuousIntegration.DotNet.Format" hostname="localhost" tests="{count($files)}" failures="{count($files)}" skipped="0" errors="0" time="0"
+				timestamp="{php:format-date(@Time)}">
 				<properties />
-				<xsl:apply-templates select=".//FileChange" />
+				<xsl:for-each select="$files">
+					<xsl:call-template name="dotnet-report">
+						<xsl:with-param name="reports" select="//Report[@FilePath = current()]" />
+					</xsl:call-template>
+				</xsl:for-each>
 				<system-out />
 				<system-err />
 			</testsuite>
 		</testsuites>
+	</xsl:template>
+
+	<xsl:template name="dotnet-report">
+		<xsl:param name="reports" />
+		<testcase classname="VerifyNoChanges" name="{$reports/@FileName}" time="0">
+			<failure type="FormattingError">
+				<xsl:attribute name="message">
+                    <xsl:for-each select="$reports/FileChange">
+                        <xsl:sort select="@LineNumber" data-type="number" />
+                        <xsl:sort select="@CharNumber" data-type="number" />
+		                <xsl:text>line </xsl:text>
+                        <xsl:value-of select="substring('    ', 1, 4 - string-length(@LineNumber))" />
+                        <xsl:value-of select="@LineNumber" />
+		                <xsl:text>: </xsl:text>
+		                <xsl:value-of select="@FormatDescription" />
+		                <xsl:text>
+</xsl:text>
+                    </xsl:for-each>
+                </xsl:attribute>
+				<xsl:text>in </xsl:text>
+				<xsl:value-of select="$reports/@FilePath" />
+			</failure>
+		</testcase>
 	</xsl:template>
 
 	<xsl:template match="FileChange">
