@@ -75,7 +75,7 @@
 	<xsl:template match="Reports">
 		<xsl:variable name="files" select="set:distinct(.//@FilePath)" />
 		<testsuites>
-			<testsuite package="" id="0" name="ContinuousIntegration.DotNet.Format" hostname="localhost" tests="{count($files)}" failures="{count($files)}" skipped="0" errors="0" time="0"
+			<testsuite package="" id="0" name="ContinuousIntegration" hostname="localhost" tests="{count($files)}" failures="{count($files)}" skipped="0" errors="0" time="0"
 				timestamp="{php:format-date(@Time)}">
 				<properties />
 				<xsl:for-each select="$files">
@@ -91,7 +91,7 @@
 
 	<xsl:template name="dotnet-report">
 		<xsl:param name="reports" />
-		<testcase classname="VerifyNoChanges" name="{$reports/@FileName}" time="0">
+		<testcase classname="DotNet.Format" name="VerifyNoChanges(&quot;{$reports/@FileName}&quot;)" time="0">
 			<failure type="FormattingError">
 				<xsl:attribute name="message">
                     <xsl:for-each select="$reports/FileChange">
