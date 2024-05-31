@@ -74,14 +74,36 @@
 	<!-- dotnet format XML -->
 	<xsl:template match="Reports">
 		<testsuites>
-			<testsuite package="" id="0" name="ContinuousIntegration.DotNet.Format" hostname="localhost" tests="{count(.//FileChange)}" failures="{count(.//FileChange)}" skipped="0" errors="0"
-				time="0" timestamp="{php:format-date(@Time)}">
+			<testsuite package="" id="0" name="ContinuousIntegration.DotNet.Format" hostname="localhost" tests="{count(Report)}" failures="{count(Report)}" skipped="0" errors="0" time="0"
+				timestamp="{php:format-date(@Time)}">
 				<properties />
-				<xsl:apply-templates select=".//FileChange" />
+				<xsl:apply-templates select="Report" />
 				<system-out />
 				<system-err />
 			</testsuite>
 		</testsuites>
+	</xsl:template>
+
+	<xsl:template match="Report">
+		<testcase classname="VerifyNoChanges" name="{@FileName}" time="0">
+			<failure type="FormattingError" message="{@FormatDescription}">
+				<xsl:attribute name="message">
+                    <xsl:for-each select="FileChange">
+                        <xsl:sort select="@LineNumber" data-type="number" />
+                        <xsl:sort select="@CharNumber" data-type="number" />
+		                <xsl:text>line </xsl:text>
+                        <xsl:value-of select="substring('    ', 1, 4 - string-length(@LineNumber))" />
+                        <xsl:value-of select="@LineNumber" />
+		                <xsl:text>: </xsl:text>
+		                <xsl:value-of select="@FormatDescription" />
+		                <xsl:text>
+</xsl:text>
+                    </xsl:for-each>
+                </xsl:attribute>
+				<xsl:text>in </xsl:text>
+				<xsl:value-of select="@FilePath" />
+			</failure>
+		</testcase>
 	</xsl:template>
 
 	<xsl:template match="FileChange">
