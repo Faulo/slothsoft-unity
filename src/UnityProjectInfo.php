@@ -12,6 +12,8 @@ class UnityProjectInfo {
 
     const FILE_SETTINGS = '/ProjectSettings/ProjectSettings.asset';
 
+    const FILE_MANIFEST = '/Packages/manifest.json';
+
     const FILE_PACKAGES = '/Packages/packages-lock.json';
 
     public static function find(string $directory, bool $includeSubdirectories = false): ?UnityProjectInfo {
@@ -60,12 +62,16 @@ class UnityProjectInfo {
     public array $settings;
 
     /** @var array */
+    public array $manifest;
+
+    /** @var array */
     public array $packages;
 
     private function __construct(string $path) {
         $this->path = $path;
         $this->editorVersion = $this->loadEditorVersion();
         $this->settings = $this->loadSettings();
+        $this->manifest = $this->loadManifest();
         $this->packages = $this->loadPackages();
     }
 
@@ -100,11 +106,23 @@ class UnityProjectInfo {
         if (! file_exists($this->path . self::FILE_PACKAGES)) {
             return [];
         }
-        $packages = json_decode(file_get_contents($this->path . self::FILE_PACKAGES), true);
+        $packages = JsonUtils::load($this->path . self::FILE_PACKAGES);
         if (is_array($packages) and isset($packages['dependencies'])) {
             return $packages['dependencies'];
         }
         throw ExecutionError::Error('AssertDependencies', "Unable to determine packages for project '$this->path'!");
+    }
+
+    private function loadManifest(): array {
+        if (! file_exists($this->path . self::FILE_MANIFEST)) {
+            return [];
+        }
+
+        return JsonUtils::load($this->path . self::FILE_MANIFEST);
+    }
+
+    public function saveManifest(): void {
+        JsonUtils::save($this->path . self::FILE_MANIFEST, $this->manifest, 2, "\n");
     }
 }
 
