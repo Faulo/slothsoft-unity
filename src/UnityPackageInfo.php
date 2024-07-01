@@ -71,7 +71,7 @@ class UnityPackageInfo {
     }
 
     public function savePackage(): void {
-        JsonUtils::write($this->path . self::FILE_PACKAGE, $this->package, 2);
+        JsonUtils::save($this->path . self::FILE_PACKAGE, $this->package, 2);
     }
 }
 
