@@ -180,7 +180,7 @@ class UnityHub {
     }
 
     public function installEditor(UnityEditor $editor, string ...$modules): void {
-        $arguments = $this->createEditorInstallation($editor->version, $modules);
+        $arguments = $this->createEditorInstallation($editor->version, $modules, $editor->changeset);
         $this->execute(...$arguments);
 
         foreach ($this->loadInstalledEditors() as $version => $path) {
@@ -221,10 +221,10 @@ class UnityHub {
         }
     }
 
-    public function createEditorInstallation(string $version, array $modules = []): array {
+    public function createEditorInstallation(string $version, array $modules = [], ?string $changeset = null): array {
         assert($version !== '');
 
-        $changeset = $this->inventChangeset($version);
+        $changeset ??= $this->inventChangeset($version);
 
         $args = [
             'install',
@@ -350,11 +350,26 @@ class UnityHub {
     }
 
     private function loadChangesetsFromUrl(string $url): void {
+        if ($html = file_get_contents($url)) {
+            $matches = [];
+            $count = preg_match_all('~unityhub://([^/]+)/([a-f0-9]{12})~', $html, $matches, PREG_SET_ORDER);
+            if ($count) {
+                foreach ($matches as $match) {
+                    $version = $match[1];
+                    $changeset = $match[2];
+                    $this->changesets[$version] = $changeset;
+                }
+                return;
+            }
+        }
+
+        // legacy website
         if ($document = @DOMHelper::loadDocument($url, true)) {
             $xpath = DOMHelper::loadXPath($document);
             foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
                 // unityhub://2019.4.17f1/667c8606c536
                 $href = $node->getAttribute('href');
+                var_dump($href);
                 $version = parse_url($href, PHP_URL_HOST);
                 $changeset = parse_url($href, PHP_URL_PATH);
 
@@ -366,6 +381,7 @@ class UnityHub {
     public function findProject(string $projectPath, bool $includeSubdirectories = false): ?UnityProject {
         if ($info = UnityProjectInfo::find($projectPath, $includeSubdirectories)) {
             $editor = $this->getEditorByVersion($info->editorVersion);
+            $editor->changeset = $info->editorChangeset;
             return new UnityProject($info, $editor);
         }
         return null;

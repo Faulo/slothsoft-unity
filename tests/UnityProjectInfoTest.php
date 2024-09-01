@@ -18,6 +18,8 @@ class UnityProjectInfoTest extends TestCase {
 
     public const VALID_PROJECT_VERSION = '2021.2.7f1';
 
+    public const VALID_PROJECT_CHANGESET = '6bd9e232123f';
+
     public function testClassExists() {
         $this->assertTrue(class_exists(UnityProjectInfo::class));
     }
@@ -45,6 +47,7 @@ class UnityProjectInfoTest extends TestCase {
         $this->assertDirectoryExists($info->path);
         $this->assertEquals(realpath(self::VALID_PROJECT), realpath($info->path));
         $this->assertEquals(self::VALID_PROJECT_VERSION, $info->editorVersion);
+        $this->assertEquals(self::VALID_PROJECT_CHANGESET, $info->editorChangeset);
         $this->assertIsArray($info->settings);
         $this->assertIsArray($info->packages);
     }

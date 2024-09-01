@@ -58,6 +58,9 @@ class UnityProjectInfo {
     /** @var string */
     public string $editorVersion;
 
+    /** @var string */
+    public ?string $editorChangeset;
+
     /** @var array */
     public array $settings;
 
@@ -70,6 +73,7 @@ class UnityProjectInfo {
     private function __construct(string $path) {
         $this->path = $path;
         $this->editorVersion = $this->loadEditorVersion();
+        $this->editorChangeset = $this->loadEditorChangeset();
         $this->settings = $this->loadSettings();
         $this->manifest = $this->loadManifest();
         $this->packages = $this->loadPackages();
@@ -92,6 +96,15 @@ class UnityProjectInfo {
             return trim($match[1]);
         }
         throw ExecutionError::Error('AssertEditorVersion', "Unable to determine editor version for project '$this->path'!");
+    }
+
+    private function loadEditorChangeset(): ?string {
+        $unityVersion = file_get_contents($this->path . self::FILE_VERSION);
+        $match = [];
+        if (preg_match('~m_EditorVersionWithRevision: .+ \((.+)\)~', $unityVersion, $match)) {
+            return trim($match[1]);
+        }
+        return null;
     }
 
     private function loadSettings(): array {
