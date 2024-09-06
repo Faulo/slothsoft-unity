@@ -135,6 +135,8 @@ class UnityEditor {
 
     const ENV_UNITY_ACCELERATOR_ENDPOINT = 'UNITY_ACCELERATOR_ENDPOINT';
 
+    const ENV_UNITY_NO_GRAPHICS = 'UNITY_NO_GRAPHICS';
+
     private function createProcess(array $arguments): Process {
         if ($endpoint = getenv(self::ENV_UNITY_ACCELERATOR_ENDPOINT)) {
             $arguments = array_merge([
@@ -148,10 +150,15 @@ class UnityEditor {
             ], $arguments);
         }
 
+        if ((int) getenv(self::UNITY_NO_GRAPHICS)) {
+            array_merge([
+                '-nographics'
+            ], $arguments);
+        }
+
         $arguments = array_merge([
             $this->executable,
             '-batchmode',
-            '-nographics',
             '-accept-apiupdate'
         ], $arguments);
 
