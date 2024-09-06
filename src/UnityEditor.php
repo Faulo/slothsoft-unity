@@ -151,8 +151,13 @@ class UnityEditor {
         }
 
         if ((int) getenv(self::ENV_UNITY_NO_GRAPHICS)) {
-            array_merge([
+            $arguments = array_merge([
                 '-nographics'
+            ], $arguments);
+        } else {
+            $arguments = array_merge([
+                '-logFile',
+                '-'
             ], $arguments);
         }
 
