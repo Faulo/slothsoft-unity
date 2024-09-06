@@ -150,7 +150,7 @@ class UnityEditor {
             ], $arguments);
         }
 
-        if ((int) getenv(self::UNITY_NO_GRAPHICS)) {
+        if ((int) getenv(self::ENV_UNITY_NO_GRAPHICS)) {
             array_merge([
                 '-nographics'
             ], $arguments);
