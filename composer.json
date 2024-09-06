@@ -40,7 +40,7 @@
 	},
 	"extra" : {
 		"branch-alias" : {
-			"dev-develop" : "2.12.x-dev"
+			"dev-develop" : "2.13.x-dev"
 		}
 	},
 	"bin" : [
