@@ -91,10 +91,18 @@ class UnityHub {
                 '--headless'
             ]);
         }
-        if (FileSystem::commandExists('xvfb-run') and FileSystem::commandExists('unityhub')) {
+        if (FileSystem::commandExists('unityhub')) {
+            if (FileSystem::commandExists('xvfb-run')) {
+                return new LocateHubFromCommand([
+                    'xvfb-run',
+                    '-a',
+                    'unityhub',
+                    '--no-sandbox',
+                    '--headless'
+                ]);
+            }
+
             return new LocateHubFromCommand([
-                'xvfb-run',
-                '-a',
                 'unityhub',
                 '--no-sandbox',
                 '--headless'
