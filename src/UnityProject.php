@@ -16,7 +16,7 @@ class UnityProject {
     private UnityHub $hub;
 
     /** @var UnityEditor */
-    private UnityEditor $editor;
+    private ?UnityEditor $editor = null;
 
     private function initEditor(): void {
         if (! $this->editor) {
