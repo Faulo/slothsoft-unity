@@ -12,12 +12,22 @@ class UnityProject {
     /** @var UnityProjectInfo */
     private UnityProjectInfo $info;
 
+    /** @var UnityHub */
+    private UnityHub $hub;
+
     /** @var UnityEditor */
     private UnityEditor $editor;
 
-    public function __construct(UnityProjectInfo $info, UnityEditor $editor) {
+    private function initEditor(): void {
+        if (! $this->editor) {
+            $this->editor = $this->hub->getEditorByVersion($this->info->editorVersion);
+            $this->editor->changeset = $this->info->editorChangeset;
+        }
+    }
+
+    public function __construct(UnityProjectInfo $info, UnityHub $hub) {
         $this->info = $info;
-        $this->editor = $editor;
+        $this->hub = $hub;
     }
 
     public function __toString(): string {
@@ -37,7 +47,7 @@ class UnityProject {
     }
 
     public function getEditorVersion(): string {
-        return $this->editor->version;
+        return $this->info->editorVersion;
     }
 
     public function getScriptingBackend(): int {
@@ -134,6 +144,8 @@ class UnityProject {
 
         FileSystem::removeDir($buildPath, true);
 
+        $this->initEditor();
+
         $this->editor->installModules(...UnityBuildTarget::getEditoModules($target, $this->getScriptingBackend()));
 
         $buildExecutable = UnityBuildTarget::getBuildExecutable($target, $this->getSetting('productName'));
@@ -164,18 +176,22 @@ class UnityProject {
     }
 
     public function execute(string ...$arguments): Process {
+        $this->initEditor();
         return $this->editor->execute(true, '-projectPath', $this->info->path, ...$arguments);
     }
 
     public function ensureEditorIsInstalled(): bool {
+        $this->initEditor();
         return $this->editor->isInstalled() or $this->editor->install();
     }
 
     public function ensureEditorIsLicensed(): bool {
+        $this->initEditor();
         return $this->editor->isLicensed($this->info->path) or $this->editor->license($this->info->path);
     }
 
     public function installModules(string ...$modules): bool {
+        $this->initEditor();
         return $this->editor->installModules(...$modules);
     }
 }
