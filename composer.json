@@ -40,7 +40,7 @@
 	},
 	"extra" : {
 		"branch-alias" : {
-			"dev-develop" : "2.13.x-dev"
+			"dev-main" : "2.13.x-dev"
 		}
 	},
 	"bin" : [
@@ -60,5 +60,6 @@
 	"config" : {
 		"process-timeout" : 0
 	},
-	"homepage" : "http://farah.slothsoft.net/modules/unity"
+	"homepage" : "http://farah.slothsoft.net/modules/unity",
+	"classmap-authoritative" : false
 }
