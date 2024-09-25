@@ -60,6 +60,5 @@
 	"config" : {
 		"process-timeout" : 0
 	},
-	"homepage" : "http://farah.slothsoft.net/modules/unity",
-	"classmap-authoritative" : false
+	"homepage" : "http://farah.slothsoft.net/modules/unity"
 }
