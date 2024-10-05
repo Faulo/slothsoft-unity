@@ -129,7 +129,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/Slothsoft-Unity-UnityHub.html#constant_CHANGESET_URL">CHANGESET_URL</a>
     <span>
-        &nbsp;= &#039;http://unity3d.com/get-unity/download/archive&#039;                    </span>
+        &nbsp;= &#039;https://unity.com/releases/editor/archive&#039;                    </span>
 </dt>
 <dd></dd>
 
@@ -232,6 +232,13 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Slothsoft-Unity-UnityHub.html#method_getThrowOnFailure">getThrowOnFailure()</a>
+    <span>
+                        &nbsp;: bool    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Slothsoft-Unity-UnityHub.html#method_installEditor">installEditor()</a>
     <span>
                         &nbsp;: void    </span>
@@ -242,6 +249,13 @@
     <a href="classes/Slothsoft-Unity-UnityHub.html#method_installEditorModule">installEditorModule()</a>
     <span>
                         &nbsp;: void    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Slothsoft-Unity-UnityHub.html#method_inventStableEditorVersion">inventStableEditorVersion()</a>
+    <span>
+                        &nbsp;: string    </span>
 </dt>
 <dd></dd>
 
@@ -287,6 +301,13 @@
 </dt>
 <dd></dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Slothsoft-Unity-UnityHub.html#method_setThrowOnFailure">setThrowOnFailure()</a>
+    <span>
+                        &nbsp;: void    </span>
+</dt>
+<dd></dd>
+
         </dl>
 
 
@@ -306,7 +327,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">321</span>
+    <span class="phpdocumentor-element-found-in__line">351</span>
 
     </aside>
 
@@ -315,7 +336,7 @@
     <span class="phpdocumentor-signature__visibility">public</span>
     <span class="phpdocumentor-signature__type">mixed</span>
     <span class="phpdocumentor-signature__name">CHANGESET_URL</span>
-    = <span class="phpdocumentor-signature__default-value">&#039;http://unity3d.com/get-unity/download/archive&#039;</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;https://unity.com/releases/editor/archive&#039;</span>
 </code>
 
 
@@ -392,14 +413,14 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">208</span>
+    <span class="phpdocumentor-element-found-in__line">232</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">createEditorInstallation</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$modules</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
+                <span class="phpdocumentor-signature__name">createEditorInstallation</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$version</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$modules</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$changeset</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -417,6 +438,14 @@
                 <span class="phpdocumentor-signature__argument__name">$modules</span>
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">[]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$changeset</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string|null</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
 
@@ -444,7 +473,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">272</span>
+    <span class="phpdocumentor-element-found-in__line">296</span>
 
     </aside>
 
@@ -496,7 +525,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">288</span>
+    <span class="phpdocumentor-element-found-in__line">312</span>
 
     </aside>
 
@@ -540,7 +569,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">183</span>
+    <span class="phpdocumentor-element-found-in__line">207</span>
 
     </aside>
 
@@ -584,7 +613,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">352</span>
+    <span class="phpdocumentor-element-found-in__line">396</span>
 
     </aside>
 
@@ -636,7 +665,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">344</span>
+    <span class="phpdocumentor-element-found-in__line">389</span>
 
     </aside>
 
@@ -688,7 +717,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">158</span>
+    <span class="phpdocumentor-element-found-in__line">182</span>
 
     </aside>
 
@@ -732,7 +761,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">144</span>
+    <span class="phpdocumentor-element-found-in__line">168</span>
 
     </aside>
 
@@ -765,7 +794,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">116</span>
+    <span class="phpdocumentor-element-found-in__line">140</span>
 
     </aside>
 
@@ -797,7 +826,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">94</span>
+    <span class="phpdocumentor-element-found-in__line">118</span>
 
     </aside>
 
@@ -896,7 +925,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">59</span>
+    <span class="phpdocumentor-element-found-in__line">75</span>
 
     </aside>
 
@@ -920,6 +949,39 @@
         class="phpdocumentor-element
             -method
             -public
+                                    -static                    "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getThrowOnFailure">
+        getThrowOnFailure()
+        <a href="classes/Slothsoft-Unity-UnityHub.html#method_getThrowOnFailure" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">59</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__name">getThrowOnFailure</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">bool</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
                                                         "
 >
     <h4 class="phpdocumentor-element__name" id="method_installEditor">
@@ -929,7 +991,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">166</span>
+    <span class="phpdocumentor-element-found-in__line">190</span>
 
     </aside>
 
@@ -981,7 +1043,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">178</span>
+    <span class="phpdocumentor-element-found-in__line">202</span>
 
     </aside>
 
@@ -1026,6 +1088,50 @@
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_inventStableEditorVersion">
+        inventStableEditorVersion()
+        <a href="classes/Slothsoft-Unity-UnityHub.html#method_inventStableEditorVersion" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">254</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">inventStableEditorVersion</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$minVersion</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$minVersion</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_isInstalled">
         isInstalled()
         <a href="classes/Slothsoft-Unity-UnityHub.html#method_isInstalled" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1033,7 +1139,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">99</span>
+    <span class="phpdocumentor-element-found-in__line">123</span>
 
     </aside>
 
@@ -1065,7 +1171,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">199</span>
+    <span class="phpdocumentor-element-found-in__line">223</span>
 
     </aside>
 
@@ -1109,14 +1215,14 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">298</span>
+    <span class="phpdocumentor-element-found-in__line">322</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__name">runUnityProcess</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Symfony\Component\Process\Process">Process</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$process</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+            <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__name">runUnityProcess</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\Symfony\Component\Process\Process">Process</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$process</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$validateExitCode</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">true</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -1126,6 +1232,14 @@
                 <span class="phpdocumentor-signature__argument__name">$process</span>
                 : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\Symfony\Component\Process\Process">Process</abbr></span>
                             </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$validateExitCode</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">true</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
 
@@ -1153,7 +1267,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">90</span>
+    <span class="phpdocumentor-element-found-in__line">114</span>
 
     </aside>
 
@@ -1241,7 +1355,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">55</span>
+    <span class="phpdocumentor-element-found-in__line">71</span>
 
     </aside>
 
@@ -1257,6 +1371,50 @@
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$value</span>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">void</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                    -static                    "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setThrowOnFailure">
+        setThrowOnFailure()
+        <a href="classes/Slothsoft-Unity-UnityHub.html#method_setThrowOnFailure" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/UnityHub.php"><a href="files/src-unityhub.html"><abbr title="src/UnityHub.php">UnityHub.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">55</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__name">setThrowOnFailure</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$value</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"></section>
