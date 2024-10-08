@@ -358,7 +358,7 @@ class UnityHub {
     }
 
     private function loadChangesetsFromUrl(string $url): void {
-        if ($html = file_get_contents($url)) {
+        if ($html = @file_get_contents($url)) {
             $matches = [];
             $count = preg_match_all('~unityhub://([^/]+)/([a-f0-9]{12})~', $html, $matches, PREG_SET_ORDER);
             if ($count) {
@@ -377,7 +377,6 @@ class UnityHub {
             foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
                 // unityhub://2019.4.17f1/667c8606c536
                 $href = $node->getAttribute('href');
-                var_dump($href);
                 $version = parse_url($href, PHP_URL_HOST);
                 $changeset = parse_url($href, PHP_URL_PATH);
 
