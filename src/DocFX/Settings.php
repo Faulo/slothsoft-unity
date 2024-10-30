@@ -325,6 +325,7 @@ class Settings {
                 }
             }
         }
+        asort($toc);
         return $toc;
     }
 
