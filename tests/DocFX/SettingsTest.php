@@ -88,13 +88,13 @@ class SettingsTest extends TestCase {
 
             switch (pathinfo($file, PATHINFO_EXTENSION)) {
                 case 'json':
-                    $this->assertJsonFileEqualsJsonFile($documentation . $file, $target . $file);
+                    $this->assertJsonFileEqualsJsonFile($documentation . $file, $target . $file, "File '$file' did not generate as expected.");
                     break;
                 case 'yml':
-                    $this->assertEquals(Spyc::YAMLLoad($documentation . $file), Spyc::YAMLLoad($target . $file));
+                    $this->assertEquals(Spyc::YAMLLoad($documentation . $file), Spyc::YAMLLoad($target . $file), "File '$file' did not generate as expected.");
                     break;
                 default:
-                    $this->assertFileEquals($documentation . $file, $target . $file);
+                    $this->assertFileEquals($documentation . $file, $target . $file, "File '$file' did not generate as expected.");
                     break;
             }
         }
