@@ -11,7 +11,7 @@ use Throwable;
 
 class UnityHub {
 
-    private const UNITY_ARCHIVE_VERSIONS = 'https://symbolserver.unity3d.com/000Admin/history.txt';
+    private const UNITY_VERSION_HISTORY = 'https://symbolserver.unity3d.com/000Admin/history.txt';
 
     private const USE_UNITY_ARCHIVE = false;
 
@@ -144,6 +144,22 @@ class UnityHub {
 
     /** @var string[] */
     private ?array $changesets = null;
+
+    /** @var resource */
+    private $fileContext = null;
+
+    private function getFileContext() {
+        if ($this->fileContext === null) {
+            $this->fileContext = stream_context_create([
+                "ssl" => [
+                    "verify_peer" => false,
+                    "verify_peer_name" => false
+                ]
+            ]);
+        }
+
+        return $this->fileContext;
+    }
 
     /**
      *
@@ -383,14 +399,16 @@ class UnityHub {
         if ($this->changesets === null) {
             $this->changesets = [];
 
+            $this->loadVersionsFromUrl(self::UNITY_VERSION_HISTORY);
+
             if (self::USE_UNITY_ARCHIVE) {
                 $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_ALL);
-            } else {}
+            }
         }
     }
 
     private function loadChangesetsFromUrl(string $url): void {
-        if ($html = @file_get_contents($url)) {
+        if ($html = file_get_contents($url, false, $this->getFileContext())) {
             $matches = [];
             $count = preg_match_all('~unityhub://([^/]+)/([a-f0-9]{12})~', $html, $matches, PREG_SET_ORDER);
             if ($count) {
@@ -414,6 +432,18 @@ class UnityHub {
 
                 $this->changesets[$version] = substr($changeset, 1);
             }
+        }
+    }
+
+    private function loadVersionsFromUrl(string $url): void {
+        if (($handle = fopen($url, "r", false, $this->getFileContext())) !== false) {
+            while (($data = fgetcsv($handle)) !== false) {
+                $version = $data[6] ?? '';
+                if ($version !== '') {
+                    $this->changesets[$version] = null;
+                }
+            }
+            fclose($handle);
         }
     }
 
