@@ -11,6 +11,18 @@ use Throwable;
 
 class UnityHub {
 
+    private const UNITY_ARCHIVE_VERSIONS = 'https://symbolserver.unity3d.com/000Admin/history.txt';
+
+    private const USE_UNITY_ARCHIVE = false;
+
+    private const UNITY_ARCHIVE_ALL = 'https://unity.com/releases/editor/archive';
+
+    private const UNITY_ARCHIVE_FINAL = 'https://unity.com/releases/editor/whats-new/';
+
+    private const UNITY_ARCHIVE_BETA = 'https://unity.com/releases/editor/beta/';
+
+    private const UNITY_ARCHIVE_ALPHA = 'https://unity.com/releases/editor/alpha/';
+
     public static function getInstance(): self {
         static $instance;
         if ($instance === null) {
@@ -277,8 +289,24 @@ class UnityHub {
             return $this->changesets[$version];
         }
 
+        if (strpos($version, 'f') !== false) {
+            $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_FINAL . preg_replace('~f.*~', '', $version));
+
+            if (isset($this->changesets[$version])) {
+                return $this->changesets[$version];
+            }
+        }
+
         if (strpos($version, 'b') !== false) {
-            $this->loadChangesetsFromUrl('https://unity3d.com/unity/beta/' . $version);
+            $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_BETA . $version);
+
+            if (isset($this->changesets[$version])) {
+                return $this->changesets[$version];
+            }
+        }
+
+        if (strpos($version, 'b') !== false) {
+            $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_BETA . $version);
 
             if (isset($this->changesets[$version])) {
                 return $this->changesets[$version];
@@ -286,7 +314,7 @@ class UnityHub {
         }
 
         if (strpos($version, 'a') !== false) {
-            $this->loadChangesetsFromUrl('https://unity3d.com/unity/alpha/' . $version);
+            $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_ALPHA . $version);
 
             if (isset($this->changesets[$version])) {
                 return $this->changesets[$version];
@@ -351,12 +379,13 @@ class UnityHub {
         return FileSystem::scanDir($directory, $options);
     }
 
-    const CHANGESET_URL = 'https://unity.com/releases/editor/archive';
-
     private function loadChangesets(): void {
         if ($this->changesets === null) {
             $this->changesets = [];
-            $this->loadChangesetsFromUrl(self::CHANGESET_URL);
+
+            if (self::USE_UNITY_ARCHIVE) {
+                $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_ALL);
+            } else {}
         }
     }
 
