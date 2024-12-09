@@ -58,9 +58,11 @@ function findVersion(string $vcs, string $workspace): string {
                 '--nototal',
                 '--format={name}'
             ], $workspace);
+
             if ($baseVersion === '') {
-                $baseVersion = '0';
+                $baseVersion = '0.0';
             }
+
             $lastChangeset = executeAndTrim([
                 'cm',
                 'find',
@@ -74,6 +76,7 @@ function findVersion(string $vcs, string $workspace): string {
                 '--nototal',
                 '--format={changeset}'
             ], $workspace);
+
             $total = executeAndTrim([
                 'cm',
                 'find',
@@ -86,18 +89,16 @@ function findVersion(string $vcs, string $workspace): string {
                 'desc',
                 '--format='
             ], $workspace);
-            $match = [];
-            if (preg_match('~\d+~', $total, $match)) {
-                $revision = $match[0];
-                return "$baseVersion.$revision";
-            }
 
-            return $baseVersion;
-            break;
+            $match = [];
+            $revision = preg_match('~\d+~', $total, $match) ? $match[0] : '0';
+
+            return "$baseVersion.$revision";
         case 'git':
             if (! FileSystem::commandExists('git')) {
                 throw new FileNotFoundException("Command 'git' is not available.");
             }
+
             $version = executeAndTrim([
                 'git',
                 'describe',
@@ -116,7 +117,7 @@ function findVersion(string $vcs, string $workspace): string {
         default:
             throw new InvalidArgumentException("VCS '$vcs' is not supported by this implementation.");
     }
-    return '0';
+    return '0.0.0';
 }
 
 function executeAndTrim(array $args, string $cwd): string {
