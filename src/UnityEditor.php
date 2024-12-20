@@ -68,14 +68,15 @@ class UnityEditor {
         if (! $this->isInstalled()) {
             return false;
         }
-        foreach ($modules as $module) {
-            $this->hub->installEditorModule($this, $module);
-        }
+
+        $this->hub->installEditorModule($this, ...$modules);
+
         // Unity needs permission to access the installed files
         // https://stackoverflow.com/questions/61865817/jdk-directory-is-not-set-or-invalid-unity
         if (FileSystem::commandExists('chmod')) {
             exec('chmod -R 777 ' . escapeshellarg(dirname($this->executable)));
         }
+
         return true;
     }
 
