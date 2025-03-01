@@ -50,6 +50,7 @@
 		"scripts/unity-documentation",
 		"scripts/unity-help",
 		"scripts/unity-method",
+		"scripts/unity-start",
 		"scripts/unity-module-install",
 		"scripts/unity-package-install",
 		"scripts/unity-project-setting",

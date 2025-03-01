@@ -175,6 +175,10 @@ class UnityProject {
         return $this->execute('-quit', '-executeMethod', $method, ...$args);
     }
 
+    public function startMethod(string $method, array $args): Process {
+        return $this->execute('-executeMethod', $method, ...$args);
+    }
+
     public function execute(string ...$arguments): Process {
         $this->initEditor();
         return $this->editor->execute(true, '-projectPath', $this->info->path, ...$arguments);

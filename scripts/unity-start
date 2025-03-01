@@ -12,10 +12,11 @@ $_composer_autoload_path ??= __DIR__ . '/../vendor/autoload.php';
 include $_composer_autoload_path;
 
 const HELP = <<<'EOT'
-Run a specific method inside a Unity project.
-    
+Start a specific method inside a Unity project.
+That method must call EditorApplication.Quit() or otherwise arrange for its own death.
+
 Usage:
-composer exec unity-method "path/to/project" "Method.To.Execute" ["additional params", ...]
+composer exec unity-start "path/to/project" "Method.To.Execute" ["additional params", ...]
 
 EOT;
 
@@ -32,7 +33,7 @@ $method = array_shift($args);
 $url = FarahUrl::createFromComponents('slothsoft@unity', '/project/method-junit', FarahUrlArguments::createFromValueList([
     'workspace' => $workspace,
     'method' => $method,
-    'quit' => 1,
+    'quit' => 0,
     'args' => $args
 ]));
 

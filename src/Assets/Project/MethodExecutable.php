@@ -11,6 +11,9 @@ class MethodExecutable extends ProjectExecutableBase {
     /** @var string */
     private string $method;
 
+    /** @var int */
+    private int $quitOnExit;
+
     /** @var array */
     private array $arguments;
 
@@ -18,6 +21,7 @@ class MethodExecutable extends ProjectExecutableBase {
         parent::parseArguments($args);
 
         $this->method = $args->get('method');
+        $this->quitOnExit = $args->get('quit');
         $this->arguments = $args->get('args');
     }
 
@@ -46,7 +50,11 @@ class MethodExecutable extends ProjectExecutableBase {
     }
 
     protected function createResultDocument(): ?DOMDocument {
-        $this->project->executeMethod($this->method, $this->arguments);
+        if ($this->quitOnExit) {
+            $this->project->executeMethod($this->method, $this->arguments);
+        } else {
+            $this->project->startMethod($this->method, $this->arguments);
+        }
 
         return null;
     }
