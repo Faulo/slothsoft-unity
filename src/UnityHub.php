@@ -293,6 +293,14 @@ class UnityHub {
             }
         }
         if ($maxVersion === null) {
+            $version = explode('.', trim($minVersion));
+            if (count($version) <= 3) {
+                $version[1] ??= '0';
+                $version[2] ??= '0f1';
+                $maxVersion = implode('.', $version);
+            }
+        }
+        if ($maxVersion === null) {
             throw ExecutionError::Error('AssertEditorVersion', "Failed to find editor that satisfies mininum version requirement '$minVersion'!");
         }
         return $maxVersion;

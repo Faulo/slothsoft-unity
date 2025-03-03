@@ -145,6 +145,9 @@ class UnityHubTest extends TestCase {
         yield '2022.2.0b1' => [
             '2022.2.0b1'
         ];
+        yield '6000.0.40f1' => [
+            '6000.0.40f1'
+        ];
     }
 
     const VALID_LICENSE_DIRECTORY = __DIR__ . '/../test-files/ValidLicenses';
@@ -214,6 +217,18 @@ class UnityHubTest extends TestCase {
         yield '2019.4.40f1' => [
             '2019.4.40f1',
             '2019.4.40f1'
+        ];
+        yield '6000.0.0f1' => [
+            '6000',
+            '6000.0.0f1'
+        ];
+        yield '6000.1.0f1' => [
+            '6000.1',
+            '6000.1.0f1'
+        ];
+        yield '6000.0.40f1' => [
+            '6000.0.40f1',
+            '6000.0.40f1'
         ];
     }
 }
