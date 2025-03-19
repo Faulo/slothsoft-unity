@@ -147,7 +147,8 @@ class UnityEditor {
                 '-cacheServerEnableDownload',
                 'true',
                 '-cacheServerEnableUpload',
-                'true'
+                'true',
+                '-cacheServerWaitForUploadCompletion'
             ], $arguments);
         }
 
