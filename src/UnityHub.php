@@ -195,7 +195,12 @@ class UnityHub {
     private function loadInstalledEditors(bool $allowCache): iterable {
         $this->loadedEditorsFromCache = ($allowCache and ($editorPaths = $this->loadInstalledEditorsCache()));
 
-        if (! $this->loadedEditorsFromCache) {
+        if ($this->loadedEditorsFromCache) {
+            if (self::getLoggingEnabled()) {
+                fwrite(STDERR, self::editorPathCache() . PHP_EOL);
+                fwrite(STDERR, $editorPaths . PHP_EOL);
+            }
+        } else {
             $editorPaths = trim($this->execute('editors', '--installed')->getOutput());
             $this->saveInstalledEditorsCache($editorPaths);
         }
@@ -214,7 +219,7 @@ class UnityHub {
         }
     }
 
-    private const EDITOR_PATH_CACHE = 'unity-editors-installed.txt';
+    private const EDITOR_PATH_CACHE = 'unity-editors-installed.tmp';
 
     private static function editorPathCache(): string {
         return ServerEnvironment::getCacheDirectory() . DIRECTORY_SEPARATOR . self::EDITOR_PATH_CACHE;
