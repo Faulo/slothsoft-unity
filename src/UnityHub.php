@@ -8,6 +8,7 @@ use Slothsoft\Core\Configuration\ConfigurationField;
 use Symfony\Component\Process\Process;
 use InvalidArgumentException;
 use Throwable;
+use Slothsoft\Core\ServerEnvironment;
 
 class UnityHub {
 
@@ -139,6 +140,8 @@ class UnityHub {
     /** @var UnityEditor[] */
     private ?array $editors = null;
 
+    private bool $loadedEditorsFromCache = false;
+
     /** @var string */
     private string $editorPath = '';
 
@@ -166,22 +169,28 @@ class UnityHub {
      * @return UnityEditor[]
      */
     public function getEditors(): array {
-        $this->loadEditors();
+        $this->loadEditors(true);
         return $this->editors;
     }
 
-    private function loadEditors(): void {
+    private function loadEditors(bool $allowCache): void {
         if ($this->editors === null) {
             $this->editors = [];
-            foreach ($this->loadInstalledEditors() as $version => $path) {
+            foreach ($this->loadInstalledEditors($allowCache) as $version => $path) {
                 $this->editors[$version] = new UnityEditor($this, $version);
                 $this->editors[$version]->setExecutable($path);
             }
         }
     }
 
-    private function loadInstalledEditors(): iterable {
-        $editorPaths = trim($this->execute('editors', '--installed')->getOutput());
+    private function loadInstalledEditors(bool $allowCache): iterable {
+        $this->loadedEditorsFromCache = ($allowCache and ($editorPaths = $this->loadInstalledEditorsCache()));
+
+        if (! $this->loadedEditorsFromCache) {
+            $editorPaths = trim($this->execute('editors', '--installed')->getOutput());
+            $this->saveInstalledEditorsCache($editorPaths);
+        }
+
         if (strlen($editorPaths)) {
             foreach (explode("\n", $editorPaths) as $line) {
                 $line = explode(', installed at', $line, 2);
@@ -193,6 +202,23 @@ class UnityHub {
                     }
                 }
             }
+        }
+    }
+
+    private const EDITOR_PATH_CACHE = 'unity-editors-installed.txt';
+
+    private static function editorPathCache(): string {
+        return ServerEnvironment::getCacheDirectory() . DIRECTORY_SEPARATOR . self::EDITOR_PATH_CACHE;
+    }
+
+    private function loadInstalledEditorsCache(): ?string {
+        return is_file(self::editorPathCache()) ? file_get_contents(self::editorPathCache()) : null;
+    }
+
+    private function saveInstalledEditorsCache(string $data): void {
+        if (is_dir(ServerEnvironment::getCacheDirectory())) {
+            file_put_contents(self::editorPathCache(), $data);
+            chmod(self::editorPathCache(), 0777);
         }
     }
 
@@ -211,10 +237,16 @@ class UnityHub {
     }
 
     public function getEditorByVersion(string $version): UnityEditor {
-        $this->loadEditors();
+        $this->loadEditors(true);
+        if (! isset($this->editors[$version]) and $this->loadedEditorsFromCache) {
+            $this->editors = null;
+            $this->loadEditors(false);
+        }
+
         if (! isset($this->editors[$version])) {
             $this->editors[$version] = new UnityEditor($this, $version);
         }
+
         return $this->editors[$version];
     }
 
@@ -222,7 +254,7 @@ class UnityHub {
         $arguments = $this->createEditorInstallation($editor->version, $modules, $editor->changeset);
         $this->execute(...$arguments);
 
-        foreach ($this->loadInstalledEditors() as $version => $path) {
+        foreach ($this->loadInstalledEditors(false) as $version => $path) {
             if ($version === $editor->version) {
                 $editor->setExecutable($path);
                 break;
