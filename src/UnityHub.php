@@ -177,8 +177,17 @@ class UnityHub {
         if ($this->editors === null) {
             $this->editors = [];
             foreach ($this->loadInstalledEditors($allowCache) as $version => $path) {
-                $this->editors[$version] = new UnityEditor($this, $version);
-                $this->editors[$version]->setExecutable($path);
+                if (is_file($path)) {
+                    $this->editors[$version] = new UnityEditor($this, $version);
+                    $this->editors[$version]->setExecutable($path);
+                } else {
+                    if ($this->loadedEditorsFromCache) {
+                        // cache appears to be stale, let's try again
+                        $this->editors = null;
+                        $this->loadEditors(false);
+                        return;
+                    }
+                }
             }
         }
     }
