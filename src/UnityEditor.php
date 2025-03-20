@@ -148,7 +148,8 @@ class UnityEditor {
                 'true',
                 '-cacheServerEnableUpload',
                 'true',
-                '-cacheServerWaitForUploadCompletion'
+                '-cacheServerUploadExistingImports',
+                '-cacheServerUploadExistingShaderCache'
             ], $arguments);
         }
 
