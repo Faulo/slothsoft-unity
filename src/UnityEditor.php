@@ -27,7 +27,9 @@ class UnityEditor {
         return is_string($this->executable) and is_file($this->executable);
     }
 
-    private bool $wasLicensed = false;
+    private const ASSUME_LICENSE = true;
+
+    private bool $wasLicensed = self::ASSUME_LICENSE;
 
     public function isLicensed(string $projectPath): bool {
         if (! $this->isInstalled()) {
@@ -148,8 +150,7 @@ class UnityEditor {
                 'true',
                 '-cacheServerEnableUpload',
                 'true',
-                '-cacheServerUploadExistingImports',
-                '-cacheServerUploadExistingShaderCache'
+                '-cacheServerUploadAllRevisions'
             ], $arguments);
         }
 
