@@ -167,7 +167,8 @@ class UnityEditor {
         $arguments = array_merge([
             $this->executable,
             '-batchmode',
-            '-accept-apiupdate'
+            '-accept-apiupdate',
+            '-timestamps'
         ], $arguments);
 
         if (FileSystem::commandExists('xvfb-run')) {
