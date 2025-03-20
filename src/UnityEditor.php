@@ -138,10 +138,15 @@ class UnityEditor {
 
     const ENV_UNITY_ACCELERATOR_ENDPOINT = 'UNITY_ACCELERATOR_ENDPOINT';
 
+    const ENV_UNITY_ACCELERATOR_PARAMS = 'UNITY_ACCELERATOR_PARAMS';
+
     const ENV_UNITY_NO_GRAPHICS = 'UNITY_NO_GRAPHICS';
 
     private function createProcess(array $arguments): Process {
         if ($endpoint = getenv(self::ENV_UNITY_ACCELERATOR_ENDPOINT)) {
+            $params = getenv(self::ENV_UNITY_ACCELERATOR_PARAMS);
+            $params = $params ? explode(' ', trim($params)) : [];
+
             $arguments = array_merge([
                 '-EnableCacheServer',
                 '-cacheServerEndpoint',
@@ -149,9 +154,8 @@ class UnityEditor {
                 '-cacheServerEnableDownload',
                 'true',
                 '-cacheServerEnableUpload',
-                'true',
-                '-cacheServerUploadAllRevisions'
-            ], $arguments);
+                'true'
+            ], $params, $arguments);
         }
 
         if ((int) getenv(self::ENV_UNITY_NO_GRAPHICS)) {
