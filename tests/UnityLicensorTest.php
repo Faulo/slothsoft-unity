@@ -56,6 +56,24 @@ class UnityLicensorTest extends TestCase {
         new UnityLicensor();
     }
 
+    public function testHasCredentialsIsFalseWithoutUser() {
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
+        $this->assertFalse(UnityLicensor::hasCredentials());
+    }
+
+    public function testHasCredentialsIsFalseWithoutPassword() {
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
+        $this->assertFalse(UnityLicensor::hasCredentials());
+    }
+
+    public function testHasCredentialsIsTrueWithBoth() {
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
+        $this->assertTrue(UnityLicensor::hasCredentials());
+    }
+
     public function testSign() {
         if (is_file('.env.local')) {
             foreach (Dotenv::createImmutable(getcwd(), '.env.local')->load() as $key => $value) {
@@ -63,10 +81,7 @@ class UnityLicensorTest extends TestCase {
             }
 
             if ($editor = $this->initEditor()) {
-                $log = $editor->execute(false, '-createManualActivationFile')->getOutput();
-
-                $match = [];
-                if (preg_match('~(Unity_v[^\s]+\.alf)~', $log, $match) and $file = trim($match[1]) and is_file($file)) {
+                if ($file = $editor->createLicenseFile()) {
                     $sut = new UnityLicensor();
                     $file = $sut->sign($file);
                     $this->assertFileExists($file, 'Failed to create a signed license file.');
@@ -75,8 +90,8 @@ class UnityLicensorTest extends TestCase {
                     $signatures = $document->getElementsByTagNameNS('http://www.w3.org/2000/09/xmldsig#', 'Signature');
                     $this->assertNotNull($signatures->item(0), 'Alleged ulf file is missing the <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"> element.');
 
-                    $result = $editor->execute(false, '-manualLicenseFile', $file)->getExitCode();
-                    $this->assertEquals(0, $result, "Failed to activate via -manualLicenseFile '$file'!");
+                    $result = $editor->useLicenseFile($file);
+                    $this->assertTrue($result, "Failed to activate via -manualLicenseFile '$file'!");
                 } else {
                     $this->markTestSkipped('Failed to create the license activation file.');
                 }

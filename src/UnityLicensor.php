@@ -34,6 +34,10 @@ class UnityLicensor {
 
     public const ENV_UNITY_LICENSE_PASSWORD = 'UNITY_LICENSE_PASSWORD';
 
+    public static function hasCredentials(): bool {
+        return getenv(self::ENV_UNITY_LICENSE_EMAIL) and getenv(self::ENV_UNITY_LICENSE_PASSWORD);
+    }
+
     private string $userMail;
 
     private string $userPassword;

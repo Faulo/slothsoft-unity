@@ -85,23 +85,53 @@ class UnityEditor {
 
     public function license(string $projectPath, $assumeSuccess = false): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
-            $result = $this->execute(false, self::ARGUMENT_LICENSE_USE, $licenseFile)->getExitCode();
+            $result = $this->useLicenseFile($licenseFile);
             sleep(1);
-            if ($result === 0 or $assumeSuccess or $this->isLicensed($projectPath)) {
+            if ($result or $assumeSuccess or $this->isLicensed($projectPath)) {
                 return true;
             }
         }
 
+        return $this->tryToLicense();
+    }
+
+    private bool $hasTriedToLicense = false;
+
+    private const LICENSE_IS_MISSING = 'No valid Unity Editor license found. Please activate your license.';
+
+    private function tryToLicense(): bool {
+        if (! $this->hasTriedToLicense) {
+            $this->hasTriedToLicense = true;
+
+            if ($file = $this->createLicenseFile()) {
+                $this->hub->prepareLicense($file);
+
+                if (UnityLicensor::hasCredentials()) {
+                    $licensor = new UnityLicensor();
+                    $file = $licensor->sign($file);
+                    return $this->useLicenseFile($file);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public function createLicenseFile(): ?string {
         $log = $this->execute(false, self::ARGUMENT_LICENSE_CREATE)->getOutput();
         $match = [];
         if (preg_match('~(Unity_v[^\s]+\.alf)~', $log, $match)) {
             $log = trim($match[1]);
             if (is_file($log)) {
-                $this->hub->prepareLicense($log);
+                return $log;
             }
         }
 
-        return false;
+        return null;
+    }
+
+    public function useLicenseFile(string $file): bool {
+        return $this->execute(false, self::ARGUMENT_LICENSE_USE, $file)->getExitCode() === 0;
     }
 
     private int $retryCount = 0;
@@ -113,12 +143,17 @@ class UnityEditor {
             $process = $this->createProcess($arguments);
             UnityHub::runUnityProcess($process, $validateExitCode);
         } catch (ExecutionError $error) {
+            if (strpos($error->getStdOut(), self::LICENSE_IS_MISSING) !== false and $this->tryToLicense()) {
+                return $this->execute($validateExitCode, ...$arguments);
+            }
+
             if ($error->getExitCode() === 199) {
                 $this->retryCount ++;
                 if ($this->retryCount < 3) {
                     return $this->execute($validateExitCode, ...$arguments);
                 }
             }
+
             throw $error;
         }
 
