@@ -265,7 +265,7 @@ class UnityHub {
     }
 
     public function installEditor(UnityEditor $editor, string ...$modules): void {
-        $arguments = $this->createEditorInstallation($editor->version, $modules, $editor->changeset);
+        $arguments = $this->createEditorInstallation($editor->version, $modules);
         $this->execute(...$arguments);
 
         foreach ($this->loadInstalledEditors(false) as $version => $path) {
@@ -306,10 +306,10 @@ class UnityHub {
         }
     }
 
-    public function createEditorInstallation(string $version, array $modules = [], ?string $changeset = null): array {
+    public function createEditorInstallation(string $version, array $modules = []): array {
         assert($version !== '');
 
-        $changeset ??= $this->inventChangeset($version);
+        $changeset = $this->inventChangeset($version);
 
         $args = [
             'install',
@@ -352,7 +352,17 @@ class UnityHub {
         return $maxVersion;
     }
 
+    private array $customChangesets = [];
+
+    public function registerChangeset(string $version, string $changeset): void {
+        $this->customChangesets[$version] = $changeset;
+    }
+
     private function inventChangeset(string $version): string {
+        if (isset($this->customChangesets[$version])) {
+            return $this->customChangesets[$version];
+        }
+
         $this->loadChangesets();
 
         if (isset($this->changesets[$version])) {
@@ -503,6 +513,7 @@ class UnityHub {
 
     public function findProject(string $projectPath, bool $includeSubdirectories = false): ?UnityProject {
         if ($info = UnityProjectInfo::find($projectPath, $includeSubdirectories)) {
+            $this->registerChangeset($info->editorVersion, $info->editorChangeset);
             return new UnityProject($info, $this);
         }
         return null;

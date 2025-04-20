@@ -18,9 +18,6 @@ class UnityEditor {
     public string $version;
 
     /** @var string */
-    public ?string $changeset = null;
-
-    /** @var string */
     public ?string $executable = null;
 
     public function isInstalled(): bool {

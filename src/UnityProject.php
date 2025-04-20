@@ -19,10 +19,7 @@ class UnityProject {
     private ?UnityEditor $editor = null;
 
     private function initEditor(): void {
-        if (! $this->editor) {
-            $this->editor = $this->hub->getEditorByVersion($this->info->editorVersion);
-            $this->editor->changeset = $this->info->editorChangeset;
-        }
+        $this->editor ??= $this->hub->getEditorByVersion($this->info->editorVersion);
     }
 
     public function __construct(UnityProjectInfo $info, UnityHub $hub) {
