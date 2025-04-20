@@ -79,16 +79,20 @@ class UnityEditor {
         return true;
     }
 
+    private const ARGUMENT_LICENSE_CREATE = '-createManualActivationFile';
+
+    private const ARGUMENT_LICENSE_USE = '-manualLicenseFile';
+
     public function license(string $projectPath, $assumeSuccess = false): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
-            $result = $this->execute(false, '-quit', '-manualLicenseFile', $licenseFile)->getExitCode();
+            $result = $this->execute(false, self::ARGUMENT_LICENSE_USE, $licenseFile)->getExitCode();
             sleep(1);
             if ($result === 0 or $assumeSuccess or $this->isLicensed($projectPath)) {
                 return true;
             }
         }
 
-        $log = $this->execute(false, '-quit', '-createManualActivationFile')->getOutput();
+        $log = $this->execute(false, self::ARGUMENT_LICENSE_CREATE)->getOutput();
         $match = [];
         if (preg_match('~(Unity_v[^\s]+\.alf)~', $log, $match)) {
             $log = trim($match[1]);
@@ -140,38 +144,49 @@ class UnityEditor {
     const ENV_UNITY_NO_GRAPHICS = 'UNITY_NO_GRAPHICS';
 
     private function createProcess(array $arguments): Process {
-        if ($endpoint = getenv(self::ENV_UNITY_ACCELERATOR_ENDPOINT)) {
-            $params = getenv(self::ENV_UNITY_ACCELERATOR_PARAMS);
-            $params = $params ? explode(' ', trim($params)) : [];
+        $isLicenseRequest = (in_array(self::ARGUMENT_LICENSE_CREATE, $arguments) or in_array(self::ARGUMENT_LICENSE_USE, $arguments));
 
+        if ($isLicenseRequest) {
             $arguments = array_merge([
-                '-EnableCacheServer',
-                '-cacheServerEndpoint',
-                $endpoint,
-                '-cacheServerEnableDownload',
-                'true',
-                '-cacheServerEnableUpload',
-                'true'
-            ], $params, $arguments);
-        }
-
-        if ((int) getenv(self::ENV_UNITY_NO_GRAPHICS)) {
-            $arguments = array_merge([
-                '-nographics'
-            ], $arguments);
-        } else {
-            $arguments = array_merge([
+                $this->executable,
+                '-batchmode',
                 '-logFile',
                 '-'
             ], $arguments);
-        }
+        } else {
+            if ($endpoint = getenv(self::ENV_UNITY_ACCELERATOR_ENDPOINT)) {
+                $params = getenv(self::ENV_UNITY_ACCELERATOR_PARAMS);
+                $params = $params ? explode(' ', trim($params)) : [];
 
-        $arguments = array_merge([
-            $this->executable,
-            '-batchmode',
-            '-accept-apiupdate',
-            '-timestamps'
-        ], $arguments);
+                $arguments = array_merge([
+                    '-EnableCacheServer',
+                    '-cacheServerEndpoint',
+                    $endpoint,
+                    '-cacheServerEnableDownload',
+                    'true',
+                    '-cacheServerEnableUpload',
+                    'true'
+                ], $params, $arguments);
+            }
+
+            if ((int) getenv(self::ENV_UNITY_NO_GRAPHICS)) {
+                $arguments = array_merge([
+                    '-nographics'
+                ], $arguments);
+            } else {
+                $arguments = array_merge([
+                    '-logFile',
+                    '-'
+                ], $arguments);
+            }
+
+            $arguments = array_merge([
+                $this->executable,
+                '-batchmode',
+                '-accept-apiupdate',
+                '-timestamps'
+            ], $arguments);
+        }
 
         if (FileSystem::commandExists('xvfb-run')) {
             $arguments = array_merge([
