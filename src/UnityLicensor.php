@@ -10,29 +10,33 @@ use Exception;
 
 class UnityLicensor {
 
-    const UNITY_INIT_LOGIN = 'https://license.unity3d.com/genesis/oauth/logout_callback';
+    private const UNITY_INIT_LOGIN = 'https://license.unity3d.com/genesis/oauth/logout_callback';
 
-    const UNITY_INIT_ACTIVATION = 'https://license.unity3d.com/manual';
+    private const UNITY_INIT_ACTIVATION = 'https://license.unity3d.com/manual';
 
-    const UNITY_LICENSE = 'https://license.unity3d.com';
+    private const UNITY_LICENSE = 'https://license.unity3d.com';
 
-    const UNITY_UPLOAD_ACTIVATION = 'https://license.unity3d.com/genesis/activation/create-transaction';
+    private const UNITY_UPLOAD_ACTIVATION = 'https://license.unity3d.com/genesis/activation/create-transaction';
 
-    const UNITY_UPDATE_ACTIVATION = 'https://license.unity3d.com/genesis/activation/update-transaction';
+    private const UNITY_UPDATE_ACTIVATION = 'https://license.unity3d.com/genesis/activation/update-transaction';
 
-    const UNITY_DOWNLOAD_ACTIVATION = 'https://license.unity3d.com/genesis/activation/download-license';
+    private const UNITY_DOWNLOAD_ACTIVATION = 'https://license.unity3d.com/genesis/activation/download-license';
 
-    const UNITY_NEW_SERIAL = 'https://license.unity3d.com/manual/serial/new';
+    private const UNITY_NEW_SERIAL = 'https://license.unity3d.com/manual/serial/new';
 
-    const UNITY_FINALIZE = 'https://license.unity3d.com/manual/finalize';
+    private const UNITY_FINALIZE = 'https://license.unity3d.com/manual/finalize';
 
-    const UNITY_LOGIN = 'https://id.unity.com';
+    private const UNITY_LOGIN = 'https://id.unity.com';
 
-    const UNITY_ACCOUNT = 'https://id.unity.com/en/account/edit';
+    private const UNITY_ACCOUNT = 'https://id.unity.com/en/account/edit';
 
-    private static string $userMail = 'info.slothsoft@gmail.com';
+    public const ENV_UNITY_LICENSE_EMAIL = 'UNITY_LICENSE_EMAIL';
 
-    private static string $userPassword = 'CI4life!';
+    public const ENV_UNITY_LICENSE_PASSWORD = 'UNITY_LICENSE_PASSWORD';
+
+    private string $userMail;
+
+    private string $userPassword;
 
     private HttpBrowser $browser;
 
@@ -50,6 +54,16 @@ class UnityLicensor {
         $this->browser = new HttpBrowser();
         $this->cookies = $this->browser->getCookieJar();
         $this->client = HttpClient::create();
+
+        $this->userMail = (string) getenv(self::ENV_UNITY_LICENSE_EMAIL);
+        if ($this->userMail === '') {
+            throw new Exception(self::class . ' requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '" to be set.');
+        }
+
+        $this->userPassword = (string) getenv(self::ENV_UNITY_LICENSE_PASSWORD);
+        if ($this->userPassword === '') {
+            throw new Exception(self::class . ' requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '" to be set.');
+        }
     }
 
     public function sign(string $alfFile): string {
@@ -84,8 +98,8 @@ class UnityLicensor {
         $form = $crawler->selectButton('commit')->form();
         $form->disableValidation();
         $crawler = $this->browser->submit($form, [
-            'conversations_create_session_form[email]' => self::$userMail,
-            'conversations_create_session_form[password]' => self::$userPassword,
+            'conversations_create_session_form[email]' => $this->userMail,
+            'conversations_create_session_form[password]' => $this->userPassword,
             'conversations_create_session_form[remember_me]' => true
         ]);
 
@@ -102,7 +116,7 @@ class UnityLicensor {
         $this->activationCookie = $this->getUploadCookies();
 
         if ($crawler->getUri() !== self::UNITY_INIT_ACTIVATION) {
-            throw new Exception(sprintf('Failed to login using email "%s"', self::$userMail));
+            throw new Exception(sprintf('Failed to login using email "%s"', $this->userMail));
         }
     }
 

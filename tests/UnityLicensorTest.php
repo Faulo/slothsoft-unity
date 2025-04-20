@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
+use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
 use DOMDocument;
 use Slothsoft\Core\DOMHelper;
@@ -19,9 +20,9 @@ class UnityLicensorTest extends TestCase {
         $this->assertTrue(class_exists(UnityLicensor::class), "Failed to load class 'Slothsoft\Unity\UnityLicensor'!");
     }
 
-    const EDITOR_VERSION = '2021.2.7f1';
+    private const EDITOR_VERSION = '2021.2.7f1';
 
-    const EDITOR_CHANGESET = '6bd9e232123f';
+    private const EDITOR_CHANGESET = '6bd9e232123f';
 
     private function initEditor(): ?UnityEditor {
         $hub = UnityHub::getInstance();
@@ -41,25 +42,47 @@ class UnityLicensorTest extends TestCase {
         return $editor;
     }
 
+    public function testErrorWithoutUser() {
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
+        $this->expectErrorMessage('UnityLicensor requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '" to be set.');
+        new UnityLicensor();
+    }
+
+    public function testErrorWithoutPassword() {
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
+        $this->expectErrorMessage('UnityLicensor requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '" to be set.');
+        new UnityLicensor();
+    }
+
     public function testSign() {
-        if ($editor = $this->initEditor()) {
-            $log = $editor->execute(false, '-createManualActivationFile')->getOutput();
-
-            $match = [];
-            if (preg_match('~(Unity_v[^\s]+\.alf)~', $log, $match) and $file = trim($match[1]) and is_file($file)) {
-                $sut = new UnityLicensor();
-                $file = $sut->sign($file);
-                $this->assertFileExists($file, 'Failed to create a signed license file.');
-                $document = DOMHelper::loadDocument($file);
-                $this->assertInstanceOf(DOMDocument::class, $document);
-                $signatures = $document->getElementsByTagNameNS('http://www.w3.org/2000/09/xmldsig#', 'Signature');
-                $this->assertNotNull($signatures->item(0), 'Alleged ulf file is missing the <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"> element.');
-
-                $result = $editor->execute(false, '-manualLicenseFile', $file)->getExitCode();
-                $this->assertEquals(0, $result, "Failed to activate via -manualLicenseFile '$file'!");
-            } else {
-                $this->markTestSkipped('Failed to create the license activation file.');
+        if (is_file('.env.local')) {
+            foreach (Dotenv::createImmutable(getcwd(), '.env.local')->load() as $key => $value) {
+                putenv("$key=$value");
             }
+
+            if ($editor = $this->initEditor()) {
+                $log = $editor->execute(false, '-createManualActivationFile')->getOutput();
+
+                $match = [];
+                if (preg_match('~(Unity_v[^\s]+\.alf)~', $log, $match) and $file = trim($match[1]) and is_file($file)) {
+                    $sut = new UnityLicensor();
+                    $file = $sut->sign($file);
+                    $this->assertFileExists($file, 'Failed to create a signed license file.');
+                    $document = DOMHelper::loadDocument($file);
+                    $this->assertInstanceOf(DOMDocument::class, $document);
+                    $signatures = $document->getElementsByTagNameNS('http://www.w3.org/2000/09/xmldsig#', 'Signature');
+                    $this->assertNotNull($signatures->item(0), 'Alleged ulf file is missing the <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"> element.');
+
+                    $result = $editor->execute(false, '-manualLicenseFile', $file)->getExitCode();
+                    $this->assertEquals(0, $result, "Failed to activate via -manualLicenseFile '$file'!");
+                } else {
+                    $this->markTestSkipped('Failed to create the license activation file.');
+                }
+            }
+        } else {
+            $this->markTestSkipped('Missing unity login file ".env.local".');
         }
     }
 }
