@@ -87,7 +87,7 @@ class UnityLicensor {
             trigger_error(sprintf('Attempting to sign license file "%s"...', $alfFile), E_USER_NOTICE);
         }
 
-        assert(is_readable($alfFile));
+        assert(is_file($alfFile));
 
         $this->alfFile = $alfFile;
 
@@ -143,7 +143,7 @@ class UnityLicensor {
                         break;
                     }
 
-                    sleep($i);
+                    sleep(1);
                 }
 
                 if ($code) {

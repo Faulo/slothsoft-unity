@@ -109,7 +109,7 @@ class UnityEditor {
                 if (UnityLicensor::hasCredentials()) {
                     $licensor = new UnityLicensor();
                     $file = $licensor->sign($file);
-					$this->hub->prepareLicense($file);
+                    $this->hub->prepareLicense($file);
                     return $this->useLicenseFile($file);
                 }
             }
@@ -124,7 +124,7 @@ class UnityEditor {
         if (preg_match('~(Unity_v[^\s]+\.alf)~', $log, $match)) {
             $log = trim($match[1]);
             if (is_file($log)) {
-                return $log;
+                return realpath($log);
             }
         }
 
