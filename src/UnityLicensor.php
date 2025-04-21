@@ -120,7 +120,8 @@ class UnityLicensor {
         $this->activationCookie = $this->getUploadCookies();
 
         if ($crawler->getUri() !== self::UNITY_INIT_ACTIVATION) {
-            throw new Exception(sprintf('Failed to login using email "%s"', $this->userMail));
+			trigger_error(sprintf('Failed to login using email "%s" (ended up in "%s" with cookie "%s")', $this->userMail, $crawler->getUri(), $this->activationCookie), E_USER_WARNING);
+			$this->log();
         }
     }
 
