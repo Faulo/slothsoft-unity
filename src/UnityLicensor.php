@@ -112,13 +112,7 @@ class UnityLicensor {
     const UNITY_2FA_PATTERN = '/\b(\d{6})\b/';
 
     private function login(): void {
-        trigger_error(sprintf('Attempting to request "%s"...', self::UNITY_INIT_ACTIVATION), E_USER_NOTICE);
-
-        var_dump(file_get_contents(self::UNITY_INIT_ACTIVATION));
-
         $this->browser->request('GET', self::UNITY_INIT_ACTIVATION);
-
-        var_dump($this->browser->getInternalResponse());
 
         $this->log();
 
