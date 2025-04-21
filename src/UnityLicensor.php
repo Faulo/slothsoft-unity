@@ -115,7 +115,7 @@ class UnityLicensor {
             'conversations_create_session_form[remember_me]' => true
         ]);
 
-        // $this->log();
+        $this->log();
 
         $input = $crawler->filterXPath('.//input[@name="conversations_email_tfa_required_form[code]"]');
 
@@ -139,7 +139,7 @@ class UnityLicensor {
                         'conversations_email_tfa_required_form[code]' => $code
                     ]);
 
-                    // $this->log();
+                    $this->log();
                 } else {
                     trigger_error(sprintf('Unity sent a 2FA code to "%s", but we did not find it there using the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_PSW, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
                 }
@@ -155,7 +155,7 @@ class UnityLicensor {
 
         $crawler = $this->browser->click($redirect);
 
-        // $this->log();
+        $this->log();
 
         $this->activationCookie = $this->getUploadCookies();
 
