@@ -78,13 +78,13 @@ class UnityLicensor {
         }
 		
 		if (self::isLogging()) {
-			trigger_error(sprintf('Setting up licensor with email "%s"', $this->userMail, E_USER_NOTICE);
+			trigger_error(sprintf('Licensor set up with email "%s".', $this->userMail), E_USER_NOTICE);
 		}
     }
 
     public function sign(string $alfFile): string {
 		if (self::isLogging()) {
-			trigger_error(sprintf('Attempting to sign license file "%s"...', $alfFile, E_USER_NOTICE);
+			trigger_error(sprintf('Attempting to sign license file "%s"...', $alfFile), E_USER_NOTICE);
 		}
 		
         assert(is_readable($alfFile));
