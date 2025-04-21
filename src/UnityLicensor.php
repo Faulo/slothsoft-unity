@@ -140,6 +140,12 @@ class UnityLicensor {
 
         if ($input->count() > 0) {
             if (MailboxAccess::hasCredentials()) {
+                if ($crawler->filterXPath('.//*[@id="alert-tfa-expired"]')->count() > 0) {
+                    $redirect = $crawler->filterXPath('.//a[. = "Reload page"]')->link();
+                    $crawler = $this->browser->click($redirect);
+                    $this->log();
+                }
+
                 $code = null;
 
                 $mailbox = new MailboxAccess();
@@ -148,7 +154,7 @@ class UnityLicensor {
                         break;
                     }
 
-                    sleep($i);
+                    sleep(1);
                 }
 
                 if ($code) {
@@ -160,17 +166,14 @@ class UnityLicensor {
 
                     $this->log();
                 } else {
-                    trigger_error(sprintf('Unity sent a 2FA code to "%s", but we did not find it there using the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_PSW, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
+                    trigger_error(sprintf('Unity sent a 2FA code to "%s", but we did not find it there using the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
                 }
             } else {
-                trigger_error(sprintf('Unity sent a 2FA code to "%s", but mail access has not been granted via the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_PSW, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
-                $this->log();
+                trigger_error(sprintf('Unity sent a 2FA code to "%s", but mail access has not been granted via the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
             }
         }
 
-        $redirect = $crawler->filterXPath('.//a')
-            ->first()
-            ->link();
+        $redirect = $crawler->filterXPath('.//a')->link();
 
         $crawler = $this->browser->click($redirect);
 
@@ -180,7 +183,6 @@ class UnityLicensor {
 
         if ($crawler->getUri() !== self::UNITY_INIT_ACTIVATION) {
             trigger_error(sprintf('Failed to login using email "%s" (ended up in "%s" with cookie "%s")', $this->userMail, $crawler->getUri(), $this->activationCookie), E_USER_WARNING);
-            $this->log();
         }
     }
 
@@ -268,13 +270,14 @@ class UnityLicensor {
     }
 
     private function log(): void {
-        if (! self::isLogging()) {
-            return;
-        }
-
+        // we need to retrieve the response here to avoid the lazy-loading
         $crawler = $this->browser->getCrawler();
         $response = $this->browser->getResponse();
         $url = $crawler->getUri();
+
+        if (! self::isLogging()) {
+            return;
+        }
 
         echo PHP_EOL;
         echo 'URL: ' . $url . PHP_EOL;
