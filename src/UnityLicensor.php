@@ -65,7 +65,9 @@ class UnityLicensor {
     public function __construct(?string $userMail = null, ?string $userPassword = null) {
         $this->client = HttpClient::create([
             'timeout' => 30,
-            'max_duration' => 30
+            'max_duration' => 30,
+            'verify_peer' => false,
+            'verify_host' => false
         ]);
         $this->browser = new HttpBrowser($this->client);
         $this->cookies = $this->browser->getCookieJar();
