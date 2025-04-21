@@ -6,6 +6,8 @@ use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use DateInterval;
+use DateTimeImmutable;
 use Exception;
 
 class UnityLicensor {
@@ -86,6 +88,10 @@ class UnityLicensor {
         return $this->ulfFile;
     }
 
+    const UNITY_EMAIL = 'no-reply@unity3d.com';
+
+    const UNITY_2FA_PATTERN = '/\b(\d{6})\b/';
+
     private function login(): void {
         $this->browser->request('GET', self::UNITY_INIT_ACTIVATION);
 
@@ -99,6 +105,8 @@ class UnityLicensor {
 
         // $this->log();
 
+        $startTime = new DateTimeImmutable();
+
         $form = $crawler->selectButton('commit')->form();
         $form->disableValidation();
         $crawler = $this->browser->submit($form, [
@@ -108,6 +116,38 @@ class UnityLicensor {
         ]);
 
         // $this->log();
+
+        $input = $crawler->filterXPath('.//input[@name="conversations_email_tfa_required_form[code]"]');
+
+        if ($input->count() > 0) {
+            if (MailboxAccess::hasCredentials()) {
+                $code = null;
+
+                $mailbox = new MailboxAccess();
+                for ($i = 0; $i < 30; $i ++) {
+                    if ($code = $mailbox->retrieveLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('P10M'), self::UNITY_2FA_PATTERN)) {
+                        break;
+                    }
+
+                    sleep($i);
+                }
+
+                if ($code) {
+                    $form = $input->form();
+                    $form->disableValidation();
+                    $crawler = $this->browser->submit($form, [
+                        'conversations_email_tfa_required_form[code]' => $code
+                    ]);
+
+                    // $this->log();
+                } else {
+                    trigger_error(sprintf('Unity sent a 2FA code to "%s", but we did not find it there using the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_PSW, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
+                }
+            } else {
+                trigger_error(sprintf('Unity sent a 2FA code to "%s", but mail access has not been granted via the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_PSW, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
+                $this->log();
+            }
+        }
 
         $redirect = $crawler->filterXPath('.//a')
             ->first()
