@@ -36,9 +36,15 @@ class UnityLicensor {
 
     public const ENV_UNITY_LICENSE_PASSWORD = 'UNITY_CREDENTIALS_PSW';
 
+    public const ENV_UNITY_LICENSE_LOGGING = 'UNITY_CREDENTIALS_LOGGING';
+
     public static function hasCredentials(): bool {
         return getenv(self::ENV_UNITY_LICENSE_EMAIL) and getenv(self::ENV_UNITY_LICENSE_PASSWORD);
     }
+	
+	private static function isLogging() : bool {
+		return (int) getenv(self::ENV_UNITY_LICENSE_LOGGING);
+	}
 
     private string $userMail;
 
@@ -70,9 +76,17 @@ class UnityLicensor {
         if ($this->userPassword === '') {
             throw new Exception(self::class . ' requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '" to be set.');
         }
+		
+		if (self::isLogging()) {
+			trigger_error(sprintf('Setting up licensor with email "%s"', $this->userMail, E_USER_NOTICE);
+		}
     }
 
     public function sign(string $alfFile): string {
+		if (self::isLogging()) {
+			trigger_error(sprintf('Attempting to sign license file "%s"...', $alfFile, E_USER_NOTICE);
+		}
+		
         assert(is_readable($alfFile));
 
         $this->alfFile = $alfFile;
@@ -249,6 +263,10 @@ class UnityLicensor {
     }
 
     private function log(): void {
+		if (!self::isLogging()) {
+			return;
+		}
+		
         $crawler = $this->browser->getCrawler();
         $response = $this->browser->getResponse();
         $url = $crawler->getUri();
