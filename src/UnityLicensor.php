@@ -68,7 +68,7 @@ class UnityLicensor {
             'max_duration' => 30,
             'verify_peer' => false,
             'verify_host' => false
-        ]);
+        ], 100);
         $this->browser = new HttpBrowser($this->client);
         $this->cookies = $this->browser->getCookieJar();
 
