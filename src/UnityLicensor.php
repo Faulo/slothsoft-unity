@@ -266,6 +266,7 @@ class UnityLicensor {
         }
         echo '-- Response Body --' . PHP_EOL;
         echo $response->getContent() . PHP_EOL . PHP_EOL;
+		flush();
     }
 }
 
