@@ -95,7 +95,7 @@ class UnityLicensor {
     private function login(): void {
         $this->browser->request('GET', self::UNITY_INIT_ACTIVATION);
 
-        // $this->log();
+        $this->log();
 
         $url = self::UNITY_INIT_LOGIN . '?' . http_build_query([
             'lastPage' => '/manual'
@@ -103,7 +103,7 @@ class UnityLicensor {
 
         $crawler = $this->browser->request('GET', $url);
 
-        // $this->log();
+        $this->log();
 
         $startTime = new DateTimeImmutable();
 

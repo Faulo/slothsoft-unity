@@ -109,6 +109,7 @@ class UnityEditor {
                 if (UnityLicensor::hasCredentials()) {
                     $licensor = new UnityLicensor();
                     $file = $licensor->sign($file);
+					$this->hub->prepareLicense($file);
                     return $this->useLicenseFile($file);
                 }
             }
