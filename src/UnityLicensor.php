@@ -136,20 +136,25 @@ class UnityLicensor {
 
         $this->log();
 
-        if ($crawler->filterXPath('.//*[@id="alert-tfa-expired"]')->count() > 0) {
-            if (self::isLogging()) {
-                trigger_error(sprintf('Reloading 2FA page "%s" to send code.', $crawler->getUri()), E_USER_NOTICE);
-            }
-
-            $crawler = $this->browser->request('GET', $crawler->getUri());
-
-            $this->log();
-        }
-
         $input = $crawler->filterXPath('.//input[@name="conversations_email_tfa_required_form[code]"]');
 
         if ($input->count() > 0) {
             if (MailboxAccess::hasCredentials()) {
+                if ($crawler->filterXPath('.//*[@id="alert-tfa-expired"]')->count() > 0) {
+                    if (self::isLogging()) {
+                        trigger_error(sprintf('Reloading 2FA page "%s" to send code.', $crawler->getUri()), E_USER_NOTICE);
+                    }
+
+                    $form = $input->form();
+                    $form->disableValidation();
+                    $crawler = $this->browser->submit($form, [
+                        'conversations_email_tfa_required_form[resend]' => 'Re-send code'
+                    ]);
+                    $this->log();
+
+                    $input = $crawler->filterXPath('.//input[@name="conversations_email_tfa_required_form[code]"]');
+                }
+
                 $code = null;
 
                 $mailbox = new MailboxAccess();
