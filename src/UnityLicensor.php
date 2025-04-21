@@ -63,9 +63,13 @@ class UnityLicensor {
     private string $ulfFile = '';
 
     public function __construct(?string $userMail = null, ?string $userPassword = null) {
-        $this->browser = new HttpBrowser();
+        $this->client = HttpClient::create([
+            'timeout' => 30,
+            'max_duration' => 30,
+            'connect_timeout' => 10
+        ]);
+        $this->browser = new HttpBrowser($this->client);
         $this->cookies = $this->browser->getCookieJar();
-        $this->client = HttpClient::create();
 
         $this->userMail = $userMail ?? (string) getenv(self::ENV_UNITY_LICENSE_EMAIL);
         if ($this->userMail === '') {
@@ -143,7 +147,7 @@ class UnityLicensor {
                         break;
                     }
 
-                    sleep(1);
+                    sleep($i);
                 }
 
                 if ($code) {
