@@ -114,8 +114,7 @@ class UnityLicensor {
 
         $this->browser->request('GET', self::UNITY_INIT_ACTIVATION);
 
-        var_dump($this->browser->getRequest()->getUri());
-        var_dump($this->browser->getResponse()->getHeaders());
+        var_dump($this->browser->getInternalResponse());
 
         $this->log();
 
