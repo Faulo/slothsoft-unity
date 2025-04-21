@@ -116,7 +116,7 @@
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/php-imap/php-imap/src">
+	<buildpathentry kind="src" path="vendor/php-imap/php-imap/src/PhpImap">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
