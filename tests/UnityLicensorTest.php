@@ -56,6 +56,18 @@ class UnityLicensorTest extends TestCase {
         new UnityLicensor();
     }
 
+    public function testNoErrorWithBothAsParam() {
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
+        new UnityLicensor('test', 'test');
+    }
+
+    public function testNoErrorWithBothAsEnv() {
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
+        putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
+        new UnityLicensor();
+    }
+
     public function testHasCredentialsIsFalseWithoutUser() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
@@ -76,13 +88,11 @@ class UnityLicensorTest extends TestCase {
 
     public function testSign() {
         if (is_file('.env.local')) {
-            foreach (Dotenv::createImmutable(getcwd(), '.env.local')->load() as $key => $value) {
-                putenv("$key=$value");
-            }
+            Dotenv::createImmutable(getcwd(), '.env.local')->load();
 
             if ($editor = $this->initEditor()) {
                 if ($file = $editor->createLicenseFile()) {
-                    $sut = new UnityLicensor();
+                    $sut = new UnityLicensor($_ENV[UnityLicensor::ENV_UNITY_LICENSE_EMAIL], $_ENV[UnityLicensor::ENV_UNITY_LICENSE_PASSWORD]);
                     $file = $sut->sign($file);
                     $this->assertFileExists($file, 'Failed to create a signed license file.');
                     $document = DOMHelper::loadDocument($file);

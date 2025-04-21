@@ -54,17 +54,17 @@ class UnityLicensor {
 
     private string $ulfFile = '';
 
-    public function __construct() {
+    public function __construct(?string $userMail = null, ?string $userPassword = null) {
         $this->browser = new HttpBrowser();
         $this->cookies = $this->browser->getCookieJar();
         $this->client = HttpClient::create();
 
-        $this->userMail = (string) getenv(self::ENV_UNITY_LICENSE_EMAIL);
+        $this->userMail = $userMail ?? (string) getenv(self::ENV_UNITY_LICENSE_EMAIL);
         if ($this->userMail === '') {
             throw new Exception(self::class . ' requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '" to be set.');
         }
 
-        $this->userPassword = (string) getenv(self::ENV_UNITY_LICENSE_PASSWORD);
+        $this->userPassword = $userPassword ?? (string) getenv(self::ENV_UNITY_LICENSE_PASSWORD);
         if ($this->userPassword === '') {
             throw new Exception(self::class . ' requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '" to be set.');
         }
@@ -120,8 +120,8 @@ class UnityLicensor {
         $this->activationCookie = $this->getUploadCookies();
 
         if ($crawler->getUri() !== self::UNITY_INIT_ACTIVATION) {
-			trigger_error(sprintf('Failed to login using email "%s" (ended up in "%s" with cookie "%s")', $this->userMail, $crawler->getUri(), $this->activationCookie), E_USER_WARNING);
-			$this->log();
+            trigger_error(sprintf('Failed to login using email "%s" (ended up in "%s" with cookie "%s")', $this->userMail, $crawler->getUri(), $this->activationCookie), E_USER_WARNING);
+            $this->log();
         }
     }
 

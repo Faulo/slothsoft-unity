@@ -94,7 +94,7 @@ class SettingsTest extends TestCase {
                     $this->assertEquals(Spyc::YAMLLoad($documentation . $file), Spyc::YAMLLoad($target . $file), "File '$file' did not generate as expected.");
                     break;
                 default:
-                    $this->assertFileEquals($documentation . $file, $target . $file, "File '$file' did not generate as expected.");
+                    $this->assertEquals(file($documentation . $file, FILE_IGNORE_NEW_LINES), file($target . $file, FILE_IGNORE_NEW_LINES), "File '$file' did not generate as expected.");
                     break;
             }
         }

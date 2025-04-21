@@ -3,6 +3,8 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use PhpImap\Mailbox;
+use DateInterval;
+use DateTimeImmutable;
 use Exception;
 
 class MailboxAccess {
@@ -53,17 +55,23 @@ class MailboxAccess {
         $this->mailbox = new Mailbox($userServer, $userMail, $userPassword);
     }
 
-    public function retrieveLatestBy(string $from, string $pattern): ?string {
-        $search = sprintf('FROM "%s" SINCE "%s"', $from, date('d-M-Y'));
+    public function retrieveLatestBy(string $from, DateTimeImmutable $since, DateInterval $range, string $pattern): ?string {
+        $search = sprintf('FROM "%s" SINCE "%s"', $from, $since->format('d-M-Y'));
 
         $mailIds = $this->mailbox->searchMailbox($search);
+
+        $end = $since->add($range);
 
         foreach (array_reverse($mailIds) as $mailId) {
             $mail = $this->mailbox->getMail($mailId, false);
 
-            $match = [];
-            if (preg_match($pattern, $mail->textPlain, $match)) {
-                return $match[1];
+            $mailDate = new DateTimeImmutable($mail->date);
+
+            if ($mailDate >= $since and $mailDate <= $end) {
+                $match = [];
+                if (preg_match($pattern, $mail->textPlain, $match)) {
+                    return $match[1];
+                }
             }
         }
 
