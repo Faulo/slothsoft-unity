@@ -30,9 +30,9 @@ class UnityLicensor {
 
     private const UNITY_ACCOUNT = 'https://id.unity.com/en/account/edit';
 
-    public const ENV_UNITY_LICENSE_EMAIL = 'UNITY_LICENSE_EMAIL';
+    public const ENV_UNITY_LICENSE_EMAIL = 'UNITY_CREDENTIALS_USR';
 
-    public const ENV_UNITY_LICENSE_PASSWORD = 'UNITY_LICENSE_PASSWORD';
+    public const ENV_UNITY_LICENSE_PASSWORD = 'UNITY_CREDENTIALS_PSW';
 
     public static function hasCredentials(): bool {
         return getenv(self::ENV_UNITY_LICENSE_EMAIL) and getenv(self::ENV_UNITY_LICENSE_PASSWORD);
