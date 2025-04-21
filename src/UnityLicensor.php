@@ -112,9 +112,9 @@ class UnityLicensor {
     private function login(): void {
         trigger_error(sprintf('Attempting to request "%s"...', self::UNITY_INIT_ACTIVATION), E_USER_NOTICE);
 
-        $this->browser->request('GET', self::UNITY_INIT_ACTIVATION);
+        $crawler = $this->browser->request('GET', self::UNITY_INIT_ACTIVATION);
 
-        trigger_error(sprintf('Done requesting "%s".', self::UNITY_INIT_ACTIVATION), E_USER_NOTICE);
+        echo $crawler->outerHtml();
 
         $this->log();
 
