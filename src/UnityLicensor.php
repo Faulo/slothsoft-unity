@@ -145,14 +145,13 @@ class UnityLicensor {
                         trigger_error(sprintf('Reloading 2FA page "%s" to send code.', $crawler->getUri()), E_USER_NOTICE);
                     }
 
-                    $form = $input->form();
+                    $form = $crawler->form();
                     $form->disableValidation();
                     $crawler = $this->browser->submit($form, [
                         'conversations_email_tfa_required_form[resend]' => 'Re-send code'
                     ]);
-                    $this->log();
 
-                    $input = $crawler->filterXPath('.//input[@name="conversations_email_tfa_required_form[code]"]');
+                    $this->log();
                 }
 
                 $code = null;
@@ -167,7 +166,7 @@ class UnityLicensor {
                 }
 
                 if ($code) {
-                    $form = $input->form();
+                    $form = $crawler->form();
                     $form->disableValidation();
                     $crawler = $this->browser->submit($form, [
                         'conversations_email_tfa_required_form[code]' => $code
