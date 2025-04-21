@@ -125,7 +125,7 @@ class UnityLicensor {
 
                 $mailbox = new MailboxAccess();
                 for ($i = 0; $i < 30; $i ++) {
-                    if ($code = $mailbox->retrieveLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('P10M'), self::UNITY_2FA_PATTERN)) {
+                    if ($code = $mailbox->retrieveLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('PT10M'), self::UNITY_2FA_PATTERN)) {
                         break;
                     }
 
