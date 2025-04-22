@@ -136,12 +136,6 @@ class UnityLicensor {
 
         $this->log();
 
-        $redirect = $crawler->selectLink('Reload page');
-        if ($redirect->count() > 0) {
-            $crawler = $this->browser->click($redirect->link());
-            $this->log();
-        }
-
         $form = $crawler->filterXPath('.//form[.//input/@name = "conversations_email_tfa_required_form[code]"]');
 
         if ($form->count() > 0) {
@@ -156,7 +150,9 @@ class UnityLicensor {
 
                     $form = $input->form();
                     $form->disableValidation();
-                    $crawler = $this->browser->submit($form);
+                    $crawler = $this->browser->submit($form, [
+                        'conversations_email_tfa_required_form[resend]' => 'Re-send code'
+                    ]);
 
                     $this->log();
 
