@@ -4,7 +4,6 @@ namespace Slothsoft\Unity;
 
 use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\BrowserKit\HttpBrowser;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use DateInterval;
@@ -146,14 +145,12 @@ class UnityLicensor {
                         trigger_error(sprintf('Reloading 2FA page "%s" to send code.', $crawler->getUri()), E_USER_NOTICE);
                     }
 
-                    foreach ($form->getNode(0)->getElementsByTagName('input') as $input) {
-                        $input->removeAttribute('disabled');
-                        trigger_error($input->ownerDocument->saveXML($input), E_USER_NOTICE);
-                    }
+                    $input = $form->selectButton('conversations_email_tfa_required_form[resend]');
+                    $input->getNode(0)->removeAttribute('disabled');
 
-                    $form = $form->form();
+                    $form = $input->form();
                     $form->disableValidation();
-                    $crawler = $this->browser->submit($form);
+                    $crawler = $this->browser->submit($input);
 
                     $this->log();
 
@@ -172,7 +169,7 @@ class UnityLicensor {
                 }
 
                 if ($code) {
-                    $form = $form->form();
+                    $form = $form->selectButton('commit')->form();
                     $form->disableValidation();
                     $crawler = $this->browser->submit($form, [
                         'conversations_email_tfa_required_form[code]' => $code
