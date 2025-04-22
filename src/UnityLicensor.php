@@ -138,7 +138,7 @@ class UnityLicensor {
 
         $redirect = $crawler->selectLink('Reload page');
         if ($redirect->count() > 0) {
-            $crawler = $this->browser->click($redirect->links());
+            $crawler = $this->browser->click($redirect->link());
             $this->log();
         }
 
