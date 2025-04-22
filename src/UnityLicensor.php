@@ -146,13 +146,10 @@ class UnityLicensor {
                         trigger_error(sprintf('Reloading 2FA page "%s" to send code.', $crawler->getUri()), E_USER_NOTICE);
                     }
 
-                    $form->filterXPath('.//input[@name = "conversations_email_tfa_required_form[resend]"]')->each(function (Crawler $inputs) {
-                        foreach ($inputs as $input) {
-                            $input->removeAttribute('disabled');
-                        }
-                    });
-
-                    trigger_error($form->outerHtml(), E_USER_NOTICE);
+                    foreach ($form->getNode(0)->getElementsByTagName('input') as $input) {
+                        $input->removeAttribute('disabled');
+                        trigger_error($input->ownerDocument->saveXML($input), E_USER_NOTICE);
+                    }
 
                     $form = $form->form();
                     $form->disableValidation();
