@@ -150,7 +150,7 @@ class UnityLicensor {
 
                     $form = $input->form();
                     $form->disableValidation();
-                    $crawler = $this->browser->submit($input);
+                    $crawler = $this->browser->submit($form);
 
                     $this->log();
 
