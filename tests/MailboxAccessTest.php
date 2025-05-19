@@ -24,7 +24,7 @@ class MailboxAccessTest extends TestCase {
         if (is_file('.env.local')) {
             Dotenv::createImmutable(getcwd(), '.env.local')->load();
 
-            if ($expected = $_ENV['EMAIL_CREDENTIALS_CODE']) {
+            if ($expected = $_ENV['EMAIL_CREDENTIALS_CODE'] ?? null) {
                 $sut = new MailboxAccess($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW]);
                 $this->assertEquals($expected, $sut->retrieveLatestBy('no-reply@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT1000M'), '/\b(\d{6})\b/'));
             } else {
@@ -39,8 +39,12 @@ class MailboxAccessTest extends TestCase {
         if (is_file('.env.local')) {
             Dotenv::createImmutable(getcwd(), '.env.local')->load();
 
-            $sut = new MailboxAccess($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW]);
-            $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT1000M'), '/\b(\d{6})\b/'));
+            if (isset($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW])) {
+                $sut = new MailboxAccess($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW]);
+                $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT1000M'), '/\b(\d{6})\b/'));
+            } else {
+                $this->markTestSkipped('Missing EMAIL_CREDENTIALS_USR and/or EMAIL_CREDENTIALS_PSW in file ".env.local".');
+            }
         } else {
             $this->markTestSkipped('Missing email login file ".env.local".');
         }
@@ -50,8 +54,12 @@ class MailboxAccessTest extends TestCase {
         if (is_file('.env.local')) {
             Dotenv::createImmutable(getcwd(), '.env.local')->load();
 
-            $sut = new MailboxAccess($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW]);
-            $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT600M'), '/\b(\d{6})\b/'));
+            if (isset($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW])) {
+                $sut = new MailboxAccess($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW]);
+                $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT600M'), '/\b(\d{6})\b/'));
+            } else {
+                $this->markTestSkipped('Missing EMAIL_CREDENTIALS_USR and/or EMAIL_CREDENTIALS_PSW in file ".env.local".');
+            }
         } else {
             $this->markTestSkipped('Missing email login file ".env.local".');
         }
@@ -61,8 +69,12 @@ class MailboxAccessTest extends TestCase {
         if (is_file('.env.local')) {
             Dotenv::createImmutable(getcwd(), '.env.local')->load();
 
-            $sut = new MailboxAccess($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW]);
-            $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT1000M'), '/\b(\d{7})\b/'));
+            if (isset($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW])) {
+                $sut = new MailboxAccess($_ENV[MailboxAccess::ENV_EMAIL_USR], $_ENV[MailboxAccess::ENV_EMAIL_PSW]);
+                $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT1000M'), '/\b(\d{7})\b/'));
+            } else {
+                $this->markTestSkipped('Missing EMAIL_CREDENTIALS_USR and/or EMAIL_CREDENTIALS_PSW in file ".env.local".');
+            }
         } else {
             $this->markTestSkipped('Missing email login file ".env.local".');
         }
