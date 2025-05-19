@@ -7,6 +7,8 @@ use Slothsoft\Core\Configuration\ConfigurationField;
 
 class UnityPackage {
 
+    public const ENV_EMPTY_MANIFEST = 'UNITY_EMPTY_MANIFEST';
+
     private static function emptyManifestFile(): ConfigurationField {
         static $field;
         if ($field === null) {
@@ -20,6 +22,11 @@ class UnityPackage {
     }
 
     public static function getEmptyManifestFile(): string {
+        $file = $_ENV[self::ENV_EMPTY_MANIFEST] ?? '';
+        if ($file and is_file($file)) {
+            return $file;
+        }
+
         return self::emptyManifestFile()->getValue();
     }
 
