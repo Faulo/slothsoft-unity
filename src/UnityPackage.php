@@ -22,7 +22,7 @@ class UnityPackage {
     }
 
     public static function getEmptyManifestFile(): string {
-        $file = $_ENV[self::ENV_EMPTY_MANIFEST] ?? '';
+        $file = getenv(self::ENV_EMPTY_MANIFEST);
         if ($file and is_file($file)) {
             return $file;
         }
