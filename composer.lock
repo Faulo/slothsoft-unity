@@ -954,16 +954,16 @@
         },
         {
             "name": "php-ds/php-ds",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-ds/polyfill.git",
-                "reference": "ef42c47a90d7b0c5e66078cff1ccfc2c6490df9c"
+                "reference": "017fb5cdfa52a1f13126c94987b04b884c44f9cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-ds/polyfill/zipball/ef42c47a90d7b0c5e66078cff1ccfc2c6490df9c",
-                "reference": "ef42c47a90d7b0c5e66078cff1ccfc2c6490df9c",
+                "url": "https://api.github.com/repos/php-ds/polyfill/zipball/017fb5cdfa52a1f13126c94987b04b884c44f9cd",
+                "reference": "017fb5cdfa52a1f13126c94987b04b884c44f9cd",
                 "shasum": ""
             },
             "require": {
@@ -1004,9 +1004,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-ds/polyfill/issues",
-                "source": "https://github.com/php-ds/polyfill/tree/v1.6.0"
+                "source": "https://github.com/php-ds/polyfill/tree/v1.7.0"
             },
-            "time": "2025-02-27T06:30:24+00:00"
+            "time": "2025-05-18T04:50:53+00:00"
         },
         {
             "name": "php-imap/php-imap",
