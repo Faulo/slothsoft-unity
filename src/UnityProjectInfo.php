@@ -119,11 +119,9 @@ class UnityProjectInfo {
         if (! file_exists($this->path . self::FILE_PACKAGES)) {
             return [];
         }
+
         $packages = JsonUtils::load($this->path . self::FILE_PACKAGES);
-        if (is_array($packages) and isset($packages['dependencies'])) {
-            return $packages['dependencies'];
-        }
-        throw ExecutionError::Error('AssertDependencies', "Unable to determine packages for project '$this->path'!");
+        return $packages['dependencies'] ?? [];
     }
 
     private function loadManifest(): array {

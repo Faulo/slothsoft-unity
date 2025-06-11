@@ -63,11 +63,7 @@ class UnityPackageInfo {
     }
 
     private function loadPackage(): array {
-        $package = JsonUtils::load($this->path . self::FILE_PACKAGE);
-        if (is_array($package)) {
-            return $package;
-        }
-        throw ExecutionError::Error('AssertPackageInfo', "Unable to determine packages for project '$this->path'!");
+        return JsonUtils::load($this->path . self::FILE_PACKAGE);
     }
 
     public function savePackage(): void {
