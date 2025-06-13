@@ -97,7 +97,13 @@ class UnityEditor {
 
     private bool $hasTriedToLicense = false;
 
-    private const LICENSE_IS_MISSING = 'No valid Unity Editor license found. Please activate your license.';
+    private const LICENSE_IS_MISSING_2022 = 'No valid Unity Editor license found. Please activate your license.';
+
+    private const LICENSE_IS_MISSING_6000 = 'Unity has not been activated with a valid License.';
+
+    private static function isLicenseMissing(string $stdout): bool {
+        return strpos($stdout, self::LICENSE_IS_MISSING_2022) !== false or strpos($stdout, self::LICENSE_IS_MISSING_6000) !== false;
+    }
 
     private function tryToLicense(): bool {
         if (! $this->hasTriedToLicense) {
@@ -144,7 +150,7 @@ class UnityEditor {
             $process = $this->createProcess($arguments);
             UnityHub::runUnityProcess($process, $validateExitCode);
         } catch (ExecutionError $error) {
-            if (strpos($error->getStdOut(), self::LICENSE_IS_MISSING) !== false and $this->tryToLicense()) {
+            if (self::isLicenseMissing($error->getStdOut()) and $this->tryToLicense()) {
                 return $this->execute($validateExitCode, ...$arguments);
             }
 
