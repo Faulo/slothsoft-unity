@@ -9,10 +9,7 @@ $RECYCLE.BIN/
 /vendor/
 
 # == phpDocumentor ==
-/docs/tmp/
+/docs/
 
 # == PHPUnit ==
 /.phpunit.result.cache
-
-# == slothsoft ==
-*.local
