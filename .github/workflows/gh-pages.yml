@@ -1,6 +1,8 @@
 name: GitHub Pages Documentation
 
-on: [push]
+on:
+  push:
+    branches: ["main"]
 
 # Allow GITHUB_TOKEN to deploy to GitHub Pages
 permissions:
