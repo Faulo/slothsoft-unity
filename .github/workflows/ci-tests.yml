@@ -1,4 +1,4 @@
-name: Tests
+name: Continuous Integration Tests
 
 on: [push]
 
@@ -9,23 +9,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.4", "8.0", "8.1", "8.2", "8.3"]
         composer: ["lowest", "stable"]
+        php: ["7.4", "8.0", "8.1", "8.2", "8.3"]
+        extensions: ["xsl sockets ds"]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      
+
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
           path: /tmp/composer-cache
           key: ${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}-${{ matrix.composer }}
-      
+
       - name: Install Composer
         uses: php-actions/composer@v6
         with:
           php_version: ${{ matrix.php }}
-          php_extensions: xsl sockets ds
+          php_extensions: ${{ matrix.extensions }}
           command: update
           args: --prefer-${{ matrix.composer }}
 
@@ -33,19 +34,19 @@ jobs:
         uses: php-actions/phpunit@v4
         with:
           php_version: ${{ matrix.php }}
-          php_extensions: xsl sockets ds
+          php_extensions: ${{ matrix.extensions }}
           version: 8
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml
           args: --log-junit phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
-          
+
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: results-${{ matrix.php }}-${{ matrix.composer }}
           path: phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
-  
+
   publish-results:
     name: Publish Results
     runs-on: ubuntu-latest
