@@ -88,11 +88,15 @@ class UnityLicensorTest extends TestCase {
 
     public function testSign() {
         if (is_file('.env.local')) {
-            Dotenv::createImmutable(getcwd(), '.env.local')->load();
+            $env = Dotenv::createImmutable(getcwd(), '.env.local')->load();
+            putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=' . $env[UnityLicensor::ENV_UNITY_LICENSE_EMAIL]);
+            putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=' . $env[UnityLicensor::ENV_UNITY_LICENSE_PASSWORD]);
+            putenv(MailboxAccess::ENV_EMAIL_USR . '=' . $env[MailboxAccess::ENV_EMAIL_USR]);
+            putenv(MailboxAccess::ENV_EMAIL_PSW . '=' . $env[MailboxAccess::ENV_EMAIL_PSW]);
 
             if ($editor = $this->initEditor()) {
                 if ($file = $editor->createLicenseFile()) {
-                    $sut = new UnityLicensor($_ENV[UnityLicensor::ENV_UNITY_LICENSE_EMAIL], $_ENV[UnityLicensor::ENV_UNITY_LICENSE_PASSWORD]);
+                    $sut = new UnityLicensor();
                     $file = $sut->sign($file);
                     $this->assertFileExists($file, 'Failed to create a signed license file.');
                     $document = DOMHelper::loadDocument($file);
