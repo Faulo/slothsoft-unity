@@ -13,3 +13,6 @@ $RECYCLE.BIN/
 
 # == PHPUnit ==
 /.phpunit.result.cache
+
+# == Slothsoft ==
+*.local
