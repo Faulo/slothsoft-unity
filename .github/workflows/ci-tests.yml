@@ -35,7 +35,7 @@ jobs:
         with:
           php_version: ${{ matrix.php }}
           php_extensions: ${{ matrix.extensions }}
-          version: 8
+          version: 9
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml
           args: --log-junit phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
