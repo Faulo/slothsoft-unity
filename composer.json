@@ -46,7 +46,7 @@
 	},
 	"extra" : {
 		"branch-alias" : {
-			"dev-main" : "2.18.x-dev"
+			"dev-main" : "2.19.x-dev"
 		}
 	},
 	"bin" : [
