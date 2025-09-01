@@ -20,7 +20,13 @@ class LocateHubFromWindowsRegistryTest extends TestCase {
             $this->markTestSkipped('Unity API is only available on Windows systems.');
             return;
         }
+
+        $output = [];
+        $result = - 1;
+        exec('reg query "HKEY_LOCAL_MACHINE\\SOFTWARE\\Unity Technologies\\Hub', $output, $result);
+        $unityIsInstalled = $result === 0;
+
         $locator = new LocateHubFromWindowsRegistry([]);
-        $this->assertTrue($locator->exists());
+        $this->assertEquals($unityIsInstalled, $locator->exists());
     }
 }
