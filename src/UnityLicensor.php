@@ -38,7 +38,7 @@ class UnityLicensor {
 
     public const ENV_UNITY_LICENSE_LOGGING = 'UNITY_CREDENTIALS_LOGGING';
 
-    public static function hasCredentials(): bool {
+    public static function hasCredentialsInEnvironment(): bool {
         return getenv(self::ENV_UNITY_LICENSE_EMAIL) and getenv(self::ENV_UNITY_LICENSE_PASSWORD);
     }
 
@@ -62,6 +62,8 @@ class UnityLicensor {
 
     private string $ulfFile = '';
 
+    public bool $hasCredentials = true;
+
     public function __construct(?string $userMail = null, ?string $userPassword = null) {
         $this->client = HttpClient::create([
             'timeout' => 30,
@@ -74,11 +76,13 @@ class UnityLicensor {
 
         $this->userMail = $userMail ?? (string) getenv(self::ENV_UNITY_LICENSE_EMAIL);
         if ($this->userMail === '') {
+            $this->hasCredentials = false;
             throw new Exception(self::class . ' requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '" to be set.');
         }
 
         $this->userPassword = $userPassword ?? (string) getenv(self::ENV_UNITY_LICENSE_PASSWORD);
         if ($this->userPassword === '') {
+            $this->hasCredentials = false;
             throw new Exception(self::class . ' requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '" to be set.');
         }
 

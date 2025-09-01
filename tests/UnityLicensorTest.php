@@ -45,45 +45,49 @@ class UnityLicensorTest extends TestCase {
     public function testErrorWithoutUser() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
-        $this->expectErrorMessage('UnityLicensor requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '" to be set.');
-        new UnityLicensor();
+        $this->expectExceptionMessage('UnityLicensor requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '" to be set.');
+        $sut = new UnityLicensor();
+        $this->assertFalse($sut->hasCredentials);
     }
 
     public function testErrorWithoutPassword() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
-        $this->expectErrorMessage('UnityLicensor requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '" to be set.');
-        new UnityLicensor();
+        $this->expectExceptionMessage('UnityLicensor requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '" to be set.');
+        $sut = new UnityLicensor();
+        $this->assertFalse($sut->hasCredentials);
     }
 
     public function testNoErrorWithBothAsParam() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
-        new UnityLicensor('test', 'test');
+        $sut = new UnityLicensor('test', 'test');
+        $this->assertTrue($sut->hasCredentials);
     }
 
     public function testNoErrorWithBothAsEnv() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
-        new UnityLicensor();
+        $sut = new UnityLicensor();
+        $this->assertTrue($sut->hasCredentials);
     }
 
     public function testHasCredentialsIsFalseWithoutUser() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
-        $this->assertFalse(UnityLicensor::hasCredentials());
+        $this->assertFalse(UnityLicensor::hasCredentialsInEnvironment());
     }
 
     public function testHasCredentialsIsFalseWithoutPassword() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
-        $this->assertFalse(UnityLicensor::hasCredentials());
+        $this->assertFalse(UnityLicensor::hasCredentialsInEnvironment());
     }
 
     public function testHasCredentialsIsTrueWithBoth() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
-        $this->assertTrue(UnityLicensor::hasCredentials());
+        $this->assertTrue(UnityLicensor::hasCredentialsInEnvironment());
     }
 
     public function testSign() {
