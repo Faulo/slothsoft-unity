@@ -13,8 +13,6 @@ class SteamCMD {
 
     public const STEAM_CREDENTIALS_PSW = 'STEAM_CREDENTIALS_PSW';
 
-    public const STEAM_CREDENTIALS_CODE = 'STEAM_CREDENTIALS_CODE';
-
     private const STEAMCMD_BIN = 'steamcmd';
 
     private const STEAM_EMAIL = 'noreply@steampowered.com';

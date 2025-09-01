@@ -1,0 +1,43 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Unity\MailboxAccess;
+use Slothsoft\Unity\Steam\SteamCMD;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+$_composer_autoload_path ??= __DIR__ . '/../vendor/autoload.php';
+include $_composer_autoload_path;
+
+const HELP = <<<'EOT'
+Sign in to Steam via steamcmd. Uses environment variables STEAM_CREDENTIALS_USR and STEAM_CREDENTIALS_PSW. Also uses EMAIL_CREDENTIALS_USR and EMAIL_CREDENTIALS_PSW to retrieve the Steam Guard code, if necessary.
+
+Usage:
+composer exec steam-login
+
+EOT;
+
+if ($_SERVER['argc'] !== 0) {
+    echo HELP;
+    return;
+}
+
+$user = getenv(SteamCMD::STEAM_CREDENTIALS_USR);
+$password = getenv(SteamCMD::STEAM_CREDENTIALS_PSW);
+
+if (! $user) {
+    echo HELP;
+    return;
+}
+
+$steam = new SteamCMD();
+
+if (MailboxAccess::hasCredentials()) {
+    $steam->mailbox = new MailboxAccess();
+}
+
+$isLoggedIn = $steam->login($user, $password);
+
+return $isLoggedIn ? 0 : - 1;

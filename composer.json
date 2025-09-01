@@ -52,6 +52,7 @@
 	"bin" : [
 		"scripts/autoversion",
 		"scripts/steam-buildfile",
+		"scripts/steam-login",
 		"scripts/unity-build",
 		"scripts/unity-documentation",
 		"scripts/unity-help",
