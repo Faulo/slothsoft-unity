@@ -24,8 +24,8 @@ if ($_SERVER['argc'] !== 0) {
     return;
 }
 
-$user = getenv(SteamCMD::STEAM_CREDENTIALS_USR);
-$password = getenv(SteamCMD::STEAM_CREDENTIALS_PSW);
+$user = (string) getenv(SteamCMD::STEAM_CREDENTIALS_USR);
+$password = (string) getenv(SteamCMD::STEAM_CREDENTIALS_PSW);
 
 if (! $user) {
     echo HELP;
@@ -40,4 +40,6 @@ if (MailboxAccess::hasCredentials()) {
 
 $isLoggedIn = $steam->login($user, $password);
 
-return $isLoggedIn ? 0 : - 1;
+if (! $isLoggedIn) {
+    trigger_error(sprintf("Failed to login to Steam (User: %s, Using password: %s, Mailbox access: %s)", $user, $password ? 'YES' : 'NO', $steam->mailbox ? 'YES' : 'NO'), E_USER_ERROR);
+}
