@@ -8,14 +8,14 @@ use Slothsoft\Core\FileSystem;
 use Slothsoft\Unity\MailboxAccess;
 
 /**
- * SteamcmdTest
+ * SteamCMDTest
  *
- * @see Steamcmd
+ * @see SteamCMD
  */
 class SteamCMDTest extends TestCase {
 
     public function testClassExists(): void {
-        $this->assertTrue(class_exists(Steamcmd::class), "Failed to load class 'Slothsoft\Unity\Steam\Steamcmd'!");
+        $this->assertTrue(class_exists(SteamCMD::class), "Failed to load class 'Slothsoft\Unity\Steam\SteamCMD'!");
     }
 
     public function testLoginAnonymous(): void {
