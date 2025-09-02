@@ -24,7 +24,7 @@
 		"php-imap/php-imap" : "^5.0"
 	},
 	"require-dev" : {
-		"phpunit/phpunit" : "^9.6.23"
+		"phpunit/phpunit" : "~9.6.23"
 	},
 	"autoload" : {
 		"psr-4" : {
@@ -68,5 +68,15 @@
 	"config" : {
 		"process-timeout" : 0
 	},
-	"homepage" : "http://farah.slothsoft.net/modules/unity"
+	"homepage" : "http://farah.slothsoft.net/modules/unity",
+	"archive" : {
+		"exclude" : [
+			"/.jenkins/",
+			"/docs/",
+			"/phpdoc.xml",
+			"/tests/",
+			"/test-files/",
+			"/phpunit.xml"
+		]
+	}
 }

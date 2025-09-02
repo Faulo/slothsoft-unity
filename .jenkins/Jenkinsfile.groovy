@@ -29,7 +29,7 @@ pipeline {
 
 								def report = ".reports/${version}.xml"
 
-								catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE') {
+								catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
 									callShell "composer exec phpunit -- --log-junit ${report}"
 								}
 
@@ -66,7 +66,7 @@ pipeline {
 
 								def report = ".reports/${version}.xml"
 
-								catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE') {
+								catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
 									callShell "composer exec phpunit -- --log-junit ${report}"
 								}
 
