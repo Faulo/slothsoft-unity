@@ -31,7 +31,7 @@
 			"Slothsoft\\Unity\\" : "src"
 		},
 		"files" : [
-			"scripts/bootstrap.php"
+			"src/bootstrap.php"
 		]
 	},
 	"keywords" : [

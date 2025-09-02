@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+namespace Slothsoft\Unity;
 
 use Slothsoft\Farah\Module\Module;
 use Slothsoft\Unity\UnityPackage;
