@@ -21,6 +21,7 @@ pipeline {
 
 							docker.image(image).inside {
 								callShell 'composer update --prefer-lowest'
+								callShell 'composer exec server-clean cache'
 
 								dir('.reports') {
 									deleteDir()
@@ -57,6 +58,7 @@ pipeline {
 
 							docker.image(image).inside {
 								callShell 'composer update --prefer-lowest'
+								callShell 'composer exec server-clean cache'
 
 								dir('.reports') {
 									deleteDir()
