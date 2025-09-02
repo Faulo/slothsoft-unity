@@ -68,15 +68,5 @@
 	"config" : {
 		"process-timeout" : 0
 	},
-	"homepage" : "http://farah.slothsoft.net/modules/unity",
-	"archive" : {
-		"exclude" : [
-			"/.jenkins/",
-			"/docs/",
-			"/phpdoc.xml",
-			"/tests/",
-			"/test-files/",
-			"/phpunit.xml"
-		]
-	}
+	"homepage" : "http://farah.slothsoft.net/modules/unity"
 }

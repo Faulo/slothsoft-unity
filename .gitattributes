@@ -16,3 +16,11 @@
 # == Composer ==
 composer.lock export-ignore
 composer.phar export-ignore
+
+# == DevOps ==
+/.jenkins/ export-ignore
+/docs/ export-ignore
+/phpdoc.xml export-ignore
+/tests/ export-ignore
+/test-files/ export-ignore
+/phpunit.xml export-ignore
