@@ -92,11 +92,12 @@ class UnityLicensorTest extends TestCase {
 
     public function testSign() {
         if (is_file('.env.local')) {
-            $env = Dotenv::createImmutable(getcwd(), '.env.local')->load();
-            putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=' . $env[UnityLicensor::ENV_UNITY_LICENSE_EMAIL]);
-            putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=' . $env[UnityLicensor::ENV_UNITY_LICENSE_PASSWORD]);
-            putenv(MailboxAccess::ENV_EMAIL_USR . '=' . $env[MailboxAccess::ENV_EMAIL_USR]);
-            putenv(MailboxAccess::ENV_EMAIL_PSW . '=' . $env[MailboxAccess::ENV_EMAIL_PSW]);
+            Dotenv::createImmutable(getcwd(), '.env.local')->load();
+
+            putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=' . $_ENV[UnityLicensor::ENV_UNITY_LICENSE_EMAIL]);
+            putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=' . $_ENV[UnityLicensor::ENV_UNITY_LICENSE_PASSWORD]);
+            putenv(MailboxAccess::ENV_EMAIL_USR . '=' . $_ENV[MailboxAccess::ENV_EMAIL_USR]);
+            putenv(MailboxAccess::ENV_EMAIL_PSW . '=' . $_ENV[MailboxAccess::ENV_EMAIL_PSW]);
 
             if ($editor = $this->initEditor()) {
                 if ($file = $editor->createLicenseFile()) {
