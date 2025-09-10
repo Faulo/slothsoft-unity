@@ -80,9 +80,7 @@ class SteamCMD {
     }
 
     private function fetchGuardCode(DateTimeImmutable $startTime): ?string {
-        $timeout = time() + 5 * Seconds::Minute;
-        while (time() < $timeout) {
-            sleep(10);
+        for ($timeout = time() + 5 * Seconds::Minute; $timeout > time(); sleep(10)) {
             if ($code = $this->mailbox->retrieveLatestBy(self::STEAM_EMAIL, $startTime, new DateInterval('PT5M'), self::STEAM_2FA_PATTERN)) {
                 return $code;
             }
