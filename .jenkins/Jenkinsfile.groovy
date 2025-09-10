@@ -70,7 +70,11 @@ pipeline {
 			steps {
 				script {
 					runTestsInContainer("faulo/farah", [
-						"8.2"
+						"7.4",
+						"8.0",
+						"8.1",
+						"8.2",
+						"8.3"
 					])
 				}
 			}
@@ -82,7 +86,11 @@ pipeline {
 			steps {
 				script {
 					runTestsInContainer("faulo/farah", [
-						"8.2"
+						"7.4",
+						"8.0",
+						"8.1",
+						"8.2",
+						"8.3"
 					])
 				}
 			}
