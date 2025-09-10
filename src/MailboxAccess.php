@@ -56,7 +56,7 @@ class MailboxAccess {
     }
 
     public function retrieveLatestBy(string $from, DateTimeImmutable $since, DateInterval $range, string $pattern): ?string {
-        $search = sprintf('FROM "%s" SINCE "%s"', $from, $since->format('d-M-Y'));
+        $search = sprintf('FROM "%s" SINCE "%s" BEFORE "%s"', $from, $since->format('d-M-Y'), $since->add(new DateInterval('P2D'))->format('d-M-Y'));
 
         $mailIds = $this->mailbox->searchMailbox($search);
 
