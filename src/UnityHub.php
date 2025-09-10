@@ -207,7 +207,7 @@ class UnityHub {
 
         if (strlen($editorPaths)) {
             foreach (explode("\n", $editorPaths) as $line) {
-                $line = explode(', installed at', $line, 2);
+                $line = explode('installed at', str_replace(',', '', $line), 2);
                 if (count($line) === 2) {
                     $version = trim($line[0]);
                     $path = trim($line[1]);
