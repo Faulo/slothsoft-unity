@@ -10,7 +10,7 @@ use Slothsoft\Core\DOMHelper;
 /**
  * UnityEditorTest
  *
- * @see UnityEditor
+ * @see UnityLicensor
  */
 class UnityLicensorTest extends TestCase {
 
@@ -68,6 +68,10 @@ class UnityLicensorTest extends TestCase {
         $this->assertTrue(class_exists(UnityLicensor::class), "Failed to load class 'Slothsoft\Unity\UnityLicensor'!");
     }
 
+    /**
+     *
+     * @runInSeparateProcess
+     */
     public function testErrorWithoutUser() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
@@ -76,6 +80,10 @@ class UnityLicensorTest extends TestCase {
         $this->assertFalse($sut->hasCredentials);
     }
 
+    /**
+     *
+     * @runInSeparateProcess
+     */
     public function testErrorWithoutPassword() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
@@ -84,6 +92,10 @@ class UnityLicensorTest extends TestCase {
         $this->assertFalse($sut->hasCredentials);
     }
 
+    /**
+     *
+     * @runInSeparateProcess
+     */
     public function testNoErrorWithBothAsParam() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
@@ -91,6 +103,10 @@ class UnityLicensorTest extends TestCase {
         $this->assertTrue($sut->hasCredentials);
     }
 
+    /**
+     *
+     * @runInSeparateProcess
+     */
     public function testNoErrorWithBothAsEnv() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
@@ -98,18 +114,30 @@ class UnityLicensorTest extends TestCase {
         $this->assertTrue($sut->hasCredentials);
     }
 
+    /**
+     *
+     * @runInSeparateProcess
+     */
     public function testHasCredentialsIsFalseWithoutUser() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
         $this->assertFalse(UnityLicensor::hasCredentialsInEnvironment());
     }
 
+    /**
+     *
+     * @runInSeparateProcess
+     */
     public function testHasCredentialsIsFalseWithoutPassword() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
         $this->assertFalse(UnityLicensor::hasCredentialsInEnvironment());
     }
 
+    /**
+     *
+     * @runInSeparateProcess
+     */
     public function testHasCredentialsIsTrueWithBoth() {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
