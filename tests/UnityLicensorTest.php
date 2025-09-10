@@ -117,7 +117,11 @@ class UnityLicensorTest extends TestCase {
     }
 
     public function testInstallEditor() {
+        $isLogging = UnityHub::getLoggingEnabled();
+        UnityHub::setLoggingEnabled(true);
         $editor = $this->initEditor();
+        UnityHub::setLoggingEnabled($isLogging);
+
         $this->assertNotNull($editor, sprintf('Failed to install editor "%s".', self::EDITOR_VERSION));
     }
 

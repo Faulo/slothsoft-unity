@@ -31,12 +31,16 @@ class UnityHubTest extends TestCase {
     }
 
     public function testProcessTimeout() {
-        foreach ([
-            0,
-            60
-        ] as $value) {
-            UnityHub::setProcessTimeout($value);
-            $this->assertEquals($value, UnityHub::getProcessTimeout());
+        try {
+            foreach ([
+                0,
+                60
+            ] as $value) {
+                UnityHub::setProcessTimeout($value);
+                $this->assertEquals($value, UnityHub::getProcessTimeout());
+            }
+        } finally {
+            UnityHub::setProcessTimeout(0);
         }
     }
 
