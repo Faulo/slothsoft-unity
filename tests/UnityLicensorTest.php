@@ -2,10 +2,9 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
-use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
-use DOMDocument;
 use Slothsoft\Core\DOMHelper;
+use DOMDocument;
 
 /**
  * UnityEditorTest
@@ -13,35 +12,6 @@ use Slothsoft\Core\DOMHelper;
  * @see UnityLicensor
  */
 class UnityLicensorTest extends TestCase {
-
-    private const ENV_FILE = '.env.local';
-
-    private function tryPrepareEnvironment(string ...$variables): bool {
-        if (is_file(self::ENV_FILE)) {
-            Dotenv::createImmutable(getcwd(), self::ENV_FILE)->load();
-
-            foreach ($variables as $variable) {
-                if (isset($_ENV[$variable])) {
-                    putenv($variable . '=' . $_ENV[$variable]);
-                }
-            }
-        }
-
-        $missing = [];
-
-        foreach ($variables as $variable) {
-            if (! getenv($variable)) {
-                $missing[] = $variable;
-            }
-        }
-
-        if ($missing) {
-            $this->markTestSkipped(sprintf('Missing environment variables [%s]', implode(', ', $missing)));
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     private const EDITOR_VERSION = '2021.2.7f1';
 
@@ -153,8 +123,13 @@ class UnityLicensorTest extends TestCase {
         $this->assertNotNull($editor, sprintf('Failed to install editor "%s".', self::EDITOR_VERSION));
     }
 
+    /**
+     *
+     * @runInSeparateProcess
+     */
     public function testSign() {
-        if ($this->tryPrepareEnvironment(UnityLicensor::ENV_UNITY_LICENSE_EMAIL, UnityLicensor::ENV_UNITY_LICENSE_PASSWORD, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW)) {
+        $env = new TestEnvironment(UnityLicensor::ENV_UNITY_LICENSE_EMAIL, UnityLicensor::ENV_UNITY_LICENSE_PASSWORD, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW);
+        if ($env->prepareVariables($this)) {
             if ($editor = $this->initEditor()) {
                 if ($file = $editor->createLicenseFile()) {
                     $sut = new UnityLicensor();
