@@ -1,11 +1,11 @@
-def runTests() {
+def runTests(def name) {
 	callShell 'composer update --prefer-lowest'
 
 	dir('.reports') {
 		deleteDir()
 	}
 
-	def report = ".reports/${version}.xml"
+	def report = ".reports/${name}.xml"
 
 	catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
 		callShell "composer exec phpunit -- --log-junit ${report}"
@@ -24,7 +24,7 @@ def runTestsInContainer(def image, def versions) {
 			callShell "docker pull ${name}"
 
 			docker.image(name).inside {
-				runTests();
+				runTests(version);
 			}
 		}
 	}
@@ -46,7 +46,7 @@ pipeline {
 			}
 			steps {
 				script {
-					runTests()
+					runTests("unity")
 				}
 			}
 		}
