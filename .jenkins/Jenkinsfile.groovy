@@ -1,4 +1,4 @@
-def runTests(def name) {
+def runTests(def name = "tests") {
 	callShell 'composer update --prefer-lowest'
 
 	dir('.reports') {
@@ -40,17 +40,27 @@ pipeline {
 		COMPOSER_PROCESS_TIMEOUT = '3600'
 	}
 	stages {
-		stage('Unity') {
+		stage('Linux Unity') {
 			agent {
 				label 'unity && linux'
 			}
 			steps {
 				script {
-					runTests("unity")
+					runTests()
 				}
 			}
 		}
-		stage('Linux') {
+		stage('Windows Unity') {
+			agent {
+				label 'unity && windows'
+			}
+			steps {
+				script {
+					runTests()
+				}
+			}
+		}
+		stage('Linux Farah') {
 			agent {
 				label 'docker && linux'
 			}
@@ -66,7 +76,7 @@ pipeline {
 				}
 			}
 		}
-		stage('Windows') {
+		stage('Windows Farah') {
 			agent {
 				label 'docker && windows'
 			}
