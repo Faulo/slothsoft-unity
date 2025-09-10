@@ -2,7 +2,6 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
-use Slothsoft\Core\Calendar\Seconds;
 use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
@@ -164,16 +163,9 @@ class UnityLicensor {
                     $form = $crawler->filterXPath('.//form[.//input/@name = "conversations_email_tfa_required_form[code]"]');
                 }
 
-                $code = null;
-
                 $mailbox = new MailboxAccess();
-                for ($timeout = time() + 5 * Seconds::Minute; $timeout > time(); sleep(10)) {
-                    if ($code = $mailbox->retrieveLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('PT5M'), self::UNITY_2FA_PATTERN)) {
-                        break;
-                    }
-                }
 
-                if ($code) {
+                if ($code = $mailbox->waitForLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('PT5M'), self::UNITY_2FA_PATTERN)) {
                     $form = $form->selectButton('commit')->form();
                     $form->disableValidation();
                     $crawler = $this->browser->submit($form, [

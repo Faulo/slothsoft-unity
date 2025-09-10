@@ -77,5 +77,19 @@ class MailboxAccess {
 
         return null;
     }
+
+    public function waitForLatestBy(string $from, DateTimeImmutable $since, DateInterval $range, string $pattern): ?string {
+        $timeout = $since->add($range);
+
+        do {
+            sleep(10);
+
+            if ($code = $this->retrieveLatestBy($from, $since, $range, $pattern)) {
+                return $code;
+            }
+        } while (new DateTimeImmutable() < $timeout);
+
+        return null;
+    }
 }
 
