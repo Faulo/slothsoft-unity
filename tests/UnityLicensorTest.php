@@ -11,13 +11,36 @@ use Slothsoft\Core\DOMHelper;
  * UnityEditorTest
  *
  * @see UnityEditor
- *
- * @todo auto-generated
  */
 class UnityLicensorTest extends TestCase {
 
-    public function testClassExists(): void {
-        $this->assertTrue(class_exists(UnityLicensor::class), "Failed to load class 'Slothsoft\Unity\UnityLicensor'!");
+    private const ENV_FILE = '.env.local';
+
+    private function tryPrepareEnvironment(string ...$variables): bool {
+        if (is_file(self::ENV_FILE)) {
+            Dotenv::createImmutable(getcwd(), self::ENV_FILE)->load();
+
+            foreach ($variables as $variable) {
+                if (isset($_ENV[$variable])) {
+                    putenv($variable . '=' . $_ENV[$variable]);
+                }
+            }
+        }
+
+        $missing = [];
+
+        foreach ($variables as $variable) {
+            if (! getenv($variable)) {
+                $missing[] = $variable;
+            }
+        }
+
+        if ($missing) {
+            $this->markTestSkipped(sprintf('Missing environment variables [%s]', implode(', ', $missing)));
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private const EDITOR_VERSION = '2021.2.7f1';
@@ -35,11 +58,14 @@ class UnityLicensorTest extends TestCase {
         $editor = $hub->getEditorByVersion(self::EDITOR_VERSION);
 
         if (! $editor->isInstalled() and ! $editor->install()) {
-            $this->markTestSkipped('Failed to install editor.');
             return null;
         }
 
         return $editor;
+    }
+
+    public function testClassExists(): void {
+        $this->assertTrue(class_exists(UnityLicensor::class), "Failed to load class 'Slothsoft\Unity\UnityLicensor'!");
     }
 
     public function testErrorWithoutUser() {
@@ -90,15 +116,13 @@ class UnityLicensorTest extends TestCase {
         $this->assertTrue(UnityLicensor::hasCredentialsInEnvironment());
     }
 
+    public function testInstallEditor() {
+        $editor = $this->initEditor();
+        $this->assertNotNull($editor, sprintf('Failed to install editor "%s".', self::EDITOR_VERSION));
+    }
+
     public function testSign() {
-        if (is_file('.env.local')) {
-            Dotenv::createImmutable(getcwd(), '.env.local')->load();
-
-            putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=' . $_ENV[UnityLicensor::ENV_UNITY_LICENSE_EMAIL]);
-            putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=' . $_ENV[UnityLicensor::ENV_UNITY_LICENSE_PASSWORD]);
-            putenv(MailboxAccess::ENV_EMAIL_USR . '=' . $_ENV[MailboxAccess::ENV_EMAIL_USR]);
-            putenv(MailboxAccess::ENV_EMAIL_PSW . '=' . $_ENV[MailboxAccess::ENV_EMAIL_PSW]);
-
+        if ($this->tryPrepareEnvironment(UnityLicensor::ENV_UNITY_LICENSE_EMAIL, UnityLicensor::ENV_UNITY_LICENSE_PASSWORD, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW)) {
             if ($editor = $this->initEditor()) {
                 if ($file = $editor->createLicenseFile()) {
                     $sut = new UnityLicensor();
@@ -116,8 +140,6 @@ class UnityLicensorTest extends TestCase {
                     $this->markTestSkipped('Failed to create the license activation file.');
                 }
             }
-        } else {
-            $this->markTestSkipped('Missing unity login file ".env.local".');
         }
     }
 }
