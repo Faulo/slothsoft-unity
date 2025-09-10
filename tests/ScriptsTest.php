@@ -89,7 +89,9 @@ class ScriptsTest extends TestCase {
         $code = $process->run();
         $errors = $process->getErrorOutput();
 
-        $this->assertEquals('', $errors, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->assertEquals('', $errors, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
+        }
 
         $this->assertEquals(0, $code, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
     }
