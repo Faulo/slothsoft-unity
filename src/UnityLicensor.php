@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
+use Slothsoft\Core\Calendar\Seconds;
 use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
@@ -166,7 +167,8 @@ class UnityLicensor {
                 $code = null;
 
                 $mailbox = new MailboxAccess();
-                for ($i = 0; $i < 30; $i ++) {
+                $timeout = time() + 5 * Seconds::Minute;
+                while (time() < $timeout) {
                     sleep(10);
                     if ($code = $mailbox->retrieveLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('PT5M'), self::UNITY_2FA_PATTERN)) {
                         break;

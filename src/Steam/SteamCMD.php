@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Steam;
 
 use Symfony\Component\Process\Process;
+use Slothsoft\Core\Calendar\Seconds;
 use Slothsoft\Unity\MailboxAccess;
 use DateInterval;
 use DateTimeImmutable;
@@ -79,7 +80,8 @@ class SteamCMD {
     }
 
     private function fetchGuardCode(DateTimeImmutable $startTime): ?string {
-        for ($i = 0; $i < 30; $i ++) {
+        $timeout = time() + 5 * Seconds::Minute;
+        while (time() < $timeout) {
             sleep(10);
             if ($code = $this->mailbox->retrieveLatestBy(self::STEAM_EMAIL, $startTime, new DateInterval('PT5M'), self::STEAM_2FA_PATTERN)) {
                 return $code;
