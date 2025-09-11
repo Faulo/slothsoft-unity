@@ -81,7 +81,7 @@ class UnityEditor {
 
     private const ARGUMENT_LICENSE_CREATE = '-createManualActivationFile';
 
-    private const ARGUMENT_LICENSE_USE = '-manualLicenseFile';
+    public const ARGUMENT_LICENSE_USE = '-manualLicenseFile';
 
     public function license(string $projectPath, $assumeSuccess = false): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
