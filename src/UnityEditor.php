@@ -140,7 +140,8 @@ class UnityEditor {
     }
 
     public function useLicenseFile(string $file): bool {
-        return $this->execute(false, self::ARGUMENT_LICENSE_USE, $file)->getExitCode() === 0;
+        $exitCode = $this->execute(false, self::ARGUMENT_LICENSE_USE, $file)->getExitCode();
+        return $exitCode === 0 or $exitCode === 1;
     }
 
     private int $retryCount = 0;

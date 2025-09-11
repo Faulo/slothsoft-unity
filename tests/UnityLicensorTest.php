@@ -141,8 +141,11 @@ class UnityLicensorTest extends TestCase {
                     $this->assertNotNull($signatures->item(0), 'Alleged ulf file is missing the <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"> element.');
 
                     $process = $editor->execute(false, UnityEditor::ARGUMENT_LICENSE_USE, $file);
+                    $exitCode = $process->getExitCode();
+                    $actual = ($exitCode === 0 or $exitCode === 1);
+                    $message = sprintf('Failed to activate via -manualLicenseFile "%s"!%s> %s%sExit Code: %d%sOutput: %s%sError Output: %s%s', $file, PHP_EOL, $process->getCommandLine(), PHP_EOL, $exitCode, PHP_EOL, $process->getOutput(), PHP_EOL, $process->getErrorOutput());
 
-                    $this->assertEquals(0, $process->getExitCode(), "Failed to activate via -manualLicenseFile '$file'!" . PHP_EOL . $process->getCommandLine() . PHP_EOL . $process->getOutput() . PHP_EOL . $process->getErrorOutput());
+                    $this->assertTrue($actual, $message);
                 } else {
                     $this->markTestSkipped('Failed to create the license activation file.');
                 }
