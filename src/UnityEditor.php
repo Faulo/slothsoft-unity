@@ -130,7 +130,9 @@ class UnityEditor {
         if (preg_match('~(Unity_v[^\s]+\.alf)~', $log, $match)) {
             $log = trim($match[1]);
             if (is_file($log)) {
-                return realpath($log);
+                $file = temp_file(__CLASS__, 'ALF_');
+                rename($log, $file);
+                return realpath($file);
             }
         }
 
