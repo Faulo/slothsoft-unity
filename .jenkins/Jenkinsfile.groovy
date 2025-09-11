@@ -41,6 +41,8 @@ pipeline {
 		// UNITY_CREDENTIALS = credentials('Slothsoft-Unity')
 		EMAIL_CREDENTIALS = credentials('Slothsoft-Google')
 		STEAM_CREDENTIALS = credentials('Slothsoft-Steam')
+		EMAIL_TEST_TIME = '1745158411'
+		EMAIL_TEST_CODE = '177824'
 	}
 	stages {
 		stage('Linux Unity') {
