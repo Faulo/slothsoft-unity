@@ -143,7 +143,15 @@ class UnityLicensorTest extends TestCase {
                     $process = $editor->execute(false, UnityEditor::ARGUMENT_LICENSE_USE, $file);
                     $exitCode = $process->getExitCode();
                     $actual = ($exitCode === 0 or $exitCode === 1);
-                    $message = sprintf('Failed to activate via -manualLicenseFile "%s"!%s> %s%sExit Code: %d%sOutput: %s%sError Output: %s%s', $file, PHP_EOL, $process->getCommandLine(), PHP_EOL, $exitCode, PHP_EOL, $process->getOutput(), PHP_EOL, $process->getErrorOutput());
+                    $message = sprintf(implode(PHP_EOL, [
+                        'Failed to activate via -manualLicenseFile "%s"!',
+                        '> %s',
+                        'Exit Code: %d',
+                        'Output:',
+                        '%s',
+                        'Error Output:',
+                        '%s'
+                    ]), $file, $process->getCommandLine(), $exitCode, $process->getOutput(), $process->getErrorOutput());
 
                     $this->assertTrue($actual, $message);
                 } else {
