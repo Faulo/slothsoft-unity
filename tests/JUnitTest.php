@@ -8,7 +8,7 @@ use Slothsoft\Core\FileSystem;
 
 class JUnitTest extends TestCase {
 
-    const SCHEMA_DOCUMENT = 'farah://slothsoft@unity/xsd/junit';
+    const SCHEMA_DOCUMENT = 'farah://slothsoft@schema/schema/junit/1.0';
 
     const TEMPLATE_DOCUMENT = 'farah://slothsoft@unity/xsl/to-junit';
 

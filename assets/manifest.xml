@@ -1,36 +1,20 @@
 <?xml version="1.0"?>
 <assets xmlns="http://schema.slothsoft.net/farah/module" version="1.1">
-	<resource-directory name="xsd"
-		type="application/x-xsd+xml" />
-    <resource-directory name="xsl"
-        type="application/xslt+xml" />
-        
-    <directory name="docfx-templates" />
+	<resource-directory name="xsl" type="application/xslt+xml" />
+
+	<directory name="docfx-templates" />
 
 	<fragment name="hub">
-		<custom-asset name="help"
-			executable-builder="Slothsoft\Unity\Assets\Hub\HelpExecutable" />
+		<custom-asset name="help" executable-builder="Slothsoft\Unity\Assets\Hub\HelpExecutable" />
 	</fragment>
 
 	<fragment name="project">
-		<custom-asset name="method"
-			executable-builder="Slothsoft\Unity\Assets\Project\MethodExecutable"
-			parameter-filter="Slothsoft\Unity\Assets\Project\MethodParameters" />
-		<custom-asset name="build"
-			executable-builder="Slothsoft\Unity\Assets\Project\BuildExecutable"
-			parameter-filter="Slothsoft\Unity\Assets\Project\BuildParameters" />
-        <custom-asset name="tests"
-            executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable"
-            parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
-        <custom-asset name="module"
-            executable-builder="Slothsoft\Unity\Assets\Project\ModuleExecutable"
-            parameter-filter="Slothsoft\Unity\Assets\Project\ModuleParameters" />
-        <custom-asset name="version"
-            executable-builder="Slothsoft\Unity\Assets\Project\VersionExecutable"
-            parameter-filter="Slothsoft\Unity\Assets\Project\VersionParameters" />
-        <custom-asset name="setting"
-            executable-builder="Slothsoft\Unity\Assets\Project\SettingExecutable"
-            parameter-filter="Slothsoft\Unity\Assets\Project\SettingParameters" />
+		<custom-asset name="method" executable-builder="Slothsoft\Unity\Assets\Project\MethodExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\MethodParameters" />
+		<custom-asset name="build" executable-builder="Slothsoft\Unity\Assets\Project\BuildExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\BuildParameters" />
+		<custom-asset name="tests" executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
+		<custom-asset name="module" executable-builder="Slothsoft\Unity\Assets\Project\ModuleExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\ModuleParameters" />
+		<custom-asset name="version" executable-builder="Slothsoft\Unity\Assets\Project\VersionExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\VersionParameters" />
+		<custom-asset name="setting" executable-builder="Slothsoft\Unity\Assets\Project\SettingExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\SettingParameters" />
 
 		<fragment name="method-junit">
 			<use-template ref="/xsl/to-junit" />
@@ -42,21 +26,19 @@
 			<use-document ref="/project/build" />
 		</fragment>
 
-        <fragment name="tests-junit">
-            <use-template ref="/xsl/to-junit" />
-            <use-document ref="/project/tests" />
-        </fragment>
+		<fragment name="tests-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/project/tests" />
+		</fragment>
 
-        <fragment name="module-junit">
-            <use-template ref="/xsl/to-junit" />
-            <use-document ref="/project/module" />
-        </fragment>
+		<fragment name="module-junit">
+			<use-template ref="/xsl/to-junit" />
+			<use-document ref="/project/module" />
+		</fragment>
 	</fragment>
 
 	<fragment name="package">
-		<custom-asset name="install"
-			executable-builder="Slothsoft\Unity\Assets\Package\InstallExecutable"
-			parameter-filter="Slothsoft\Unity\Assets\Package\InstallParameters" />
+		<custom-asset name="install" executable-builder="Slothsoft\Unity\Assets\Package\InstallExecutable" parameter-filter="Slothsoft\Unity\Assets\Package\InstallParameters" />
 
 		<fragment name="install-junit">
 			<use-template ref="/xsl/to-junit" />

@@ -11,7 +11,7 @@
 	"require" : {
 		"php" : ">=7.4",
 		"slothsoft/core" : "^1.13.5",
-		"slothsoft/farah" : "^1.16.6",
+		"slothsoft/schema" : "^1.5.1",
 		"symfony/process" : "^5.4.47",
 		"symfony/filesystem" : "^5.4.45",
 		"mustangostang/spyc" : "^0.6.3",
