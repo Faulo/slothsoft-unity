@@ -6,17 +6,17 @@ use Slothsoft\Core\FileSystem;
 use InvalidArgumentException;
 
 class UnityBuildTarget {
-
+    
     public const WINDOWS = 'windows';
-
+    
     public const LINUX = 'linux';
-
+    
     public const MAC_OSX = 'mac';
-
+    
     public const BACKEND_MONO = 0;
-
+    
     public const BACKEND_IL2CPP = 1;
-
+    
     public static function getEditoModules(string $target, int $backend = self::BACKEND_MONO): array {
         switch (strtolower($target)) {
             case self::WINDOWS:
@@ -62,7 +62,7 @@ class UnityBuildTarget {
                 throw new InvalidArgumentException("Unkown build target '$target'");
         }
     }
-
+    
     public static function getBuildExecutable(string $target, string $productName): string {
         $buildExecutable = FileSystem::filenameSanitize($productName);
         switch (strtolower($target)) {
@@ -76,7 +76,7 @@ class UnityBuildTarget {
                 throw new InvalidArgumentException($target);
         }
     }
-
+    
     public static function getBuildParameters(string $target, string $buildExecutable): array {
         switch (strtolower($target)) {
             case self::WINDOWS:

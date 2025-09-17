@@ -6,7 +6,7 @@ use Slothsoft\Core\IO\Sanitizer\StringSanitizer;
 use Slothsoft\Farah\Module\Asset\ParameterFilterStrategy\AbstractMapParameterFilter;
 
 class SettingParameters extends AbstractMapParameterFilter {
-
+    
     protected function createValueSanitizers(): array {
         return [
             'workspace' => new StringSanitizer(''),

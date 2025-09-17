@@ -13,16 +13,16 @@ use DOMDocument;
 use Throwable;
 
 abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
-
+    
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $this->parseArguments($args);
-
+        
         $delegate = function (): DOMDocument {
             $result = new TestResult($this->getExecutablePackage(), $this->getExecutableCall());
-
+            
             try {
                 $this->validate();
-
+                
                 $document = $this->createResultDocument();
                 if ($document) {
                     return $document;
@@ -32,31 +32,31 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
             } catch (Throwable $e) {
                 $result->setError(ExecutionError::Exception($e));
             }
-
+            
             $document = new DOMDocument('1.0', 'UTF-8');
-
+            
             $document->appendChild($result->asNode($document));
-
+            
             return $document;
         };
-
+        
         $writer = new DOMWriterFromDocumentDelegate($delegate);
-
+        
         $resultBuilder = new DOMWriterResultBuilder($writer, 'result.xml');
-
+        
         return new ExecutableStrategies($resultBuilder);
     }
-
+    
     protected abstract function parseArguments(FarahUrlArguments $args): void;
-
+    
     protected abstract function validate(): void;
-
+    
     protected abstract function createResultDocument(): ?DOMDocument;
-
+    
     protected function getExecutablePackage(): string {
         return 'ContinuousIntegration';
     }
-
+    
     protected function getExecutableCall(): string {
         return get_class($this);
     }

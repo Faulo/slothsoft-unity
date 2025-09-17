@@ -7,7 +7,7 @@ use Symfony\Component\Process\Process;
 use Slothsoft\Core\FileSystem;
 
 class ScriptsTest extends TestCase {
-
+    
     /**
      *
      * @dataProvider validBinaries
@@ -18,18 +18,18 @@ class ScriptsTest extends TestCase {
             "scripts/$script",
             ...$args
         ]);
-
+        
         $code = $process->run();
         $result = $process->getOutput();
         $errors = $process->getErrorOutput();
-
+        
         $this->assertEquals('', $errors, "Calling $script failed! Command:" . PHP_EOL . $process->getCommandLine());
-
+        
         $this->assertEquals(0, $code, "Calling $script failed! Command:" . PHP_EOL . $process->getCommandLine());
-
+        
         $this->assertStringContainsString("composer exec $script", $result, "Calling $script failed! Command:" . PHP_EOL . $process->getCommandLine());
     }
-
+    
     public function validBinaries(): iterable {
         yield 'autoversion' => [
             'autoversion'
@@ -68,7 +68,7 @@ class ScriptsTest extends TestCase {
             'unity-project-setting'
         ];
     }
-
+    
     /**
      *
      * @dataProvider validAssets
@@ -78,24 +78,24 @@ class ScriptsTest extends TestCase {
             $this->markTestSkipped('Composer is not available from the command line!');
             return;
         }
-
+        
         $process = new Process([
             'composer',
             'exec',
             'farah-asset',
             $url
         ]);
-
+        
         $code = $process->run();
         $errors = $process->getErrorOutput();
-
+        
         if (PHP_OS_FAMILY === 'Windows') {
             $this->assertEquals('', $errors, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
         }
-
+        
         $this->assertEquals(0, $code, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
     }
-
+    
     public function validAssets(): iterable {
         yield 'unity-hub-help' => [
             'farah://slothsoft@unity/hub/help'

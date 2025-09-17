@@ -7,15 +7,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use Spyc;
 
 class Settings {
-
+    
     const ASSET_TEMPLATES = 'farah://slothsoft@unity/docfx-templates';
-
+    
     const DEFAULT_INDEX = <<<EOT
     # Documentation
     
     Add a README.md to your repository to change this page.
     EOT;
-
+    
     const DEFAULT_FILTER = <<<EOT
     apiRules:
     - exclude:
@@ -25,31 +25,31 @@ class Settings {
           uidRegex: ^UnityEngine\.Object
           type: Type
     EOT;
-
+    
     const FILE_INDEX = 'index.md';
-
+    
     const FILE_README = 'README.md';
-
+    
     const FILE_CHANGELOG = 'CHANGELOG.md';
-
+    
     const FILE_LICENSE = 'LICENSE.md';
-
+    
     const FILE_TOC = 'toc.yml';
-
+    
     const FILE_DOCFX = 'docfx.json';
-
+    
     const FILE_FILTER = 'filterConfig.yml';
-
+    
     const DIR_API = 'api';
-
+    
     const DIR_DOCS = 'docs';
-
+    
     const DIR_TEMPLATE = 'templates' . DIRECTORY_SEPARATOR . 'unity';
-
+    
     private Filesystem $fileSystem;
-
+    
     private string $path;
-
+    
     private array $config = [
         'version' => 1,
         'isRoot' => true,
@@ -62,7 +62,7 @@ class Settings {
             ]
         ]
     ];
-
+    
     private array $data = [
         'metadata' => [],
         'build' => [
@@ -95,27 +95,27 @@ class Settings {
             'dest' => 'html'
         ]
     ];
-
+    
     private array $toc = [
         self::DIR_API . '/' => 'API'
     ];
-
+    
     private ?\SplFileInfo $docs = null;
-
+    
     private ?\SplFileInfo $readme = null;
-
+    
     private ?\SplFileInfo $changelog = null;
-
+    
     private ?\SplFileInfo $license = null;
-
+    
     private array $markdowns = [];
-
+    
     private array $projects = [];
-
+    
     public function __construct(string $path) {
         $this->fileSystem = new Filesystem();
         $this->path = realpath($path);
-
+        
         $plugins = realpath($this->path . DIRECTORY_SEPARATOR . 'Assets' . DIRECTORY_SEPARATOR . 'Plugins');
         if ($plugins) {
             $this->addDirectory('Assets', function (\SplFileInfo $file) use ($plugins): bool {
@@ -124,16 +124,16 @@ class Settings {
         } else {
             $this->addDirectory('Assets');
         }
-
+        
         $this->addDirectory('Packages');
-
+        
         $this->addRootDirectory();
-
+        
         if ($this->docs) {
             $this->toc[self::DIR_DOCS . '/'] = 'Docs';
             $this->addManual();
         }
-
+        
         foreach ($this->markdowns as $file) {
             switch ($file->getFilename()) {
                 case self::FILE_README:
@@ -147,15 +147,15 @@ class Settings {
                     break;
             }
         }
-
+        
         if ($this->changelog) {
             $this->toc[self::FILE_CHANGELOG] = 'Changelog';
         }
-
+        
         if ($this->license) {
             $this->toc[self::FILE_LICENSE] = 'License';
         }
-
+        
         $this->data['metadata'][] = [
             'filter' => 'filterConfig.yml',
             'src' => [
@@ -167,9 +167,9 @@ class Settings {
             'dest' => self::DIR_API
         ];
     }
-
+    
     private string $template = 'default';
-
+    
     public function setTemplate(string $template): void {
         $this->template = $template;
         if ($this->template === 'default') {
@@ -181,11 +181,11 @@ class Settings {
             ];
         }
     }
-
+    
     private function addDirectory(string $directory, callable $include = null): void {
         $directory = new \RecursiveDirectoryIterator($this->path . DIRECTORY_SEPARATOR . $directory);
         $iterator = new \RecursiveIteratorIterator($directory, \RecursiveIteratorIterator::SELF_FIRST);
-
+        
         foreach ($iterator as $file) {
             if ($include !== null and ! $include($file)) {
                 continue;
@@ -193,7 +193,7 @@ class Settings {
             $this->processFile($file);
         }
     }
-
+    
     private function addRootDirectory(): void {
         $directory = new \DirectoryIterator($this->path);
         foreach ($directory as $file) {
@@ -203,7 +203,7 @@ class Settings {
             $this->processFile(new \SplFileInfo($file->getRealPath()));
         }
     }
-
+    
     private function processFile(\SplFileInfo $file): void {
         if ($file->isFile()) {
             switch ($file->getExtension()) {
@@ -224,7 +224,7 @@ class Settings {
             }
         }
     }
-
+    
     private function addManual(): void {
         $this->data['build']['content'][] = [
             'src' => 'docs',
@@ -247,17 +247,17 @@ class Settings {
             ]
         ];
     }
-
+    
     public function export(string $target = null): string {
         if ($target === null) {
             $target = $this->path . DIRECTORY_SEPARATOR . '.Documentation';
         }
-
+        
         $this->ensureDirectory($target);
-
+        
         $templatesDirectory = Module::resolveToAsset(FarahUrl::createFromReference(self::ASSET_TEMPLATES))->getManifestElement()->getAttribute('realpath');
         $this->fileSystem->mirror($templatesDirectory, $target . DIRECTORY_SEPARATOR . 'templates');
-
+        
         file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_DOCFX, $this->encode($this->data));
         if ($this->readme) {
             copy($this->readme->getRealpath(), $target . DIRECTORY_SEPARATOR . self::FILE_INDEX);
@@ -271,13 +271,13 @@ class Settings {
             copy($this->license->getRealpath(), $target . DIRECTORY_SEPARATOR . self::FILE_LICENSE);
         }
         file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_TOC, $this->encodeToC($this->toc));
-
+        
         file_put_contents($target . DIRECTORY_SEPARATOR . self::FILE_FILTER, self::DEFAULT_FILTER);
-
+        
         $configDir = $target . DIRECTORY_SEPARATOR . '.config';
         $this->ensureDirectory($configDir);
         file_put_contents($configDir . DIRECTORY_SEPARATOR . 'dotnet-tools.json', $this->encode($this->config));
-
+        
         $docsDir = $target . DIRECTORY_SEPARATOR . self::DIR_DOCS;
         if ($this->docs) {
             $this->fileSystem->mirror($this->docs->getRealPath(), $docsDir);
@@ -286,20 +286,20 @@ class Settings {
                 file_put_contents($docsDir . DIRECTORY_SEPARATOR . self::FILE_TOC, $this->encodeToC($toc));
             }
         }
-
+        
         return realpath($target);
     }
-
+    
     private function ensureDirectory(string $directory): void {
         if (! is_dir($directory)) {
             mkdir($directory, 0777, true);
         }
     }
-
+    
     private function encode(array $data): string {
         return json_encode($data, JSON_PRETTY_PRINT);
     }
-
+    
     private function encodeToC(array $toc): string {
         $yaml = [];
         foreach ($toc as $key => $val) {
@@ -310,7 +310,7 @@ class Settings {
         }
         return Spyc::YAMLDump($yaml);
     }
-
+    
     private function createToC(\SplFileInfo $dir): array {
         $toc = [];
         $directory = new \DirectoryIterator($dir->getRealPath());
@@ -328,7 +328,7 @@ class Settings {
         asort($toc);
         return $toc;
     }
-
+    
     public function __toString(): string {
         return $this->encode($this->data);
     }

@@ -3,14 +3,14 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\MLAgents;
 
 class MLParameters {
-
+    
     private $data = [];
-
+    
     public function registerArgument(string $key, $defaultValue) {
         assert(! isset($this->data[$key]));
         $this->data[$key] = $defaultValue;
     }
-
+    
     public function loadFromString(string $config) {
         $matches = null;
         preg_match_all('~#\s*([^\s]+?)\s*:\s*([^#]*?)[\r\n]~', $config, $matches, PREG_SET_ORDER);
@@ -26,12 +26,12 @@ class MLParameters {
             }
         }
     }
-
+    
     public function getArgument(string $key) {
         assert(isset($this->data[$key]));
         return $this->data[$key];
     }
-
+    
     public function asShellArgument(): string {
         $command = '';
         $unity = '';

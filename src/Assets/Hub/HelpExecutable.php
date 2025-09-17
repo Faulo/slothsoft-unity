@@ -12,7 +12,7 @@ use Slothsoft\Unity\UnityHub;
 use Generator;
 
 class HelpExecutable implements ExecutableBuilderStrategyInterface {
-
+    
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $delegate = function (): Generator {
             $hub = UnityHub::getInstance();

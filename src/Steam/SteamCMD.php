@@ -8,34 +8,34 @@ use DateInterval;
 use DateTimeImmutable;
 
 class SteamCMD {
-
+    
     public const STEAM_CREDENTIALS_USR = 'STEAM_CREDENTIALS_USR';
-
+    
     public const STEAM_CREDENTIALS_PSW = 'STEAM_CREDENTIALS_PSW';
-
+    
     private const STEAMCMD_BIN = 'steamcmd';
-
+    
     private const STEAM_EMAIL = 'noreply@steampowered.com';
-
+    
     private const STEAM_2FA_PATTERN = '/\b([A-Z0-9]{5})\b/';
-
+    
     public ?MailboxAccess $mailbox = null;
-
+    
     private static function createLogin(string $name, string $password = '', string $code = ''): Process {
         $args = [];
-
+        
         if (strlen($name)) {
             $args[] = $name;
         }
-
+        
         if (strlen($password)) {
             $args[] = $password;
         }
-
+        
         if (strlen($code)) {
             $args[] = $code;
         }
-
+        
         return new Process([
             self::STEAMCMD_BIN,
             '+login',
@@ -43,20 +43,20 @@ class SteamCMD {
             '+quit'
         ]);
     }
-
+    
     private function reportError(Process $process): void {
         fwrite(STDERR, $process->getCommandLine());
         fwrite(STDERR, PHP_EOL);
         fwrite(STDERR, $process->getOutput());
     }
-
+    
     public function login(string $name, string $password = ''): bool {
         $process = self::createLogin($name, $password);
         $startTime = new DateTimeImmutable();
-
+        
         $resultCode = $process->run();
         $isLoggedIn = $resultCode === 0;
-
+        
         if (! $isLoggedIn) {
             $output = $process->getOutput();
             if (strpos($output, 'set_steam_guard_code') and $this->mailbox) {
@@ -74,10 +74,10 @@ class SteamCMD {
                 $this->reportError($process);
             }
         }
-
+        
         return $isLoggedIn;
     }
-
+    
     private function fetchGuardCode(DateTimeImmutable $startTime): ?string {
         return $this->mailbox->waitForLatestBy(self::STEAM_EMAIL, $startTime, new DateInterval('PT5M'), self::STEAM_2FA_PATTERN);
     }

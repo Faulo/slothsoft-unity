@@ -12,11 +12,11 @@ use DateTimeImmutable;
  * @see MailboxAccess
  */
 class MailboxAccessTest extends TestCase {
-
+    
     public function testClassExists(): void {
         $this->assertTrue(class_exists(MailboxAccess::class), "Failed to load class 'Slothsoft\Unity\MailboxAccess'!");
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -30,7 +30,7 @@ class MailboxAccessTest extends TestCase {
             $this->assertEquals($code, $sut->retrieveLatestBy('no-reply@unity3d.com', DateTimeImmutable::createFromFormat('U', $time), new DateInterval('PT1000M'), '/\b(\d{6})\b/'));
         }
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -42,7 +42,7 @@ class MailboxAccessTest extends TestCase {
             $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT1000M'), '/\b(\d{6})\b/'));
         }
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -54,7 +54,7 @@ class MailboxAccessTest extends TestCase {
             $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT600M'), '/\b(\d{6})\b/'));
         }
     }
-
+    
     /**
      *
      * @runInSeparateProcess

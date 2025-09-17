@@ -12,32 +12,32 @@ use DOMDocument;
  * @see UnityLicensor
  */
 class UnityLicensorTest extends TestCase {
-
+    
     private const EDITOR_VERSION = '2021.2.7f1';
-
+    
     private const EDITOR_CHANGESET = '6bd9e232123f';
-
+    
     private function initEditor(): ?UnityEditor {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
             return null;
         }
-
+        
         $hub->registerChangeset(self::EDITOR_VERSION, self::EDITOR_CHANGESET);
         $editor = $hub->getEditorByVersion(self::EDITOR_VERSION);
-
+        
         if (! $editor->isInstalled() and ! $editor->install()) {
             return null;
         }
-
+        
         return $editor;
     }
-
+    
     public function testClassExists(): void {
         $this->assertTrue(class_exists(UnityLicensor::class), "Failed to load class 'Slothsoft\Unity\UnityLicensor'!");
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -49,7 +49,7 @@ class UnityLicensorTest extends TestCase {
         $sut = new UnityLicensor();
         $this->assertFalse($sut->hasCredentials);
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -61,7 +61,7 @@ class UnityLicensorTest extends TestCase {
         $sut = new UnityLicensor();
         $this->assertFalse($sut->hasCredentials);
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -72,7 +72,7 @@ class UnityLicensorTest extends TestCase {
         $sut = new UnityLicensor('test', 'test');
         $this->assertTrue($sut->hasCredentials);
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -83,7 +83,7 @@ class UnityLicensorTest extends TestCase {
         $sut = new UnityLicensor();
         $this->assertTrue($sut->hasCredentials);
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -93,7 +93,7 @@ class UnityLicensorTest extends TestCase {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
         $this->assertFalse(UnityLicensor::hasCredentialsInEnvironment());
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -103,7 +103,7 @@ class UnityLicensorTest extends TestCase {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
         $this->assertFalse(UnityLicensor::hasCredentialsInEnvironment());
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -113,16 +113,16 @@ class UnityLicensorTest extends TestCase {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
         $this->assertTrue(UnityLicensor::hasCredentialsInEnvironment());
     }
-
+    
     public function testInstallEditor() {
         $isLogging = UnityHub::getLoggingEnabled();
         UnityHub::setLoggingEnabled(true);
         $editor = $this->initEditor();
         UnityHub::setLoggingEnabled($isLogging);
-
+        
         $this->assertNotNull($editor, sprintf('Failed to install editor "%s".', self::EDITOR_VERSION));
     }
-
+    
     /**
      *
      * @runInSeparateProcess
@@ -139,7 +139,7 @@ class UnityLicensorTest extends TestCase {
                     $this->assertInstanceOf(DOMDocument::class, $document);
                     $signatures = $document->getElementsByTagNameNS('http://www.w3.org/2000/09/xmldsig#', 'Signature');
                     $this->assertNotNull($signatures->item(0), 'Alleged ulf file is missing the <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"> element.');
-
+                    
                     $process = $editor->execute(false, UnityEditor::ARGUMENT_LICENSE_USE, $file);
                     $exitCode = $process->getExitCode();
                     $actual = ($exitCode === 0 or $exitCode === 1);
@@ -152,7 +152,7 @@ class UnityLicensorTest extends TestCase {
                         'Error Output:',
                         '%s'
                     ]), $file, $process->getCommandLine(), $exitCode, $process->getOutput(), $process->getErrorOutput());
-
+                    
                     $this->assertTrue($actual, $message);
                 } else {
                     $this->markTestSkipped('Failed to create the license activation file.');

@@ -5,11 +5,11 @@ namespace Slothsoft\Unity\Steam;
 use Mintopia\VDFKeyValue\Encoder;
 
 class AppBuild {
-
+    
     private $data = [
         "Depots" => []
     ];
-
+    
     /**
      *
      * @param string $appId
@@ -26,13 +26,13 @@ class AppBuild {
         $this->fixEncoding($description);
         $this->fixEncoding($contentPath);
         $this->fixEncoding($buildPath);
-
+        
         $this->data['AppID'] = $appId;
         $this->data['Desc'] = $description;
         $this->data['ContentRoot'] = $contentPath;
         $this->data['BuildOutput'] = $buildPath;
     }
-
+    
     /**
      *
      * @param string $depotId
@@ -49,7 +49,7 @@ class AppBuild {
         $this->fixEncoding($localPath);
         $this->fixEncoding($depotPath);
         $this->fixEncoding($recursive);
-
+        
         $this->data['Depots'][$depotId] = [
             "FileMapping" => [
                 "LocalPath" => $localPath,
@@ -58,7 +58,7 @@ class AppBuild {
             ]
         ];
     }
-
+    
     /**
      *
      * @param string $branch
@@ -66,23 +66,23 @@ class AppBuild {
      */
     public function setLive(string $branch): void {
         $this->fixEncoding($branch);
-
+        
         $this->data['SetLive'] = $branch;
     }
-
+    
     const SUPPORTED_ENCODINGS = [
         'UTF-8',
         'Windows-1252',
         'ISO-8859-1'
     ];
-
+    
     private function fixEncoding(string &$value) {
         $encoding = mb_detect_encoding($value, self::SUPPORTED_ENCODINGS);
         if ($encoding and $encoding !== 'UTF-8') {
             $value = mb_convert_encoding($value, 'UTF-8', $encoding);
         }
     }
-
+    
     public function __toString(): string {
         $encoder = new Encoder();
         return $encoder->encode('AppBuild', $this->data);

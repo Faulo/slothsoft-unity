@@ -5,25 +5,25 @@ namespace Slothsoft\Unity;
 use PHPUnit\Framework\TestCase;
 
 class UnityProjectInfoTest extends TestCase {
-
+    
     public const VALID_ROOT = __DIR__ . '/../test-files';
-
+    
     public const VALID_PROJECT = __DIR__ . '/../test-files/ValidProject';
-
+    
     public const VALID_DOCUMENTATION = __DIR__ . '/../test-files/ValidProjectDocumentation';
-
+    
     public const VALID_PROJECT_WITH_MDS = __DIR__ . '/../test-files/ValidProjectWithMDs';
-
+    
     public const VALID_DOCUMENTATION_WITH_MDS = __DIR__ . '/../test-files/ValidProjectWithMDsDocumentation';
-
+    
     public const VALID_PROJECT_VERSION = '2021.2.7f1';
-
+    
     public const VALID_PROJECT_CHANGESET = '6bd9e232123f';
-
+    
     public function testClassExists() {
         $this->assertTrue(class_exists(UnityProjectInfo::class));
     }
-
+    
     /**
      *
      * @dataProvider validPathProvider
@@ -33,7 +33,7 @@ class UnityProjectInfoTest extends TestCase {
         $this->assertNotNull($info);
         $this->assertInfoIsValid($info);
     }
-
+    
     /**
      *
      * @dataProvider invalidPathProvider
@@ -42,7 +42,7 @@ class UnityProjectInfoTest extends TestCase {
         $info = UnityProjectInfo::find($path, $includeSubdirectories);
         $this->assertNull($info);
     }
-
+    
     private function assertInfoIsValid(UnityProjectInfo $info) {
         $this->assertDirectoryExists($info->path);
         $this->assertEquals(realpath(self::VALID_PROJECT), realpath($info->path));
@@ -51,7 +51,7 @@ class UnityProjectInfoTest extends TestCase {
         $this->assertIsArray($info->settings);
         $this->assertIsArray($info->packages);
     }
-
+    
     /**
      *
      * @dataProvider validPathProvider
@@ -60,7 +60,7 @@ class UnityProjectInfoTest extends TestCase {
         $infos = iterator_to_array(UnityProjectInfo::findAll($path));
         $this->assertCount($expected, $infos);
     }
-
+    
     public function validPathProvider(): iterable {
         yield self::VALID_PROJECT => [
             self::VALID_PROJECT,
@@ -73,7 +73,7 @@ class UnityProjectInfoTest extends TestCase {
             2
         ];
     }
-
+    
     public function invalidPathProvider(): iterable {
         yield self::VALID_ROOT => [
             self::VALID_ROOT,
