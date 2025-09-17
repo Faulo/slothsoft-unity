@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  * @todo auto-generated
  */
 class ExecutionErrorTest extends TestCase {
-
+    
     public function testClassExists(): void {
         $this->assertTrue(class_exists(ExecutionError::class), "Failed to load class 'Slothsoft\Unity\ExecutionError'!");
     }

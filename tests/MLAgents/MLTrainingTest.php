@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  * @todo auto-generated
  */
 class MLTrainingTest extends TestCase {
-
+    
     public function testClassExists(): void {
         $this->assertTrue(class_exists(MLTraining::class), "Failed to load class 'Slothsoft\Unity\MLAgents\MLTraining'!");
     }

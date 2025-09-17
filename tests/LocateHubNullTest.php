@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  * @todo auto-generated
  */
 class LocateHubNullTest extends TestCase {
-
+    
     public function testClassExists(): void {
         $this->assertTrue(class_exists(LocateHubNull::class), "Failed to load class 'Slothsoft\Unity\LocateHubNull'!");
     }

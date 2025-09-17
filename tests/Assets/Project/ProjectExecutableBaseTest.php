@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  * @todo auto-generated
  */
 class ProjectExecutableBaseTest extends TestCase {
-
+    
     public function testClassExists(): void {
         $this->assertTrue(class_exists(ProjectExecutableBase::class), "Failed to load class 'Slothsoft\Unity\Assets\Project\ProjectExecutableBase'!");
     }
