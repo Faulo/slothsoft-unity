@@ -1,2 +1,4 @@
-/docs
-unused
+/docs/
+/.farah-cache/
+/.farah-data/
+/.farah-log/
