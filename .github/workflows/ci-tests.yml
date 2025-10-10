@@ -11,7 +11,7 @@ jobs:
       matrix:
         composer: ["lowest", "stable"]
         php: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-        extensions: ["xsl"]
+        extensions: ["ctype fileinfo iconv imap json mbstring pcre sockets xsl"]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
