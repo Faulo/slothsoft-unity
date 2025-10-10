@@ -7,7 +7,11 @@ def runTests(def versions) {
 				deleteDir()
 			}
 
-			withDockerContainer(image: image, toolName: 'Default', args: '--pull always') {
+			def dockerTool = tool(type: 'dockerTool', name: 'Default') + "/bin/docker"
+
+			callShell "${dockerTool} pull ${image}"
+
+			withDockerContainer(image: image, toolName: 'Default') {
 				catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
 					callShell 'composer update --prefer-lowest'
 					callShell "composer exec phpunit -- --log-junit .reports/${version}.xml"
