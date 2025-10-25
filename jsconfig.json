@@ -6,6 +6,9 @@
       ],
       "/slothsoft@schema/*": [
         "../slothsoft-schema/assets/*"
+      ],
+      "/slothsoft@unity/*": [
+        "./assets/*"
       ]
     }
   }
