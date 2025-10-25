@@ -13,6 +13,14 @@ def runTests(def versions) {
 
 			withDockerContainer(image: image, toolName: 'Default') {
 				catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
+					if (env.FARAH_INSTALL_FIREFOX == '1') {
+						if (isUnix()) {
+							// already part of the farah image
+						} else {
+							callShell "choco install Firefox --no-progress --yes --skip-checksums --params='/NoTaskbarShortcut /NoDesktopShortcut /NoStartMenuShortcut /NoAutoUpdate'"
+						}
+					}
+
 					callShell 'composer update --prefer-lowest'
 					callShell "composer exec phpunit -- --log-junit .reports/${version}-lowest.xml"
 
@@ -36,6 +44,7 @@ pipeline {
 	}
 	environment {
 		COMPOSER_PROCESS_TIMEOUT = '3600'
+		FARAH_INSTALL_FIREFOX = '0'
 	}
 	stages {
 		stage('Linux') {
