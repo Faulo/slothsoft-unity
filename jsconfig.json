@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "/slothsoft@farah/*": [
+        "../slothsoft-farah/assets/*"
+      ],
+      "/slothsoft@schema/*": [
+        "../slothsoft-schema/assets/*"
+      ]
+    }
+  }
+}
