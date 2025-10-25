@@ -1,21 +1,20 @@
 def runTests(def versions) {
 	for (version in versions) {
 		def image = "faulo/farah:${version}"
-		def dockerTool = tool(type: 'dockerTool', name: 'Default') + "/bin/docker"
 
 		stage("PHP: ${version}") {
 			dir('.reports') {
 				deleteDir()
 			}
 
+			def dockerTool = tool(type: 'dockerTool', name: 'Default') + "/bin/docker"
+
 			callShell "${dockerTool} pull ${image}"
 
 			withDockerContainer(image: image, toolName: 'Default') {
 				catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
 					callShell 'composer update --prefer-lowest'
-					callShell "composer exec phpunit -- --log-junit .reports/${version}-lowest.xml"
-					callShell 'composer update --prefer-stable'
-					callShell "composer exec phpunit -- --log-junit .reports/${version}-stable.xml"
+					callShell "composer exec phpunit -- --log-junit .reports/${version}.xml"
 				}
 			}
 

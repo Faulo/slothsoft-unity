@@ -24,3 +24,4 @@ composer.phar export-ignore
 /tests/ export-ignore
 /test-files/ export-ignore
 /phpunit.xml export-ignore
+/jsconfig.json export-ignore
