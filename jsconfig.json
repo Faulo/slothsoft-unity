@@ -2,10 +2,10 @@
   "compilerOptions": {
     "paths": {
       "/slothsoft@schema/*": [
-        "../slothsoft-schema/assets/*"
+        "vendor/slothsoft/schema/assets/*"
       ],
       "/slothsoft@unity/*": [
-        "./assets/*"
+        "assets/*"
       ]
     }
   }
