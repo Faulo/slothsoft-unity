@@ -3,14 +3,14 @@ services:
         container_name: ${COMPOSER_VENDOR}_${COMPOSER_MODULE}
         image: faulo/farah:${PHP_VERSION}
         volumes:
-            - ../composer.json:${DOCKER_WORKDIR}/composer.json
-            - ../composer.lock:${DOCKER_WORKDIR}/composer.lock
-            - ../assets:${DOCKER_WORKDIR}/assets
-            - ../scripts:${DOCKER_WORKDIR}/scripts
-            - ../src:${DOCKER_WORKDIR}/src
+            - ..:${DOCKER_WORKDIR}
             - .:${DOCKER_WORKDIR}/html
+            - ../.farah-vendor:${DOCKER_WORKDIR}/vendor
             - ../.farah-cache:/tmp/.farah-cache
             - ../.farah-data:/tmp/.farah-data
             - ../.farah-log:/tmp/.farah-log
         ports:
             - 80:80
+        environment:
+          COMPOSER_ROOT_VERSION: "dev-main"
+          COMPOSER_UPDATE: "install-dev"
