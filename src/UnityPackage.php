@@ -3,16 +3,16 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Slothsoft\Core\FileSystem;
-use Slothsoft\Core\Configuration\ConfigurationField;
+use Slothsoft\Core\Configuration\FileConfigurationField;
 
 class UnityPackage {
     
     public const ENV_EMPTY_MANIFEST = 'UNITY_EMPTY_MANIFEST';
     
-    private static function emptyManifestFile(): ConfigurationField {
+    private static function emptyManifestFile(): FileConfigurationField {
         static $field;
         if ($field === null) {
-            $field = new ConfigurationField();
+            $field = new FileConfigurationField();
         }
         return $field;
     }
