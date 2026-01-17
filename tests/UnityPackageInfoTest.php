@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class UnityPackageInfoTest extends TestCase {
+final class UnityPackageInfoTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(UnityPackageInfo::class), "Failed to load class 'Slothsoft\Unity\UnityPackageInfo'!");

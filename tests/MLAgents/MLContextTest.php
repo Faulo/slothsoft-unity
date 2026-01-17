@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class MLContextTest extends TestCase {
+final class MLContextTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(MLContext::class), "Failed to load class 'Slothsoft\Unity\MLAgents\MLContext'!");

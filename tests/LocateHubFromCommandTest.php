@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class LocateHubFromCommandTest extends TestCase {
+final class LocateHubFromCommandTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(LocateHubFromCommand::class), "Failed to load class 'Slothsoft\Unity\LocateHubFromCommand'!");

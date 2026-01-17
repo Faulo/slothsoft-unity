@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class MLParametersTest extends TestCase {
+final class MLParametersTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(MLParameters::class), "Failed to load class 'Slothsoft\Unity\MLAgents\MLParameters'!");

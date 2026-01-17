@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class HelpExecutableTest extends TestCase {
+final class HelpExecutableTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(HelpExecutable::class), "Failed to load class 'Slothsoft\Unity\Assets\Hub\HelpExecutable'!");

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class JsonUtilsTest extends TestCase {
+final class JsonUtilsTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(JsonUtils::class), "Failed to load class 'Slothsoft\Unity\JsonUtils'!");

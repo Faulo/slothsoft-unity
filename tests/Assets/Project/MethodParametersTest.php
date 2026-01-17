@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class MethodParametersTest extends TestCase {
+final class MethodParametersTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(MethodParameters::class), "Failed to load class 'Slothsoft\Unity\Assets\Project\MethodParameters'!");

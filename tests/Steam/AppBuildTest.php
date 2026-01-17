@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class AppBuildTest extends TestCase {
+final class AppBuildTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(AppBuild::class), "Failed to load class 'Slothsoft\Unity\Steam\AppBuild'!");

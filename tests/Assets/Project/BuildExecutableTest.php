@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class BuildExecutableTest extends TestCase {
+final class BuildExecutableTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(BuildExecutable::class), "Failed to load class 'Slothsoft\Unity\Assets\Project\BuildExecutable'!");

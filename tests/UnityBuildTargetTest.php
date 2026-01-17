@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class UnityBuildTargetTest extends TestCase {
+final class UnityBuildTargetTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(UnityBuildTarget::class), "Failed to load class 'Slothsoft\Unity\UnityBuildTarget'!");

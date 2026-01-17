@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class SettingsTest extends TestCase {
+final class SettingsTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(Settings::class), "Failed to load class 'Slothsoft\Unity\DocFX\Settings'!");

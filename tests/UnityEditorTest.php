@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @todo auto-generated
  */
-class UnityEditorTest extends TestCase {
+final class UnityEditorTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(UnityEditor::class), "Failed to load class 'Slothsoft\Unity\UnityEditor'!");
