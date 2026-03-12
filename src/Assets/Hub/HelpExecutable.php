@@ -23,7 +23,7 @@ class HelpExecutable implements ExecutableBuilderStrategyInterface {
             }
         };
         $writer = new ChunkWriterFromChunksDelegate($delegate);
-        $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt", false);
+        $resultBuilder = new ChunkWriterResultBuilder($writer, "help.txt", true);
         return new ExecutableStrategies($resultBuilder);
     }
 }
