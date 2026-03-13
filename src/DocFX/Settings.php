@@ -182,7 +182,7 @@ class Settings {
         }
     }
     
-    private function addDirectory(string $directory, callable $include = null): void {
+    private function addDirectory(string $directory, ?callable $include = null): void {
         $directory = new \RecursiveDirectoryIterator($this->path . DIRECTORY_SEPARATOR . $directory);
         $iterator = new \RecursiveIteratorIterator($directory, \RecursiveIteratorIterator::SELF_FIRST);
         
@@ -248,7 +248,7 @@ class Settings {
         ];
     }
     
-    public function export(string $target = null): string {
+    public function export(?string $target = null): string {
         if ($target === null) {
             $target = $this->path . DIRECTORY_SEPARATOR . '.Documentation';
         }
