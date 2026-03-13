@@ -20,10 +20,14 @@ def runTests(def versions) {
 							callShell "choco install Firefox --no-progress --yes --skip-checksums --params='/NoTaskbarShortcut /NoDesktopShortcut /NoStartMenuShortcut /NoAutoUpdate'"
 						}
 					}
+				}
 
+				catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
 					callShell 'composer update --prefer-lowest'
 					callShell "composer exec phpunit -- --log-junit .reports/${version}-lowest.xml"
+				}
 
+				catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
 					callShell 'composer update --prefer-stable'
 					callShell "composer exec phpunit -- --log-junit .reports/${version}-stable.xml"
 				}
