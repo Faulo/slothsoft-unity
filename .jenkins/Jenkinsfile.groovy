@@ -57,7 +57,7 @@ pipeline {
 			}
 			steps {
 				script {
-					runTests(["8.3", "8.4", "8.5"])
+					runTests(["8.2", "8.3", "8.4", "8.5"])
 				}
 			}
 		}
@@ -67,7 +67,7 @@ pipeline {
 			}
 			steps {
 				script {
-					runTests(["8.3", "8.4", "8.5"])
+					runTests(["8.2", "8.3", "8.4", "8.5"])
 				}
 			}
 		}
