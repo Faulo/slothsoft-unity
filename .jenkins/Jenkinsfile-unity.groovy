@@ -1,18 +1,20 @@
 def runTests(def name = "tests") {
-	callShell 'composer update --prefer-lowest'
-
-	dir('.reports') {
-		deleteDir()
-	}
-
-	def report = ".reports/${name}.xml"
-
 	catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
-		callShell "composer exec phpunit -- --log-junit ${report}"
-	}
+		callShell 'composer update --prefer-lowest'
 
-	if (fileExists(report)) {
-		junit report
+		dir('.reports') {
+			deleteDir()
+		}
+
+		def report = ".reports/${name}.xml"
+
+		catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
+			callShell "composer exec phpunit -- --log-junit ${report}"
+		}
+
+		if (fileExists(report)) {
+			junit report
+		}
 	}
 }
 
