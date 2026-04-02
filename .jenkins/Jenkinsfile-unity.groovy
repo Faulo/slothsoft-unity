@@ -16,20 +16,6 @@ def runTests(def name = "tests") {
 	}
 }
 
-def runTestsInContainer(def image, def versions) {
-	for (version in versions) {
-		def name = "${image}:${version}"
-
-		stage("PHP: ${version}") {
-			callShell "docker pull ${name}"
-
-			docker.image(name).inside {
-				runTests(version);
-			}
-		}
-	}
-}
-
 pipeline {
 	agent none
 	options {
@@ -62,38 +48,6 @@ pipeline {
 			steps {
 				script {
 					runTests()
-				}
-			}
-		}
-		stage('Linux Farah') {
-			agent {
-				label 'docker && linux'
-			}
-			steps {
-				script {
-					runTestsInContainer("faulo/farah", [
-						"7.4",
-						"8.0",
-						"8.1",
-						"8.2",
-						"8.3"
-					])
-				}
-			}
-		}
-		stage('Windows Farah') {
-			agent {
-				label 'docker && windows'
-			}
-			steps {
-				script {
-					runTestsInContainer("faulo/farah", [
-						"7.4",
-						"8.0",
-						"8.1",
-						"8.2",
-						"8.3"
-					])
 				}
 			}
 		}
