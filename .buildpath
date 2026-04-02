@@ -442,12 +442,12 @@
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry excluding="Resources/stubs/" kind="src" path="vendor/symfony/polyfill-php81">
+	<buildpathentry excluding="Resources/stubs/" kind="src" path="vendor/symfony/polyfill-php85">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/polyfill-php81/Resources/stubs">
+	<buildpathentry kind="src" path="vendor/symfony/polyfill-php85/Resources/stubs">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
@@ -468,6 +468,11 @@
 		</attributes>
 	</buildpathentry>
 	<buildpathentry kind="src" path="vendor/symfony/var-dumper/Resources/functions">
+		<attributes>
+			<attribute name="composer" value="vendor"/>
+		</attributes>
+	</buildpathentry>
+	<buildpathentry kind="src" path="vendor/symfony/var-exporter">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>

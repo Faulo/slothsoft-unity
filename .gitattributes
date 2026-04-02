@@ -27,3 +27,5 @@ composer.phar export-ignore
 /jsconfig.json export-ignore
 /catalog.xml export-ignore
 /enter-cmd.bat export-ignore
+/unused export-ignore
+/vue export-ignore
