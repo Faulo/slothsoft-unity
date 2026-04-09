@@ -316,13 +316,15 @@ class UnityHub {
             '--version',
             $version,
             '--changeset',
-            $changeset,
-            '--childModules'
+            $changeset
         ];
         
-        foreach ($modules as $module) {
-            $args[] = '--module';
-            $args[] = $module;
+        if (count($modules)) {
+            $args[] = '--childModules';
+            foreach ($modules as $module) {
+                $args[] = '--module';
+                $args[] = $module;
+            }
         }
         
         return $args;
