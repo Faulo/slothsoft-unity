@@ -39,9 +39,9 @@ class InstallExecutable extends PackageExecutableBase {
             throw ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->package->getEditorVersion()}'.");
         }
         
-        $this->project = $this->package->createEmptyProject($this->workspace);
+        $project = $this->package->createEmptyProject($this->workspace);
         
-        $this->workspace = $this->project->getProjectPath();
+        $this->workspace = $project->getProjectPath();
         
         return null;
     }
