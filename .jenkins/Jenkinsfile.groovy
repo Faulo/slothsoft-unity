@@ -1,17 +1,15 @@
 def runTests(def versions) {
-	def dockerTool = tool(type: 'dockerTool', name: 'Default') + "/bin/docker"
-
 	for (version in versions) {
-		def image = "faulo/farah:${version}"
-
 		stage("PHP: ${version}") {
 			dir('.reports') {
 				deleteDir()
 			}
 
-			callShell "${dockerTool} pull ${image}"
+			def image = docker.image("faulo/farah:${version}")
 
-			withDockerContainer(image: image, toolName: 'Default') {
+			image.pull()
+
+			image.inside {
 				catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
 					if (env.FARAH_INSTALL_FIREFOX == '1') {
 						if (isUnix()) {
