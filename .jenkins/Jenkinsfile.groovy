@@ -5,11 +5,7 @@ def runTests(def versions) {
 				deleteDir()
 			}
 
-			def image = docker.image("faulo/farah:${version}")
-
-			image.pull()
-
-			image.inside {
+			docker.image("faulo/farah:${version}").inside {
 				catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
 					if (env.FARAH_INSTALL_FIREFOX == '1') {
 						if (isUnix()) {
