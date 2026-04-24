@@ -197,8 +197,8 @@ class UnityHub {
         
         if ($this->hasLoadedEditorsFromCache) {
             if (self::getLoggingEnabled() or UnityEnvironment::isLoggingCache()) {
-                fwrite(STDERR, self::editorPathCache() . PHP_EOL);
-                fwrite(STDERR, $editorPaths . PHP_EOL);
+                fwrite(STDERR, UnityEnvironment::formatCache(self::editorPathCache() . PHP_EOL));
+                fwrite(STDERR, UnityEnvironment::formatCache($editorPaths . PHP_EOL));
             }
         } else {
             $editorPaths = trim($this->execute('editors', '--installed')->getOutput());
@@ -434,7 +434,7 @@ class UnityHub {
     
     public static function runUnityProcess(Process $process, bool $validateExitCode = true): void {
         if (self::getLoggingEnabled() or UnityEnvironment::isLoggingInput()) {
-            fwrite(STDERR, $process->getCommandLine() . PHP_EOL);
+            fwrite(STDERR, UnityEnvironment::formatInput($process->getCommandLine() . PHP_EOL));
         }
         
         $process->setTimeout(self::getProcessTimeout());
@@ -444,12 +444,12 @@ class UnityHub {
                 switch ($type) {
                     case Process::OUT:
                         if (self::getLoggingEnabled() or UnityEnvironment::isLoggingOutput()) {
-                            fwrite(STDERR, $data);
+                            fwrite(STDERR, UnityEnvironment::formatOutput($data));
                         }
                         break;
                     case Process::ERR:
                         if (self::getLoggingEnabled() or UnityEnvironment::isLoggingError()) {
-                            fwrite(STDERR, $data);
+                            fwrite(STDERR, UnityEnvironment::formatError($data));
                         }
                         break;
                     default:

@@ -3,6 +3,8 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use Ds\Set;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 final class UnityEnvironment {
     
@@ -58,5 +60,44 @@ final class UnityEnvironment {
     
     public static function isLoggingCache(): bool {
         return self::logging()->contains(self::UNITY_LOG_ALL) or self::logging()->contains(self::UNITY_LOG_CACHE);
+    }
+    
+    private static ?OutputFormatter $formatter = null;
+    
+    private static function formatter(): OutputFormatter {
+        if (self::$formatter === null) {
+            self::$formatter = new OutputFormatter(decorated: true);
+            self::$formatter->setStyle(self::UNITY_LOG_STDIN, new OutputFormatterStyle('cyan'));
+            self::$formatter->setStyle(self::UNITY_LOG_STDOUT, new OutputFormatterStyle('gray'));
+            self::$formatter->setStyle(self::UNITY_LOG_STDERR, new OutputFormatterStyle('red'));
+            self::$formatter->setStyle(self::UNITY_LOG_LICENSE, new OutputFormatterStyle('yellow'));
+            self::$formatter->setStyle(self::UNITY_LOG_CACHE, new OutputFormatterStyle('blue'));
+        }
+        
+        return self::$formatter;
+    }
+    
+    private static function format(string $text, string $style) {
+        return self::formatter()->format("<$style>$text</$style>");
+    }
+    
+    public static function formatInput(string $text): string {
+        return self::format($text, self::UNITY_LOG_STDIN);
+    }
+    
+    public static function formatOutput(string $text): string {
+        return self::format($text, self::UNITY_LOG_STDOUT);
+    }
+    
+    public static function formatError(string $text): string {
+        return self::format($text, self::UNITY_LOG_STDERR);
+    }
+    
+    public static function formatLicensor(string $text): string {
+        return self::format($text, self::UNITY_LOG_LICENSE);
+    }
+    
+    public static function formatCache(string $text): string {
+        return self::format($text, self::UNITY_LOG_CACHE);
     }
 }
