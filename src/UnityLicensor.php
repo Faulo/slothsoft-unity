@@ -36,14 +36,12 @@ class UnityLicensor {
     
     public const ENV_UNITY_LICENSE_PASSWORD = 'UNITY_CREDENTIALS_PSW';
     
-    public const ENV_UNITY_LICENSE_LOGGING = 'UNITY_CREDENTIALS_LOGGING';
-    
     public static function hasCredentialsInEnvironment(): bool {
         return getenv(self::ENV_UNITY_LICENSE_EMAIL) and getenv(self::ENV_UNITY_LICENSE_PASSWORD);
     }
     
     private static function isLogging(): bool {
-        return (bool) (int) getenv(self::ENV_UNITY_LICENSE_LOGGING);
+        return UnityEnvironment::isLoggingLicense();
     }
     
     private string $userMail;

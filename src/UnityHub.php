@@ -4,11 +4,11 @@ namespace Slothsoft\Unity;
 
 use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
+use Slothsoft\Core\ServerEnvironment;
 use Slothsoft\Core\Configuration\ConfigurationField;
 use Symfony\Component\Process\Process;
 use InvalidArgumentException;
 use Throwable;
-use Slothsoft\Core\ServerEnvironment;
 
 class UnityHub {
     
@@ -196,7 +196,7 @@ class UnityHub {
         $this->hasLoadedEditorsFromCache = ($allowCache and ($editorPaths = $this->loadInstalledEditorsCache()));
         
         if ($this->hasLoadedEditorsFromCache) {
-            if (self::getLoggingEnabled()) {
+            if (self::getLoggingEnabled() or UnityEnvironment::isLoggingCache()) {
                 fwrite(STDERR, self::editorPathCache() . PHP_EOL);
                 fwrite(STDERR, $editorPaths . PHP_EOL);
             }
@@ -433,7 +433,7 @@ class UnityHub {
     }
     
     public static function runUnityProcess(Process $process, bool $validateExitCode = true): void {
-        if (self::getLoggingEnabled()) {
+        if (self::getLoggingEnabled() or UnityEnvironment::isLoggingInput()) {
             fwrite(STDERR, $process->getCommandLine() . PHP_EOL);
         }
         
@@ -441,8 +441,22 @@ class UnityHub {
         
         try {
             $process->run(function (string $type, string $data): void {
-                if (self::getLoggingEnabled() or $type === Process::ERR) {
-                    fwrite(STDERR, $data);
+                switch ($type) {
+                    case Process::OUT:
+                        if (self::getLoggingEnabled() or UnityEnvironment::isLoggingOutput()) {
+                            fwrite(STDERR, $data);
+                        }
+                        break;
+                    case Process::ERR:
+                        if (self::getLoggingEnabled() or UnityEnvironment::isLoggingError()) {
+                            fwrite(STDERR, $data);
+                        }
+                        break;
+                    default:
+                        if (self::getLoggingEnabled()) {
+                            fwrite(STDERR, $data);
+                        }
+                        break;
                 }
             });
         } catch (Throwable $e) {

@@ -4,13 +4,13 @@ namespace Slothsoft\Unity;
 
 use Ds\Set;
 
-class UnityEnvironment {
+final class UnityEnvironment {
     
-    public const ENV_UNITY_LOGGING = 'COMPOSE_UNITY_LOGGING';
+    public const ENV_UNITY_LOGGING = 'UNITY_LOGGING';
     
     public const UNITY_LOG_ALL = 'all';
     
-    private const UNITY_LOG_DEFAULT = self::UNITY_LOG_ALL;
+    private const UNITY_LOG_DEFAULT = 'stdin stderr';
     
     public const UNITY_LOG_STDIN = 'stdin';
     
@@ -18,7 +18,9 @@ class UnityEnvironment {
     
     public const UNITY_LOG_STDERR = 'stderr';
     
-    public const UNITY_LOG_LICENSE = 'license';
+    public const UNITY_LOG_LICENSE = 'licensor';
+    
+    public const UNITY_LOG_CACHE = 'cache';
     
     private static ?Set $logging = null;
     
@@ -52,5 +54,9 @@ class UnityEnvironment {
     
     public static function isLoggingLicense(): bool {
         return self::logging()->contains(self::UNITY_LOG_ALL) or self::logging()->contains(self::UNITY_LOG_LICENSE);
+    }
+    
+    public static function isLoggingCache(): bool {
+        return self::logging()->contains(self::UNITY_LOG_ALL) or self::logging()->contains(self::UNITY_LOG_CACHE);
     }
 }
