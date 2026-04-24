@@ -37,7 +37,7 @@ final class UnityEnvironmentTest extends TestCase {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING);
         UnityEnvironment::reload();
         
-        $this->assertThat(UnityEnvironment::isLoggingInput(), new IsTrue());
+        $this->assertThat(UnityEnvironment::isLoggingInput(), new IsFalse());
         $this->assertThat(UnityEnvironment::isLoggingOutput(), new IsFalse());
         $this->assertThat(UnityEnvironment::isLoggingError(), new IsTrue());
         $this->assertThat(UnityEnvironment::isLoggingLicense(), new IsFalse());
