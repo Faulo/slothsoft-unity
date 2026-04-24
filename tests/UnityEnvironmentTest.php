@@ -19,11 +19,10 @@ final class UnityEnvironmentTest extends TestCase {
     }
     
     /**
-     *
-     * @runInSeparateProcess
      */
     public function testCanHandleWhitespace() {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=  stdin  stderr  ');
+        UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingInput(), new IsTrue());
         $this->assertThat(UnityEnvironment::isLoggingOutput(), new IsFalse());
@@ -33,10 +32,10 @@ final class UnityEnvironmentTest extends TestCase {
     /**
      *
      * @dataProvider isLoggingInputProvider
-     * @runInSeparateProcess
      */
     public function testIsLoggingInput(string $value, bool $expected) {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
+        UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingInput(), new IsEqual($expected));
     }
@@ -61,10 +60,10 @@ final class UnityEnvironmentTest extends TestCase {
     /**
      *
      * @dataProvider isLoggingOutputProvider
-     * @runInSeparateProcess
      */
     public function testIsLoggingOutput(string $value, bool $expected) {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
+        UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingOutput(), new IsEqual($expected));
     }
@@ -89,10 +88,10 @@ final class UnityEnvironmentTest extends TestCase {
     /**
      *
      * @dataProvider isLoggingErrorProvider
-     * @runInSeparateProcess
      */
     public function testIsLoggingError(string $value, bool $expected) {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
+        UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingError(), new IsEqual($expected));
     }
@@ -117,10 +116,10 @@ final class UnityEnvironmentTest extends TestCase {
     /**
      *
      * @dataProvider isLoggingLicenseProvider
-     * @runInSeparateProcess
      */
     public function testIsLoggingLicense(string $value, bool $expected) {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
+        UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingLicense(), new IsEqual($expected));
     }

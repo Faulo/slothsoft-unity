@@ -6,7 +6,7 @@ use Ds\Set;
 
 class UnityEnvironment {
     
-    public const ENV_UNITY_LOGGING = 'UNITY_LOGGING';
+    public const ENV_UNITY_LOGGING = 'COMPOSE_UNITY_LOGGING';
     
     public const UNITY_LOG_ALL = 'all';
     
@@ -20,17 +20,22 @@ class UnityEnvironment {
     
     public const UNITY_LOG_LICENSE = 'license';
     
+    private static ?Set $logging = null;
+    
     private static function logging(): Set {
-        static $logging = null;
-        if ($logging === null) {
+        if (self::$logging === null) {
             $env = getenv(self::ENV_UNITY_LOGGING);
             if ($env === false) {
                 $env = self::UNITY_LOG_DEFAULT;
             }
             
-            $logging = new Set(preg_split('~\s+~', strtolower($env), -1, PREG_SPLIT_NO_EMPTY));
+            self::$logging = new Set(preg_split('~\s+~', strtolower($env), - 1, PREG_SPLIT_NO_EMPTY));
         }
-        return $logging;
+        return self::$logging;
+    }
+    
+    public static function reload(): void {
+        self::$logging = null;
     }
     
     public static function isLoggingInput(): bool {
