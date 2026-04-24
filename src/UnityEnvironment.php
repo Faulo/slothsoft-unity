@@ -10,7 +10,7 @@ final class UnityEnvironment {
     
     public const UNITY_LOG_ALL = 'all';
     
-    private const UNITY_LOG_DEFAULT = 'stdin stderr';
+    private const UNITY_LOG_DEFAULT = 'stderr';
     
     public const UNITY_LOG_STDIN = 'stdin';
     
