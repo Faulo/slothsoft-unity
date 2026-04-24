@@ -18,6 +18,11 @@ final class UnityEnvironmentTest extends TestCase {
         $this->assertTrue(class_exists(UnityEnvironment::class), "Failed to load class 'Slothsoft\Unity\UnityEnvironment'!");
     }
     
+    public static function tearDownAfterClass(): void {
+        putenv(UnityEnvironment::ENV_UNITY_LOGGING);
+        UnityEnvironment::reload();
+    }
+    
     /**
      */
     public function testCanHandleWhitespace() {
