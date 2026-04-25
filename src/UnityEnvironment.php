@@ -8,6 +8,25 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 final class UnityEnvironment {
     
+    public const ENV_UNITY_NO_GRAPHICS = 'UNITY_NO_GRAPHICS';
+    
+    public static function getNoGraphics(): bool {
+        return (bool) (int) getenv(self::ENV_UNITY_NO_GRAPHICS);
+    }
+    
+    public const ENV_UNITY_ACCELERATOR_ENDPOINT = 'UNITY_ACCELERATOR_ENDPOINT';
+    
+    public const ENV_UNITY_ACCELERATOR_PARAMS = 'UNITY_ACCELERATOR_PARAMS';
+    
+    public static function getAcceleratorEndpoint(): ?string {
+        return getenv(self::ENV_UNITY_ACCELERATOR_ENDPOINT) ?: null;
+    }
+    
+    public static function getAcceleratorParams(): array {
+        $params = getenv(self::ENV_UNITY_ACCELERATOR_PARAMS);
+        return $params ? preg_split('~\s+~', $params, - 1, PREG_SPLIT_NO_EMPTY) : [];
+    }
+    
     public const ENV_UNITY_LOGGING = 'UNITY_LOGGING';
     
     public const UNITY_LOG_ALL = 'all';

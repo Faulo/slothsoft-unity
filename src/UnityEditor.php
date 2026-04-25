@@ -182,12 +182,6 @@ class UnityEditor {
         return $project;
     }
     
-    const ENV_UNITY_ACCELERATOR_ENDPOINT = 'UNITY_ACCELERATOR_ENDPOINT';
-    
-    const ENV_UNITY_ACCELERATOR_PARAMS = 'UNITY_ACCELERATOR_PARAMS';
-    
-    const ENV_UNITY_NO_GRAPHICS = 'UNITY_NO_GRAPHICS';
-    
     private function createProcess(array $arguments): Process {
         $isLicenseRequest = (in_array(self::ARGUMENT_LICENSE_CREATE, $arguments) or in_array(self::ARGUMENT_LICENSE_USE, $arguments));
         
@@ -199,9 +193,8 @@ class UnityEditor {
                 '-'
             ], $arguments);
         } else {
-            if ($endpoint = getenv(self::ENV_UNITY_ACCELERATOR_ENDPOINT)) {
-                $params = getenv(self::ENV_UNITY_ACCELERATOR_PARAMS);
-                $params = $params ? explode(' ', trim($params)) : [];
+            if ($endpoint = UnityEnvironment::getAcceleratorEndpoint()) {
+                $params = UnityEnvironment::getAcceleratorParams();
                 
                 $arguments = array_merge([
                     '-EnableCacheServer',
@@ -214,7 +207,7 @@ class UnityEditor {
                 ], $params, $arguments);
             }
             
-            if ((int) getenv(self::ENV_UNITY_NO_GRAPHICS)) {
+            if (UnityEnvironment::getNoGraphics()) {
                 $arguments = array_merge([
                     '-nographics'
                 ], $arguments);

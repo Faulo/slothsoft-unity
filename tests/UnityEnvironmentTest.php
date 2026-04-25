@@ -20,12 +20,101 @@ final class UnityEnvironmentTest extends TestCase {
     
     public static function tearDownAfterClass(): void {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING);
+        putenv(UnityEnvironment::ENV_UNITY_NO_GRAPHICS);
+        putenv(UnityEnvironment::ENV_UNITY_ACCELERATOR_ENDPOINT);
+        putenv(UnityEnvironment::ENV_UNITY_ACCELERATOR_PARAMS);
         UnityEnvironment::reload();
     }
     
     /**
+     *
+     * @dataProvider provideGetNoGraphics
      */
-    public function testCanHandleWhitespace() {
+    public function testGetNoGraphics(?string $value, bool $expected): void {
+        putenv(UnityEnvironment::ENV_UNITY_NO_GRAPHICS . ($value === null ? '' : "=$value"));
+        
+        $this->assertThat(UnityEnvironment::getNoGraphics(), new IsEqual($expected));
+    }
+    
+    public function provideGetNoGraphics(): iterable {
+        yield 'empty' => [
+            '',
+            false
+        ];
+        yield 'unset' => [
+            null,
+            false
+        ];
+        
+        yield '1' => [
+            '1',
+            true
+        ];
+        
+        yield '0' => [
+            '0',
+            false
+        ];
+    }
+    
+    /**
+     *
+     * @dataProvider provideGetAcceleratorEndpoint
+     */
+    public function testGetAcceleratorEndpoint(?string $value, ?string $expected): void {
+        putenv(UnityEnvironment::ENV_UNITY_ACCELERATOR_ENDPOINT . ($value === null ? '' : "=$value"));
+        
+        $this->assertThat(UnityEnvironment::getAcceleratorEndpoint(), new IsEqual($expected));
+    }
+    
+    public function provideGetAcceleratorEndpoint(): iterable {
+        yield 'empty' => [
+            '',
+            null
+        ];
+        yield 'unset' => [
+            null,
+            null
+        ];
+        
+        yield 'test' => [
+            'test',
+            'test'
+        ];
+    }
+    
+    /**
+     *
+     * @dataProvider provideGetAcceleratorParams
+     */
+    public function testGetAcceleratorParams(?string $value, array $expected): void {
+        putenv(UnityEnvironment::ENV_UNITY_ACCELERATOR_PARAMS . ($value === null ? '' : "=$value"));
+        
+        $this->assertThat(UnityEnvironment::getAcceleratorParams(), new IsEqual($expected));
+    }
+    
+    public function provideGetAcceleratorParams(): iterable {
+        yield 'empty' => [
+            '',
+            []
+        ];
+        yield 'unset' => [
+            null,
+            []
+        ];
+        
+        yield 'test' => [
+            'a b',
+            [
+                'a',
+                'b'
+            ]
+        ];
+    }
+    
+    /**
+     */
+    public function testCanHandleWhitespace(): void {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=  stdout   licensor  cache  ');
         UnityEnvironment::reload();
         
@@ -38,7 +127,7 @@ final class UnityEnvironmentTest extends TestCase {
     
     /**
      */
-    public function testDefaultLogging() {
+    public function testDefaultLogging(): void {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING);
         UnityEnvironment::reload();
         
