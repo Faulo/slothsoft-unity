@@ -32,6 +32,7 @@ pipeline {
         STEAM_CREDENTIALS = credentials('Slothsoft-Steam')
         EMAIL_TEST_TIME = '1745158411'
         EMAIL_TEST_CODE = '177824'
+        UNITY_LOGGING = ''
     }
     stages {
         stage('Run Tests') {
