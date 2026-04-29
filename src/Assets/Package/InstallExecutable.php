@@ -3,7 +3,6 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Package;
 
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
-use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
 class InstallExecutable extends PackageExecutableBase {
@@ -36,10 +35,6 @@ class InstallExecutable extends PackageExecutableBase {
     
     protected function createResultDocument(): ?DOMDocument {
         $project = $this->package->createEmptyProject($this->workspace);
-        
-        if (! $this->package->ensureEditorIsLicensed($this->workspace)) {
-            throw ExecutionError::Error('AssertLicense', "Editor for package '{$this->package}' is not licensed! Visit https://license.unity3d.com/manual for manual activation of a license for editor version '{$this->package->getEditorVersion()}'.");
-        }
         
         $this->workspace = $project->getProjectPath();
         

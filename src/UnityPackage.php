@@ -50,6 +50,8 @@ class UnityPackage {
     }
     
     public function createEmptyProject(string $path): UnityProject {
+        $this->ensureEditorIsInstalled();
+        
         $project = $this->editor->createEmptyProject($path, false);
         
         $path = $project->getProjectPath();

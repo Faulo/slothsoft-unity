@@ -42,7 +42,7 @@ final class UnityEditorTest extends TestCase {
         
         $editor->createEmptyProject($target, false);
         
-        $result = $editor->execute(false, '-projectPath', $target, '-quit');
+        $result = $editor->execute(true, '-projectPath', $target, '-quit');
         
         $this->assertThat($result->getExitCode(), new IsEqual(0));
     }
