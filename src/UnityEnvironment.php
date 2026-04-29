@@ -31,6 +31,8 @@ final class UnityEnvironment {
     
     public const UNITY_LOG_ALL = 'all';
     
+    public const UNITY_LOG_NONE = 'none';
+    
     private const UNITY_LOG_DEFAULT = 'stderr';
     
     public const UNITY_LOG_STDIN = 'stdin';
@@ -70,8 +72,6 @@ final class UnityEnvironment {
     }
     
     public static function isLoggingError(): bool {
-        var_dump(getenv(self::ENV_UNITY_LOGGING));
-        var_dump(self::logging());
         return self::logging()->contains(self::UNITY_LOG_ALL) or self::logging()->contains(self::UNITY_LOG_STDERR);
     }
     

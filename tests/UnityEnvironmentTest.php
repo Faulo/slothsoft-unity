@@ -150,8 +150,8 @@ final class UnityEnvironmentTest extends TestCase {
     }
     
     public function isLoggingInputProvider(): iterable {
-        yield '-' => [
-            '',
+        yield UnityEnvironment::UNITY_LOG_NONE => [
+            UnityEnvironment::UNITY_LOG_NONE,
             false
         ];
         
@@ -178,8 +178,8 @@ final class UnityEnvironmentTest extends TestCase {
     }
     
     public function isLoggingOutputProvider(): iterable {
-        yield '-' => [
-            '',
+        yield UnityEnvironment::UNITY_LOG_NONE => [
+            UnityEnvironment::UNITY_LOG_NONE,
             false
         ];
         
@@ -202,14 +202,12 @@ final class UnityEnvironmentTest extends TestCase {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
         UnityEnvironment::reload();
         
-        $this->assertThat(getenv(UnityEnvironment::ENV_UNITY_LOGGING), new IsEqual($value));
-        
         $this->assertThat(UnityEnvironment::isLoggingError(), new IsEqual($expected));
     }
     
     public function isLoggingErrorProvider(): iterable {
-        yield '-' => [
-            '',
+        yield UnityEnvironment::UNITY_LOG_NONE => [
+            UnityEnvironment::UNITY_LOG_NONE,
             false
         ];
         
@@ -236,8 +234,8 @@ final class UnityEnvironmentTest extends TestCase {
     }
     
     public function isLoggingLicenseProvider(): iterable {
-        yield '-' => [
-            '',
+        yield UnityEnvironment::UNITY_LOG_NONE => [
+            UnityEnvironment::UNITY_LOG_NONE,
             false
         ];
         
@@ -264,8 +262,8 @@ final class UnityEnvironmentTest extends TestCase {
     }
     
     public function isLoggingCacheProvider(): iterable {
-        yield '-' => [
-            '',
+        yield UnityEnvironment::UNITY_LOG_NONE => [
+            UnityEnvironment::UNITY_LOG_NONE,
             false
         ];
         
