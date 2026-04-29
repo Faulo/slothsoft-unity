@@ -24,7 +24,7 @@ class UnityEditor {
         return is_string($this->executable) and is_file($this->executable);
     }
     
-    private const ASSUME_LICENSE = false;
+    private const ASSUME_LICENSE = true;
     
     private bool $wasLicensed = self::ASSUME_LICENSE;
     
@@ -97,12 +97,14 @@ class UnityEditor {
     
     private bool $hasTriedToLicense = false;
     
+    private const LICENSE_IS_MISSING_2021 = 'Cancelling DisplayDialog: Failed to activate/update license';
+    
     private const LICENSE_IS_MISSING_2022 = 'No valid Unity Editor license found. Please activate your license.';
     
     private const LICENSE_IS_MISSING_6000 = 'Unity has not been activated with a valid License.';
     
     private static function isLicenseMissing(string $stdout): bool {
-        return strpos($stdout, self::LICENSE_IS_MISSING_2022) !== false or strpos($stdout, self::LICENSE_IS_MISSING_6000) !== false;
+        return strpos($stdout, self::LICENSE_IS_MISSING_2021) !== false or strpos($stdout, self::LICENSE_IS_MISSING_2022) !== false or strpos($stdout, self::LICENSE_IS_MISSING_6000) !== false;
     }
     
     private function tryToLicense(): bool {
