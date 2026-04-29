@@ -35,25 +35,23 @@ pipeline {
         UNITY_LOGGING = ''
     }
     stages {
-        stage('Run Tests') {
-            stage('Linux') {
-                agent {
-                    label 'unity && linux'
-                }
-                steps {
-                    script {
-                        runTests()
-                    }
+        stage('Linux') {
+            agent {
+                label 'unity && linux'
+            }
+            steps {
+                script {
+                    runTests()
                 }
             }
-            stage('Windows') {
-                agent {
-                    label 'unity && windows'
-                }
-                steps {
-                    script {
-                        runTests()
-                    }
+        }
+        stage('Windows') {
+            agent {
+                label 'unity && windows'
+            }
+            steps {
+                script {
+                    runTests()
                 }
             }
         }
