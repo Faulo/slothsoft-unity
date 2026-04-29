@@ -24,7 +24,7 @@ class UnityEditor {
         return is_string($this->executable) and is_file($this->executable);
     }
     
-    private const ASSUME_LICENSE = true;
+    private const ASSUME_LICENSE = false;
     
     private bool $wasLicensed = self::ASSUME_LICENSE;
     
