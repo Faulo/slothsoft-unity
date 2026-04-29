@@ -202,6 +202,8 @@ final class UnityEnvironmentTest extends TestCase {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
         UnityEnvironment::reload();
         
+        $this->assertThat(getenv(UnityEnvironment::ENV_UNITY_LOGGING), new IsEqual($value));
+        
         $this->assertThat(UnityEnvironment::isLoggingError(), new IsEqual($expected));
     }
     
