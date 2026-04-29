@@ -36,25 +36,23 @@ pipeline {
     }
     stages {
         stage('Run Tests') {
-            parallel {
-                stage('Linux') {
-                    agent {
-                        label 'unity && linux'
-                    }
-                    steps {
-                        script {
-                            runTests()
-                        }
+            stage('Linux') {
+                agent {
+                    label 'unity && linux'
+                }
+                steps {
+                    script {
+                        runTests()
                     }
                 }
-                stage('Windows') {
-                    agent {
-                        label 'unity && windows'
-                    }
-                    steps {
-                        script {
-                            runTests()
-                        }
+            }
+            stage('Windows') {
+                agent {
+                    label 'unity && windows'
+                }
+                steps {
+                    script {
+                        runTests()
                     }
                 }
             }
