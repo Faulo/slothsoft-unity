@@ -360,7 +360,7 @@ class UnityHub {
         $this->customChangesets[$version] = $changeset;
     }
     
-    private function inventChangeset(string $version): string {
+    public function inventChangeset(string $version): string {
         if (isset($this->customChangesets[$version])) {
             return $this->customChangesets[$version];
         }

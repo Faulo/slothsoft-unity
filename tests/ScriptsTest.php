@@ -3,10 +3,15 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Process\Process;
 use Slothsoft\Core\FileSystem;
+use Slothsoft\FarahTesting\TestUtils;
+use Symfony\Component\Process\Process;
 
 class ScriptsTest extends TestCase {
+    
+    public static function setUpBeforeClass(): void {
+        TestUtils::changeWorkingDirectoryToComposerRoot();
+    }
     
     /**
      *

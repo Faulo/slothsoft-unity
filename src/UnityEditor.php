@@ -170,8 +170,44 @@ class UnityEditor {
         return $process;
     }
     
-    public function createEmptyProject(string $path): UnityProject {
-        $process = $this->execute(true, '-createProject', $path, '-quit');
+    private const EMPTY_MANIFEST = <<<EOT
+{
+  "dependencies": {
+  }
+}
+  
+EOT;
+    
+    private const EMPTY_PROJECT_SETTINGS = <<<EOT
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+PlayerSettings:
+  productName: Empty Project
+
+EOT;
+    
+    private const EMPTY_PROJECT_VERSION = <<<EOT
+m_EditorVersion: %1\$s
+m_EditorVersionWithRevision: %1\$s (%2\$s)
+
+EOT;
+    
+    public function createEmptyProject(string $path, bool $useUnityAPI = true): UnityProject {
+        if ($useUnityAPI) {
+            $process = $this->execute(true, '-createProject', $path, '-quit');
+        } else {
+            $process = null;
+            FileSystem::ensureDirectory($path);
+            $path = realpath($path);
+            FileSystem::ensureDirectory($path . DIRECTORY_SEPARATOR . 'Assets');
+            FileSystem::ensureDirectory($path . DIRECTORY_SEPARATOR . 'Packages');
+            FileSystem::ensureDirectory($path . DIRECTORY_SEPARATOR . 'ProjectSettings');
+            
+            file_put_contents($path . DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'manifest.json', self::EMPTY_MANIFEST);
+            file_put_contents($path . DIRECTORY_SEPARATOR . 'ProjectSettings' . DIRECTORY_SEPARATOR . 'ProjectSettings.asset', self::EMPTY_PROJECT_SETTINGS);
+            file_put_contents($path . DIRECTORY_SEPARATOR . 'ProjectSettings' . DIRECTORY_SEPARATOR . 'ProjectVersion.txt', sprintf(self::EMPTY_PROJECT_VERSION, $this->version, $this->hub->inventChangeset($this->version)));
+        }
         
         $project = $this->hub->findProject($path, true);
         
