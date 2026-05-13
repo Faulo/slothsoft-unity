@@ -1,67 +1,65 @@
 name: CI Tests
 
-on: [push]
+on: [ push ]
 
 jobs:
-  run-tests:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        composer: ["lowest", "stable"]
-        php: ["8.2", "8.3", "8.4", "8.5"]
-        extensions: ["ctype curl dom fileinfo iconv imap json libxml mbstring pcre phar sockets tokenizer xml xmlwriter xsl zip zlib"]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    run-tests:
+        name: PHP ${{ matrix.php }} (${{ matrix.composer }})
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                composer: [ "lowest", "stable" ]
+                php: [ "8.2", "8.3", "8.4", "8.5" ]
+                extensions: [ "ctype curl dom fileinfo iconv imap json libxml mbstring pcre phar sockets tokenizer xml xmlwriter xsl zip zlib" ]
+        steps:
+            -   name: Checkout Repository
+                uses: actions/checkout@v6
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: /tmp/composer-cache
-          key: ${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('composer.json') }}-${{ matrix.composer }}
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: ${{ matrix.extensions }}
+                    tools: composer:v2
+                    coverage: none
 
-      - name: Install Composer
-        uses: php-actions/composer@v6
-        with:
-          php_version: ${{ matrix.php }}
-          php_extensions: ${{ matrix.extensions }}
-          command: update
-          args: --prefer-${{ matrix.composer }}
-        env:
-          COMPOSER_ROOT_VERSION: "dev-main"
+            -   name: Cache Composer dependencies
+                uses: actions/cache@v5
+                with:
+                    path: /tmp/composer-cache
+                    key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ matrix.composer }}-${{ hashFiles('composer.json') }}
 
-      - name: Run PHPUnit
-        uses: php-actions/phpunit@v4
-        with:
-          php_version: ${{ matrix.php }}
-          php_extensions: ${{ matrix.extensions }}
-          version: 9
-          bootstrap: vendor/autoload.php
-          configuration: phpunit.xml
-          args: --log-junit phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
+            -   name: Install dependencies
+                run: composer update --prefer-${{ matrix.composer }} --no-interaction --no-progress
+                env:
+                    COMPOSER_ROOT_VERSION: "dev-main"
+                    COMPOSER_CACHE_DIR: /tmp/composer-cache
+                    COMPOSER_AUTH: "{}"
 
-      - name: Upload Test Results
+            -   name: Run PHPUnit
+                run: vendor/bin/phpunit --log-junit phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
+
+            -   name: Upload Test Results
+                if: always()
+                uses: actions/upload-artifact@v7
+                with:
+                    name: results-${{ matrix.php }}-${{ matrix.composer }}
+                    path: phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
+    
+    publish-results:
+        name: Publish Results
+        runs-on: ubuntu-latest
+        needs: run-tests
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: results-${{ matrix.php }}-${{ matrix.composer }}
-          path: phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
+        
+        steps:
+            -   name: Download Artifacts
+                uses: actions/download-artifact@v8
+                with:
+                    path: artifacts
 
-  publish-results:
-    name: Publish Results
-    runs-on: ubuntu-latest
-    needs: run-tests
-    if: always()
-
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          files: artifacts/**/*.xml
+            -   name: Publish Unit Test Results
+                uses: EnricoMi/publish-unit-test-result-action@v2
+                with:
+                    files: artifacts/**/*.xml
