@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\DocFX;
 
 use PHPUnit\Framework\TestCase;
@@ -13,6 +14,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class SettingsTest extends TestCase {
     
+    /**
+     *
+     * @test
+     */
     public function testClassExists(): void {
         $this->assertTrue(class_exists(Settings::class), "Failed to load class 'Slothsoft\Unity\DocFX\Settings'!");
     }

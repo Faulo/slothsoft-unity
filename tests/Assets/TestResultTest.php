@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\Assets;
 
 use PHPUnit\Framework\TestCase;
@@ -13,6 +14,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class TestResultTest extends TestCase {
     
+    /**
+     *
+     * @test
+     */
     public function testClassExists(): void {
         $this->assertTrue(class_exists(TestResult::class), "Failed to load class 'Slothsoft\Unity\Assets\TestResult'!");
     }
