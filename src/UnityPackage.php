@@ -5,7 +5,13 @@ namespace Slothsoft\Unity;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\Configuration\FileConfigurationField;
 
-class UnityPackage {
+/**
+ * Represents a Unity package and creates temporary projects that install it locally.
+ *
+ * @author Daniel Schulz
+ * @since 2022-08-13
+ */
+final class UnityPackage {
     
     public const ENV_EMPTY_MANIFEST = 'UNITY_EMPTY_MANIFEST';
     
@@ -34,10 +40,8 @@ class UnityPackage {
     
     const MANIFEST_FILE = DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'manifest.json';
     
-    /** @var UnityPackageInfo */
     private UnityPackageInfo $info;
     
-    /** @var UnityEditor */
     private UnityEditor $editor;
     
     public function __construct(UnityPackageInfo $info, UnityEditor $editor) {
@@ -75,4 +79,3 @@ class UnityPackage {
         return $this->editor->isLicensed($projectPath) or $this->editor->license($projectPath);
     }
 }
-

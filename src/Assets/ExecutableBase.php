@@ -12,6 +12,12 @@ use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 use Throwable;
 
+/**
+ * Base strategy for Farah executables that return XML result documents.
+ *
+ * @author Daniel Schulz
+ * @since 2022-08-15
+ */
 abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
     
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
@@ -61,4 +67,3 @@ abstract class ExecutableBase implements ExecutableBuilderStrategyInterface {
         return get_class($this);
     }
 }
-

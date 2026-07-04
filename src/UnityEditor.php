@@ -5,19 +5,22 @@ namespace Slothsoft\Unity;
 use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 
-class UnityEditor {
+/**
+ * Wraps one Unity Editor installation and executes batchmode commands.
+ *
+ * @author Daniel Schulz
+ * @since 2020-12-27
+ */
+final class UnityEditor {
     
     private const LICENSE_SUCCESS_2020 = '[Licensing::Module] Serial number assigned to:';
     
     private const LICENSE_SUCCESS_2019 = 'Next license update check is after';
     
-    /** @var UnityHub */
     public UnityHub $hub;
     
-    /** @var string */
     public string $version;
     
-    /** @var string */
     public ?string $executable = null;
     
     public function isInstalled(): bool {
@@ -53,7 +56,7 @@ class UnityEditor {
         return "Unity Editor v{$this->version}";
     }
     
-    public function setExecutable(string $executable) {
+    public function setExecutable(string $executable): void {
         assert(is_file($executable), "Failed to find Unity Editor executable at '$executable'!");
         $this->executable = $executable;
     }
@@ -83,7 +86,7 @@ class UnityEditor {
     
     public const ARGUMENT_LICENSE_USE = '-manualLicenseFile';
     
-    public function license(string $projectPath, $assumeSuccess = false): bool {
+    public function license(string $projectPath, bool $assumeSuccess = false): bool {
         foreach ($this->hub->findLicenses($this->version) as $licenseFile) {
             $result = $this->useLicenseFile($licenseFile);
             sleep(1);

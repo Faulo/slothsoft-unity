@@ -4,7 +4,13 @@ namespace Slothsoft\Unity\DotNet;
 
 use Slothsoft\Core\FileSystem;
 
-class FormatLog {
+/**
+ * Converts dotnet format JSON reports into XML documents.
+ *
+ * @author Daniel Schulz
+ * @since 2024-05-30
+ */
+final class FormatLog {
     
     private int $time;
     
@@ -72,5 +78,4 @@ class FormatLog {
         return $document;
     }
 }
-
 

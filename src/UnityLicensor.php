@@ -10,7 +10,13 @@ use DateInterval;
 use DateTimeImmutable;
 use Exception;
 
-class UnityLicensor {
+/**
+ * Signs Unity manual activation files through Unity's browser-based license flow.
+ *
+ * @author Daniel Schulz
+ * @since 2025-04-20
+ */
+final class UnityLicensor {
     
     private const UNITY_INIT_LOGIN = 'https://license.unity3d.com/genesis/oauth/logout_callback';
     
@@ -301,4 +307,3 @@ class UnityLicensor {
         flush();
     }
 }
-

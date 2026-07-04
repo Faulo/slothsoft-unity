@@ -8,18 +8,20 @@ use DOMDocument;
 use DOMElement;
 use DateTime;
 
-class TestResult {
+/**
+ * Builds process result XML for executable asset runs.
+ *
+ * @author Daniel Schulz
+ * @since 2022-08-15
+ */
+final class TestResult {
     
-    /** @var string */
     private string $packageName;
     
-    /** @var string */
     private string $testName;
     
-    /** @var float */
     private float $startTime = 0;
     
-    /** @var float */
     private float $stopTime = 0;
     
     private ?ExecutionError $error = null;
@@ -30,7 +32,7 @@ class TestResult {
         $this->startTime = microtime(true);
     }
     
-    public function setError(ExecutionError $error) {
+    public function setError(ExecutionError $error): void {
         if (UnityHub::getThrowOnFailure()) {
             throw $error;
         }
@@ -59,4 +61,3 @@ class TestResult {
         return $rootNode;
     }
 }
-

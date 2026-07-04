@@ -7,7 +7,13 @@ use Symfony\Component\Process\Process;
 use DateInterval;
 use DateTimeImmutable;
 
-class SteamCMD {
+/**
+ * Automates SteamCMD login, including optional Steam Guard code retrieval.
+ *
+ * @author Daniel Schulz
+ * @since 2025-09-01
+ */
+final class SteamCMD {
     
     public const STEAM_CREDENTIALS_USR = 'STEAM_CREDENTIALS_USR';
     

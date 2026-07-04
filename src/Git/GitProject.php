@@ -4,23 +4,26 @@ namespace Slothsoft\Unity\Git;
 
 use Symfony\Component\Process\Process;
 
-class GitProject {
+/**
+ * Wraps git command execution for historical automation workflows.
+ *
+ * @author Daniel Schulz
+ * @since 2020-12-25
+ */
+final class GitProject {
     
-    /** @var int */
     private const GIT_TIMEOUT = 3600;
     
-    /** @var string */
-    public $path;
+    public string $path;
     
-    /** @var bool */
-    public $exists;
+    public bool $exists;
     
     public function __construct(string $path) {
         $this->path = $path;
         $this->initialize();
     }
     
-    private function initialize() {
+    private function initialize(): void {
         $this->exists = is_dir($this->path . DIRECTORY_SEPARATOR . '.git');
         if ($this->exists) {
             $this->path = realpath($this->path);

@@ -6,6 +6,12 @@ use Ds\Set;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
+/**
+ * Reads Unity automation environment variables and formats process log output.
+ *
+ * @author Daniel Schulz
+ * @since 2026-04-24
+ */
 final class UnityEnvironment {
     
     public const ENV_UNITY_NO_GRAPHICS = 'UNITY_NO_GRAPHICS';
@@ -98,7 +104,7 @@ final class UnityEnvironment {
         return self::$formatter;
     }
     
-    private static function format(string $text, string $style) {
+    private static function format(string $text, string $style): string {
         return self::formatter()->format("<$style>$text</$style>");
     }
     

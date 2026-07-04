@@ -9,15 +9,18 @@ use Slothsoft\Unity\UnityHub;
 use Slothsoft\Unity\UnityPackage;
 use Slothsoft\Unity\Assets\ExecutableBase;
 
+/**
+ * Base strategy for Farah executables that operate on Unity packages.
+ *
+ * @author Daniel Schulz
+ * @since 2022-08-15
+ */
 abstract class PackageExecutableBase extends ExecutableBase implements ExecutableBuilderStrategyInterface {
     
-    /** @var string */
     protected string $packageDirectory;
     
-    /** @var string */
     protected string $packageName;
     
-    /** @var UnityPackage */
     protected ?UnityPackage $package;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -49,4 +52,3 @@ abstract class PackageExecutableBase extends ExecutableBase implements Executabl
         }
     }
 }
-

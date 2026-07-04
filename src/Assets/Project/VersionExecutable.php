@@ -6,12 +6,16 @@ use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class VersionExecutable extends ProjectExecutableBase {
+/**
+ * Reads or writes a Unity project's bundle version.
+ *
+ * @author Daniel Schulz
+ * @since 2022-09-17
+ */
+final class VersionExecutable extends ProjectExecutableBase {
     
-    /** @var string */
     private string $mode;
     
-    /** @var string */
     private string $version;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -51,4 +55,3 @@ class VersionExecutable extends ProjectExecutableBase {
         return $document;
     }
 }
-

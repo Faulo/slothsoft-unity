@@ -11,6 +11,7 @@
     "type": "library",
     "require": {
         "php": ">=8.2",
+        "ext-dom": "*",
         "slothsoft/core": "^1.14.19",
         "slothsoft/schema": "^1.7.3",
         "symfony/process": "^5.4.51",

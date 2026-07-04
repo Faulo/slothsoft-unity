@@ -6,7 +6,13 @@ use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
 use Spyc;
 
-class UnityProjectInfo {
+/**
+ * Reads and writes Unity project metadata from ProjectSettings and Packages files.
+ *
+ * @author Daniel Schulz
+ * @since 2022-01-07
+ */
+final class UnityProjectInfo {
     
     const FILE_VERSION = '/ProjectSettings/ProjectVersion.txt';
     
@@ -52,22 +58,16 @@ class UnityProjectInfo {
         return null;
     }
     
-    /** @var string */
     public string $path;
     
-    /** @var string */
     public string $editorVersion;
     
-    /** @var string */
     public ?string $editorChangeset;
     
-    /** @var array */
     public array $settings;
     
-    /** @var array */
     public array $manifest;
     
-    /** @var array */
     public array $packages;
     
     private function __construct(string $path) {
@@ -136,4 +136,3 @@ class UnityProjectInfo {
         JsonUtils::save($this->path . self::FILE_MANIFEST, $this->manifest, 2, "\n");
     }
 }
-

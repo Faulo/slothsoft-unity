@@ -5,14 +5,24 @@ namespace Slothsoft\Unity\MLAgents;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Unity\UnityProject;
 
-class MLTraining {
+/**
+ * Coordinates legacy ML-Agents training runs for Unity projects.
+ *
+ * @author Daniel Schulz
+ * @since 2020-12-25
+ * @deprecated Legacy ML-Agents automation should not be used for new code.
+ */
+final class MLTraining {
+    
+    private const MLAGENTS_PACKAGE = 'com.unity.ml-agents';
     
     const HYPERPARAMETER_EXTENSION = 'yaml';
     
     public static function determineTrainings(UnityProject $project, string $serverPath, string $todoPath, string $modelPath): iterable {
-        assert(isset($project->packages[MLAGENTS_PACKAGE]), 'Project at ' . PATH_PROJECT . 'does not appear to have the ml-agents package installed!');
+        $packages = $project->getPackages();
+        assert(isset($packages[self::MLAGENTS_PACKAGE]), 'Project at ' . $project->getProjectPath() . ' does not appear to have the ml-agents package installed!');
         
-        $packageVersion = $project->packages[MLAGENTS_PACKAGE]['version'];
+        $packageVersion = $packages[self::MLAGENTS_PACKAGE]['version'];
         
         if (! isset(MLContext::PACKAGE_MAPPING[$packageVersion])) {
             throw new \InvalidArgumentException("Package version $packageVersion can't be mapped to an ML-Agents version, help!");
@@ -42,13 +52,15 @@ class MLTraining {
         }
     }
     
-    private $ml;
+    private MLContext $ml;
     
-    public $runId;
+    public string $runId;
     
-    private $hyperFile;
+    private string $hyperFile;
     
-    private $modelDirectory;
+    private string $modelDirectory;
+    
+    private MLParameters $args;
     
     public function __construct(MLContext $ml, string $runId, string $hyperFile, string $modelDirectory) {
         assert(is_file($hyperFile), "File $hyperFile not found");
@@ -59,21 +71,21 @@ class MLTraining {
         $this->modelDirectory = $modelDirectory;
     }
     
-    public function init() {
+    public function init(): void {
         $this->ml->loadPath();
         $this->ml->loadLock();
         $this->loadModel();
         $this->loadHyper();
     }
     
-    private function loadModel() {
+    private function loadModel(): void {
         if (! is_dir($this->modelDirectory)) {
             mkdir($this->modelDirectory, 0777, true);
         }
         assert(is_dir($this->modelDirectory), "Path $this->modelDirectory not found");
     }
     
-    private function loadHyper() {
+    private function loadHyper(): void {
         $this->args = new MLParameters();
         $this->args->registerArgument('num-envs', 1);
         $this->args->registerArgument('time-scale', 1.0);
@@ -106,4 +118,3 @@ class MLTraining {
         return $this->ml->learn($workDirectory, $command);
     }
 }
-

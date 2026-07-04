@@ -10,7 +10,13 @@ use Symfony\Component\Process\Process;
 use InvalidArgumentException;
 use Throwable;
 
-class UnityHub {
+/**
+ * Process-wide facade for Unity Hub discovery, editor installation, and project/package lookup.
+ *
+ * @author Daniel Schulz
+ * @since 2020-12-27
+ */
+final class UnityHub {
     
     private const UNITY_VERSION_HISTORY = 'https://symbolserver.unity3d.com/000Admin/history.txt';
     
@@ -32,7 +38,7 @@ class UnityHub {
         return $instance;
     }
     
-    private static $licenseFolders = [];
+    private static array $licenseFolders = [];
     
     public static function addLicenseFolder(string $folder): void {
         if (! is_dir($folder)) {
@@ -132,26 +138,21 @@ class UnityHub {
         return self::hubLocator()->getValue();
     }
     
-    /** @var bool */
-    public function isInstalled() {
+    public function isInstalled(): bool {
         return self::getHubLocator()->exists();
     }
     
-    /** @var UnityEditor[] */
     private ?array $editors = null;
     
     private bool $hasLoadedEditorsFromCache = false;
     
-    /** @var string */
     private string $editorPath = '';
     
-    /** @var string[] */
     private ?array $changesets = null;
     
-    /** @var resource */
-    private $fileContext = null;
+    private mixed $fileContext = null;
     
-    private function getFileContext() {
+    private function getFileContext(): mixed {
         if ($this->fileContext === null) {
             $this->fileContext = stream_context_create([
                 "ssl" => [
@@ -164,10 +165,6 @@ class UnityHub {
         return $this->fileContext;
     }
     
-    /**
-     *
-     * @return UnityEditor[]
-     */
     public function getEditors(): array {
         $this->loadEditors(true);
         return $this->editors;
@@ -544,4 +541,3 @@ class UnityHub {
         return null;
     }
 }
-

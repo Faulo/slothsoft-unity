@@ -11,7 +11,13 @@ use Slothsoft\Farah\Module\Executable\ResultBuilderStrategy\ChunkWriterResultBui
 use Slothsoft\Unity\UnityHub;
 use Generator;
 
-class HelpExecutable implements ExecutableBuilderStrategyInterface {
+/**
+ * Exposes Unity Hub help output as a Farah executable asset.
+ *
+ * @author Daniel Schulz
+ * @since 2020-12-27
+ */
+final class HelpExecutable implements ExecutableBuilderStrategyInterface {
     
     public function buildExecutableStrategies(AssetInterface $context, FarahUrlArguments $args): ExecutableStrategies {
         $delegate = function (): Generator {
@@ -27,4 +33,3 @@ class HelpExecutable implements ExecutableBuilderStrategyInterface {
         return new ExecutableStrategies($resultBuilder);
     }
 }
-

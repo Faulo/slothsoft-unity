@@ -4,7 +4,13 @@ namespace Slothsoft\Unity;
 
 use Symfony\Component\Process\Process;
 
-class LocateHubFromWindowsRegistry implements HubLocatorInterface {
+/**
+ * Locates Unity Hub from the Windows registry.
+ *
+ * @author Daniel Schulz
+ * @since 2022-01-03
+ */
+final class LocateHubFromWindowsRegistry implements HubLocatorInterface {
     
     private const REG_HUB_COMMAND = 'REG QUERY %s /v %s';
     
@@ -14,13 +20,10 @@ class LocateHubFromWindowsRegistry implements HubLocatorInterface {
     
     private const HUB_EXECUTABLE = 'Unity Hub.exe';
     
-    /** @var string */
     private string $file = '';
     
-    /** @var bool */
     private bool $exists = false;
     
-    /** @var string[] */
     private array $command;
     
     public function __construct(array $command) {
@@ -40,7 +43,7 @@ class LocateHubFromWindowsRegistry implements HubLocatorInterface {
         return $this->exists;
     }
     
-    private function init() {
+    private function init(): void {
         if ($this->exists) {
             return;
         }
@@ -50,7 +53,7 @@ class LocateHubFromWindowsRegistry implements HubLocatorInterface {
         $output = $process->getOutput();
         $output = explode('REG_SZ', $output, 2);
         if (count($output) !== 2) {
-            return false;
+            return;
         }
         $this->file = trim($output[1]) . DIRECTORY_SEPARATOR . self::HUB_EXECUTABLE;
         if ($file = realpath($this->file)) {
@@ -59,4 +62,3 @@ class LocateHubFromWindowsRegistry implements HubLocatorInterface {
         }
     }
 }
-

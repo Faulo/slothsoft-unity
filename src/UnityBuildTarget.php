@@ -5,7 +5,13 @@ namespace Slothsoft\Unity;
 use Slothsoft\Core\FileSystem;
 use InvalidArgumentException;
 
-class UnityBuildTarget {
+/**
+ * Maps logical build targets to Unity editor modules, output names, and batchmode arguments.
+ *
+ * @author Daniel Schulz
+ * @since 2022-07-15
+ */
+final class UnityBuildTarget {
     
     public const WINDOWS = 'windows';
     
@@ -105,4 +111,3 @@ class UnityBuildTarget {
         }
     }
 }
-

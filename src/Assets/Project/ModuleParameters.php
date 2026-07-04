@@ -6,7 +6,13 @@ use Slothsoft\Core\IO\Sanitizer\ArraySanitizer;
 use Slothsoft\Core\IO\Sanitizer\StringSanitizer;
 use Slothsoft\Farah\Module\Asset\ParameterFilterStrategy\AbstractMapParameterFilter;
 
-class ModuleParameters extends AbstractMapParameterFilter {
+/**
+ * Defines Farah URL parameters for editor module installation requests.
+ *
+ * @author Daniel Schulz
+ * @since 2022-07-11
+ */
+final class ModuleParameters extends AbstractMapParameterFilter {
     
     protected function createValueSanitizers(): array {
         return [
@@ -15,4 +21,3 @@ class ModuleParameters extends AbstractMapParameterFilter {
         ];
     }
 }
-

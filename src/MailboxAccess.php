@@ -7,7 +7,13 @@ use DateInterval;
 use DateTimeImmutable;
 use Exception;
 
-class MailboxAccess {
+/**
+ * Reads verification codes from an IMAP mailbox for external service logins.
+ *
+ * @author Daniel Schulz
+ * @since 2025-04-21
+ */
+final class MailboxAccess {
     
     public const ENV_EMAIL_USR = 'EMAIL_CREDENTIALS_USR';
     
@@ -17,7 +23,7 @@ class MailboxAccess {
         return getenv(self::ENV_EMAIL_USR) and getenv(self::ENV_EMAIL_PSW);
     }
     
-    private static $imapHosts = [
+    private static array $imapHosts = [
         'gmail.de' => 'imap.gmail.com',
         'gmail.com' => 'imap.gmail.com',
         'outlook.com' => 'imap-mail.outlook.com',
@@ -92,4 +98,3 @@ class MailboxAccess {
         return null;
     }
 }
-

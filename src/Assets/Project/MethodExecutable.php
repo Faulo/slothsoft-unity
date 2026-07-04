@@ -6,15 +6,18 @@ use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class MethodExecutable extends ProjectExecutableBase {
+/**
+ * Executes a Unity editor method for a project asset request.
+ *
+ * @author Daniel Schulz
+ * @since 2022-07-11
+ */
+final class MethodExecutable extends ProjectExecutableBase {
     
-    /** @var string */
     private string $method;
     
-    /** @var int */
     private int $quitOnExit;
     
-    /** @var array */
     private array $arguments;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -59,4 +62,3 @@ class MethodExecutable extends ProjectExecutableBase {
         return null;
     }
 }
-

@@ -4,7 +4,13 @@ namespace Slothsoft\Unity;
 
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class JsonUtils {
+/**
+ * Loads and saves JSON files used by Unity project and package metadata.
+ *
+ * @author Daniel Schulz
+ * @since 2024-06-30
+ */
+final class JsonUtils {
     
     public static function load(string $path): array {
         if (! is_file($path)) {
@@ -19,7 +25,7 @@ class JsonUtils {
         return $result;
     }
     
-    public static function save(string $path, array $data, int $tabLength = 4, $eot = ''): void {
+    public static function save(string $path, array $data, int $tabLength = 4, string $eot = ''): void {
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         
         if ($tabLength !== 4) {
@@ -31,4 +37,3 @@ class JsonUtils {
         file_put_contents($path, $json);
     }
 }
-

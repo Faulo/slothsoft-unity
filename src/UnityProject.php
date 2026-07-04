@@ -7,15 +7,18 @@ use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 use DOMDocument;
 
-class UnityProject {
+/**
+ * Represents a Unity project and exposes editor automation operations for it.
+ *
+ * @author Daniel Schulz
+ * @since 2020-12-25
+ */
+final class UnityProject {
     
-    /** @var UnityProjectInfo */
     private UnityProjectInfo $info;
     
-    /** @var UnityHub */
     private UnityHub $hub;
     
-    /** @var UnityEditor */
     private ?UnityEditor $editor = null;
     
     private function initEditor(): void {
@@ -47,6 +50,10 @@ class UnityProject {
         return $this->info->editorVersion;
     }
     
+    public function getPackages(): array {
+        return $this->info->packages;
+    }
+    
     public function getScriptingBackend(): int {
         $backends = $this->getSetting('scriptingBackend', []);
         return isset($backends['Standalone']) ? (int) $backends['Standalone'] : UnityBuildTarget::BACKEND_MONO;
@@ -56,7 +63,7 @@ class UnityProject {
         return isset($this->info->settings[$key]);
     }
     
-    public function getSetting(string $key, $defaultValue = null) {
+    public function getSetting(string $key, mixed $defaultValue = null): mixed {
         return $this->info->settings[$key] ?? $defaultValue;
     }
     
@@ -196,4 +203,3 @@ class UnityProject {
         return $this->editor->installModules(...$modules);
     }
 }
-

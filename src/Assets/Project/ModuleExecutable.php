@@ -6,9 +6,14 @@ use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class ModuleExecutable extends ProjectExecutableBase {
+/**
+ * Installs Unity editor modules for a project asset request.
+ *
+ * @author Daniel Schulz
+ * @since 2022-07-11
+ */
+final class ModuleExecutable extends ProjectExecutableBase {
     
-    /** @var string[] */
     private array $modules;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -45,4 +50,3 @@ class ModuleExecutable extends ProjectExecutableBase {
         return null;
     }
 }
-

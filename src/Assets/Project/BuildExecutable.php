@@ -6,12 +6,16 @@ use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class BuildExecutable extends ProjectExecutableBase {
+/**
+ * Runs a Unity player build for a project asset request.
+ *
+ * @author Daniel Schulz
+ * @since 2022-07-11
+ */
+final class BuildExecutable extends ProjectExecutableBase {
     
-    /** @var string */
     private string $target;
     
-    /** @var string */
     private string $path;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -50,4 +54,3 @@ class BuildExecutable extends ProjectExecutableBase {
         return null;
     }
 }
-

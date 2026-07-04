@@ -6,9 +6,14 @@ use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class TestsExecutable extends ProjectExecutableBase {
+/**
+ * Runs Unity Test Runner modes for a project asset request.
+ *
+ * @author Daniel Schulz
+ * @since 2022-07-11
+ */
+final class TestsExecutable extends ProjectExecutableBase {
     
-    /** @var string[] */
     private array $modes;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -45,4 +50,3 @@ class TestsExecutable extends ProjectExecutableBase {
         return $this->project->runTests(...$this->modes);
     }
 }
-

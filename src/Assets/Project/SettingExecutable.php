@@ -6,9 +6,14 @@ use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
-class SettingExecutable extends ProjectExecutableBase {
+/**
+ * Reads a Unity project setting into an XML document.
+ *
+ * @author Daniel Schulz
+ * @since 2022-09-17
+ */
+final class SettingExecutable extends ProjectExecutableBase {
     
-    /** @var string */
     private string $name;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -41,4 +46,3 @@ class SettingExecutable extends ProjectExecutableBase {
         return $document;
     }
 }
-

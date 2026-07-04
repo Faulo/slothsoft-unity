@@ -4,22 +4,20 @@ namespace Slothsoft\Unity\Steam;
 
 use Mintopia\VDFKeyValue\Encoder;
 
-class AppBuild {
+/**
+ * Builds Steam app build VDF files for SteamCMD uploads.
+ *
+ * @author Daniel Schulz
+ * @since 2022-08-05
+ */
+final class AppBuild {
     
-    private $data = [
+    private array $data = [
         "Depots" => []
     ];
     
     /**
-     *
-     * @param string $appId
-     *            your AppID
-     * @param string $description
-     *            internal description for this build
-     * @param string $contentPath
-     *            root content folder, relative to location of this file
-     * @param string $buildPath
-     *            build output folder for build logs and build cache files
+     * Creates an app build with the Steam app ID, description, content root, and build output path.
      */
     public function __construct(string $appId, string $description, string $contentPath, string $buildPath) {
         $this->fixEncoding($appId);
@@ -34,15 +32,7 @@ class AppBuild {
     }
     
     /**
-     *
-     * @param string $depotId
-     *            depot ID
-     * @param string $localPath
-     *            all files from contentroot folder
-     * @param string $depotPath
-     *            mapped into the root of the depot
-     * @param string $recursive
-     *            include all subfolders
+     * Adds a depot file mapping to this app build.
      */
     public function addDepot(string $depotId, string $localPath = '*', string $depotPath = '.', string $recursive = '1'): void {
         $this->fixEncoding($depotId);
@@ -60,9 +50,7 @@ class AppBuild {
     }
     
     /**
-     *
-     * @param string $branch
-     *            name of the branch to set live
+     * Marks the uploaded build live on the given Steam branch.
      */
     public function setLive(string $branch): void {
         $this->fixEncoding($branch);
@@ -76,7 +64,7 @@ class AppBuild {
         'ISO-8859-1'
     ];
     
-    private function fixEncoding(string &$value) {
+    private function fixEncoding(string &$value): void {
         $encoding = mb_detect_encoding($value, self::SUPPORTED_ENCODINGS);
         if ($encoding and $encoding !== 'UTF-8') {
             $value = mb_convert_encoding($value, 'UTF-8', $encoding);

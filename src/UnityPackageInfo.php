@@ -5,7 +5,13 @@ namespace Slothsoft\Unity;
 use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
 
-class UnityPackageInfo {
+/**
+ * Reads and writes Unity package metadata from package.json.
+ *
+ * @author Daniel Schulz
+ * @since 2022-08-13
+ */
+final class UnityPackageInfo {
     
     const FILE_PACKAGE = '/package.json';
     
@@ -40,10 +46,8 @@ class UnityPackageInfo {
         return null;
     }
     
-    /** @var string */
     public string $path;
     
-    /** @var array */
     public array $package;
     
     private function __construct(string $path) {
@@ -70,4 +74,3 @@ class UnityPackageInfo {
         JsonUtils::save($this->path . self::FILE_PACKAGE, $this->package, 2);
     }
 }
-

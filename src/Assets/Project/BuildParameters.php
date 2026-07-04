@@ -5,7 +5,13 @@ namespace Slothsoft\Unity\Assets\Project;
 use Slothsoft\Core\IO\Sanitizer\StringSanitizer;
 use Slothsoft\Farah\Module\Asset\ParameterFilterStrategy\AbstractMapParameterFilter;
 
-class BuildParameters extends AbstractMapParameterFilter {
+/**
+ * Defines Farah URL parameters for project build requests.
+ *
+ * @author Daniel Schulz
+ * @since 2022-07-11
+ */
+final class BuildParameters extends AbstractMapParameterFilter {
     
     protected function createValueSanitizers(): array {
         return [
@@ -15,4 +21,3 @@ class BuildParameters extends AbstractMapParameterFilter {
         ];
     }
 }
-

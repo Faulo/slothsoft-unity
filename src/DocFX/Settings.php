@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Slothsoft\Unity\DocFX;
 
 use Slothsoft\Farah\FarahUrl\FarahUrl;
@@ -6,7 +7,13 @@ use Slothsoft\Farah\Module\Module;
 use Symfony\Component\Filesystem\Filesystem;
 use Spyc;
 
-class Settings {
+/**
+ * Creates DocFX configuration, templates, and table-of-contents files for Unity projects.
+ *
+ * @author Daniel Schulz
+ * @since 2023-03-07
+ */
+final class Settings {
     
     const ASSET_TEMPLATES = 'farah://slothsoft@unity/docfx-templates';
     
@@ -333,4 +340,3 @@ class Settings {
         return $this->encode($this->data);
     }
 }
-

@@ -5,9 +5,14 @@ namespace Slothsoft\Unity\Assets\Package;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use DOMDocument;
 
-class InstallExecutable extends PackageExecutableBase {
+/**
+ * Creates a temporary Unity project with a local package installed.
+ *
+ * @author Daniel Schulz
+ * @since 2022-08-13
+ */
+final class InstallExecutable extends PackageExecutableBase {
     
-    /** @var string */
     private string $workspace;
     
     protected function parseArguments(FarahUrlArguments $args): void {

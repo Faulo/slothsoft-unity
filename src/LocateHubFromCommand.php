@@ -4,9 +4,14 @@ namespace Slothsoft\Unity;
 
 use Symfony\Component\Process\Process;
 
-class LocateHubFromCommand implements HubLocatorInterface {
+/**
+ * Locates Unity Hub through a configured command line.
+ *
+ * @author Daniel Schulz
+ * @since 2022-06-29
+ */
+final class LocateHubFromCommand implements HubLocatorInterface {
     
-    /** @var string[] */
     private array $command;
     
     public function __construct(array $command) {
@@ -22,4 +27,3 @@ class LocateHubFromCommand implements HubLocatorInterface {
         return true;
     }
 }
-

@@ -9,15 +9,18 @@ use Slothsoft\Unity\UnityHub;
 use Slothsoft\Unity\UnityProject;
 use Slothsoft\Unity\Assets\ExecutableBase;
 
+/**
+ * Base strategy for Farah executables that operate on Unity projects.
+ *
+ * @author Daniel Schulz
+ * @since 2022-08-15
+ */
 abstract class ProjectExecutableBase extends ExecutableBase implements ExecutableBuilderStrategyInterface {
     
-    /** @var string */
     protected string $workspace;
     
-    /** @var string */
     protected string $workspaceName = 'Unknown';
     
-    /** @var UnityProject */
     protected ?UnityProject $project;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -61,4 +64,3 @@ abstract class ProjectExecutableBase extends ExecutableBase implements Executabl
         return false;
     }
 }
-

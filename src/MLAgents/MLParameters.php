@@ -2,16 +2,23 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\MLAgents;
 
-class MLParameters {
+/**
+ * Parses legacy ML-Agents training parameters and renders shell arguments.
+ *
+ * @author Daniel Schulz
+ * @since 2020-12-25
+ * @deprecated Legacy ML-Agents automation should not be used for new code.
+ */
+final class MLParameters {
     
-    private $data = [];
+    private array $data = [];
     
-    public function registerArgument(string $key, $defaultValue) {
+    public function registerArgument(string $key, mixed $defaultValue): void {
         assert(! isset($this->data[$key]));
         $this->data[$key] = $defaultValue;
     }
     
-    public function loadFromString(string $config) {
+    public function loadFromString(string $config): void {
         $matches = null;
         preg_match_all('~#\s*([^\s]+?)\s*:\s*([^#]*?)[\r\n]~', $config, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
@@ -27,7 +34,7 @@ class MLParameters {
         }
     }
     
-    public function getArgument(string $key) {
+    public function getArgument(string $key): mixed {
         assert(isset($this->data[$key]));
         return $this->data[$key];
     }

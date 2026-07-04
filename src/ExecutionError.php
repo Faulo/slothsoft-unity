@@ -2,13 +2,19 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
-use Symfony\Component\Process\Process;
 use DOMDocument;
 use DOMElement;
 use Exception;
+use Symfony\Component\Process\Process;
 use Throwable;
 
-class ExecutionError extends Exception {
+/**
+ * Represents a Unity automation failure with process output that can be exported as JUnit-style XML.
+ *
+ * @author Daniel Schulz
+ * @since 2022-08-15
+ */
+final class ExecutionError extends Exception {
     
     public static function Failure(string $type, string $message, ?Process $process = null): ExecutionError {
         return self::FromProcess('failure', $type, $message, $process);
@@ -26,22 +32,16 @@ class ExecutionError extends Exception {
         return $process ? new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), $process->getOutput(), $process->getErrorOutput(), $process->getExitCode()) : new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), '', (string) $e);
     }
     
-    /** @var string */
     private string $tag;
     
-    /** @var string */
     private string $type;
     
-    /** @var string */
     private string $stdout;
     
-    /** @var string */
     private string $stderr;
     
-    /** @var int */
     private int $exitCode;
     
-    /** @var string */
     private string $stackTrace;
     
     private function __construct(string $tag, string $type, string $message, string $stackTrace = '', string $stdout = '', string $stderr = '', int $exitCode = - 1) {
@@ -77,4 +77,3 @@ class ExecutionError extends Exception {
         return $node;
     }
 }
-

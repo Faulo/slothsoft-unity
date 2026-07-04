@@ -6,7 +6,13 @@ use Slothsoft\Core\IO\Sanitizer\ArraySanitizer;
 use Slothsoft\Core\IO\Sanitizer\StringSanitizer;
 use Slothsoft\Farah\Module\Asset\ParameterFilterStrategy\AbstractMapParameterFilter;
 
-class TestsParameters extends AbstractMapParameterFilter {
+/**
+ * Defines Farah URL parameters for Unity Test Runner requests.
+ *
+ * @author Daniel Schulz
+ * @since 2022-07-11
+ */
+final class TestsParameters extends AbstractMapParameterFilter {
     
     protected function createValueSanitizers(): array {
         return [
@@ -15,4 +21,3 @@ class TestsParameters extends AbstractMapParameterFilter {
         ];
     }
 }
-

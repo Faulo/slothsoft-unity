@@ -4,7 +4,14 @@ namespace Slothsoft\Unity\MLAgents;
 
 use Slothsoft\Core\CLI;
 
-class MLContext {
+/**
+ * Manages a legacy ML-Agents Python environment for Unity training runs.
+ *
+ * @author Daniel Schulz
+ * @since 2020-12-25
+ * @deprecated Legacy ML-Agents automation should not be used for new code.
+ */
+final class MLContext {
     
     const PACKAGE_MAPPING = [
         '1.7.0-preview' => '0.23',
@@ -43,15 +50,15 @@ class MLContext {
         }
     }
     
-    private $workDirectory;
+    private string $workDirectory;
     
-    public $version;
+    public string $version;
     
-    private $pythonPath;
+    private string $pythonPath;
     
-    private $pythonLock;
+    private string $pythonLock;
     
-    private $scriptsPath;
+    private string $scriptsPath;
     
     public function __construct(string $workDirectory, string $version) {
         assert(is_dir($workDirectory));
@@ -66,7 +73,7 @@ class MLContext {
         return is_file($this->pythonLock);
     }
     
-    public function loadLock() {
+    public function loadLock(): void {
         if ($this->lockExists()) {
             $this->install();
         } else {
@@ -81,7 +88,7 @@ class MLContext {
         return is_dir($this->pythonPath);
     }
     
-    public function loadPath() {
+    public function loadPath(): void {
         if (! $this->pathExists()) {
             $this->setup();
         }
@@ -91,21 +98,21 @@ class MLContext {
         $this->scriptsPath = $this->pythonPath . DIRECTORY_SEPARATOR . 'Scripts';
     }
     
-    public function setup() {
+    public function setup(): void {
         CLI::execute(sprintf('virtualenv %s', escapeshellarg($this->pythonPath)));
     }
     
-    public function install() {
+    public function install(): void {
         $this->executeIn($this->scriptsPath, self::UPGRADE_PIP);
         $this->executeIn($this->scriptsPath, sprintf('pip install --no-cache-dir --no-warn-script-location -r %s %s', escapeshellarg($this->pythonLock), self::ADDITIONAL_REPOSITORIES));
     }
     
-    public function update() {
+    public function update(): void {
         $this->executeIn($this->scriptsPath, self::UPGRADE_PIP);
         $this->executeIn($this->scriptsPath, sprintf('pip install mlagents==%s.* tensorflow %s --no-cache-dir --upgrade --upgrade-strategy eager %s', $this->version, self::ADDITIONAL_PACKAGES[$this->version] ?? '', self::ADDITIONAL_REPOSITORIES));
     }
     
-    public function freeze() {
+    public function freeze(): void {
         $this->executeIn($this->scriptsPath, sprintf('pip freeze > %s', escapeshellarg($this->pythonLock)));
     }
     
