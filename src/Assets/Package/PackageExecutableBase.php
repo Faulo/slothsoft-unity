@@ -30,7 +30,7 @@ abstract class PackageExecutableBase extends ExecutableBase implements Executabl
     
     protected function validate(): void {
         if (! is_dir($this->packageDirectory)) {
-            throw ExecutionError::Error('AssertDirectory', "Workspace '{$this->packageDirectory}' is not a directory!");
+            throw ExecutionError::Error('AssertDirectory', "Workspace '$this->packageDirectory' is not a directory!");
         }
         
         $this->packageDirectory = realpath($this->packageDirectory);
@@ -44,11 +44,11 @@ abstract class PackageExecutableBase extends ExecutableBase implements Executabl
         $this->package = $hub->findPackage($this->packageDirectory);
         
         if (! $this->package) {
-            throw ExecutionError::Error('AssertPackage', "Workspace '{$this->packageDirectory}' does not contain a Unity package!");
+            throw ExecutionError::Error('AssertPackage', "Workspace '$this->packageDirectory' does not contain a Unity package!");
         }
         
         if (! $this->package->ensureEditorIsInstalled()) {
-            throw ExecutionError::Error('AssertEditor', "Editor installation for package '{$this->package}' failed!");
+            throw ExecutionError::Error('AssertEditor', "Editor installation for package '$this->package' failed!");
         }
     }
 }

@@ -1,9 +1,10 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
-use Slothsoft\Core\FileSystem;
 use InvalidArgumentException;
+use Slothsoft\Core\FileSystem;
 
 /**
  * Maps logical build targets to Unity editor modules, output names, and batchmode arguments.
@@ -24,90 +25,69 @@ final class UnityBuildTarget {
     public const BACKEND_IL2CPP = 1;
     
     public static function getEditoModules(string $target, int $backend = self::BACKEND_MONO): array {
-        switch (strtolower($target)) {
-            case self::WINDOWS:
-                switch ($backend) {
-                    case self::BACKEND_MONO:
-                        return PHP_OS === 'WINNT' ? [] : [
-                            'windows-mono'
-                        ];
-                    case self::BACKEND_IL2CPP:
-                        return [
-                            'windows-il2cpp'
-                        ];
-                    default:
-                        throw new InvalidArgumentException("Unkown scripting backend '$backend'");
-                }
-            case self::LINUX:
-                switch ($backend) {
-                    case self::BACKEND_MONO:
-                        return PHP_OS === 'Linux' ? [] : [
-                            'linux-mono'
-                        ];
-                    case self::BACKEND_IL2CPP:
-                        return [
-                            'linux-il2cpp'
-                        ];
-                    default:
-                        throw new InvalidArgumentException("Unkown scripting backend '$backend'");
-                }
-            case self::MAC_OSX:
-                switch ($backend) {
-                    case self::BACKEND_MONO:
-                        return [
-                            'mac-mono'
-                        ];
-                    case self::BACKEND_IL2CPP:
-                        return [
-                            'mac-il2cpp'
-                        ];
-                    default:
-                        throw new InvalidArgumentException("Unkown scripting backend '$backend'");
-                }
-            default:
-                throw new InvalidArgumentException("Unkown build target '$target'");
-        }
+        return match (strtolower($target)) {
+            self::WINDOWS => match ($backend) {
+                self::BACKEND_MONO => PHP_OS === 'WINNT' ? [] : [
+                    'windows-mono'
+                ],
+                self::BACKEND_IL2CPP => [
+                    'windows-il2cpp'
+                ],
+                default => throw new InvalidArgumentException("Unkown scripting backend '$backend'"),
+            },
+            self::LINUX => match ($backend) {
+                self::BACKEND_MONO => PHP_OS === 'Linux' ? [] : [
+                    'linux-mono'
+                ],
+                self::BACKEND_IL2CPP => [
+                    'linux-il2cpp'
+                ],
+                default => throw new InvalidArgumentException("Unkown scripting backend '$backend'"),
+            },
+            self::MAC_OSX => match ($backend) {
+                self::BACKEND_MONO => [
+                    'mac-mono'
+                ],
+                self::BACKEND_IL2CPP => [
+                    'mac-il2cpp'
+                ],
+                default => throw new InvalidArgumentException("Unkown scripting backend '$backend'"),
+            },
+            default => throw new InvalidArgumentException("Unkown build target '$target'"),
+        };
     }
     
     public static function getBuildExecutable(string $target, string $productName): string {
         $buildExecutable = FileSystem::filenameSanitize($productName);
-        switch (strtolower($target)) {
-            case self::WINDOWS:
-                return "$buildExecutable.exe";
-            case self::LINUX:
-                return $buildExecutable;
-            case self::MAC_OSX:
-                return "$buildExecutable.app";
-            default:
-                throw new InvalidArgumentException($target);
-        }
+        return match (strtolower($target)) {
+            self::WINDOWS => "$buildExecutable.exe",
+            self::LINUX => $buildExecutable,
+            self::MAC_OSX => "$buildExecutable.app",
+            default => throw new InvalidArgumentException($target),
+        };
     }
     
     public static function getBuildParameters(string $target, string $buildExecutable): array {
-        switch (strtolower($target)) {
-            case self::WINDOWS:
-                return [
-                    '-buildTarget',
-                    'Win64',
-                    '-buildWindows64Player',
-                    $buildExecutable
-                ];
-            case self::LINUX:
-                return [
-                    '-buildTarget',
-                    'Linux64',
-                    '-buildLinux64Player',
-                    $buildExecutable
-                ];
-            case self::MAC_OSX:
-                return [
-                    '-buildTarget',
-                    'OSXUniversal',
-                    '-buildOSXUniversalPlayer',
-                    $buildExecutable
-                ];
-            default:
-                throw new InvalidArgumentException($target);
-        }
+        return match (strtolower($target)) {
+            self::WINDOWS => [
+                '-buildTarget',
+                'Win64',
+                '-buildWindows64Player',
+                $buildExecutable
+            ],
+            self::LINUX => [
+                '-buildTarget',
+                'Linux64',
+                '-buildLinux64Player',
+                $buildExecutable
+            ],
+            self::MAC_OSX => [
+                '-buildTarget',
+                'OSXUniversal',
+                '-buildOSXUniversalPlayer',
+                $buildExecutable
+            ],
+            default => throw new InvalidArgumentException($target),
+        };
     }
 }

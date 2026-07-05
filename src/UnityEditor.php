@@ -37,10 +37,10 @@ final class UnityEditor {
         }
         if (! $this->wasLicensed) {
             $log = $this->execute(false, '-quit', '-projectPath', $projectPath)->getOutput();
-            if (strpos($log, self::LICENSE_SUCCESS_2019) !== false) {
+            if (str_contains($log, self::LICENSE_SUCCESS_2019)) {
                 $this->wasLicensed = true;
             }
-            if (strpos($log, self::LICENSE_SUCCESS_2020) !== false) {
+            if (str_contains($log, self::LICENSE_SUCCESS_2020)) {
                 $this->wasLicensed = true;
             }
         }
@@ -53,7 +53,7 @@ final class UnityEditor {
     }
     
     public function __toString(): string {
-        return "Unity Editor v{$this->version}";
+        return "Unity Editor v$this->version";
     }
     
     public function setExecutable(string $executable): void {
@@ -107,7 +107,7 @@ final class UnityEditor {
     private const LICENSE_IS_MISSING_6000 = 'Unity has not been activated with a valid License.';
     
     private static function isLicenseMissing(string $stdout): bool {
-        return strpos($stdout, self::LICENSE_IS_MISSING_2021) !== false or strpos($stdout, self::LICENSE_IS_MISSING_2022) !== false or strpos($stdout, self::LICENSE_IS_MISSING_6000) !== false;
+        return str_contains($stdout, self::LICENSE_IS_MISSING_2021) or str_contains($stdout, self::LICENSE_IS_MISSING_2022) or str_contains($stdout, self::LICENSE_IS_MISSING_6000);
     }
     
     private function tryToLicense(): bool {

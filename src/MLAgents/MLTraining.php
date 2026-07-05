@@ -100,7 +100,7 @@ final class MLTraining {
     }
     
     public function needsTraining(): bool {
-        return is_dir($this->modelDirectory) ? FileSystem::scanDir($this->modelDirectory, FileSystem::SCANDIR_EXCLUDE_DIRS, '~\.o?nnx?$~') === [] : true;
+        return ! is_dir($this->modelDirectory) || FileSystem::scanDir($this->modelDirectory, FileSystem::SCANDIR_EXCLUDE_DIRS, '~\.o?nnx?$~') === [];
     }
     
     public function train(string $workDirectory, string $executableFile): int {

@@ -1,10 +1,11 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\Assets\Project;
 
+use DOMDocument;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
 use Slothsoft\Unity\ExecutionError;
-use DOMDocument;
 
 /**
  * Reads or writes a Unity project's bundle version.
@@ -43,9 +44,13 @@ final class VersionExecutable extends ProjectExecutableBase {
     
     protected function createResultDocument(): ?DOMDocument {
         switch ($this->mode) {
+            case 'get':
+                break;
             case 'set':
                 $this->project->setProjectVersion($this->version);
                 break;
+            default:
+                throw ExecutionError::Error('AssertParameter', "Unknown version mode '$this->mode'!");
         }
         
         $document = new DOMDocument('1.0', 'UTF-8');

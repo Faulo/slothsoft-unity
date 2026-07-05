@@ -1,11 +1,12 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\DocFX;
 
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\Module\Module;
-use Symfony\Component\Filesystem\Filesystem;
 use Spyc;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Creates DocFX configuration, templates, and table-of-contents files for Unity projects.
@@ -126,7 +127,7 @@ final class Settings {
         $plugins = realpath($this->path . DIRECTORY_SEPARATOR . 'Assets' . DIRECTORY_SEPARATOR . 'Plugins');
         if ($plugins) {
             $this->addDirectory('Assets', function (\SplFileInfo $file) use ($plugins): bool {
-                return strpos($file->getRealPath(), $plugins) === false;
+                return ! str_contains($file->getRealPath(), $plugins);
             });
         } else {
             $this->addDirectory('Assets');
@@ -175,16 +176,13 @@ final class Settings {
         ];
     }
     
-    private string $template = 'default';
-    
     public function setTemplate(string $template): void {
-        $this->template = $template;
-        if ($this->template === 'default') {
+        if ($template === 'default') {
             unset($this->data['build']['template']);
         } else {
             $this->data['build']['template'] = [
                 'default',
-                "templates/$this->template"
+                "templates/$template"
             ];
         }
     }

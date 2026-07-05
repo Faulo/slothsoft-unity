@@ -368,7 +368,7 @@ final class UnityHub {
             return $this->changesets[$version];
         }
         
-        if (strpos($version, 'f') !== false) {
+        if (str_contains($version, 'f')) {
             $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_FINAL . preg_replace('~f.*~', '', $version));
             
             if (isset($this->changesets[$version])) {
@@ -376,7 +376,7 @@ final class UnityHub {
             }
         }
         
-        if (strpos($version, 'b') !== false) {
+        if (str_contains($version, 'b')) {
             $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_BETA . $version);
             
             if (isset($this->changesets[$version])) {
@@ -384,7 +384,7 @@ final class UnityHub {
             }
         }
         
-        if (strpos($version, 'b') !== false) {
+        if (str_contains($version, 'b')) {
             $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_BETA . $version);
             
             if (isset($this->changesets[$version])) {
@@ -392,7 +392,7 @@ final class UnityHub {
             }
         }
         
-        if (strpos($version, 'a') !== false) {
+        if (str_contains($version, 'a')) {
             $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_ALPHA . $version);
             
             if (isset($this->changesets[$version])) {
@@ -400,7 +400,7 @@ final class UnityHub {
             }
         }
         
-        throw ExecutionError::Error('AssertEditorChangeset', "Failed to determine changeset ID for Unity version '{$version}'!");
+        throw ExecutionError::Error('AssertEditorChangeset', "Failed to determine changeset ID for Unity version '$version'!");
     }
     
     public function createModuleInstallation(string $version, array $modules = []): array {
