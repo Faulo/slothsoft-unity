@@ -1,13 +1,14 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
+use InvalidArgumentException;
+use Slothsoft\Core\Configuration\ConfigurationField;
 use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\ServerEnvironment;
-use Slothsoft\Core\Configuration\ConfigurationField;
 use Symfony\Component\Process\Process;
-use InvalidArgumentException;
 use Throwable;
 
 /**
@@ -190,30 +191,53 @@ final class UnityHub {
     }
     
     private function loadInstalledEditors(bool $allowCache): iterable {
-        $this->hasLoadedEditorsFromCache = ($allowCache and ($editorPaths = $this->loadInstalledEditorsCache()));
+        $editorPaths = $this->loadInstalledEditorsOutput($allowCache);
+        
+        foreach (explode("\n", $editorPaths) as $line) {
+            $editor = self::parseInstalledEditor($line);
+            if ($editor !== null) {
+                yield $editor['version'] => $editor['path'];
+            }
+        }
+    }
+    
+    private function loadInstalledEditorsOutput(bool $allowCache): string {
+        $editorPaths = $allowCache ? $this->loadInstalledEditorsCache() : null;
+        $this->hasLoadedEditorsFromCache = (bool) $editorPaths;
         
         if ($this->hasLoadedEditorsFromCache) {
-            if (self::getLoggingEnabled() or UnityEnvironment::isLoggingCache()) {
-                fwrite(STDERR, UnityEnvironment::formatCache(self::editorPathCache() . PHP_EOL));
-                fwrite(STDERR, UnityEnvironment::formatCache($editorPaths . PHP_EOL));
-            }
-        } else {
-            $editorPaths = trim($this->execute('editors', '--installed')->getOutput());
-            $this->saveInstalledEditorsCache($editorPaths);
+            self::logInstalledEditorsCache($editorPaths);
+            return $editorPaths;
         }
         
-        if (strlen($editorPaths)) {
-            foreach (explode("\n", $editorPaths) as $line) {
-                $line = explode('installed at', str_replace(',', '', $line), 2);
-                if (count($line) === 2) {
-                    $version = trim($line[0]);
-                    $path = trim($line[1]);
-                    if (strlen($version) and strlen($path)) {
-                        yield $version => $path;
-                    }
-                }
-            }
+        $editorPaths = trim($this->execute('editors', '--installed')->getOutput());
+        $this->saveInstalledEditorsCache($editorPaths);
+        return $editorPaths;
+    }
+    
+    private static function logInstalledEditorsCache(string $editorPaths): void {
+        if (self::getLoggingEnabled() or UnityEnvironment::isLoggingCache()) {
+            fwrite(STDERR, UnityEnvironment::formatCache(self::editorPathCache() . PHP_EOL));
+            fwrite(STDERR, UnityEnvironment::formatCache($editorPaths . PHP_EOL));
         }
+    }
+    
+    private static function parseInstalledEditor(string $line): ?array {
+        $line = explode('installed at', str_replace(',', '', $line), 2);
+        if (count($line) !== 2) {
+            return null;
+        }
+        
+        $version = trim($line[0]);
+        $path = trim($line[1]);
+        if ($version === '' or $path === '') {
+            return null;
+        }
+        
+        return [
+            'version' => $version,
+            'path' => $path
+        ];
     }
     
     private const EDITOR_PATH_CACHE = 'unity-editors-installed.tmp';
@@ -465,11 +489,6 @@ final class UnityHub {
             $text = $process->getExitCodeText();
             throw ExecutionError::Error("AssertExitCode", "Process finished with exit code '$code': $text.", $process);
         }
-    }
-    
-    private function scanForSubDirectories(string $directory): iterable {
-        $options = FileSystem::SCANDIR_SORT | FileSystem::SCANDIR_EXCLUDE_FILES;
-        return FileSystem::scanDir($directory, $options);
     }
     
     private function loadChangesets(): void {
