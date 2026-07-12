@@ -1,0 +1,17 @@
+services:
+  web:
+    environment:
+        - UNITY_CREDENTIALS_USR
+        - UNITY_CREDENTIALS_PSW
+        - EMAIL_CREDENTIALS_USR
+        - EMAIL_CREDENTIALS_PSW
+        - UNITY_NO_GRAPHICS=1
+    volumes:
+        - unity-binaries:/root/Unity
+        - unity-cache:/root/.cache/Unity
+
+volumes:
+    unity-binaries:
+        external: true
+    unity-cache:
+        external: true

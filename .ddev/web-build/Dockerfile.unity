@@ -24,6 +24,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Legacy Unity editor compatibility
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libdbus-glib-1-2 \
+        xauth && \
+    curl -fsSL https://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.1_1.1.1w-0+deb11u8_amd64.deb -o /tmp/libssl1.1.deb && \
+    curl -fsSL http://deb.debian.org/debian/pool/main/g/gconf/gconf2-common_3.2.6-8_all.deb -o /tmp/gconf2-common.deb && \
+    curl -fsSL http://deb.debian.org/debian/pool/main/g/gconf/libgconf-2-4_3.2.6-8_amd64.deb -o /tmp/libgconf-2-4.deb && \
+    apt-get install -y --no-install-recommends \
+        /tmp/libssl1.1.deb \
+        /tmp/gconf2-common.deb \
+        /tmp/libgconf-2-4.deb && \
+    rm -f /tmp/libssl1.1.deb /tmp/gconf2-common.deb /tmp/libgconf-2-4.deb && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Unity Hub
 RUN install -m 0755 -d /etc/apt/keyrings && \
     curl -fsSL https://hub.unity3d.com/linux/keys/public | gpg --dearmor -o /etc/apt/keyrings/unityhub.gpg && \
