@@ -1,0 +1,4 @@
+# Install Codex CLI globally in the DDEV web container.
+ENV INITIAL_AGENT_MODE=agent-full-access
+RUN npm install -g @openai/codex@latest && codex --version
+RUN npm install -g @agentclientprotocol/codex-acp@latest && codex-acp --version
