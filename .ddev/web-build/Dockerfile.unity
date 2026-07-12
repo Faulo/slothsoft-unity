@@ -1,0 +1,48 @@
+# Base tools + locale
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    git-lfs \
+    gnupg \
+    locales \
+    nano \
+    pciutils \
+    tini \
+    wget \
+    extrepo \
+    zip \
+    unzip && \
+    echo "$LANG UTF-8" > /etc/locale.gen && \
+    locale-gen "$LANG" && \
+    install -m 0755 -d /etc/apt/keyrings && \
+    curl --version && \
+    git --version && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Unity Hub
+RUN install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://hub.unity3d.com/linux/keys/public | gpg --dearmor -o /etc/apt/keyrings/unityhub.gpg && \
+    chmod a+r /etc/apt/keyrings/unityhub.gpg && \
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/unityhub.gpg] https://hub.unity3d.com/linux/repos/deb stable main" \
+        > /etc/apt/sources.list.d/unityhub.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        cpio \
+        desktop-file-utils \
+        ffmpeg \
+        libasound2 \
+        libc6-dev \
+        libgbm-dev \
+        libglu1-mesa \
+        p7zip-full \
+        python3 \
+        unityhub=3.12.1 \
+        xvfb \
+        xz-utils && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
