@@ -7,11 +7,4 @@ services:
         - EMAIL_CREDENTIALS_PSW
         - UNITY_NO_GRAPHICS=1
     volumes:
-        - unity-binaries:/root/Unity
-        - unity-cache:/root/.cache/Unity
-
-volumes:
-    unity-binaries:
-        external: true
-    unity-cache:
-        external: true
+        - ~/Unity:/home/${DDEV_USER}/Unity

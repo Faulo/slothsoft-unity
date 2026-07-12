@@ -2,8 +2,10 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\BrowserKit\HttpBrowser;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use DateInterval;
@@ -19,6 +21,12 @@ use Exception;
 final class UnityLicensor {
     
     private const UNITY_INIT_LOGIN = 'https://license.unity3d.com/genesis/oauth/logout_callback';
+
+    private const UNITY_AUTH_CSRF = 'https://login.unity.com/api/auth/csrf';
+
+    private const UNITY_AUTH_CREDENTIALS = 'https://login.unity.com/api/auth/callback/credentials';
+
+    private const UNITY_AUTH_CALLBACK = 'https://login.unity.com/en/sign-in';
     
     private const UNITY_INIT_ACTIVATION = 'https://license.unity3d.com/manual';
     
@@ -33,10 +41,6 @@ final class UnityLicensor {
     private const UNITY_NEW_SERIAL = 'https://license.unity3d.com/manual/serial/new';
     
     private const UNITY_FINALIZE = 'https://license.unity3d.com/manual/finalize';
-    
-    private const UNITY_LOGIN = 'https://id.unity.com';
-    
-    private const UNITY_ACCOUNT = 'https://id.unity.com/en/account/edit';
     
     public const ENV_UNITY_LICENSE_EMAIL = 'UNITY_CREDENTIALS_USR';
     
@@ -133,61 +137,64 @@ final class UnityLicensor {
         $this->log();
         
         $startTime = new DateTimeImmutable();
-        
-        $form = $crawler->selectButton('commit')->form();
-        $form->disableValidation();
-        $crawler = $this->browser->submit($form, [
-            'conversations_create_session_form[email]' => $this->userMail,
-            'conversations_create_session_form[password]' => $this->userPassword,
-            'conversations_create_session_form[remember_me]' => true
-        ]);
-        
-        $this->log();
-        
-        $form = $crawler->filterXPath('.//form[.//input/@name = "conversations_email_tfa_required_form[code]"]');
-        
-        if ($form->count() > 0) {
-            if (MailboxAccess::hasCredentials()) {
-                if ($crawler->filterXPath('.//*[@id="alert-tfa-expired"]')->count() > 0) {
-                    if (self::isLogging()) {
-                        trigger_error(sprintf('Reloading 2FA page "%s" to send code.', $crawler->getUri()), E_USER_NOTICE);
+
+        if ($crawler->filterXPath('.//input[@name = "email"]')->count() > 0) {
+            $crawler = $this->loginWithAuthJs();
+        } else {
+            $form = $crawler->selectButton('commit')->form();
+            $form->disableValidation();
+            $crawler = $this->browser->submit($form, [
+                'conversations_create_session_form[email]' => $this->userMail,
+                'conversations_create_session_form[password]' => $this->userPassword,
+                'conversations_create_session_form[remember_me]' => true
+            ]);
+
+            $this->log();
+
+            $form = $crawler->filterXPath('.//form[.//input/@name = "conversations_email_tfa_required_form[code]"]');
+
+            if ($form->count() > 0) {
+                if (MailboxAccess::hasCredentials()) {
+                    if ($crawler->filterXPath('.//*[@id="alert-tfa-expired"]')->count() > 0) {
+                        if (self::isLogging()) {
+                            trigger_error(sprintf('Reloading 2FA page "%s" to send code.', $crawler->getUri()), E_USER_NOTICE);
+                        }
+
+                        $input = $form->selectButton('conversations_email_tfa_required_form[resend]');
+                        $input->getNode(0)->removeAttribute('disabled');
+
+                        $form = $input->form();
+                        $form->disableValidation();
+                        $crawler = $this->browser->submit($form, [
+                            'conversations_email_tfa_required_form[resend]' => 'Re-send code'
+                        ]);
+
+                        $this->log();
+
+                        $form = $crawler->filterXPath('.//form[.//input/@name = "conversations_email_tfa_required_form[code]"]');
                     }
                     
-                    $input = $form->selectButton('conversations_email_tfa_required_form[resend]');
-                    $input->getNode(0)->removeAttribute('disabled');
+                    $mailbox = new MailboxAccess();
                     
-                    $form = $input->form();
-                    $form->disableValidation();
-                    $crawler = $this->browser->submit($form, [
-                        'conversations_email_tfa_required_form[resend]' => 'Re-send code'
-                    ]);
-                    
-                    $this->log();
-                    
-                    $form = $crawler->filterXPath('.//form[.//input/@name = "conversations_email_tfa_required_form[code]"]');
-                }
-                
-                $mailbox = new MailboxAccess();
-                
-                if ($code = $mailbox->waitForLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('PT5M'), self::UNITY_2FA_PATTERN)) {
-                    $form = $form->selectButton('commit')->form();
-                    $form->disableValidation();
-                    $crawler = $this->browser->submit($form, [
-                        'conversations_email_tfa_required_form[code]' => $code
-                    ]);
-                    
-                    $this->log();
+                    if ($code = $mailbox->waitForLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('PT5M'), self::UNITY_2FA_PATTERN)) {
+                        $form = $form->selectButton('commit')->form();
+                        $form->disableValidation();
+                        $crawler = $this->browser->submit($form, [
+                            'conversations_email_tfa_required_form[code]' => $code
+                        ]);
+
+                        $this->log();
+                    } else {
+                        trigger_error(sprintf('Unity sent a 2FA code to "%s", but we did not find it there using the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
+                    }
                 } else {
-                    trigger_error(sprintf('Unity sent a 2FA code to "%s", but we did not find it there using the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
+                    trigger_error(sprintf('Unity sent a 2FA code to "%s", but mail access has not been granted via the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
                 }
-            } else {
-                trigger_error(sprintf('Unity sent a 2FA code to "%s", but mail access has not been granted via the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
             }
+
+            $redirect = $crawler->filterXPath('.//a');
+            $crawler = $this->browser->click($redirect->link());
         }
-        
-        $redirect = $crawler->filterXPath('.//a');
-        
-        $crawler = $this->browser->click($redirect->link());
         
         $this->log();
         
@@ -196,6 +203,48 @@ final class UnityLicensor {
         if ($crawler->getUri() !== self::UNITY_INIT_ACTIVATION) {
             trigger_error(sprintf('Failed to login using email "%s" (ended up in "%s" with cookie "%s")', $this->userMail, $crawler->getUri(), $this->activationCookie), E_USER_WARNING);
         }
+    }
+
+    private function loginWithAuthJs(): Crawler {
+        $deviceFingerprint = hash('sha256', $this->userMail . "\0" . microtime(true));
+        $this->cookies->set(new Cookie('device_fp', $deviceFingerprint, null, '/', 'login.unity.com', true, false, false, 'Lax'));
+
+        $this->browser->request('GET', self::UNITY_AUTH_CSRF);
+        $csrfResponse = json_decode($this->browser->getResponse()->getContent(), true);
+        $csrfToken = is_array($csrfResponse) ? ($csrfResponse['csrfToken'] ?? null) : null;
+
+        if (! is_string($csrfToken) or $csrfToken === '') {
+            throw new Exception(sprintf('Failed to retrieve a CSRF token from "%s".', self::UNITY_AUTH_CSRF));
+        }
+
+        $this->browser->request('POST', self::UNITY_AUTH_CREDENTIALS, [
+            'email' => $this->userMail,
+            'password' => $this->userPassword,
+            'csrfToken' => $csrfToken,
+            'callbackUrl' => self::UNITY_AUTH_CALLBACK
+        ], [], [
+            'HTTP_X_AUTH_RETURN_REDIRECT' => '1'
+        ]);
+
+        $loginResponse = json_decode($this->browser->getResponse()->getContent(), true);
+        $redirectUrl = is_array($loginResponse) ? ($loginResponse['url'] ?? null) : null;
+
+        if (! is_string($redirectUrl) or $redirectUrl === '') {
+            throw new Exception(sprintf('Failed to authenticate through "%s".', self::UNITY_AUTH_CREDENTIALS));
+        }
+
+        $crawler = $this->browser->request('GET', $redirectUrl);
+        $metaRefresh = $crawler->filterXPath('.//meta[translate(@http-equiv, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz") = "refresh"]');
+
+        if ($metaRefresh->count() > 0) {
+            $redirect = $crawler->filterXPath('.//a[@href]');
+            if ($redirect->count() === 0) {
+                throw new Exception(sprintf('Unity returned a meta refresh without a redirect link at "%s".', $crawler->getUri()));
+            }
+            $crawler = $this->browser->click($redirect->link());
+        }
+
+        return $crawler;
     }
     
     private function getUploadCookies(): string {
