@@ -201,8 +201,22 @@ final class UnityLicensor {
         $this->activationCookie = $this->getUploadCookies();
         
         if ($crawler->getUri() !== self::UNITY_INIT_ACTIVATION) {
-            trigger_error(sprintf('Failed to login using email "%s" (ended up in "%s" with cookie "%s")', $this->userMail, $crawler->getUri(), $this->activationCookie), E_USER_WARNING);
+            trigger_error(sprintf('Failed to login using email "%s" (ended up in "%s"). %s', $this->userMail, $crawler->getUri(), $this->describeLoginPage($crawler)), E_USER_WARNING);
         }
+    }
+
+    private function describeLoginPage(Crawler $crawler): string {
+        $text = $crawler->filterXPath('.//h1 | .//h2 | .//p | .//label')->each(function (Crawler $node): string {
+            return str_replace($this->userMail, '[email]', trim($node->text('')));
+        });
+        $controls = $crawler->filterXPath('.//input | .//button')->each(function (Crawler $node): string {
+            return sprintf('%s(name=%s,type=%s,text=%s)', $node->nodeName(), $node->attr('name') ?? '', $node->attr('type') ?? '', trim($node->text('')));
+        });
+        $scripts = $crawler->filterXPath('.//script[@src]')->each(function (Crawler $node): string {
+            return $node->attr('src') ?? '';
+        });
+
+        return sprintf('Page text: [%s]. Controls: [%s]. Scripts: [%s].', implode(' | ', array_unique(array_filter($text))), implode(', ', $controls), implode(', ', $scripts));
     }
 
     private function loginWithAuthJs(): Crawler {
