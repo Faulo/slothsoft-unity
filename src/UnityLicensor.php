@@ -304,7 +304,7 @@ final class UnityLicensor {
     }
 
     private function findServerAction(Crawler $crawler, string $actionName): string {
-        $pattern = '/createServerReference\)\("([a-f0-9]+)".{0,512}"' . preg_quote($actionName, '/') . '"/s';
+        $pattern = '/createServerReference\)\("([a-f0-9]+)"(?:(?!createServerReference).){0,512}"' . preg_quote($actionName, '/') . '"/s';
 
         foreach ($crawler->filterXPath('.//script[@src]') as $scriptNode) {
             $scriptUrl = $scriptNode->getAttribute('src');
