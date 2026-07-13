@@ -283,11 +283,24 @@ final class UnityLicensor {
             'CONTENT_TYPE' => 'text/plain;charset=UTF-8'
         ], $body);
 
-        if ($this->browser->getResponse()->getStatusCode() !== 200) {
-            throw new Exception(sprintf('Unity rejected the security code with HTTP status %d.', $this->browser->getResponse()->getStatusCode()));
+        $actionResponse = $this->browser->getResponse();
+        if ($actionResponse->getStatusCode() !== 200) {
+            throw new Exception(sprintf('Unity rejected the security code with HTTP status %d.', $actionResponse->getStatusCode()));
         }
 
-        return $this->followMetaRefresh($this->browser->request('GET', $securityCheckUrl));
+        $crawler = $this->followMetaRefresh($this->browser->request('GET', $securityCheckUrl));
+        if (str_ends_with((string) parse_url($crawler->getUri(), PHP_URL_PATH), self::UNITY_AUTH_SECURITY_CHECK)) {
+            $responseContent = str_replace([
+                $code,
+                $this->userMail
+            ], [
+                '[code]',
+                '[email]'
+            ], substr($actionResponse->getContent(), 0, 4000));
+            throw new Exception(sprintf('Unity did not accept the security code. Action response headers: [%s]. Action response: %s', implode(', ', array_keys($actionResponse->getHeaders())), $responseContent));
+        }
+
+        return $crawler;
     }
 
     private function findServerAction(Crawler $crawler, string $actionName): string {
