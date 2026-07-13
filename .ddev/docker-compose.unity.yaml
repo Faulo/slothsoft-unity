@@ -1,5 +1,9 @@
 services:
   web:
+    platform: linux/amd64
+    build:
+      platforms:
+        - linux/amd64
     environment:
         - UNITY_CREDENTIALS_USR
         - UNITY_CREDENTIALS_PSW
