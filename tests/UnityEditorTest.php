@@ -1,12 +1,13 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
+use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\ServerEnvironment;
 use Slothsoft\FarahTesting\TestUtils;
-use PHPUnit\Framework\Constraint\IsEqual;
 
 /**
  * UnityEditorTest
@@ -14,6 +15,10 @@ use PHPUnit\Framework\Constraint\IsEqual;
  * @see UnityEditor
  */
 final class UnityEditorTest extends TestCase {
+    
+    private const EDITOR_VERSION = '2019.4.17f1';
+    
+    private const EDITOR_CHANGESET = '667c8606c536';
     
     public static function setUpBeforeClass(): void {
         TestUtils::changeWorkingDirectoryToComposerRoot();
@@ -25,14 +30,15 @@ final class UnityEditorTest extends TestCase {
     
     public function testCreateEmptyProject(): void {
         $hub = UnityHub::getInstance();
+        
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
-        $editor = $hub->getEditorByVersion('2019.4.17f1');
+        $hub->registerChangeset(self::EDITOR_VERSION, self::EDITOR_CHANGESET);
+        $editor = new UnityEditor($hub, self::EDITOR_VERSION);
         if (! $editor->isInstalled()) {
-            $this->assertTrue($editor->install(), 'Failed to install Unity Editor 2019.4.17f1');
+            $this->assertTrue($editor->install(), 'Failed to install Unity Editor ' . self::EDITOR_VERSION);
         }
         
         $target = ServerEnvironment::getCacheDirectory() . DIRECTORY_SEPARATOR . 'EmptyProject';

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\Git;
 
 use PHPUnit\Framework\TestCase;

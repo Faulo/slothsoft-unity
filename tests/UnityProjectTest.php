@@ -1,8 +1,10 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
+use SplFileInfo;
 
 class UnityProjectTest extends TestCase {
     
@@ -52,7 +54,7 @@ class UnityProjectTest extends TestCase {
         $this->assertCount(count($files), $assets);
         
         foreach ($assets as $asset) {
-            $this->assertInstanceof(\SplFileInfo::class, $asset);
+            $this->assertInstanceof(SplFileInfo::class, $asset);
             $this->assertContains($asset->getBasename(), $files);
         }
     }

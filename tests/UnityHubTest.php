@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
@@ -12,9 +13,9 @@ class UnityHubTest extends TestCase {
     
     public function testLoggingEnabled() {
         foreach ([
-            true,
-            false
-        ] as $value) {
+                     true,
+                     false
+                 ] as $value) {
             UnityHub::setLoggingEnabled($value);
             $this->assertEquals($value, UnityHub::getLoggingEnabled());
         }
@@ -22,9 +23,9 @@ class UnityHubTest extends TestCase {
     
     public function testThrowOnFailure() {
         foreach ([
-            true,
-            false
-        ] as $value) {
+                     true,
+                     false
+                 ] as $value) {
             UnityHub::setThrowOnFailure($value);
             $this->assertEquals($value, UnityHub::getThrowOnFailure());
         }
@@ -33,9 +34,9 @@ class UnityHubTest extends TestCase {
     public function testProcessTimeout() {
         try {
             foreach ([
-                0,
-                60
-            ] as $value) {
+                         0,
+                         60
+                     ] as $value) {
                 UnityHub::setProcessTimeout($value);
                 $this->assertEquals($value, UnityHub::getProcessTimeout());
             }

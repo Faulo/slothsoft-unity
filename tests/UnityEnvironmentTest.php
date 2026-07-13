@@ -1,11 +1,12 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsTrue;
+use PHPUnit\Framework\TestCase;
 
 /**
  * UnityEnvironmentTest

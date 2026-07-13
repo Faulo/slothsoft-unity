@@ -1,10 +1,11 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
-use PHPUnit\Framework\TestCase;
 use DateInterval;
 use DateTimeImmutable;
+use PHPUnit\Framework\TestCase;
 
 /**
  * MailboxAccessTest

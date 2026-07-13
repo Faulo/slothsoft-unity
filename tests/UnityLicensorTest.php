@@ -1,10 +1,11 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
+use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Core\DOMHelper;
-use DOMDocument;
 
 /**
  * UnityEditorTest

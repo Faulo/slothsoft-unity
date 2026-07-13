@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
@@ -22,7 +23,7 @@ class LocateHubFromWindowsRegistryTest extends TestCase {
         }
         
         $output = [];
-        $result = - 1;
+        $result = -1;
         exec('reg query "HKEY_LOCAL_MACHINE\\SOFTWARE\\Unity Technologies\\Hub', $output, $result);
         $unityIsInstalled = $result === 0;
         
