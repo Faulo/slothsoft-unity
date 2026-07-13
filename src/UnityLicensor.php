@@ -27,6 +27,10 @@ final class UnityLicensor {
     private const UNITY_AUTH_CREDENTIALS = 'https://login.unity.com/api/auth/callback/credentials';
 
     private const UNITY_AUTH_CALLBACK = 'https://login.unity.com/en/sign-in';
+
+    private const UNITY_AUTH_SECURITY_CHECK = '/sign-in/security-check';
+
+    private const UNITY_AUTH_SECURITY_ACTION = 'verifyEmailSecurityCode';
     
     private const UNITY_INIT_ACTIVATION = 'https://license.unity3d.com/manual';
     
@@ -140,6 +144,9 @@ final class UnityLicensor {
 
         if ($crawler->filterXPath('.//input[@name = "email"]')->count() > 0) {
             $crawler = $this->loginWithAuthJs();
+            if (str_ends_with((string) parse_url($crawler->getUri(), PHP_URL_PATH), self::UNITY_AUTH_SECURITY_CHECK)) {
+                $crawler = $this->completeSecurityCheck($crawler, $startTime);
+            }
         } else {
             $form = $crawler->selectButton('commit')->form();
             $form->disableValidation();
@@ -247,7 +254,62 @@ final class UnityLicensor {
             throw new Exception(sprintf('Failed to authenticate through "%s".', self::UNITY_AUTH_CREDENTIALS));
         }
 
-        $crawler = $this->browser->request('GET', $redirectUrl);
+        return $this->followMetaRefresh($this->browser->request('GET', $redirectUrl));
+    }
+
+    private function completeSecurityCheck(Crawler $crawler, DateTimeImmutable $startTime): Crawler {
+        if (! MailboxAccess::hasCredentials()) {
+            throw new Exception(sprintf('Unity sent a security code to "%s", but mail access has not been granted via the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW));
+        }
+
+        $mailbox = new MailboxAccess();
+        $code = $mailbox->waitForLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('PT5M'), self::UNITY_2FA_PATTERN);
+        if ($code === null) {
+            throw new Exception(sprintf('Unity sent a security code to "%s", but no matching email arrived within five minutes.', $this->userMail));
+        }
+
+        $action = $this->findServerAction($crawler, self::UNITY_AUTH_SECURITY_ACTION);
+        $securityCheckUrl = $crawler->getUri();
+        $body = json_encode([
+            $code,
+            [
+                'rememberDevice' => true
+            ]
+        ]);
+
+        $this->browser->request('POST', $securityCheckUrl, [], [], [
+            'HTTP_ACCEPT' => 'text/x-component',
+            'HTTP_NEXT_ACTION' => $action,
+            'CONTENT_TYPE' => 'text/plain;charset=UTF-8'
+        ], $body);
+
+        if ($this->browser->getResponse()->getStatusCode() !== 200) {
+            throw new Exception(sprintf('Unity rejected the security code with HTTP status %d.', $this->browser->getResponse()->getStatusCode()));
+        }
+
+        return $this->followMetaRefresh($this->browser->request('GET', $securityCheckUrl));
+    }
+
+    private function findServerAction(Crawler $crawler, string $actionName): string {
+        $pattern = '/createServerReference\)\("([a-f0-9]+)".{0,512}"' . preg_quote($actionName, '/') . '"/s';
+
+        foreach ($crawler->filterXPath('.//script[@src]') as $scriptNode) {
+            $scriptUrl = $scriptNode->getAttribute('src');
+            if ($scriptUrl === '') {
+                continue;
+            }
+
+            $script = $this->client->request('GET', $scriptUrl)->getContent();
+            $match = [];
+            if (preg_match($pattern, $script, $match)) {
+                return $match[1];
+            }
+        }
+
+        throw new Exception(sprintf('Failed to locate Unity server action "%s".', $actionName));
+    }
+
+    private function followMetaRefresh(Crawler $crawler): Crawler {
         $metaRefresh = $crawler->filterXPath('.//meta[translate(@http-equiv, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz") = "refresh"]');
 
         if ($metaRefresh->count() > 0) {
