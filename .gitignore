@@ -4,6 +4,9 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 
+# == Mac ==
+.DS_Store
+
 # == Composer ==
 /composer.phar
 /composer.lock
