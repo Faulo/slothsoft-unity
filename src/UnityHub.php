@@ -351,17 +351,19 @@ final class UnityHub {
         return $args;
     }
     
-    public function inventStableEditorVersion(string $minVersion): string {
+    public function inventStableEditorVersion(string $minVersion, bool $highest = false): string {
         $this->loadChangesets();
         $maxVersion = null;
         foreach (array_keys($this->changesets) as $version) {
-            if (version_compare($version, $minVersion, '>=')) {
-                if ($maxVersion === null or version_compare($version, $maxVersion, '<')) {
+            $matches = $highest ? self::matchesEditorVersion($version, $minVersion) : version_compare($version, $minVersion, '>=');
+            if ($matches) {
+                $operator = $highest ? '>' : '<';
+                if ($maxVersion === null or version_compare($version, $maxVersion, $operator)) {
                     $maxVersion = $version;
                 }
             }
         }
-        if ($maxVersion === null) {
+        if ($maxVersion === null and trim($minVersion) !== '') {
             $version = explode('.', trim($minVersion));
             if (count($version) <= 3) {
                 $version[1] ??= '0';
@@ -373,6 +375,17 @@ final class UnityHub {
             throw ExecutionError::Error('AssertEditorVersion', "Failed to find editor that satisfies mininum version requirement '$minVersion'!");
         }
         return $maxVersion;
+    }
+
+    private static function matchesEditorVersion(string $version, string $requestedVersion): bool {
+        $requestedVersion = trim($requestedVersion);
+        if ($requestedVersion === '') {
+            return str_contains($version, 'f');
+        }
+        if (preg_match('~^\d+(?:\.\d+){0,2}$~', $requestedVersion)) {
+            return preg_match('~^' . preg_quote($requestedVersion, '~') . '(?:\.|f)~', $version) === 1 and str_contains($version, 'f');
+        }
+        return $version === $requestedVersion;
     }
     
     private array $customChangesets = [];

@@ -193,49 +193,62 @@ class UnityHubTest extends TestCase {
     }
     
     /**
-     *
+     * @runInSeparateProcess
      * @dataProvider editorVersions
      */
-    public function testInventStableEditorVersion(string $minVersion, $expectedVersion) {
+    public function testInventStableEditorVersion(string $requestedVersion, bool $highest, string $expectedVersion): void {
         $hub = UnityHub::getInstance();
-        if (! $hub->isInstalled()) {
-            $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
-        }
+        $changesets = new \ReflectionProperty($hub, 'changesets');
+        $changesets->setAccessible(true);
+        $changesets->setValue($hub, array_fill_keys([
+            '2022.3.10f1',
+            '2022.3.20f1',
+            '6000.0.40f1',
+            '6000.0.60f1',
+            '6000.1.12f1',
+            '6000.2.0b1'
+        ], null));
         
-        $actualVersion = $hub->inventStableEditorVersion($minVersion);
+        $actualVersion = $hub->inventStableEditorVersion($requestedVersion, $highest);
         
         $this->assertEquals($expectedVersion, $actualVersion);
     }
     
     public function editorVersions(): iterable {
-        yield '2020.1' => [
-            '2020.1',
-            '2020.1.0f1'
-        ];
-        yield '2019.3' => [
-            '2019.3',
-            '2019.3.0f1'
-        ];
-        yield '2019.4' => [
-            '2019.4',
-            '2019.4.0f1'
-        ];
-        yield '2019.4.40f1' => [
-            '2019.4.40f1',
-            '2019.4.40f1'
-        ];
-        yield '6000.0.0f1' => [
+        yield 'major' => [
             '6000',
-            '6000.0.0f1'
+            true,
+            '6000.1.12f1'
         ];
-        yield '6000.1.0f1' => [
-            '6000.1',
-            '6000.1.0f1'
+        yield 'minor' => [
+            '6000.0',
+            true,
+            '6000.0.60f1'
         ];
-        yield '6000.0.40f1' => [
-            '6000.0.40f1',
+        yield 'patch' => [
+            '6000.0.40',
+            true,
             '6000.0.40f1'
+        ];
+        yield 'exact' => [
+            '6000.0.40f1',
+            true,
+            '6000.0.40f1'
+        ];
+        yield 'latest final release' => [
+            '2022.3',
+            true,
+            '2022.3.20f1'
+        ];
+        yield 'latest overall' => [
+            '',
+            true,
+            '6000.1.12f1'
+        ];
+        yield 'minimum package version' => [
+            '2022.3',
+            false,
+            '2022.3.10f1'
         ];
     }
 }

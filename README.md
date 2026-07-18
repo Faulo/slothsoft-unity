@@ -181,6 +181,14 @@ Call `unityhub help`. This is a quick way to verify that Unity Hub can be locate
 composer exec unity-help
 ```
 
+### `unity-empty-project`
+
+Create a new empty Unity project with the latest final editor version matching the requested version prefix.
+
+```bash
+composer exec unity-empty-project "path/to/new-project" [6000.0]
+```
+
 ### `unity-method`
 
 Run a specific editor method inside a Unity project and quit Unity afterward.

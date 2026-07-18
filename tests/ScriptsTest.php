@@ -52,6 +52,9 @@ class ScriptsTest extends TestCase {
         yield 'unity-documentation' => [
             'unity-documentation'
         ];
+        yield 'unity-empty-project' => [
+            'unity-empty-project'
+        ];
         yield 'unity-package-install' => [
             'unity-package-install'
         ];

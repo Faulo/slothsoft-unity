@@ -63,6 +63,7 @@
         "scripts/unity-method",
         "scripts/unity-start",
         "scripts/unity-module-install",
+        "scripts/unity-empty-project",
         "scripts/unity-package-install",
         "scripts/unity-project-setting",
         "scripts/unity-project-version",

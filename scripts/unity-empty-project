@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+use Slothsoft\Unity\ExecutionError;
+use Slothsoft\Unity\UnityHub;
+
+array_shift($_SERVER['argv']);
+$_SERVER['argc'] --;
+
+$_composer_autoload_path ??= __DIR__ . '/../vendor/autoload.php';
+include $_composer_autoload_path;
+
+const HELP = <<<'EOT'
+Create a new empty Unity project using the latest matching editor version.
+    
+Usage:
+composer exec unity-empty-project "path/to/new-project" ["version"]
+
+EOT;
+
+if ($_SERVER['argc'] < 1) {
+    echo HELP;
+    return;
+}
+
+$args = $_SERVER['argv'];
+
+$workspace = array_shift($args);
+$version = array_shift($args) ?? '';
+
+$hub = UnityHub::getInstance();
+$editor = $hub->getEditorByVersion($hub->inventStableEditorVersion($version, true));
+
+if (! $editor->isInstalled() and ! $editor->install()) {
+    throw ExecutionError::Error('AssertEditor', "Failed to install $editor!");
+}
+
+$editor->createEmptyProject($workspace, false);
