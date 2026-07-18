@@ -5,7 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.0.0] - Unreleased
+
+### Added
+- Added the optional `--junit PATH` argument to `unity-build`, `unity-empty-project`, `unity-method`, `unity-start`, `unity-module-install`, `unity-package-install`, and `unity-tests`. JUnit reports are written directly to `PATH`; `--junit -` writes the report to standard output.
+
+### Changed
+- **Breaking:** Unity CI commands no longer emit JUnit XML by default. Without `--junit`, they produce regular command output and communicate success or failure through their exit code.
+- **Breaking:** Changed `unity-package-install` argument order from `PACKAGE WORKSPACE` to `WORKSPACE PACKAGE`, making `WORKSPACE` the first positional argument consistently across Unity project commands.
+- Changed `unity-package-install` to reuse `WORKSPACE` when it already contains a Unity project. It creates an empty project only when no project exists, so running `unity-empty-project WORKSPACE` followed by `unity-package-install WORKSPACE PACKAGE` has the same result as running `unity-package-install WORKSPACE PACKAGE` alone.
+
+### Migration
+- Replace JUnit output redirection such as `composer exec unity-build -- WORKSPACE > reports/build.xml` with `composer exec unity-build -- --junit reports/build.xml WORKSPACE`.
+- Replace `composer exec unity-package-install -- PACKAGE WORKSPACE` with `composer exec unity-package-install -- WORKSPACE PACKAGE`.
+
+
+## [2.20.0] - 2026-07-18
+
+### Added
+- Added the Composer executable `unity-empty-project WORKSPACE [VERSION]`. It installs the latest final Unity editor in the requested version subtree and creates a new empty project. If `VERSION` is omitted, it uses the latest final Unity editor available.
 
 
 ## [2.19.0] - 2025-09-01
