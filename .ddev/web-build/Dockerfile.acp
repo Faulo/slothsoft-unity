@@ -24,7 +24,6 @@ ENV CLAUDE_SKIP_TRUST_DIALOG=1
 ENV ANTHROPIC_MODEL=claude-sonnet-4-6
 
 RUN npm install -g  \
-    @anthropic-ai/claude-agent-sdk-linux-arm64@latest \
     @agentclientprotocol/claude-agent-acp@latest \
     @anthropic-ai/claude-code@latest \
     && claude --version \
