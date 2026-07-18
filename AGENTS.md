@@ -2,6 +2,15 @@
 
 Shared instructions for coding agents working in slothsoft packages. Keep package-specific purpose, architecture, commands, and notes in README.md.
 
+## Meta Commands
+
+These short messages have special handling when they appear alone in a user message:
+
+- `ping`: Reply with `pong`.
+- `.`: Reply with `.`.
+- `?`: Continue the previous response or task after an interruption.
+- `ticket <URI>`: Treat `<URI>` as a ticket link. Read the ticket and all comments through MCP. Inspect the repository as needed. Then explain the ticket, relevant code context, and a proposed implementation plan. Do not edit files, change remote state, commit, or push until the user approves the approach.
+
 ## Runtime Environment
 
 The file `.env` is the source of truth for runtime configuration. In particular, `PHP_VERSION` is authoritative.
