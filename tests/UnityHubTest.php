@@ -199,7 +199,6 @@ class UnityHubTest extends TestCase {
     public function testInventStableEditorVersion(string $requestedVersion, bool $highest, string $expectedVersion): void {
         $hub = UnityHub::getInstance();
         $changesets = new \ReflectionProperty($hub, 'changesets');
-        $changesets->setAccessible(true);
         $changesets->setValue($hub, array_fill_keys([
             '2022.3.10f1',
             '2022.3.20f1',
