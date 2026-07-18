@@ -2,7 +2,7 @@ services:
   web:
     environment:
         - GITHUB_PAT
-        - JENKINS_PAT
+        - JENKINS_AUTH
     volumes:
       - ${DDEV_APPROOT}:${DDEV_APPROOT}
       - ~/acp/.codex/:/home/${DDEV_USER}/.codex/
