@@ -9,7 +9,7 @@ use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\ServerEnvironment;
 use Slothsoft\Unity\Command\DefaultUnityProcessOutputHandler;
-use Slothsoft\Unity\Command\UnityProcessOutput;
+use Slothsoft\Unity\Command\UnityProcessOutputHandlerInterface;
 use Symfony\Component\Process\Process;
 use Throwable;
 
@@ -42,7 +42,9 @@ final class UnityHub {
     }
     
     private static array $licenseFolders = [];
-    
+
+    private static ?UnityHubConfig $config = null;
+
     public static function addLicenseFolder(string $folder): void {
         if (! is_dir($folder)) {
             throw new InvalidArgumentException("Folder '$folder' does not exist!");
@@ -50,52 +52,48 @@ final class UnityHub {
         self::$licenseFolders[] = $folder;
     }
     
-    private static function loggingEnabled(): ConfigurationField {
-        static $field;
-        if ($field === null) {
-            $field = new ConfigurationField(false);
-        }
-        return $field;
+    private static function config(): UnityHubConfig {
+        return self::$config ??= new UnityHubConfig();
+    }
+    
+    public static function getConfig(): UnityHubConfig {
+        return clone self::config();
+    }
+    
+    public static function setConfig(UnityHubConfig $config): void {
+        self::$config = clone $config;
     }
     
     public static function setLoggingEnabled(bool $value): void {
-        self::loggingEnabled()->setValue($value);
+        self::config()->loggingEnabled = $value;
     }
     
     public static function getLoggingEnabled(): bool {
-        return self::loggingEnabled()->getValue();
-    }
-    
-    private static function throwOnFailure(): ConfigurationField {
-        static $field;
-        if ($field === null) {
-            $field = new ConfigurationField(false);
-        }
-        return $field;
+        return self::config()->loggingEnabled;
     }
     
     public static function setThrowOnFailure(bool $value): void {
-        self::throwOnFailure()->setValue($value);
+        self::config()->throwOnFailure = $value;
     }
     
     public static function getThrowOnFailure(): bool {
-        return self::throwOnFailure()->getValue();
-    }
-    
-    private static function processTimeout(): ConfigurationField {
-        static $field;
-        if ($field === null) {
-            $field = new ConfigurationField(0);
-        }
-        return $field;
+        return self::config()->throwOnFailure;
     }
     
     public static function setProcessTimeout(int $value): void {
-        self::processTimeout()->setValue($value);
+        self::config()->processTimeout = $value;
     }
     
     public static function getProcessTimeout(): int {
-        return self::processTimeout()->getValue();
+        return self::config()->processTimeout;
+    }
+
+    public static function setProcessOutputHandler(?UnityProcessOutputHandlerInterface $handler): void {
+        self::config()->processOutputHandler = $handler;
+    }
+
+    public static function getProcessOutputHandler(): ?UnityProcessOutputHandlerInterface {
+        return self::config()->processOutputHandler;
     }
     
     private static function hubLocator(): ConfigurationField {
@@ -469,7 +467,7 @@ final class UnityHub {
     }
     
     public static function runUnityProcess(Process $process, bool $validateExitCode = true): void {
-        $outputHandler = UnityProcessOutput::getHandler() ?? new DefaultUnityProcessOutputHandler();;
+        $outputHandler = self::getProcessOutputHandler() ?? new DefaultUnityProcessOutputHandler();
         $outputHandler->onProcessStarted($process);
         
         $process->setTimeout(self::getProcessTimeout());

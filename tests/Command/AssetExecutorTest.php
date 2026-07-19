@@ -22,6 +22,8 @@ final class AssetExecutorTest extends TestCase {
     
     public function testResolvesOnceAndSeparatesProcessOutput(): void {
         $resolver = new SyntheticResolver(function (): DOMDocument {
+            $this->assertTrue(UnityHub::getThrowOnFailure());
+            $this->assertInstanceOf(SymfonyProcessOutputHandler::class, UnityHub::getProcessOutputHandler());
             $process = new Process([
                 PHP_BINARY,
                 dirname(__DIR__, 2) . '/test-files/Command/process-output.php',
@@ -47,7 +49,7 @@ final class AssetExecutorTest extends TestCase {
         $this->assertStringNotContainsString('internal-result', $tester->getDisplay());
         $this->assertSame("fixture stderr\n", $tester->getErrorOutput());
         $this->assertFalse(UnityHub::getThrowOnFailure());
-        $this->assertNull(UnityProcessOutput::getHandler());
+        $this->assertNull(UnityHub::getProcessOutputHandler());
     }
     
     public function testReturnsUnityExitCodeUnchanged(): void {

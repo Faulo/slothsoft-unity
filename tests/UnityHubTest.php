@@ -4,6 +4,8 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
+use Slothsoft\Unity\Command\SymfonyProcessOutputHandler;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class UnityHubTest extends TestCase {
     
@@ -45,6 +47,28 @@ class UnityHubTest extends TestCase {
         }
     }
     
+    public function testConfigSnapshot(): void {
+        $previousConfig = UnityHub::getConfig();
+        $output = new BufferedOutput();
+        $handler = new SymfonyProcessOutputHandler($output, $output);
+        $config = UnityHub::getConfig();
+        $config->loggingEnabled = true;
+        $config->throwOnFailure = true;
+        $config->processTimeout = 60;
+        $config->processOutputHandler = $handler;
+
+        try {
+            UnityHub::setConfig($config);
+
+            $this->assertTrue(UnityHub::getLoggingEnabled());
+            $this->assertTrue(UnityHub::getThrowOnFailure());
+            $this->assertSame(60, UnityHub::getProcessTimeout());
+            $this->assertSame($handler, UnityHub::getProcessOutputHandler());
+        } finally {
+            UnityHub::setConfig($previousConfig);
+        }
+    }
+
     public function testHubIsInstalled(): void {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {

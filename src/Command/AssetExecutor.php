@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Command;
 
 use Slothsoft\Farah\FarahUrl\FarahUrl;
-use Slothsoft\Farah\Module\Module;
 use Slothsoft\Unity\ExecutionError;
 use Slothsoft\Unity\UnityHub;
 use Symfony\Component\Console\Command\Command;
@@ -14,17 +13,20 @@ use Throwable;
 
 final readonly class AssetExecutor implements AssetExecutorInterface {
     
-    public function __construct(private FarahUrl $assetUrl) {
+    public function __construct(private FarahAssetResolverInterface $resolver) {
     }
     
     public function execute(FarahUrl $url, OutputInterface $output): AssetExecutionResult {
         $errorOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
         $handler = new SymfonyProcessOutputHandler($output, $errorOutput);
-        $previousThrowOnFailure = UnityHub::getThrowOnFailure();
-        UnityHub::setThrowOnFailure(true);
+        $previousConfig = UnityHub::getConfig();
+        $executionConfig = clone $previousConfig;
+        $executionConfig->throwOnFailure = true;
+        $executionConfig->processOutputHandler = $handler;
+        UnityHub::setConfig($executionConfig);
         
         try {
-            $document = UnityProcessOutput::whileHandling($handler, fn() => Module::resolveToDOMWriter($this->assetUrl)->toDocument());
+            $document = $this->resolver->resolve($url);
             return new AssetExecutionResult(Command::SUCCESS, $document);
         } catch (ExecutionError $error) {
             $errorExitCode = $error->getExitCode();
@@ -35,7 +37,7 @@ final readonly class AssetExecutor implements AssetExecutorInterface {
             $errorOutput->writeln(sprintf('Command failed: %s', $error->getMessage()));
             return new AssetExecutionResult(Command::FAILURE, null, $error);
         } finally {
-            UnityHub::setThrowOnFailure($previousThrowOnFailure);
+            UnityHub::setConfig($previousConfig);
         }
     }
 }
