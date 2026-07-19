@@ -43,11 +43,23 @@ class ScriptsTest extends TestCase {
         yield 'steam-buildfile' => [
             'steam-buildfile'
         ];
+        yield 'steam-login' => [
+            'steam-login',
+            [
+                'help'
+            ]
+        ];
+        yield 'transform-dotnet-format' => [
+            'transform-dotnet-format'
+        ];
         yield 'unity-build' => [
             'unity-build'
         ];
         yield 'unity-method' => [
             'unity-method'
+        ];
+        yield 'unity-start' => [
+            'unity-start'
         ];
         yield 'unity-documentation' => [
             'unity-documentation'
@@ -109,5 +121,20 @@ class ScriptsTest extends TestCase {
         yield 'unity-hub-help' => [
             'farah://slothsoft@unity/hub/help'
         ];
+    }
+
+    public function testUnityCommandHelp(): void {
+        $process = new Process([
+            PHP_BINARY,
+            'scripts/unity-command',
+            'help'
+        ]);
+
+        $code = $process->run();
+
+        $this->assertSame(0, $code, $process->getErrorOutput());
+        $this->assertSame('', $process->getErrorOutput());
+        $this->assertStringContainsString('Usage:', $process->getOutput());
+        $this->assertStringContainsString('help [options] [--] [<command_name>]', $process->getOutput());
     }
 }

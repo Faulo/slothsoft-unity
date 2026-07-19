@@ -8,6 +8,8 @@ use Slothsoft\Core\Configuration\ConfigurationField;
 use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\ServerEnvironment;
+use Slothsoft\Unity\Command\DefaultUnityProcessOutputHandler;
+use Slothsoft\Unity\Command\UnityProcessOutput;
 use Symfony\Component\Process\Process;
 use Throwable;
 
@@ -376,14 +378,14 @@ final class UnityHub {
         }
         return $maxVersion;
     }
-
+    
     private static function matchesEditorVersion(string $version, string $requestedVersion): bool {
         $requestedVersion = trim($requestedVersion);
         if ($requestedVersion === '') {
             return str_contains($version, 'f');
         }
         if (preg_match('~^\d+(?:\.\d+){0,2}$~', $requestedVersion)) {
-            return preg_match('~^' . preg_quote($requestedVersion, '~') . '(?:\.|f)~', $version) === 1 and str_contains($version, 'f');
+            return preg_match('~^' . preg_quote($requestedVersion, '~') . '[.f]~', $version) === 1 and str_contains($version, 'f');
         }
         return $version === $requestedVersion;
     }
@@ -467,34 +469,23 @@ final class UnityHub {
     }
     
     public static function runUnityProcess(Process $process, bool $validateExitCode = true): void {
-        if (self::getLoggingEnabled() or UnityEnvironment::isLoggingInput()) {
-            fwrite(STDERR, UnityEnvironment::formatInput($process->getCommandLine() . PHP_EOL));
-        }
+        $outputHandler = UnityProcessOutput::getHandler() ?? new DefaultUnityProcessOutputHandler();;
+        $outputHandler->onProcessStarted($process);
         
         $process->setTimeout(self::getProcessTimeout());
         
         try {
-            $process->run(function (string $type, string $data): void {
-                switch ($type) {
-                    case Process::OUT:
-                        if (self::getLoggingEnabled() or UnityEnvironment::isLoggingOutput()) {
-                            fwrite(STDERR, UnityEnvironment::formatOutput($data));
-                        }
-                        break;
-                    case Process::ERR:
-                        if (self::getLoggingEnabled() or UnityEnvironment::isLoggingError()) {
-                            fwrite(STDERR, UnityEnvironment::formatError($data));
-                        }
-                        break;
-                    default:
-                        if (self::getLoggingEnabled()) {
-                            fwrite(STDERR, $data);
-                        }
-                        break;
+            $process->run(function (string $type, string $data) use ($outputHandler): void {
+                if ($type === Process::OUT) {
+                    $outputHandler->onStandardOutput($data);
+                } else {
+                    $outputHandler->onErrorOutput($data);
                 }
             });
         } catch (Throwable $e) {
             throw ExecutionError::Exception($e, $process);
+        } finally {
+            $outputHandler->onProcessFinished($process);
         }
         
         if ($validateExitCode and $process->getExitCode() !== 0) {
