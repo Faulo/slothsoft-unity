@@ -11,4 +11,8 @@ services:
         - EMAIL_CREDENTIALS_PSW
         - UNITY_NO_GRAPHICS=1
     volumes:
-        - ~/Unity:/home/${DDEV_USER}/Unity
+        - unity-binaries:/root/Unity
+
+volumes:
+    unity-binaries:
+        external: true
