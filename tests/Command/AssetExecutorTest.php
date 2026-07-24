@@ -45,7 +45,7 @@ final class AssetExecutorTest extends TestCase {
         $this->assertSame(1, $resolver->resolveCount);
         $this->assertStringContainsString('process-output.php', $tester->getDisplay());
         $this->assertStringContainsString("fixture stdout\n", $tester->getDisplay());
-        $this->assertStringContainsString("Process finished with exit code 0.\n", $tester->getDisplay());
+        $this->assertStringContainsString('Process finished with exit code 0.' . PHP_EOL, $tester->getDisplay());
         $this->assertStringNotContainsString('internal-result', $tester->getDisplay());
         $this->assertSame("fixture stderr\n", $tester->getErrorOutput());
         $this->assertFalse(UnityHub::getThrowOnFailure());
@@ -75,7 +75,7 @@ final class AssetExecutorTest extends TestCase {
         $this->assertSame(1, $resolver->resolveCount);
         $this->assertStringContainsString("fixture stdout\n", $tester->getDisplay());
         $this->assertStringContainsString("fixture stderr\n", $tester->getErrorOutput());
-        $this->assertStringContainsString("Process finished with exit code 42.\n", $tester->getErrorOutput());
+        $this->assertStringContainsString('Process finished with exit code 42.' . PHP_EOL, $tester->getErrorOutput());
         $this->assertStringContainsString('Command failed (underlying exit code 42): Process finished with exit code', $tester->getErrorOutput());
     }
     
@@ -87,7 +87,6 @@ final class AssetExecutorTest extends TestCase {
         ]);
         $process->run();
         $exitCode = new ReflectionProperty(Process::class, 'exitcode');
-        $exitCode->setAccessible(true);
         $exitCode->setValue($process, - 42);
         $resolver = new SyntheticResolver(function () use ($process): DOMDocument {
             throw ExecutionError::Error('Synthetic', 'negative exit code', $process);
@@ -102,7 +101,7 @@ final class AssetExecutorTest extends TestCase {
         ]);
         
         $this->assertSame(- 42, $code);
-        $this->assertSame("Command failed (underlying exit code -42): negative exit code\n", $tester->getErrorOutput());
+        $this->assertSame('Command failed (underlying exit code -42): negative exit code' . PHP_EOL, $tester->getErrorOutput());
     }
     
     public function testExecutionErrorWithSuccessfulProcessUsesSymfonyFailureCode(): void {
@@ -125,7 +124,7 @@ final class AssetExecutorTest extends TestCase {
         ]);
         
         $this->assertSame(Command::FAILURE, $code);
-        $this->assertSame("Command failed (underlying exit code 0): semantic failure\n", $tester->getErrorOutput());
+        $this->assertSame('Command failed (underlying exit code 0): semantic failure' . PHP_EOL, $tester->getErrorOutput());
     }
     
     public function testApplicationFailureUsesSymfonyFailureCode(): void {
@@ -143,7 +142,7 @@ final class AssetExecutorTest extends TestCase {
         
         $this->assertSame(Command::FAILURE, $code);
         $this->assertSame(1, $resolver->resolveCount);
-        $this->assertSame("Command failed: synthetic failure\n", $tester->getErrorOutput());
+        $this->assertSame('Command failed: synthetic failure' . PHP_EOL, $tester->getErrorOutput());
     }
     
     public function testExecutionErrorWithoutProcessUsesSymfonyFailureCode(): void {
@@ -160,7 +159,7 @@ final class AssetExecutorTest extends TestCase {
         ]);
         
         $this->assertSame(Command::FAILURE, $code);
-        $this->assertSame("Command failed (underlying exit code 0): semantic failure\n", $tester->getErrorOutput());
+        $this->assertSame('Command failed (underlying exit code 0): semantic failure' . PHP_EOL, $tester->getErrorOutput());
     }
     
     private function createTester(FarahAssetResolverInterface $resolver): ApplicationTester {
