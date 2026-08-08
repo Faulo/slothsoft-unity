@@ -12,5 +12,5 @@ services:
         ports:
             - 80:80
         environment:
-          COMPOSER_ROOT_VERSION: "dev-main"
-          COMPOSER_UPDATE: "install-dev"
+            COMPOSER_ROOT_VERSION: "dev-main"
+            COMPOSER_UPDATE: "install-dev"

@@ -27,9 +27,6 @@ pipeline {
     }
     environment {
         COMPOSER_PROCESS_TIMEOUT = '3600'
-        UNITY_CREDENTIALS = credentials('Slothsoft-Unity')
-        EMAIL_CREDENTIALS = credentials('Slothsoft-Google')
-        STEAM_CREDENTIALS = credentials('Slothsoft-Steam')
         EMAIL_TEST_TIME = '1745158411'
         EMAIL_TEST_CODE = '177824'
         UNITY_LOGGING = ''
@@ -37,21 +34,25 @@ pipeline {
     stages {
         stage('Linux') {
             agent {
-                label 'unity && linux'
+                label 'compose-unity && linux'
             }
             steps {
                 script {
-                    runTests()
+                    withUnity {
+                        runTests()
+                    }
                 }
             }
         }
         stage('Windows') {
             agent {
-                label 'unity && windows'
+                label 'compose-unity && windows'
             }
             steps {
                 script {
-                    runTests()
+                    withUnity {
+                        runTests()
+                    }
                 }
             }
         }
