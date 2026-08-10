@@ -22,6 +22,7 @@ final readonly class AssetExecutor implements AssetExecutorInterface {
         $previousConfig = UnityHub::getConfig();
         $executionConfig = clone $previousConfig;
         $executionConfig->throwOnFailure = true;
+        $executionConfig->propagateProcessExitCodes = true;
         $executionConfig->processOutputHandler = $handler;
         UnityHub::setConfig($executionConfig);
         

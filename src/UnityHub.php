@@ -79,6 +79,10 @@ final class UnityHub {
     public static function getThrowOnFailure(): bool {
         return self::config()->throwOnFailure;
     }
+
+    public static function getPropagateProcessExitCodes(): bool {
+        return self::config()->propagateProcessExitCodes;
+    }
     
     public static function setProcessTimeout(int $value): void {
         self::config()->processTimeout = $value;
@@ -461,7 +465,7 @@ final class UnityHub {
         
         $process = self::getHubLocator()->create($arguments);
         
-        self::runUnityProcess($process, false);
+        self::runUnityProcess($process, self::getPropagateProcessExitCodes());
         
         return $process;
     }

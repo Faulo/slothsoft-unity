@@ -3,6 +3,9 @@ declare(strict_types = 1);
 
 namespace Slothsoft\Unity;
 
+use DOMDocument;
+use DOMElement;
+use DOMXPath;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
@@ -36,5 +39,73 @@ class JUnitTest extends TestCase {
             ];
         }
     }
-}
 
+    public function testLegacyProcessTransformationRemainsStructurallyCompatible(): void {
+        $data = $this->transformXml(<<<'XML'
+        <result>
+          <process package="Legacy.Package" name="Legacy operation" result="17" stdout="legacy stdout" stderr="legacy stderr" duration="1.25" start-time="2022-01-01T10:00:00Z">
+            <failure type="LegacyFailure">legacy trace</failure>
+          </process>
+        </result>
+        XML);
+        $xpath = new DOMXPath($data);
+
+        $this->assertSame(1, $xpath->query('/testsuites/testsuite')->length);
+        $this->assertSame('', $xpath->evaluate('string(/testsuites/testsuite/@package)'));
+        $this->assertSame('Legacy.Package', $xpath->evaluate('string(/testsuites/testsuite/@name)'));
+        $this->assertSame('1', $xpath->evaluate('string(/testsuites/testsuite/@failures)'));
+        $this->assertSame(0, $xpath->query('/testsuites/testsuite/properties/*')->length, 'Legacy process reports must not gain unity-command properties.');
+        $this->assertSame('Legacy.Package', $xpath->evaluate('string(/testsuites/testsuite/testcase/@classname)'));
+        $this->assertSame('Legacy operation', $xpath->evaluate('string(/testsuites/testsuite/testcase/@name)'));
+        $failure = $xpath->query('/testsuites/testsuite/testcase/failure')->item(0);
+        $this->assertInstanceOf(DOMElement::class, $failure);
+        $this->assertSame('LegacyFailure', $failure->getAttribute('type'));
+        $this->assertFalse($failure->hasAttribute('message'), 'Legacy failures are copied without synthesizing new attributes.');
+        $this->assertSame('legacy trace', $failure->textContent);
+        $this->assertSame('legacy stdout', $xpath->evaluate('string(/testsuites/testsuite/system-out)'));
+        $this->assertSame('legacy stderr', $xpath->evaluate('string(/testsuites/testsuite/system-err)'));
+    }
+
+    public function testLegacyUnityTestTransformationRemainsStructurallyCompatible(): void {
+        $data = $this->transformXml(<<<'XML'
+        <test-run start-time="2022-01-01T10:00:00Z">
+          <test-suite classname="Legacy.Suite" testcasecount="2" failed="0" skipped="0" inconclusive="0" duration="0.5" start-time="2022-01-01T10:00:00Z">
+            <properties><property name="legacy" value="preserved" /></properties>
+            <test-case classname="Legacy.Suite" name="LegacyCase" duration="0.25" result="Passed"><output>legacy case output</output></test-case>
+          </test-suite>
+        </test-run>
+        XML);
+        $xpath = new DOMXPath($data);
+
+        $this->assertSame(1, $xpath->query('/testsuites/testsuite')->length);
+        $this->assertSame('0', $xpath->evaluate('string(/testsuites/testsuite/@id)'));
+        $this->assertSame('Legacy.Suite', $xpath->evaluate('string(/testsuites/testsuite/@name)'));
+        $this->assertSame('2', $xpath->evaluate('string(/testsuites/testsuite/@tests)'), 'Legacy suite counts come from Unity Test Runner attributes.');
+        $this->assertSame('preserved', $xpath->evaluate('string(/testsuites/testsuite/properties/property[@name="legacy"]/@value)'));
+        $this->assertSame(1, $xpath->query('/testsuites/testsuite/testcase')->length);
+        $this->assertSame('', $xpath->evaluate('string(/testsuites/testsuite/system-out)'), 'Legacy reports do not aggregate per-case output.');
+    }
+
+    public function testLegacyDotNetTransformationRemainsAvailable(): void {
+        $data = $this->transformXml(<<<'XML'
+        <Reports Time="2024-05-30T14:14:43+02:00">
+          <Report FileName="Example.cs" FilePath="/src/Example.cs">
+            <FileChange LineNumber="2" CharNumber="3" FormatDescription="needs formatting" />
+          </Report>
+        </Reports>
+        XML);
+        $xpath = new DOMXPath($data);
+
+        $this->assertSame('ContinuousIntegration', $xpath->evaluate('string(/testsuites/testsuite/@name)'));
+        $this->assertSame('DotNet.Format', $xpath->evaluate('string(/testsuites/testsuite/testcase/@classname)'));
+        $this->assertSame('VerifyNoChanges("Example.cs")', $xpath->evaluate('string(/testsuites/testsuite/testcase/@name)'));
+        $this->assertSame('FormattingError', $xpath->evaluate('string(/testsuites/testsuite/testcase/failure/@type)'));
+        $this->assertStringContainsString('needs formatting', $xpath->evaluate('string(/testsuites/testsuite/testcase/failure/@message)'));
+    }
+
+    private function transformXml(string $xml): DOMDocument {
+        $source = new DOMDocument();
+        $this->assertTrue($source->loadXML($xml));
+        return (new DOMHelper())->transformToDocument($source, self::TEMPLATE_DOCUMENT);
+    }
+}

@@ -6,6 +6,7 @@ namespace Slothsoft\Unity;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Unity\Command\SymfonyProcessOutputHandler;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Process\Process;
 
 class UnityHubTest extends TestCase {
     
@@ -54,6 +55,7 @@ class UnityHubTest extends TestCase {
         $config = UnityHub::getConfig();
         $config->loggingEnabled = true;
         $config->throwOnFailure = true;
+        $config->propagateProcessExitCodes = true;
         $config->processTimeout = 60;
         $config->processOutputHandler = $handler;
 
@@ -62,9 +64,44 @@ class UnityHubTest extends TestCase {
 
             $this->assertTrue(UnityHub::getLoggingEnabled());
             $this->assertTrue(UnityHub::getThrowOnFailure());
+            $this->assertTrue(UnityHub::getPropagateProcessExitCodes());
             $this->assertSame(60, UnityHub::getProcessTimeout());
             $this->assertSame($handler, UnityHub::getProcessOutputHandler());
         } finally {
+            UnityHub::setConfig($previousConfig);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testHubExecutionValidationUsesCommandScopedPropagationConfig(): void {
+        $previousLocator = UnityHub::getHubLocator();
+        $previousConfig = UnityHub::getConfig();
+        UnityHub::setHubLocator(new SyntheticHubLocator(42));
+        $config = clone $previousConfig;
+        $sink = new BufferedOutput();
+        $config->processOutputHandler = new SymfonyProcessOutputHandler($sink, $sink);
+        UnityHub::setConfig($config);
+
+        try {
+            $config = UnityHub::getConfig();
+            $config->throwOnFailure = true;
+            $config->propagateProcessExitCodes = false;
+            UnityHub::setConfig($config);
+            $process = UnityHub::getInstance()->execute('ignored');
+            $this->assertSame(42, $process->getExitCode());
+
+            $config->propagateProcessExitCodes = true;
+            UnityHub::setConfig($config);
+            try {
+                UnityHub::getInstance()->execute('ignored');
+                $this->fail('Expected a non-zero Hub exit code to be propagated.');
+            } catch (ExecutionError $error) {
+                $this->assertSame(42, $error->getExitCode());
+            }
+        } finally {
+            UnityHub::setHubLocator($previousLocator);
             UnityHub::setConfig($previousConfig);
         }
     }
@@ -273,5 +310,23 @@ class UnityHubTest extends TestCase {
             false,
             '2022.3.10f1'
         ];
+    }
+}
+
+final class SyntheticHubLocator implements HubLocatorInterface {
+
+    public function __construct(private int $exitCode) {
+    }
+
+    public function create(array $arguments): Process {
+        return new Process([
+            PHP_BINARY,
+            __DIR__ . '/../test-files/Command/process-output.php',
+            (string) $this->exitCode
+        ]);
+    }
+
+    public function exists(): bool {
+        return true;
     }
 }

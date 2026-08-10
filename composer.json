@@ -12,6 +12,8 @@
     "require": {
         "php": ">=8.2",
         "ext-dom": "*",
+        "ext-libxml": "*",
+        "ext-xsl": "*",
         "slothsoft/core": "^1.14.19",
         "slothsoft/schema": "^1.7.3",
         "symfony/process": "^5.4.51",
@@ -51,7 +53,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "2.20.x-dev"
+            "dev-main": "2.21.x-dev"
         }
     },
     "bin": [
