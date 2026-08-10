@@ -86,6 +86,7 @@ Example asset groups:
 farah://slothsoft@unity/hub/help
 farah://slothsoft@unity/project/method
 farah://slothsoft@unity/project/method-junit
+farah://slothsoft@unity/project/empty-project
 farah://slothsoft@unity/project/build
 farah://slothsoft@unity/project/build-junit
 farah://slothsoft@unity/project/tests
@@ -96,6 +97,7 @@ farah://slothsoft@unity/project/version
 farah://slothsoft@unity/project/setting
 farah://slothsoft@unity/package/install
 farah://slothsoft@unity/package/install-junit
+farah://slothsoft@unity/package/install-workspace
 ```
 
 See `assets/manifest.xml` for the canonical asset definitions and parameter filters.
@@ -114,7 +116,46 @@ All commands are executed through Composer:
 composer exec <command> -- <arguments>
 ```
 
-Composer also accepts the historical form without `--`; the examples below keep that shorter style because the bundled scripts document it.
+### `unity-command` (preferred Unity CI API)
+
+Use `unity-command` for new Unity automation. It is a Symfony Console application, so `list` and each command's `--help` output are the canonical command reference.
+
+```bash
+composer exec unity-command -- list
+composer exec unity-command -- build --help
+```
+
+Available operations are:
+
+```text
+unity-command build [--junit PATH] WORKSPACE [BUILD_PATH] [PLATFORM]
+unity-command empty-project [--junit PATH] WORKSPACE [VERSION]
+unity-command method [--junit PATH] WORKSPACE METHOD [--] [ARG...]
+unity-command start [--junit PATH] WORKSPACE METHOD [--] [ARG...]
+unity-command module-install [--junit PATH] WORKSPACE MODULE...
+unity-command package-install [--junit PATH] WORKSPACE PACKAGE
+unity-command tests [--junit PATH] WORKSPACE MODE...
+```
+
+Without `--junit`, Unity process output is streamed immediately with its stdout/stderr distinction intact. The command prints each shell-escaped Unity invocation before it runs, prints a process summary afterward, and uses its exit code for the final result; internal Farah result XML is never printed.
+
+Use `--junit PATH` to write a UTF-8 JUnit report. Relative paths use the process working directory, missing parent directories are created, and an existing report is atomically replaced. Normal live output remains unchanged. Use `--junit -` when the report itself must be written to stdout; in that mode stdout contains only the complete XML document and all normal output is redirected to stderr.
+
+Successful commands return `0`. Invalid command-line input returns `2`, and application or semantic failures return `1`. If Unity supplies a non-zero process exit code, that value is returned unchanged. Failure to create or validate a requested report returns `1`.
+
+Arguments after `--` are forwarded unchanged by `method` and `start`, including option-like values:
+
+```bash
+composer exec unity-command -- method ./Project Namespace.Type.Method -- --method-option value
+```
+
+`package-install` accepts a missing path, an empty directory, or an exact Unity project root as `WORKSPACE`. Missing and empty workspaces are initialized; an existing project is reused without changing its Unity version or project settings. A non-empty directory that is not itself a Unity project is rejected. Existing manifest data is preserved where it does not conflict with installation data, dependencies are merged by package name, lists are de-duplicated, and scoped registries are merged by URL. The embedded package directory is fully replaced.
+
+### Compatibility and utility binaries
+
+The original Unity binaries remain supported with their 2.20 argument order, defaults, output, and behavior. They are intentionally independent from `unity-command`; notably, legacy `unity-package-install` remains `PACKAGE WORKSPACE` and the legacy report-producing commands continue writing JUnit XML to stdout. They emit no runtime deprecation warnings.
+
+Composer also accepts the historical form without `--`; the examples below keep that shorter form because these bundled scripts document it.
 
 ### `autoversion`
 
