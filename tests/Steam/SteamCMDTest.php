@@ -19,6 +19,9 @@ class SteamCMDTest extends TestCase {
         $this->assertTrue(class_exists(SteamCMD::class), "Failed to load class 'Slothsoft\Unity\Steam\SteamCMD'!");
     }
     
+    /**
+     * @group external
+     */
     public function testLoginAnonymous(): void {
         if (! FileSystem::commandExists('steamcmd')) {
             $this->markTestSkipped('steamcmd is not available from the command line!');
@@ -34,6 +37,7 @@ class SteamCMDTest extends TestCase {
     
     /**
      *
+     * @group external
      * @runInSeparateProcess
      */
     public function testLoginViaEnv(): void {

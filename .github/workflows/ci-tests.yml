@@ -39,7 +39,7 @@ jobs:
                     COMPOSER_AUTH: "{}"
 
             -   name: Run PHPUnit
-                run: php vendor/bin/phpunit --log-junit phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
+                run: php vendor/bin/phpunit --bootstrap tests/bootstrap-ci.php --exclude-group external --log-junit phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
 
             -   name: Upload Test Results
                 if: always()
