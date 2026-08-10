@@ -12,7 +12,7 @@ final class WorkspaceClassifierTest extends TestCase {
 
     protected function setUp(): void {
         $this->classifier = new WorkspaceClassifier();
-        $this->directory = temp_dir(__METHOD__);
+        $this->directory = temp_dir(str_replace(':', '-', __METHOD__));
     }
 
     public function testClassifiesMissingPath(): void {

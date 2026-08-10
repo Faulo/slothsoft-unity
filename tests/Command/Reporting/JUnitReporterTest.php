@@ -152,7 +152,7 @@ final class JUnitReporterTest extends TestCase {
     }
     
     public function testCreateXmlReturnsCompleteUtf8DocumentWithoutWriting(): void {
-        $directory = temp_dir(__METHOD__);
+        $directory = temp_dir(str_replace(':', '-', __METHOD__));
         $before = scandir($directory);
         
         $xml = $this->reporter->createXml($this->loadXml('<success />'), $this->metadata('empty-project'));

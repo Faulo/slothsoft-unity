@@ -119,7 +119,7 @@ final class TestsCommandSemanticTest extends TestCase {
         $tester = new ApplicationTester(ApplicationFactory::create([
             new TestsCommand($executor)
         ]));
-        $path = temp_dir(__METHOD__) . DIRECTORY_SEPARATOR . 'tests.xml';
+        $path = temp_dir(str_replace(':', '-', __METHOD__)) . DIRECTORY_SEPARATOR . 'tests.xml';
         
         $code = $tester->run([
             'command' => 'tests',

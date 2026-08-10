@@ -113,7 +113,7 @@ final class LegacyCommandCompatibilityTest extends TestCase {
      * @dataProvider legacyInvalidInvocationProvider
      */
     public function testLegacyInvalidInvocationRetainsArgumentsStreamsAndExitBehavior(string $script, array $argumentTemplates, string $errorPathKey, string $testNameTemplate): void {
-        $directory = temp_dir(__METHOD__ . '-' . $script);
+        $directory = temp_dir(str_replace(':', '-', __METHOD__) . '-' . $script);
         $values = [
             '{package}' => $directory . DIRECTORY_SEPARATOR . 'missing-package',
             '{workspace}' => $directory . DIRECTORY_SEPARATOR . 'missing-workspace'

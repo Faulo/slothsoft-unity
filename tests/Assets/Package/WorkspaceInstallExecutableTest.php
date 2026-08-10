@@ -16,8 +16,8 @@ final class WorkspaceInstallExecutableTest extends TestCase {
      */
     public function testReusesExactProjectAndReplacesPackageWithoutUnityHub(): void {
         UnityHub::setThrowOnFailure(false);
-        $workspace = temp_dir(__METHOD__ . '-workspace');
-        $package = temp_dir(__METHOD__ . '-package');
+        $workspace = temp_dir(str_replace(':', '-', __METHOD__) . '-workspace');
+        $package = temp_dir(str_replace(':', '-', __METHOD__) . '-package');
         $this->createProject($workspace, json_encode([
             'dependencies' => [
                 'existing.package' => '1.0.0'
@@ -49,8 +49,8 @@ final class WorkspaceInstallExecutableTest extends TestCase {
      */
     public function testRejectsInvalidNonEmptyWorkspaceBeforeModification(): void {
         UnityHub::setThrowOnFailure(false);
-        $workspace = temp_dir(__METHOD__ . '-workspace');
-        $package = temp_dir(__METHOD__ . '-package');
+        $workspace = temp_dir(str_replace(':', '-', __METHOD__) . '-workspace');
+        $package = temp_dir(str_replace(':', '-', __METHOD__) . '-package');
         $sentinel = $workspace . DIRECTORY_SEPARATOR . 'sentinel.txt';
         file_put_contents($sentinel, 'keep me');
         $this->createPackage($package, 'example.package', 'new payload');
@@ -68,9 +68,9 @@ final class WorkspaceInstallExecutableTest extends TestCase {
      */
     public function testManifestSymlinkFailsBeforePackageReplacement(): void {
         UnityHub::setThrowOnFailure(false);
-        $workspace = temp_dir(__METHOD__ . '-workspace');
-        $package = temp_dir(__METHOD__ . '-package');
-        $outside = temp_dir(__METHOD__ . '-outside');
+        $workspace = temp_dir(str_replace(':', '-', __METHOD__) . '-workspace');
+        $package = temp_dir(str_replace(':', '-', __METHOD__) . '-package');
+        $outside = temp_dir(str_replace(':', '-', __METHOD__) . '-outside');
         $manifestContents = "{\n    \"dependencies\": {}\n}\n";
         $this->createProject($workspace, trim($manifestContents));
         $manifestPath = $workspace . DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'manifest.json';

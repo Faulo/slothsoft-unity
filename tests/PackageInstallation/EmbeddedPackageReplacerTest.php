@@ -12,7 +12,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
     private string $source;
 
     protected function setUp(): void {
-        $this->directory = temp_dir(__METHOD__);
+        $this->directory = temp_dir(str_replace(':', '-', __METHOD__));
         $this->workspace = $this->directory . DIRECTORY_SEPARATOR . 'workspace';
         $this->source = $this->directory . DIRECTORY_SEPARATOR . 'source-with-unrelated-name';
         $this->createProject($this->workspace);

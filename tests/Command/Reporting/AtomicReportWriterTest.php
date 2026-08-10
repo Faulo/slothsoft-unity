@@ -14,7 +14,7 @@ final class AtomicReportWriterTest extends TestCase {
     
     protected function setUp(): void {
         $this->writer = new AtomicReportWriter();
-        $this->directory = temp_dir(__METHOD__);
+        $this->directory = temp_dir(str_replace(':', '-', __METHOD__));
     }
     
     public function testCreatesNestedDirectoriesAndResolvesRelativePathsFromWorkingDirectory(): void {

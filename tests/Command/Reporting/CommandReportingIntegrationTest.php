@@ -23,7 +23,7 @@ final class CommandReportingIntegrationTest extends TestCase {
     public function testFileReportPreservesLiveOutputAndExecutesOnce(): void {
         $executor = new ReportingFixtureExecutor();
         $tester = $this->createTester($executor);
-        $path = temp_dir(__METHOD__) . DIRECTORY_SEPARATOR . 'nested' . DIRECTORY_SEPARATOR . 'report.xml';
+        $path = temp_dir(str_replace(':', '-', __METHOD__)) . DIRECTORY_SEPARATOR . 'nested' . DIRECTORY_SEPARATOR . 'report.xml';
         
         $code = $tester->run([
             'command' => 'fixture',
@@ -65,7 +65,7 @@ final class CommandReportingIntegrationTest extends TestCase {
     public function testExecutionExceptionStillCreatesRequestedReport(): void {
         $executor = new ReportingFixtureExecutor(false, true);
         $tester = $this->createTester($executor);
-        $path = temp_dir(__METHOD__) . DIRECTORY_SEPARATOR . 'failure.xml';
+        $path = temp_dir(str_replace(':', '-', __METHOD__)) . DIRECTORY_SEPARATOR . 'failure.xml';
         
         $code = $tester->run([
             'command' => 'fixture',
@@ -84,7 +84,7 @@ final class CommandReportingIntegrationTest extends TestCase {
     public function testReportWriteFailureOverridesOperationResult(): void {
         $executor = new ReportingFixtureExecutor();
         $tester = $this->createTester($executor);
-        $directory = temp_dir(__METHOD__);
+        $directory = temp_dir(str_replace(':', '-', __METHOD__));
         
         $code = $tester->run([
             'command' => 'fixture',
@@ -100,7 +100,7 @@ final class CommandReportingIntegrationTest extends TestCase {
     public function testMissingArgumentReturnsInvalidAndCreatesFileReport(): void {
         $executor = new ReportingFixtureExecutor();
         $tester = $this->createTester($executor);
-        $path = temp_dir(__METHOD__) . DIRECTORY_SEPARATOR . 'validation.xml';
+        $path = temp_dir(str_replace(':', '-', __METHOD__)) . DIRECTORY_SEPARATOR . 'validation.xml';
         
         $code = $tester->run([
             'command' => 'fixture',
@@ -134,7 +134,7 @@ final class CommandReportingIntegrationTest extends TestCase {
         $tester = new ApplicationTester(ApplicationFactory::createReporting([
             new SemanticFailureFixtureCommand($executor)
         ]));
-        $path = temp_dir(__METHOD__) . DIRECTORY_SEPARATOR . 'semantic.xml';
+        $path = temp_dir(str_replace(':', '-', __METHOD__)) . DIRECTORY_SEPARATOR . 'semantic.xml';
         
         $code = $tester->run([
             'command' => 'semantic-fixture',

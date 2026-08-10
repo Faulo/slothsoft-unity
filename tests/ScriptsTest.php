@@ -171,7 +171,7 @@ class ScriptsTest extends TestCase {
      * @dataProvider composerPackageInstallModes
      */
     public function testComposerUnityCommandRunsPackageInstallEndToEnd(string $mode): void {
-        $directory = temp_dir(__METHOD__ . '-' . $mode);
+        $directory = temp_dir(str_replace(':', '-', __METHOD__) . '-' . $mode);
         $workspace = $directory . DIRECTORY_SEPARATOR . 'workspace';
         $package = $directory . DIRECTORY_SEPARATOR . 'package';
         $this->createComposerTestProject($workspace);

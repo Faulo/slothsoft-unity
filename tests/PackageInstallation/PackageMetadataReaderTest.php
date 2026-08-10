@@ -11,7 +11,7 @@ final class PackageMetadataReaderTest extends TestCase {
 
     protected function setUp(): void {
         $this->reader = new PackageMetadataReader();
-        $this->directory = temp_dir(__METHOD__);
+        $this->directory = temp_dir(str_replace(':', '-', __METHOD__));
     }
 
     public function testReadsValidatedNameAndCanonicalPath(): void {

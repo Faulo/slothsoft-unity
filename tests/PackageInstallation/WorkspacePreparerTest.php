@@ -11,7 +11,7 @@ final class WorkspacePreparerTest extends TestCase {
     private string $directory;
 
     protected function setUp(): void {
-        $this->directory = temp_dir(__METHOD__);
+        $this->directory = temp_dir(str_replace(':', '-', __METHOD__));
     }
 
     /**

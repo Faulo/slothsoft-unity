@@ -415,6 +415,15 @@ final class EmbeddedPackageReplacer {
         }
         $targetStat = @stat($path);
 
+        $resolvedParent = realpath(dirname($path));
+        $resolvedPath = realpath($path);
+        if ($resolvedParent !== false and $resolvedPath !== false) {
+            $directPath = $resolvedParent . DIRECTORY_SEPARATOR . basename($path);
+            if (! $this->pathsEqual($resolvedPath, $directPath)) {
+                return true;
+            }
+        }
+
         return $targetStat === false or $linkStat != $targetStat;
     }
 
