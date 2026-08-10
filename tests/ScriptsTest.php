@@ -95,6 +95,7 @@ class ScriptsTest extends TestCase {
     /**
      *
      * @dataProvider validAssets
+     * @group external
      */
     public function testUnityAssets(string $url): void {
         if (! FileSystem::commandExists('composer')) {
