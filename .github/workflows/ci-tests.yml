@@ -4,11 +4,12 @@ on: [ push ]
 
 jobs:
     run-tests:
-        name: PHP ${{ matrix.php }} (${{ matrix.composer }})
-        runs-on: ubuntu-latest
+        name: ${{ matrix.os }} / PHP ${{ matrix.php }} (${{ matrix.composer }})
+        runs-on: ${{ matrix.os }}
         strategy:
             fail-fast: false
             matrix:
+                os: [ "ubuntu-latest", "windows-latest" ]
                 composer: [ "lowest", "stable" ]
                 php: [ "8.2", "8.3", "8.4", "8.5" ]
                 extensions: [ "ctype curl dom fileinfo filter iconv imap json libxml mbstring pcre phar sockets tokenizer xmlwriter xsl zip zlib" ]
@@ -27,24 +28,24 @@ jobs:
             -   name: Cache Composer dependencies
                 uses: actions/cache@v6
                 with:
-                    path: /tmp/composer-cache
+                    path: ${{ runner.temp }}/composer-cache
                     key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ matrix.composer }}-${{ hashFiles('composer.json') }}
 
             -   name: Install dependencies
                 run: composer update --prefer-${{ matrix.composer }} --no-interaction --no-progress
                 env:
                     COMPOSER_ROOT_VERSION: "dev-main"
-                    COMPOSER_CACHE_DIR: /tmp/composer-cache
+                    COMPOSER_CACHE_DIR: ${{ runner.temp }}/composer-cache
                     COMPOSER_AUTH: "{}"
 
             -   name: Run PHPUnit
-                run: vendor/bin/phpunit --log-junit phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
+                run: php vendor/bin/phpunit --log-junit phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
 
             -   name: Upload Test Results
                 if: always()
                 uses: actions/upload-artifact@v7
                 with:
-                    name: results-${{ matrix.php }}-${{ matrix.composer }}
+                    name: results-${{ runner.os }}-${{ matrix.php }}-${{ matrix.composer }}
                     path: phpunit-${{ matrix.php }}-${{ matrix.composer }}.results.xml
     
     publish-results:
