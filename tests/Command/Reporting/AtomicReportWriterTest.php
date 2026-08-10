@@ -20,16 +20,22 @@ final class AtomicReportWriterTest extends TestCase {
     public function testCreatesNestedDirectoriesAndResolvesRelativePathsFromWorkingDirectory(): void {
         $workingDirectory = getcwd();
         $this->assertNotFalse($workingDirectory);
-        $relativeDirectory = Path::makeRelative($this->directory, $workingDirectory);
-        $relativePath = $relativeDirectory . '/nested/report.xml';
-        
-        $actual = $this->writer->write($relativePath, '<?xml version="1.0" encoding="UTF-8"?><testsuites />');
-        
-        $expected = Path::makeAbsolute($relativePath, $workingDirectory);
-        $this->assertSame($expected, $actual);
-        $this->assertFileExists($expected);
-        $this->assertSame('<?xml version="1.0" encoding="UTF-8"?><testsuites />', file_get_contents($expected));
-        $this->assertSame([], glob(dirname($expected) . DIRECTORY_SEPARATOR . '.unity-junit-*'));
+        $this->assertTrue(chdir($this->directory));
+
+        try {
+            $reportDirectory = getcwd();
+            $this->assertNotFalse($reportDirectory);
+            $relativePath = 'nested/report.xml';
+            $actual = $this->writer->write($relativePath, '<?xml version="1.0" encoding="UTF-8"?><testsuites />');
+
+            $expected = Path::makeAbsolute($relativePath, $reportDirectory);
+            $this->assertSame($expected, $actual);
+            $this->assertFileExists($expected);
+            $this->assertSame('<?xml version="1.0" encoding="UTF-8"?><testsuites />', file_get_contents($expected));
+            $this->assertSame([], glob(dirname($expected) . DIRECTORY_SEPARATOR . '.unity-junit-*'));
+        } finally {
+            chdir($workingDirectory);
+        }
     }
     
     public function testAtomicallyReplacesExistingReport(): void {
