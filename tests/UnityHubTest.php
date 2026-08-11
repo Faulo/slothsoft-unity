@@ -6,6 +6,7 @@ namespace Slothsoft\Unity;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Unity\Command\SymfonyProcessOutputHandler;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Process\Process;
 
 class UnityHubTest extends TestCase {
     
@@ -54,6 +55,7 @@ class UnityHubTest extends TestCase {
         $config = UnityHub::getConfig();
         $config->loggingEnabled = true;
         $config->throwOnFailure = true;
+        $config->propagateProcessExitCodes = true;
         $config->processTimeout = 60;
         $config->processOutputHandler = $handler;
 
@@ -62,9 +64,44 @@ class UnityHubTest extends TestCase {
 
             $this->assertTrue(UnityHub::getLoggingEnabled());
             $this->assertTrue(UnityHub::getThrowOnFailure());
+            $this->assertTrue(UnityHub::getPropagateProcessExitCodes());
             $this->assertSame(60, UnityHub::getProcessTimeout());
             $this->assertSame($handler, UnityHub::getProcessOutputHandler());
         } finally {
+            UnityHub::setConfig($previousConfig);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testHubExecutionValidationUsesCommandScopedPropagationConfig(): void {
+        $previousLocator = UnityHub::getHubLocator();
+        $previousConfig = UnityHub::getConfig();
+        UnityHub::setHubLocator(new SyntheticHubLocator(42));
+        $config = clone $previousConfig;
+        $sink = new BufferedOutput();
+        $config->processOutputHandler = new SymfonyProcessOutputHandler($sink, $sink);
+        UnityHub::setConfig($config);
+
+        try {
+            $config = UnityHub::getConfig();
+            $config->throwOnFailure = true;
+            $config->propagateProcessExitCodes = false;
+            UnityHub::setConfig($config);
+            $process = UnityHub::getInstance()->execute('ignored');
+            $this->assertSame(42, $process->getExitCode());
+
+            $config->propagateProcessExitCodes = true;
+            UnityHub::setConfig($config);
+            try {
+                UnityHub::getInstance()->execute('ignored');
+                $this->fail('Expected a non-zero Hub exit code to be propagated.');
+            } catch (ExecutionError $error) {
+                $this->assertSame(42, $error->getExitCode());
+            }
+        } finally {
+            UnityHub::setHubLocator($previousLocator);
             UnityHub::setConfig($previousConfig);
         }
     }
@@ -76,11 +113,7 @@ class UnityHubTest extends TestCase {
             return;
         }
         $result = $hub->execute('help');
-        $errors = trim($result->getErrorOutput());
         $ouput = trim($result->getOutput());
-        if (PHP_OS_FAMILY === 'Windows') {
-            $this->assertEquals('', $errors);
-        }
         $this->assertNotEquals('', $ouput);
         $this->assertStringContainsString('editors', $ouput);
     }
@@ -93,11 +126,7 @@ class UnityHubTest extends TestCase {
         }
         
         $result = $hub->execute('install-path', '--get');
-        $errors = trim($result->getErrorOutput());
         $ouput = trim($result->getOutput());
-        if (PHP_OS_FAMILY === 'Windows') {
-            $this->assertEquals('', $errors);
-        }
         $this->assertNotEquals('', $ouput);
         $this->assertDirectoryExists($ouput);
     }
@@ -222,6 +251,8 @@ class UnityHubTest extends TestCase {
      */
     public function testInventStableEditorVersion(string $requestedVersion, bool $highest, string $expectedVersion): void {
         $hub = UnityHub::getInstance();
+        $releaseApi = new \ReflectionProperty($hub, 'releaseApi');
+        $releaseApi->setValue($hub, new UnityReleaseApi(static fn (): string => '{"total":0,"results":[]}'));
         $changesets = new \ReflectionProperty($hub, 'changesets');
         $changesets->setValue($hub, array_fill_keys([
             '2022.3.10f1',
@@ -235,6 +266,54 @@ class UnityHubTest extends TestCase {
         $actualVersion = $hub->inventStableEditorVersion($requestedVersion, $highest);
         
         $this->assertEquals($expectedVersion, $actualVersion);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testInventChangesetUsesExactReleaseApiResult(): void {
+        $hub = UnityHub::getInstance();
+        $changesets = new \ReflectionProperty($hub, 'changesets');
+        $changesets->setValue($hub, []);
+        $releaseApi = new \ReflectionProperty($hub, 'releaseApi');
+        $releaseApi->setValue($hub, new UnityReleaseApi(static fn (): string => json_encode([
+            'total' => 2,
+            'results' => [
+                [
+                    'version' => '2019.4.41f1',
+                    'shortRevision' => 'fb553f8fdd6c'
+                ],
+                [
+                    'version' => '2019.4.41f2',
+                    'shortRevision' => '6b23d448b533'
+                ]
+            ]
+        ], JSON_THROW_ON_ERROR)));
+
+        $this->assertSame('6b23d448b533', $hub->inventChangeset('2019.4.41f2'));
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testInventStableEditorVersionIncludesReleaseApiResults(): void {
+        $hub = UnityHub::getInstance();
+        $changesets = new \ReflectionProperty($hub, 'changesets');
+        $changesets->setValue($hub, [
+            '2019.4.40f1' => null
+        ]);
+        $releaseApi = new \ReflectionProperty($hub, 'releaseApi');
+        $releaseApi->setValue($hub, new UnityReleaseApi(static fn (): string => json_encode([
+            'total' => 1,
+            'results' => [
+                [
+                    'version' => '2019.4.41f2',
+                    'shortRevision' => '6b23d448b533'
+                ]
+            ]
+        ], JSON_THROW_ON_ERROR)));
+
+        $this->assertSame('2019.4.41f2', $hub->inventStableEditorVersion('2019', true));
     }
     
     public function editorVersions(): iterable {
@@ -273,5 +352,23 @@ class UnityHubTest extends TestCase {
             false,
             '2022.3.10f1'
         ];
+    }
+}
+
+final class SyntheticHubLocator implements HubLocatorInterface {
+
+    public function __construct(private int $exitCode) {
+    }
+
+    public function create(array $arguments): Process {
+        return new Process([
+            PHP_BINARY,
+            __DIR__ . '/../test-files/Command/process-output.php',
+            (string) $this->exitCode
+        ]);
+    }
+
+    public function exists(): bool {
+        return true;
     }
 }

@@ -7,4 +7,4 @@ use Slothsoft\Unity\Command\ApplicationFactory;
 $_composer_autoload_path ??= __DIR__ . '/../vendor/autoload.php';
 include $_composer_autoload_path;
 
-exit(ApplicationFactory::create()->run());
+exit(ApplicationFactory::createDefault()->run());

@@ -5,19 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.0.0] - Unreleased
+## [2.21.0] - Unreleased
 
 ### Added
-- Added the optional `--junit PATH` argument to `unity-build`, `unity-empty-project`, `unity-method`, `unity-start`, `unity-module-install`, `unity-package-install`, and `unity-tests`. JUnit reports are written directly to `PATH`; `--junit -` writes the report to standard output.
+- Added the Symfony Console executable `unity-command` as the new API for Unity CI operations.
+- Added the `build`, `empty-project`, `method`, `start`, `module-install`, `package-install`, and `tests` subcommands.
+- Added optional JUnit reporting to every `unity-command` operation. `--junit PATH` writes an atomic, schema-validated report file, while `--junit -` writes only the report XML to standard output.
+- Added workspace-aware package installation that can initialize a missing or empty workspace or reuse an exact Unity project root.
 
 ### Changed
-- **Breaking:** Unity CI commands no longer emit JUnit XML by default. Without `--junit`, they produce regular command output and communicate success or failure through their exit code.
-- **Breaking:** Changed `unity-package-install` argument order from `PACKAGE WORKSPACE` to `WORKSPACE PACKAGE`, making `WORKSPACE` the first positional argument consistently across Unity project commands.
-- Changed `unity-package-install` to reuse `WORKSPACE` when it already contains a Unity project. It creates an empty project only when no project exists, so running `unity-empty-project WORKSPACE` followed by `unity-package-install WORKSPACE PACKAGE` has the same result as running `unity-package-install WORKSPACE PACKAGE` alone.
+- New documentation prefers `unity-command` for Unity CI pipelines.
+- `unity-command package-install` merges installation manifest data into an existing project and fully replaces an existing embedded-package directory.
+- Unity editor versions and changesets are resolved through Unity's official Release API, with the legacy symbol history and archive retained as fallbacks.
 
-### Migration
-- Replace JUnit output redirection such as `composer exec unity-build -- WORKSPACE > reports/build.xml` with `composer exec unity-build -- --junit reports/build.xml WORKSPACE`.
-- Replace `composer exec unity-package-install -- PACKAGE WORKSPACE` with `composer exec unity-package-install -- WORKSPACE PACKAGE`.
+### Compatibility
+- Existing Composer binaries retain their 2.20 argument order, defaults, output, and exit behavior. They remain supported and emit no runtime deprecation warnings.
+- Existing Farah base assets and `*-junit` assets remain available with unchanged behavior.
+- In particular, legacy `unity-package-install` remains `PACKAGE WORKSPACE`; only the new `unity-command package-install` API uses `WORKSPACE PACKAGE`.
 
 
 ## [2.20.0] - 2026-07-18

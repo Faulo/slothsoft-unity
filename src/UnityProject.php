@@ -80,6 +80,7 @@ final class UnityProject {
     
     public function runTests(string ...$testPlatforms): DOMDocument {
         $doc = new DOMDocument('1.0', 'UTF-8');
+        $unityExitCode = 0;
         
         $rootNode = $doc->createElement('test-run');
         $attributes = [];
@@ -111,6 +112,9 @@ final class UnityProject {
                 if (! is_file($resultsFile)) {
                     throw $e;
                 }
+                if (UnityHub::getPropagateProcessExitCodes() and $unityExitCode === 0) {
+                    $unityExitCode = $e->getExitCode();
+                }
             }
             
             $resultsDoc = DOMHelper::loadDocument($resultsFile);
@@ -126,6 +130,11 @@ final class UnityProject {
         
         foreach ($attributes as $key => $val) {
             $rootNode->setAttribute($key, (string) $val);
+        }
+        if ($unityExitCode !== 0) {
+            // Additive command-only metadata; legacy asset resolution leaves
+            // process exit propagation disabled and produces compatible XML.
+            $rootNode->setAttribute('unity-exit-code', (string) $unityExitCode);
         }
         $doc->appendChild($rootNode);
         

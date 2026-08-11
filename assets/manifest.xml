@@ -9,6 +9,7 @@
 	</fragment>
 
 	<fragment name="project">
+		<custom-asset name="empty-project" executable-builder="Slothsoft\Unity\Assets\Project\EmptyProjectExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\EmptyProjectParameters" />
 		<custom-asset name="method" executable-builder="Slothsoft\Unity\Assets\Project\MethodExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\MethodParameters" />
 		<custom-asset name="build" executable-builder="Slothsoft\Unity\Assets\Project\BuildExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\BuildParameters" />
 		<custom-asset name="tests" executable-builder="Slothsoft\Unity\Assets\Project\TestsExecutable" parameter-filter="Slothsoft\Unity\Assets\Project\TestsParameters" />
@@ -39,6 +40,7 @@
 
 	<fragment name="package">
 		<custom-asset name="install" executable-builder="Slothsoft\Unity\Assets\Package\InstallExecutable" parameter-filter="Slothsoft\Unity\Assets\Package\InstallParameters" />
+		<custom-asset name="install-workspace" executable-builder="Slothsoft\Unity\Assets\Package\WorkspaceInstallExecutable" parameter-filter="Slothsoft\Unity\Assets\Package\WorkspaceInstallParameters" />
 
 		<fragment name="install-junit">
 			<use-template ref="/xsl/to-junit" />

@@ -11,6 +11,8 @@ final class UnityHubConfig {
 
     public bool $throwOnFailure = false;
 
+    public bool $propagateProcessExitCodes = false;
+
     public int $processTimeout = 0;
 
     public ?UnityProcessOutputHandlerInterface $processOutputHandler = null;

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Command;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -12,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\ApplicationTester;
+use Symfony\Component\Console\Tester\CommandTester;
 
 final class ApplicationFactoryTest extends TestCase {
     
@@ -24,8 +26,10 @@ final class ApplicationFactoryTest extends TestCase {
         $second = ApplicationFactory::create();
         
         $this->assertNotSame($first, $second);
+        $this->assertSame(\Symfony\Component\Console\Application::class, get_class($second));
         $this->assertTrue($first->has('fixture'));
         $this->assertFalse($second->has('fixture'));
+        $this->assertSame('fixture', $command->name);
     }
     
     public function testApplicationHelp(): void {
@@ -42,6 +46,22 @@ final class ApplicationFactoryTest extends TestCase {
         $this->assertStringContainsString('Usage:', $tester->getDisplay());
         $this->assertStringContainsString('help [options] [--] [<command_name>]', $tester->getDisplay());
         $this->assertSame('', $tester->getErrorOutput());
+    }
+
+    public function testDefaultApplicationRegistersEveryOperation(): void {
+        $application = ApplicationFactory::createDefault();
+
+        foreach ([
+            'build',
+            'empty-project',
+            'method',
+            'start',
+            'module-install',
+            'package-install',
+            'tests'
+        ] as $command) {
+            $this->assertTrue($application->has($command));
+        }
     }
     
     public function testUnknownCommandUsesSymfonyBehavior(): void {
@@ -70,6 +90,29 @@ final class ApplicationFactoryTest extends TestCase {
         
         $this->assertSame(Command::FAILURE, $code);
         $this->assertStringContainsString('The "--unknown-option" option does not exist.', $output->fetch());
+    }
+
+    public function testReportingApplicationUsesInvalidExitCode(): void {
+        $tester = new ApplicationTester(ApplicationFactory::createReporting());
+
+        $code = $tester->run([
+            'command' => 'unknown-command'
+        ], [
+            'capture_stderr_separately' => true,
+            'decorated' => false
+        ]);
+
+        $this->assertSame(Command::INVALID, $code);
+        $this->assertStringContainsString('Command "unknown-command" is not defined.', $tester->getErrorOutput());
+    }
+
+    public function testNonReportingCommandPreservesExecutorExceptionBehavior(): void {
+        $tester = new CommandTester(new TerminatorCommand(new ThrowingAssetExecutor()));
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('legacy caller-visible failure');
+
+        $tester->execute([]);
     }
     
     public function testOptionTerminatorForwardsOptionLikeArguments(): void {
@@ -117,5 +160,12 @@ final class SuccessfulAssetExecutor implements AssetExecutorInterface {
     
     public function execute(FarahUrl $url, OutputInterface $output): AssetExecutionResult {
         return new AssetExecutionResult(Command::SUCCESS);
+    }
+}
+
+final class ThrowingAssetExecutor implements AssetExecutorInterface {
+
+    public function execute(FarahUrl $url, OutputInterface $output): AssetExecutionResult {
+        throw new RuntimeException('legacy caller-visible failure');
     }
 }
