@@ -251,6 +251,8 @@ class UnityHubTest extends TestCase {
      */
     public function testInventStableEditorVersion(string $requestedVersion, bool $highest, string $expectedVersion): void {
         $hub = UnityHub::getInstance();
+        $releaseApi = new \ReflectionProperty($hub, 'releaseApi');
+        $releaseApi->setValue($hub, new UnityReleaseApi(static fn (): string => '{"total":0,"results":[]}'));
         $changesets = new \ReflectionProperty($hub, 'changesets');
         $changesets->setValue($hub, array_fill_keys([
             '2022.3.10f1',
@@ -264,6 +266,54 @@ class UnityHubTest extends TestCase {
         $actualVersion = $hub->inventStableEditorVersion($requestedVersion, $highest);
         
         $this->assertEquals($expectedVersion, $actualVersion);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testInventChangesetUsesExactReleaseApiResult(): void {
+        $hub = UnityHub::getInstance();
+        $changesets = new \ReflectionProperty($hub, 'changesets');
+        $changesets->setValue($hub, []);
+        $releaseApi = new \ReflectionProperty($hub, 'releaseApi');
+        $releaseApi->setValue($hub, new UnityReleaseApi(static fn (): string => json_encode([
+            'total' => 2,
+            'results' => [
+                [
+                    'version' => '2019.4.41f1',
+                    'shortRevision' => 'fb553f8fdd6c'
+                ],
+                [
+                    'version' => '2019.4.41f2',
+                    'shortRevision' => '6b23d448b533'
+                ]
+            ]
+        ], JSON_THROW_ON_ERROR)));
+
+        $this->assertSame('6b23d448b533', $hub->inventChangeset('2019.4.41f2'));
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testInventStableEditorVersionIncludesReleaseApiResults(): void {
+        $hub = UnityHub::getInstance();
+        $changesets = new \ReflectionProperty($hub, 'changesets');
+        $changesets->setValue($hub, [
+            '2019.4.40f1' => null
+        ]);
+        $releaseApi = new \ReflectionProperty($hub, 'releaseApi');
+        $releaseApi->setValue($hub, new UnityReleaseApi(static fn (): string => json_encode([
+            'total' => 1,
+            'results' => [
+                [
+                    'version' => '2019.4.41f2',
+                    'shortRevision' => '6b23d448b533'
+                ]
+            ]
+        ], JSON_THROW_ON_ERROR)));
+
+        $this->assertSame('2019.4.41f2', $hub->inventStableEditorVersion('2019', true));
     }
     
     public function editorVersions(): iterable {

@@ -154,6 +154,10 @@ final class UnityHub {
     private string $editorPath = '';
     
     private ?array $changesets = null;
+
+    private ?UnityReleaseApi $releaseApi = null;
+
+    private array $releaseApiQueries = [];
     
     private mixed $fileContext = null;
     
@@ -356,7 +360,10 @@ final class UnityHub {
     }
     
     public function inventStableEditorVersion(string $minVersion, bool $highest = false): string {
-        $this->loadChangesets();
+        $hasApiReleases = $highest and $this->loadChangesetsFromReleaseApi(trim($minVersion));
+        if (! $hasApiReleases) {
+            $this->loadChangesets();
+        }
         $maxVersion = null;
         foreach (array_keys($this->changesets) as $version) {
             $matches = $highest ? self::matchesEditorVersion($version, $minVersion) : version_compare($version, $minVersion, '>=');
@@ -402,9 +409,19 @@ final class UnityHub {
         if (isset($this->customChangesets[$version])) {
             return $this->customChangesets[$version];
         }
-        
+
+        if (isset($this->changesets[$version])) {
+            return $this->changesets[$version];
+        }
+
+        $this->loadChangesetsFromReleaseApi($version);
+
+        if (isset($this->changesets[$version])) {
+            return $this->changesets[$version];
+        }
+
         $this->loadChangesets();
-        
+
         if (isset($this->changesets[$version])) {
             return $this->changesets[$version];
         }
@@ -507,6 +524,32 @@ final class UnityHub {
                 $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_ALL);
             }
         }
+    }
+
+    private function loadChangesetsFromReleaseApi(string $requestedVersion): bool {
+        if (array_key_exists($requestedVersion, $this->releaseApiQueries)) {
+            return $this->releaseApiQueries[$requestedVersion];
+        }
+
+        $this->releaseApi ??= new UnityReleaseApi();
+        try {
+            $releases = $this->releaseApi->find($requestedVersion);
+        } catch (Throwable) {
+            $releases = [];
+        }
+
+        $matchingReleases = [];
+        foreach ($releases as $version => $changeset) {
+            if (self::matchesEditorVersion($version, $requestedVersion)) {
+                $matchingReleases[$version] = $changeset;
+            }
+        }
+        $this->releaseApiQueries[$requestedVersion] = $matchingReleases !== [];
+        if ($matchingReleases !== []) {
+            $this->changesets ??= [];
+            $this->changesets = array_replace($this->changesets, $matchingReleases);
+        }
+        return $this->releaseApiQueries[$requestedVersion];
     }
     
     private function loadChangesetsFromUrl(string $url): void {

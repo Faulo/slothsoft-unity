@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - New documentation prefers `unity-command` for Unity CI pipelines.
 - `unity-command package-install` merges installation manifest data into an existing project and fully replaces an existing embedded-package directory.
+- Unity editor versions and changesets are resolved through Unity's official Release API, with the legacy symbol history and archive retained as fallbacks.
 
 ### Compatibility
 - Existing Composer binaries retain their 2.20 argument order, defaults, output, and exit behavior. They remain supported and emit no runtime deprecation warnings.
