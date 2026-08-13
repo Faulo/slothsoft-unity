@@ -214,7 +214,13 @@
 	</xsl:template>
 
 	<xsl:template match="test-suite">
-		<testsuite package="" id="{count(preceding::test-run)}" name="{@classname}" hostname="localhost" tests="{@testcasecount}" failures="{@failed}" skipped="{@skipped}" errors="{@inconclusive}"
+		<xsl:variable name="skipped-cases" select="test-case[@result = 'Inconclusive' or @result = 'Skipped' or @result = 'Ignored' or @runstate = 'Skipped' or @runstate = 'Ignored']" />
+		<xsl:variable name="error-cases"
+			select="test-case[@label = 'Error' or (@result = 'Failed' and string-length(@label) &gt; 0 and not(@label = 'Failed') and not(@label = 'Failure') and not(@label = 'Assertion'))]" />
+		<xsl:variable name="failure-cases"
+			select="test-case[(@result = 'Failed' or failure) and not(@result = 'Skipped') and not(@result = 'Ignored') and not(@result = 'Inconclusive') and not(@label = 'Error') and not(@result = 'Failed' and string-length(@label) &gt; 0 and not(@label = 'Failed') and not(@label = 'Failure') and not(@label = 'Assertion'))]" />
+
+		<testsuite package="" id="{count(preceding::test-run)}" name="{@classname}" hostname="localhost" tests="{@testcasecount}" failures="{count($failure-cases)}" skipped="{count($skipped-cases)}" errors="{count($error-cases)}"
 			time="{@duration}" timestamp="{php:format-date(@start-time)}">
 			<properties>
 				<xsl:copy-of select="properties/*" />
@@ -228,24 +234,41 @@
 	<xsl:template match="test-case">
 		<testcase classname="{@classname}" name="{@name}" time="{@duration}">
 			<xsl:choose>
-				<xsl:when test="@label and failure">
-					<error type="{@label}" message="{failure/message}">
-						<xsl:value-of select="failure/stack-trace" />
+				<xsl:when test="@result = 'Inconclusive' or @result = 'Skipped' or @result = 'Ignored' or @runstate = 'Skipped' or @runstate = 'Ignored'">
+					<skipped>
+						<xsl:attribute name="message">
+							<xsl:if test="@result = 'Inconclusive'">Inconclusive: </xsl:if>
+							<xsl:choose>
+								<xsl:when test="reason/message"><xsl:value-of select="reason/message" /></xsl:when>
+								<xsl:when test="failure/message"><xsl:value-of select="failure/message" /></xsl:when>
+								<xsl:otherwise><xsl:value-of select="@label" /></xsl:otherwise>
+							</xsl:choose>
+						</xsl:attribute>
+						<xsl:value-of select="reason/stack-trace | failure/stack-trace" />
+					</skipped>
+				</xsl:when>
+				<xsl:when test="@label = 'Error' or (@result = 'Failed' and string-length(@label) &gt; 0 and not(@label = 'Failed') and not(@label = 'Failure') and not(@label = 'Assertion'))">
+					<error type="{@label}" message="{failure/message | reason/message}">
+						<xsl:value-of select="failure/stack-trace | reason/stack-trace" />
 					</error>
 				</xsl:when>
-				<xsl:when test="failure">
+				<xsl:when test="@result = 'Failed' or failure">
 					<failure type="Assert" message="{failure/message}">
 						<xsl:value-of select="failure/stack-trace" />
 					</failure>
 				</xsl:when>
 			</xsl:choose>
+			<xsl:if test="@result = 'Inconclusive' or @result = 'Skipped' or @result = 'Ignored' or @runstate = 'Skipped' or @runstate = 'Ignored'">
+				<system-out><xsl:value-of select="output" /></system-out>
+				<system-err><xsl:value-of select="reason/stack-trace | failure/stack-trace" /></system-err>
+			</xsl:if>
 		</testcase>
 	</xsl:template>
 
 	<!-- unity-command flattens suites while preserving every Unity case once. -->
 	<xsl:template match="test-run" mode="unity-command">
 		<xsl:variable name="reported-problems"
-			select=".//test-case[@result = 'Inconclusive' or @label = 'Error' or @result = 'Failed' or (failure and not(@result = 'Skipped') and not(@result = 'Ignored') and not(@runstate = 'Skipped') and not(@runstate = 'Ignored'))]" />
+			select=".//test-case[@label = 'Error' or @result = 'Failed' or (failure and not(@result = 'Inconclusive') and not(@result = 'Skipped') and not(@result = 'Ignored') and not(@runstate = 'Skipped') and not(@runstate = 'Ignored'))]" />
 		<testsuites>
 			<xsl:apply-templates select=".//test-suite[test-case]" mode="unity-test-suite" />
 			<xsl:if test="@unity-exit-code and number(@unity-exit-code) != 0 and not($reported-problems)">
@@ -269,9 +292,9 @@
 	</xsl:template>
 
 	<xsl:template match="test-suite" mode="unity-test-suite">
-		<xsl:variable name="skipped-cases" select="test-case[@result = 'Skipped' or @result = 'Ignored' or @runstate = 'Skipped' or @runstate = 'Ignored']" />
+		<xsl:variable name="skipped-cases" select="test-case[@result = 'Inconclusive' or @result = 'Skipped' or @result = 'Ignored' or @runstate = 'Skipped' or @runstate = 'Ignored']" />
 		<xsl:variable name="error-cases"
-			select="test-case[@result = 'Inconclusive' or @label = 'Error' or (@result = 'Failed' and string-length(@label) &gt; 0 and not(@label = 'Failed') and not(@label = 'Failure') and not(@label = 'Assertion'))]" />
+			select="test-case[@label = 'Error' or (@result = 'Failed' and string-length(@label) &gt; 0 and not(@label = 'Failed') and not(@label = 'Failure') and not(@label = 'Assertion'))]" />
 		<xsl:variable name="failure-cases"
 			select="test-case[(@result = 'Failed' or failure) and not(@result = 'Skipped') and not(@result = 'Ignored') and not(@result = 'Inconclusive') and not(@label = 'Error') and not(@result = 'Failed' and string-length(@label) &gt; 0 and not(@label = 'Failed') and not(@label = 'Failure') and not(@label = 'Assertion'))]" />
 
@@ -352,9 +375,10 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:choose>
-				<xsl:when test="@result = 'Skipped' or @result = 'Ignored' or @runstate = 'Skipped' or @runstate = 'Ignored'">
+				<xsl:when test="@result = 'Inconclusive' or @result = 'Skipped' or @result = 'Ignored' or @runstate = 'Skipped' or @runstate = 'Ignored'">
 					<skipped>
 						<xsl:attribute name="message">
+							<xsl:if test="@result = 'Inconclusive'">Inconclusive: </xsl:if>
 							<xsl:choose>
 								<xsl:when test="reason/message"><xsl:value-of select="reason/message" /></xsl:when>
 								<xsl:when test="failure/message"><xsl:value-of select="failure/message" /></xsl:when>
@@ -364,12 +388,12 @@
 						<xsl:value-of select="reason/stack-trace | failure/stack-trace" />
 					</skipped>
 				</xsl:when>
-				<xsl:when test="@result = 'Inconclusive' or @label = 'Error' or (@result = 'Failed' and string-length(@label) &gt; 0 and not(@label = 'Failed') and not(@label = 'Failure') and not(@label = 'Assertion'))">
+				<xsl:when test="@label = 'Error' or (@result = 'Failed' and string-length(@label) &gt; 0 and not(@label = 'Failed') and not(@label = 'Failure') and not(@label = 'Assertion'))">
 					<error>
 						<xsl:attribute name="type">
 							<xsl:choose>
 								<xsl:when test="string-length(@label) &gt; 0"><xsl:value-of select="@label" /></xsl:when>
-								<xsl:otherwise>Inconclusive</xsl:otherwise>
+								<xsl:otherwise>TestError</xsl:otherwise>
 							</xsl:choose>
 						</xsl:attribute>
 						<xsl:attribute name="message"><xsl:value-of select="failure/message | reason/message" /></xsl:attribute>
@@ -380,6 +404,10 @@
 					<failure type="Assert" message="{failure/message}"><xsl:value-of select="failure/stack-trace" /></failure>
 				</xsl:when>
 			</xsl:choose>
+			<xsl:if test="@result = 'Inconclusive' or @result = 'Skipped' or @result = 'Ignored' or @runstate = 'Skipped' or @runstate = 'Ignored'">
+				<system-out><xsl:value-of select="output" /></system-out>
+				<system-err><xsl:value-of select="reason/stack-trace | failure/stack-trace" /></system-err>
+			</xsl:if>
 		</testcase>
 	</xsl:template>
 

@@ -50,15 +50,12 @@ final class TestsCommand extends AbstractAssetCommand {
             }
             return (int) $unityExitCode;
         }
-        if ((int) $root->getAttribute('failed') > 0 or (int) $root->getAttribute('inconclusive') > 0) {
+        if ((int) $root->getAttribute('failed') > 0) {
             return Command::FAILURE;
         }
         
         foreach ($root->getElementsByTagName('test-case') as $testCase) {
-            if (in_array($testCase->getAttribute('result'), [
-                'Failed',
-                'Inconclusive'
-            ], true)) {
+            if ($testCase->getAttribute('result') === 'Failed') {
                 return Command::FAILURE;
             }
         }

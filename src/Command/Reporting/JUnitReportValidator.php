@@ -4,11 +4,14 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Command\Reporting;
 
 use DOMDocument;
+use DOMNode;
+use DOMXPath;
 use LibXMLError;
 use Throwable;
 
 /**
- * Validates generated reports against the configured Farah JUnit schema.
+ * Validates generated reports against the configured Farah JUnit schema while
+ * allowing testcase-level output supported by Jenkins and Maven Surefire.
  */
 final readonly class JUnitReportValidator {
     
@@ -22,7 +25,7 @@ final readonly class JUnitReportValidator {
         libxml_clear_errors();
         
         try {
-            $valid = @$report->schemaValidate($this->schemaUri);
+            $valid = @$this->createSchemaDocument($report)->schemaValidate($this->schemaUri);
             $errors = libxml_get_errors();
         } catch (Throwable $error) {
             $errors = libxml_get_errors();
@@ -35,6 +38,24 @@ final readonly class JUnitReportValidator {
         if (! $valid) {
             throw new ReportValidationException($this->formatFailure($errors));
         }
+    }
+
+    private function createSchemaDocument(DOMDocument $report): DOMDocument {
+        $schemaDocument = $report->cloneNode(true);
+        if (! $schemaDocument instanceof DOMDocument) {
+            throw new ReportValidationException('Unable to clone the JUnit report for validation.');
+        }
+        $xpath = new DOMXPath($schemaDocument);
+        $extensionNodes = [];
+        foreach ($xpath->query('//testcase/system-out | //testcase/system-err') ?: [] as $node) {
+            $extensionNodes[] = $node;
+        }
+        foreach ($extensionNodes as $node) {
+            if ($node instanceof DOMNode) {
+                $node->parentNode?->removeChild($node);
+            }
+        }
+        return $schemaDocument;
     }
     
     /**

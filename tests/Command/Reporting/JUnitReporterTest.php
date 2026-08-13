@@ -100,8 +100,8 @@ final class JUnitReporterTest extends TestCase {
             <test-case id="1" name="Passes" classname="Example.Fixture" result="Passed" duration="0.1"><output>pass output</output></test-case>
             <test-case id="2" name="Fails" classname="Example.Fixture" result="Failed" duration="0.2"><failure><message>assertion failed</message><stack-trace>failure trace</stack-trace></failure></test-case>
             <test-case id="3" name="Errors" classname="Example.Fixture" result="Failed" label="Error" duration="0.3"><failure><message>unexpected error</message><stack-trace>error trace</stack-trace></failure></test-case>
-            <test-case id="4" name="Skips" classname="Example.Fixture" result="Skipped" label="Ignored" duration="0"><reason><message>disabled</message><stack-trace>skip trace</stack-trace></reason></test-case>
-            <test-case id="5" name="Inconclusive" classname="Example.Fixture" result="Inconclusive" duration="0.4"><reason><message>no result</message><stack-trace>inconclusive trace</stack-trace></reason></test-case>
+            <test-case id="4" name="Skips" classname="Example.Fixture" result="Skipped" label="Ignored" duration="0"><reason><message>disabled</message><stack-trace>skip trace</stack-trace></reason><output>skip output</output></test-case>
+            <test-case id="5" name="Inconclusive" classname="Example.Fixture" result="Inconclusive" duration="0.4"><reason><message>no result</message><stack-trace>inconclusive trace</stack-trace></reason><output>inconclusive output</output></test-case>
             <test-suite type="ParameterizedMethod" id="2" name="Nested" fullname="Example.Fixture.Nested" classname="Example.Fixture" start-time="2026-08-10T10:00:01Z" duration="0.5">
               <properties />
               <test-case id="6" name="NestedPass" classname="Example.Fixture" result="Passed" duration="0.5" />
@@ -118,25 +118,30 @@ final class JUnitReporterTest extends TestCase {
         $this->assertSame('1', $xpath->evaluate('string(/testsuites/testsuite[2]/@id)'));
         $this->assertSame(6, $xpath->query('//testcase')->length);
         $this->assertSame(1, $xpath->query('//testcase/failure')->length);
-        $this->assertSame(2, $xpath->query('//testcase/error')->length);
-        $this->assertSame(1, $xpath->query('//testcase/skipped')->length);
+        $this->assertSame(1, $xpath->query('//testcase/error')->length);
+        $this->assertSame(2, $xpath->query('//testcase/skipped')->length);
         $this->assertSame('1', $xpath->evaluate('string(/testsuites/testsuite[1]/@failures)'));
-        $this->assertSame('2', $xpath->evaluate('string(/testsuites/testsuite[1]/@errors)'));
-        $this->assertSame('1', $xpath->evaluate('string(/testsuites/testsuite[1]/@skipped)'));
+        $this->assertSame('1', $xpath->evaluate('string(/testsuites/testsuite[1]/@errors)'));
+        $this->assertSame('2', $xpath->evaluate('string(/testsuites/testsuite[1]/@skipped)'));
         $this->assertSame('assertion failed', $xpath->evaluate('string(//testcase[@name="Fails"]/failure/@message)'));
         $this->assertSame('failure trace', $xpath->evaluate('string(//testcase[@name="Fails"]/failure)'));
         $this->assertSame('unexpected error', $xpath->evaluate('string(//testcase[@name="Errors"]/error/@message)'));
         $this->assertSame('disabled', $xpath->evaluate('string(//testcase[@name="Skips"]/skipped/@message)'));
-        $this->assertSame('no result', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/error/@message)'));
+        $this->assertSame('Inconclusive: no result', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/skipped/@message)'));
+        $this->assertSame('skip output', $xpath->evaluate('string(//testcase[@name="Skips"]/system-out)'));
+        $this->assertSame('skip trace', $xpath->evaluate('string(//testcase[@name="Skips"]/system-err)'));
+        $this->assertSame('inconclusive output', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-out)'));
+        $this->assertSame('inconclusive trace', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-err)'));
         $this->assertSame('EditMode', $xpath->evaluate('string(/testsuites/testsuite[1]/properties/property[@name="platform"]/@value)'));
-        $this->assertSame('pass output', $xpath->evaluate('string(/testsuites/testsuite[1]/system-out)'));
+        $this->assertSame("pass output\nskip output\ninconclusive output", $xpath->evaluate('string(/testsuites/testsuite[1]/system-out)'));
     }
     
     public function testUnityProcessExitCodeAddsAnErrorWithoutReplacingUnityCases(): void {
         $source = $this->loadXml(<<<'XML'
-        <test-run unity-exit-code="42" start-time="2026-08-10T10:00:00Z" failed="0" inconclusive="0">
+        <test-run unity-exit-code="42" start-time="2026-08-10T10:00:00Z" failed="0" inconclusive="1">
           <test-suite name="Fixture" classname="Example.Fixture" start-time="2026-08-10T10:00:00Z" duration="0.2">
             <test-case name="Passes" classname="Example.Fixture" result="Passed" duration="0.2" />
+            <test-case name="Inconclusive" classname="Example.Fixture" result="Inconclusive" duration="0"><reason><message>no result</message></reason></test-case>
           </test-suite>
         </test-run>
         XML);
@@ -147,6 +152,7 @@ final class JUnitReporterTest extends TestCase {
         
         $this->assertSame(2, $xpath->query('/testsuites/testsuite')->length);
         $this->assertSame(1, $xpath->query('//testcase[@name="Passes"]')->length);
+        $this->assertSame(1, $xpath->query('//testcase[@name="Inconclusive"]/skipped')->length);
         $this->assertSame(1, $xpath->query('//testcase[@name="Unity Test Runner process"]/error')->length);
         $this->assertSame('42', $xpath->evaluate('string(/testsuites/testsuite[2]/properties/property[@name="unity-process.exit-code"]/@value)'));
     }

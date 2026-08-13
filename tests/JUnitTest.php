@@ -9,6 +9,7 @@ use DOMXPath;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
+use Slothsoft\Unity\Command\Reporting\JUnitReportValidator;
 
 class JUnitTest extends TestCase {
     
@@ -84,6 +85,34 @@ class JUnitTest extends TestCase {
         $this->assertSame('preserved', $xpath->evaluate('string(/testsuites/testsuite/properties/property[@name="legacy"]/@value)'));
         $this->assertSame(1, $xpath->query('/testsuites/testsuite/testcase')->length);
         $this->assertSame('', $xpath->evaluate('string(/testsuites/testsuite/system-out)'), 'Legacy reports do not aggregate per-case output.');
+    }
+
+    public function testLegacyUnityTestTransformationMapsInconclusiveAndSkippedCasesForJenkins(): void {
+        $data = $this->transformXml(<<<'XML'
+        <test-run start-time="2022-01-01T10:00:00Z">
+          <test-suite classname="Legacy.Suite" testcasecount="2" failed="0" skipped="1" inconclusive="1" duration="0.5" start-time="2022-01-01T10:00:00Z">
+            <test-case classname="Legacy.Suite" name="Inconclusive" duration="0.25" result="Inconclusive">
+              <reason><message>environment unavailable</message><stack-trace>inconclusive trace</stack-trace></reason>
+              <output>inconclusive output</output>
+            </test-case>
+            <test-case classname="Legacy.Suite" name="Ignored" duration="0" result="Skipped" label="Ignored">
+              <reason><message>disabled</message><stack-trace>ignored trace</stack-trace></reason>
+              <output>ignored output</output>
+            </test-case>
+          </test-suite>
+        </test-run>
+        XML);
+        (new JUnitReportValidator())->assertValid($data);
+        $xpath = new DOMXPath($data);
+
+        $this->assertSame('0', $xpath->evaluate('string(/testsuites/testsuite/@errors)'));
+        $this->assertSame('2', $xpath->evaluate('string(/testsuites/testsuite/@skipped)'));
+        $this->assertSame(2, $xpath->query('//testcase/skipped')->length);
+        $this->assertSame('Inconclusive: environment unavailable', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/skipped/@message)'));
+        $this->assertSame('inconclusive output', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-out)'));
+        $this->assertSame('inconclusive trace', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-err)'));
+        $this->assertSame('ignored output', $xpath->evaluate('string(//testcase[@name="Ignored"]/system-out)'));
+        $this->assertSame('ignored trace', $xpath->evaluate('string(//testcase[@name="Ignored"]/system-err)'));
     }
 
     public function testLegacyDotNetTransformationRemainsAvailable(): void {
