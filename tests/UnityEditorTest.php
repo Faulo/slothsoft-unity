@@ -165,6 +165,9 @@ final class UnityEditorTest extends TestCase {
             $exitCode
         );
         UnityHub::setHubLocator($locator);
+        $config = UnityHub::getConfig();
+        $config->propagateProcessExitCodes = true;
+        UnityHub::setConfig($config);
         $editor = new UnityEditor(UnityHub::getInstance(), '6000.3.13f1');
         $editor->setExecutable($executable);
 
