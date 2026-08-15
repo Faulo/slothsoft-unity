@@ -70,8 +70,30 @@ final class UnityEditor {
         if (! $this->isInstalled()) {
             return false;
         }
+
+        $modules = array_values(array_unique($modules));
+        $missingModules = array_values(array_diff($modules, $this->getInstalledModules()));
+        if ($missingModules === []) {
+            return true;
+        }
         
-        $this->hub->installEditorModule($this, ...$modules);
+        try {
+            $this->hub->installEditorModule($this, ...$missingModules);
+            $installationError = null;
+        } catch (ExecutionError $error) {
+            $installationError = $error;
+        }
+
+        $missingModules = array_values(array_diff($modules, $this->getInstalledModules()));
+        if ($missingModules !== []) {
+            if ($installationError !== null) {
+                throw $installationError;
+            }
+            throw ExecutionError::Error('AssertEditorModules', sprintf(
+                'Unity Hub finished without installing the requested modules: %s.',
+                implode(', ', $missingModules)
+            ));
+        }
         
         // Unity needs permission to access the installed files
         // https://stackoverflow.com/questions/61865817/jdk-directory-is-not-set-or-invalid-unity
@@ -80,6 +102,41 @@ final class UnityEditor {
         }
         
         return true;
+    }
+
+    public function getInstalledModules(): array {
+        $manifest = $this->findModuleManifest();
+        if ($manifest === null) {
+            return [];
+        }
+
+        $installedModules = [];
+        foreach (JsonUtils::load($manifest) as $module) {
+            if (is_array($module) and isset($module['id']) and ($module['selected'] ?? false) === true) {
+                $installedModules[] = (string) $module['id'];
+            }
+        }
+        return $installedModules;
+    }
+
+    private function findModuleManifest(): ?string {
+        if ($this->executable === null) {
+            return null;
+        }
+
+        $directory = dirname($this->executable);
+        while (true) {
+            $manifest = $directory . DIRECTORY_SEPARATOR . 'modules.json';
+            if (is_file($manifest)) {
+                return $manifest;
+            }
+
+            $parent = dirname($directory);
+            if ($parent === $directory) {
+                return null;
+            }
+            $directory = $parent;
+        }
     }
     
     private const ARGUMENT_LICENSE_CREATE = '-createManualActivationFile';

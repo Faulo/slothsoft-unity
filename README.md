@@ -141,7 +141,9 @@ Without `--junit`, Unity process output is streamed immediately with its stdout/
 
 Use `--junit PATH` to write a UTF-8 JUnit report. Relative paths use the process working directory, missing parent directories are created, and an existing report is atomically replaced. Normal live output remains unchanged. Use `--junit -` when the report itself must be written to stdout; in that mode stdout contains only the complete XML document and all normal output is redirected to stderr.
 
-Successful commands return `0`. Invalid command-line input returns `2`, and application or semantic failures return `1`. If Unity supplies a non-zero process exit code, that value is returned unchanged. Failure to create or validate a requested report returns `1`.
+Successful commands return `0`. Invalid command-line input returns `2`, and application or semantic failures return `1`. Unless an operation verifies a more specific postcondition as described below, a non-zero Unity process exit code is returned unchanged. Failure to create or validate a requested report returns `1`.
+
+`module-install` is idempotent. It skips modules already recorded as installed by Unity Hub and verifies the requested module state after an installation attempt. The verified module state determines success even when Unity Hub returns a non-zero exit code after reaching the requested state.
 
 Arguments after `--` are forwarded unchanged by `method` and `start`, including option-like values:
 
