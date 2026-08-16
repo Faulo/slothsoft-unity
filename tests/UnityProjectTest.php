@@ -174,7 +174,8 @@ class UnityProjectTest extends TestCase {
         $hub = UnityHub::getInstance();
         $project = new UnityProject($info, $hub);
         $editor = new UnityEditor($hub, $info->editorVersion);
-        $editor->setExecutable(__DIR__ . '/../test-files/Command/unity-test-runner');
+        $runner = PHP_OS_FAMILY === 'Windows' ? 'unity-test-runner.bat' : 'unity-test-runner';
+        $editor->setExecutable(__DIR__ . '/../test-files/Command/' . $runner);
         $property = new ReflectionProperty($project, 'editor');
         $property->setValue($project, $editor);
 
