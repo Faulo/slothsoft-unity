@@ -75,7 +75,8 @@
         "scripts/transform-dotnet-format"
     ],
     "config": {
-        "process-timeout": 0
+        "process-timeout": 0,
+        "bin-compat": "full"
     },
     "homepage": "https://farah.slothsoft.net/modules/unity"
 }
