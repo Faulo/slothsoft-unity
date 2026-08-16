@@ -136,7 +136,7 @@ final class JUnitReporterTest extends TestCase {
         $this->assertSame("pass output\nskip output\ninconclusive output", $xpath->evaluate('string(/testsuites/testsuite[1]/system-out)'));
     }
     
-    public function testUnityProcessExitCodeAddsAnErrorWithoutReplacingUnityCases(): void {
+    public function testUnityProcessExitCodeIsDiagnosticWhenTheNativeReportIsValid(): void {
         $source = $this->loadXml(<<<'XML'
         <test-run unity-exit-code="42" start-time="2026-08-10T10:00:00Z" failed="0" inconclusive="1">
           <test-suite name="Fixture" classname="Example.Fixture" start-time="2026-08-10T10:00:00Z" duration="0.2">
@@ -150,11 +150,10 @@ final class JUnitReporterTest extends TestCase {
         $report = $this->reporter->createReport($source, $metadata);
         $xpath = new DOMXPath($report);
         
-        $this->assertSame(2, $xpath->query('/testsuites/testsuite')->length);
+        $this->assertSame(1, $xpath->query('/testsuites/testsuite')->length);
         $this->assertSame(1, $xpath->query('//testcase[@name="Passes"]')->length);
         $this->assertSame(1, $xpath->query('//testcase[@name="Inconclusive"]/skipped')->length);
-        $this->assertSame(1, $xpath->query('//testcase[@name="Unity Test Runner process"]/error')->length);
-        $this->assertSame('42', $xpath->evaluate('string(/testsuites/testsuite[2]/properties/property[@name="unity-process.exit-code"]/@value)'));
+        $this->assertSame(0, $xpath->query('//testcase[@name="Unity Test Runner process"]/error')->length);
     }
     
     public function testCreateXmlReturnsCompleteUtf8DocumentWithoutWriting(): void {

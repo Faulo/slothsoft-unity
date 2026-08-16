@@ -73,15 +73,19 @@ final class TestsCommandSemanticTest extends TestCase {
         ];
         yield 'underlying Unity exit code' => [
             '<test-run failed="1" unity-exit-code="42"><test-suite><test-case result="Failed" /></test-suite></test-run>',
-            42
+            Command::FAILURE
+        ];
+        yield 'valid report ignores diagnostic Unity exit code' => [
+            '<test-run failed="0" unity-exit-code="2"><test-suite><test-case result="Passed" /></test-suite></test-run>',
+            Command::SUCCESS
         ];
         yield 'malformed Unity exit code' => [
             '<test-run unity-exit-code="not-a-number" />',
-            Command::FAILURE
+            Command::SUCCESS
         ];
         yield 'zero Unity exit code marker' => [
             '<test-run unity-exit-code="0" />',
-            Command::FAILURE
+            Command::SUCCESS
         ];
         yield 'unexpected result root' => [
             '<result />',
@@ -150,6 +154,44 @@ final class TestsCommandSemanticTest extends TestCase {
         $this->assertSame('Inconclusive: environment unavailable', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/skipped/@message)'));
         $this->assertSame('captured output', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-out)'));
         $this->assertSame('diagnostic trace', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-err)'));
+    }
+
+    public function testValidReportWarningKeepsStdoutReportAsPureXml(): void {
+        $document = new DOMDocument('1.0', 'UTF-8');
+        $document->loadXML(<<<'XML'
+        <test-run failed="0" start-time="2026-08-16T10:00:00Z">
+          <warning>Unity test mode 'PlayMode' produced a valid report despite process exit code 2.</warning>
+          <test-suite name="Fixture" classname="Example.Fixture" start-time="2026-08-16T10:00:00Z">
+            <test-case name="Passes" classname="Example.Fixture" result="Passed" duration="0" />
+          </test-suite>
+        </test-run>
+        XML);
+        $executor = new SemanticTestsAssetExecutor(new AssetExecutionResult(Command::SUCCESS, $document));
+        $tester = new ApplicationTester(ApplicationFactory::create([
+            new TestsCommand($executor)
+        ]));
+
+        $code = $tester->run([
+            'command' => 'tests',
+            'workspace' => 'workspace',
+            'modes' => [
+                'PlayMode'
+            ],
+            '--junit' => '-'
+        ], [
+            'capture_stderr_separately' => true,
+            'decorated' => false
+        ]);
+
+        $this->assertSame(Command::SUCCESS, $code);
+        $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $tester->getDisplay());
+        $this->assertStringNotContainsString('WARNING:', $tester->getErrorOutput());
+        $report = new DOMDocument();
+        $this->assertTrue($report->loadXML($tester->getDisplay()));
+        (new JUnitReportValidator())->assertValid($report);
+        $xpath = new DOMXPath($report);
+        $this->assertSame("Unity test mode 'PlayMode' produced a valid report despite process exit code 2.", $xpath->evaluate('string(//property[@name="unity-command.warning.1"]/@value)'));
+        $this->assertStringContainsString('WARNING: Unity test mode', $xpath->evaluate('string(/testsuites/testsuite/system-err)'));
     }
     
     public function testFailedTestsCreateReportWithoutExecutingTwice(): void {

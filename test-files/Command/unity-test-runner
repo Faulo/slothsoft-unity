@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types = 1);
+
+$arguments = array_slice($argv, 1);
+$resultIndex = array_search('-testResults', $arguments, true);
+$platformIndex = array_search('-testPlatform', $arguments, true);
+$resultsFile = $resultIndex === false ? null : ($arguments[$resultIndex + 1] ?? null);
+$platform = $platformIndex === false ? null : ($arguments[$platformIndex + 1] ?? null);
+$scenario = json_decode((string) getenv('SLOTHSOFT_UNITY_TEST_SCENARIO'), true, 512, JSON_THROW_ON_ERROR);
+$result = is_string($platform) ? ($scenario[$platform] ?? []) : [];
+
+if (is_string($resultsFile) and array_key_exists('report', $result)) {
+    file_put_contents($resultsFile, (string) $result['report']);
+}
+if (isset($result['stdout'])) {
+    fwrite(STDOUT, (string) $result['stdout']);
+}
+if (isset($result['stderr'])) {
+    fwrite(STDERR, (string) $result['stderr']);
+}
+
+exit((int) ($result['exitCode'] ?? 0));

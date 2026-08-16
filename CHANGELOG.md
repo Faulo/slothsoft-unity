@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- Made valid Unity Test Runner XML authoritative even when Unity exits non-zero, and limited synthetic infrastructure errors to test modes that do not produce a usable report.
+
 ## [2.22.1] - 2026-08-15
 
 ### Fixed

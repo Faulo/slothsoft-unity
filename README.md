@@ -143,6 +143,8 @@ Use `--junit PATH` to write a UTF-8 JUnit report. Relative paths use the process
 
 Successful commands return `0`. Invalid command-line input returns `2`, and application or semantic failures return `1`. Unless an operation verifies a more specific postcondition as described below, a non-zero Unity process exit code is returned unchanged. Failure to create or validate a requested report returns `1`.
 
+`tests` evaluates each requested mode independently. A fresh, valid Unity `test-run` report is authoritative even if Unity exits non-zero; the exit is retained as warning metadata while the report determines the command result. A mode that produces no usable report contributes one synthetic infrastructure error without hiding valid results from other modes.
+
 `module-install` is idempotent. It skips modules already recorded as installed by Unity Hub and verifies the requested module state after an installation attempt. The verified module state determines success even when Unity Hub returns a non-zero exit code after reaching the requested state.
 
 Arguments after `--` are forwarded unchanged by `method` and `start`, including option-like values:

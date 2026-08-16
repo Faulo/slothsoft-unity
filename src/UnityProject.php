@@ -2,10 +2,10 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
-use Slothsoft\Core\DOMHelper;
 use Slothsoft\Core\FileSystem;
 use Symfony\Component\Process\Process;
 use DOMDocument;
+use DOMElement;
 
 /**
  * Represents a Unity project and exposes editor automation operations for it.
@@ -80,7 +80,6 @@ final class UnityProject {
     
     public function runTests(string ...$testPlatforms): DOMDocument {
         $doc = new DOMDocument('1.0', 'UTF-8');
-        $unityExitCode = 0;
         
         $rootNode = $doc->createElement('test-run');
         $attributes = [];
@@ -94,30 +93,35 @@ final class UnityProject {
         
         foreach ($testPlatforms as $testPlatform) {
             $resultsFile = temp_file(__CLASS__);
+            $process = null;
+            $executionError = null;
             
             try {
                 $process = $this->execute('-runTests', '-testResults', $resultsFile, '-testPlatform', $testPlatform);
-                if (! is_file($resultsFile)) {
-                    $message = "Failed to create results for test mode '$testPlatform'!";
-                    $matches = [];
-                    if (preg_match('~(An error occurred.+)~sui', $process->getOutput(), $matches)) {
-                        $message .= PHP_EOL . PHP_EOL . trim($matches[1]);
-                    }
-                    if (preg_match('~(##### Output.+)Aborting batchmode due to failure~sui', $process->getOutput(), $matches)) {
-                        $message .= PHP_EOL . PHP_EOL . trim($matches[1]);
-                    }
-                    throw ExecutionError::Error('AssertTestResult', $message, $process);
-                }
             } catch (ExecutionError $e) {
-                if (! is_file($resultsFile)) {
-                    throw $e;
-                }
-                if (UnityHub::getPropagateProcessExitCodes() and $unityExitCode === 0) {
-                    $unityExitCode = $e->getExitCode();
-                }
+                $executionError = $e;
             }
             
-            $resultsDoc = DOMHelper::loadDocument($resultsFile);
+            $reportError = '';
+            $resultsDoc = $this->loadTestReport($resultsFile, $reportError);
+            if ($resultsDoc === null) {
+                $this->appendTestInfrastructureError($doc, $rootNode, $testPlatform, $reportError, $executionError, $process);
+                $attributes['testcasecount'] ++;
+                $attributes['total'] ++;
+                $attributes['failed'] ++;
+                continue;
+            }
+
+            if ($executionError !== null and UnityHub::getPropagateProcessExitCodes()) {
+                $warning = sprintf(
+                    "Unity test mode '%s' produced a valid report despite process exit code %d. The report was accepted as authoritative.",
+                    $testPlatform,
+                    $executionError->getExitCode()
+                );
+                $warningNode = $doc->createElement('warning');
+                $warningNode->textContent = $warning;
+                $rootNode->appendChild($warningNode);
+            }
             foreach ($resultsDoc->documentElement->attributes as $attr) {
                 if (isset($attributes[$attr->name])) {
                     $attributes[$attr->name] += (int) $attr->value;
@@ -131,14 +135,116 @@ final class UnityProject {
         foreach ($attributes as $key => $val) {
             $rootNode->setAttribute($key, (string) $val);
         }
-        if ($unityExitCode !== 0) {
-            // Additive command-only metadata; legacy asset resolution leaves
-            // process exit propagation disabled and produces compatible XML.
-            $rootNode->setAttribute('unity-exit-code', (string) $unityExitCode);
-        }
         $doc->appendChild($rootNode);
         
         return $doc;
+    }
+
+    private function loadTestReport(string $resultsFile, string &$error): ?DOMDocument {
+        if (! is_file($resultsFile)) {
+            $error = 'Unity did not create a test report.';
+            return null;
+        }
+
+        $previousInternalErrors = libxml_use_internal_errors(true);
+        libxml_clear_errors();
+        try {
+            $document = new DOMDocument();
+            if (! $document->load($resultsFile, LIBXML_NONET | LIBXML_PARSEHUGE)) {
+                $messages = [];
+                foreach (libxml_get_errors() as $xmlError) {
+                    $messages[] = sprintf('line %d, column %d: %s', $xmlError->line, $xmlError->column, trim($xmlError->message));
+                }
+                $error = 'Unity created a malformed test report.';
+                if ($messages !== []) {
+                    $error .= PHP_EOL . implode(PHP_EOL, $messages);
+                }
+                return null;
+            }
+            if ($document->documentElement?->nodeName !== 'test-run') {
+                $error = sprintf("Unity created an unusable test report with root element '%s'.", $document->documentElement?->nodeName ?? 'none');
+                return null;
+            }
+            return $document;
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($previousInternalErrors);
+        }
+    }
+
+    private function appendTestInfrastructureError(
+        DOMDocument $document,
+        DOMElement $root,
+        string $testPlatform,
+        string $reportError,
+        ?ExecutionError $executionError,
+        ?Process $process
+    ): void {
+        $suiteName = sprintf('Unity Test Runner process (%s)', $testPlatform);
+        $suite = $document->createElement('test-suite');
+        foreach ([
+            'type' => 'TestSuite',
+            'name' => $suiteName,
+            'fullname' => $suiteName,
+            'classname' => 'unity-command.tests',
+            'testcasecount' => '1',
+            'result' => 'Failed',
+            'start-time' => gmdate(DATE_W3C),
+            'duration' => '0',
+            'total' => '1',
+            'passed' => '0',
+            'failed' => '1',
+            'inconclusive' => '0',
+            'skipped' => '0',
+            'asserts' => '0'
+        ] as $name => $value) {
+            $suite->setAttribute($name, $value);
+        }
+
+        $properties = $document->createElement('properties');
+        $platformProperty = $document->createElement('property');
+        $platformProperty->setAttribute('name', 'unity-test-platform');
+        $platformProperty->setAttribute('value', $testPlatform);
+        $properties->appendChild($platformProperty);
+        $exitCode = $executionError?->getExitCode() ?? $process?->getExitCode();
+        if ($exitCode !== null) {
+            $exitCodeProperty = $document->createElement('property');
+            $exitCodeProperty->setAttribute('name', 'unity-process.exit-code');
+            $exitCodeProperty->setAttribute('value', (string) $exitCode);
+            $properties->appendChild($exitCodeProperty);
+        }
+        $suite->appendChild($properties);
+
+        $testCase = $document->createElement('test-case');
+        $testCase->setAttribute('name', $suiteName);
+        $testCase->setAttribute('classname', 'unity-command.tests');
+        $testCase->setAttribute('result', 'Failed');
+        $testCase->setAttribute('label', 'UnityProcessError');
+        $testCase->setAttribute('duration', '0');
+        $failure = $document->createElement('failure');
+        $message = $document->createElement('message');
+        $message->textContent = sprintf("Unity test mode '%s' did not produce a usable test report.", $testPlatform);
+        $failure->appendChild($message);
+        $details = [$reportError];
+        if ($executionError !== null) {
+            $details[] = $executionError->getMessage();
+        }
+        $standardError = $executionError?->getStdErr() ?? $process?->getErrorOutput() ?? '';
+        if ($standardError !== '') {
+            $details[] = $standardError;
+        }
+        $stackTrace = $document->createElement('stack-trace');
+        $stackTrace->textContent = implode(PHP_EOL . PHP_EOL, array_filter($details));
+        $failure->appendChild($stackTrace);
+        $testCase->appendChild($failure);
+        $standardOutput = $executionError?->getStdOut() ?? $process?->getOutput() ?? '';
+        if ($standardOutput !== '') {
+            $output = $document->createElement('output');
+            $output->textContent = $standardOutput;
+            $testCase->appendChild($output);
+        }
+        $suite->appendChild($testCase);
+        $root->appendChild($suite);
     }
     
     private const BUILD_FOLDERS = [

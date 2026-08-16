@@ -267,28 +267,9 @@
 
 	<!-- unity-command flattens suites while preserving every Unity case once. -->
 	<xsl:template match="test-run" mode="unity-command">
-		<xsl:variable name="reported-problems"
-			select=".//test-case[@label = 'Error' or @result = 'Failed' or (failure and not(@result = 'Inconclusive') and not(@result = 'Skipped') and not(@result = 'Ignored') and not(@runstate = 'Skipped') and not(@runstate = 'Ignored'))]" />
 		<testsuites>
 			<xsl:apply-templates select=".//test-suite[test-case]" mode="unity-test-suite" />
-			<xsl:if test="@unity-exit-code and number(@unity-exit-code) != 0 and not($reported-problems)">
-				<xsl:call-template name="unity-command-test-process-error" />
-			</xsl:if>
 		</testsuites>
-	</xsl:template>
-
-	<xsl:template name="unity-command-test-process-error">
-		<testsuite package="{ancestor::unity-command-report/@package}" id="{count(.//test-suite[test-case])}" name="Unity Test Runner process" hostname="localhost" tests="1" failures="0" skipped="0" errors="1"
-			time="{ancestor::unity-command-report/@duration}" timestamp="{ancestor::unity-command-report/@timestamp}">
-			<properties>
-				<property name="unity-process.exit-code" value="{@unity-exit-code}" />
-			</properties>
-			<testcase classname="unity-command.tests" name="Unity Test Runner process" time="{ancestor::unity-command-report/@duration}">
-				<error type="UnityProcessError" message="Unity test process exited with code {@unity-exit-code}.">Unity Test Runner returned a non-zero process exit code.</error>
-			</testcase>
-			<system-out><xsl:value-of select="ancestor::unity-command-report/standard-output" /></system-out>
-			<system-err><xsl:value-of select="ancestor::unity-command-report/standard-error" /></system-err>
-		</testsuite>
 	</xsl:template>
 
 	<xsl:template match="test-suite" mode="unity-test-suite">

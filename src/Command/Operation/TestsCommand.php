@@ -43,13 +43,6 @@ final class TestsCommand extends AbstractAssetCommand {
         if ($root === null or $root->nodeName !== 'test-run') {
             return Command::FAILURE;
         }
-        $unityExitCode = $root->getAttribute('unity-exit-code');
-        if ($unityExitCode !== '') {
-            if (filter_var($unityExitCode, FILTER_VALIDATE_INT) === false or (int) $unityExitCode === 0) {
-                return Command::FAILURE;
-            }
-            return (int) $unityExitCode;
-        }
         if ((int) $root->getAttribute('failed') > 0) {
             return Command::FAILURE;
         }
