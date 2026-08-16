@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Core\ServerEnvironment;
 use Slothsoft\FarahTesting\TestUtils;
+use Slothsoft\Unity\Command\SymfonyProcessOutputHandler;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Process\Process;
 
 /**
@@ -167,6 +169,9 @@ final class UnityEditorTest extends TestCase {
         UnityHub::setHubLocator($locator);
         $config = UnityHub::getConfig();
         $config->propagateProcessExitCodes = true;
+        // PHPUnit treats STDERR from a separate-process test as a framework error.
+        $output = new NullOutput();
+        $config->processOutputHandler = new SymfonyProcessOutputHandler($output, $output);
         UnityHub::setConfig($config);
         $editor = new UnityEditor(UnityHub::getInstance(), '6000.3.13f1');
         $editor->setExecutable($executable);
