@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Slothsoft\Unity\Steam;
 
+use Slothsoft\Unity\Command\CommandLineRedactor;
 use Slothsoft\Unity\MailboxAccess;
 use Symfony\Component\Process\Process;
 use DateInterval;
@@ -51,7 +52,7 @@ final class SteamCMD {
     }
     
     private function reportError(Process $process): void {
-        fwrite(STDERR, $process->getCommandLine());
+        fwrite(STDERR, CommandLineRedactor::fromEnvironment()->redact($process->getCommandLine()));
         fwrite(STDERR, PHP_EOL);
         fwrite(STDERR, $process->getOutput());
     }

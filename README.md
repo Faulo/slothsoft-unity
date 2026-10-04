@@ -153,6 +153,8 @@ Arguments after `--` are forwarded unchanged by `method` and `start`, including 
 composer exec unity-command -- method ./Project Namespace.Type.Method -- --method-option value
 ```
 
+Package-authored command-line diagnostics mask the values of `UNITY_CREDENTIALS_PSW`, `STEAM_CREDENTIALS_PSW`, and `EMAIL_CREDENTIALS_PSW` with `[REDACTED]`. This does not change the arguments passed to Unity or SteamCMD, or filter output from those programs.
+
 `package-install` accepts a missing path, an empty directory, or an exact Unity project root as `WORKSPACE`. Missing and empty workspaces are initialized; an existing project is reused without changing its Unity version or project settings. A non-empty directory that is not itself a Unity project is rejected. Existing manifest data is preserved where it does not conflict with installation data, dependencies are merged by package name, lists are de-duplicated, and scoped registries are merged by URL. The embedded package directory is fully replaced.
 
 ### Compatibility and utility binaries

@@ -5,6 +5,7 @@ namespace Slothsoft\Unity;
 use DOMDocument;
 use DOMElement;
 use Exception;
+use Slothsoft\Unity\Command\CommandLineRedactor;
 use Symfony\Component\Process\Process;
 use Throwable;
 
@@ -25,11 +26,29 @@ final class ExecutionError extends Exception {
     }
     
     private static function FromProcess(string $tag, string $type, string $message, ?Process $process): ExecutionError {
-        return $process ? new self($tag, $type, $message, $process->getCommandLine(), $process->getOutput(), $process->getErrorOutput(), $process->getExitCode() ?? 0) : new self($tag, $type, $message);
+        $redactor = CommandLineRedactor::fromEnvironment();
+        $message = $redactor->redact($message);
+        if ($process === null) {
+            return new self($tag, $type, $message);
+        }
+        return new self(
+            $tag,
+            $type,
+            $message,
+            $redactor->redact($process->getCommandLine()),
+            $process->getOutput(),
+            $process->getErrorOutput(),
+            $process->getExitCode() ?? 0
+        );
     }
     
     public static function Exception(Throwable $e, ?Process $process = null): ExecutionError {
-        return $process ? new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), $process->getOutput(), $process->getErrorOutput(), $process->getExitCode() ?? 0) : new self('error', get_class($e), $e->getMessage(), $e->getTraceAsString(), '', (string) $e);
+        $redactor = CommandLineRedactor::fromEnvironment();
+        $message = $redactor->redact($e->getMessage());
+        $trace = $redactor->redact($e->getTraceAsString());
+        $stdout = $process?->getOutput() ?? '';
+        $stderr = $process?->getErrorOutput() ?? (string) $e;
+        return new self('error', get_class($e), $message, $trace, $stdout, $stderr, $process?->getExitCode() ?? 0);
     }
     
     private string $tag;

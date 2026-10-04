@@ -149,7 +149,9 @@ abstract class AbstractAssetCommand extends Command {
             return $report;
         }
         if ($error = $result->getError()) {
-            return $this->reporter->createErrorReport($metadata, ReportError::fromThrowable($error));
+            $redactor = CommandLineRedactor::fromEnvironment();
+            $reportError = ReportError::error(get_class($error), $redactor->redact($error->getMessage()), $redactor->redact($error->getTraceAsString()));
+            return $this->reporter->createErrorReport($metadata, $reportError);
         }
         
         $message = sprintf("Command '%s' did not produce an XML result for JUnit reporting.", $this->getName());

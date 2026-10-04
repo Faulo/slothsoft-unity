@@ -11,7 +11,7 @@ final readonly class DefaultUnityProcessOutputHandler implements UnityProcessOut
     
     public function onProcessStarted(Process $process): void {
         if (UnityHub::getLoggingEnabled() or UnityEnvironment::isLoggingInput()) {
-            fwrite(STDERR, UnityEnvironment::formatInput($process->getCommandLine() . PHP_EOL));
+            fwrite(STDERR, UnityEnvironment::formatInput(CommandLineRedactor::fromEnvironment()->redact($process->getCommandLine()) . PHP_EOL));
         }
     }
     

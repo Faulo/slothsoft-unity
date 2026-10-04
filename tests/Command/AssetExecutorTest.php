@@ -53,6 +53,41 @@ final class AssetExecutorTest extends TestCase {
         $this->assertFalse(UnityHub::getPropagateProcessExitCodes());
         $this->assertNull(UnityHub::getProcessOutputHandler());
     }
+
+    /** @runInSeparateProcess */
+    public function testOnlyPackageAuthoredInvocationIsRedacted(): void {
+        $secret = 'known "password" $ value';
+        $previous = getenv('UNITY_CREDENTIALS_PSW');
+        putenv('UNITY_CREDENTIALS_PSW=' . $secret);
+        try {
+            $resolver = new SyntheticResolver(function () use ($secret): DOMDocument {
+                $process = new Process([
+                    PHP_BINARY,
+                    dirname(__DIR__, 2) . '/test-files/Command/echo-arguments.php',
+                    '0', '--opaque', $secret
+                ]);
+                UnityHub::runUnityProcess($process);
+                return $this->createInternalDocument();
+            });
+            $tester = $this->createTester($resolver);
+            $code = $tester->run([
+                'command' => 'fixture'
+            ], [
+                'capture_stderr_separately' => true,
+                'decorated' => false
+            ]);
+
+            $this->assertSame(0, $code);
+            $display = $tester->getDisplay();
+            $invocation = explode(PHP_EOL, $display, 2)[0];
+            $this->assertStringContainsString(CommandLineRedactor::MARKER, $invocation);
+            $this->assertStringNotContainsString($secret, $invocation);
+            $this->assertStringContainsString($secret, $display);
+            $this->assertStringContainsString($secret, $tester->getErrorOutput());
+        } finally {
+            $previous === false ? putenv('UNITY_CREDENTIALS_PSW') : putenv('UNITY_CREDENTIALS_PSW=' . $previous);
+        }
+    }
     
     public function testReturnsUnityExitCodeUnchanged(): void {
         $resolver = new SyntheticResolver(function (): DOMDocument {

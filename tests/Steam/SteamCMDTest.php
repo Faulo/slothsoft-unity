@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Unity\MailboxAccess;
 use Slothsoft\Unity\TestEnvironment;
+use Symfony\Component\Process\Process;
 
 /**
  * SteamCMDTest
@@ -17,6 +18,18 @@ class SteamCMDTest extends TestCase {
     
     public function testClassExists(): void {
         $this->assertTrue(class_exists(SteamCMD::class), "Failed to load class 'Slothsoft\Unity\Steam\SteamCMD'!");
+    }
+
+    public function testFailurePrintsMaskedInvocationAndUnmodifiedProgramOutput(): void {
+        $password = 'steam "secret" value';
+        $process = new Process([PHP_BINARY, dirname(__DIR__, 2) . '/test-files/Command/steam-report-error.php'], null, [SteamCMD::STEAM_CREDENTIALS_PSW => $password]);
+        $process->run();
+
+        $this->assertSame(0, $process->getExitCode());
+        $lines = explode(PHP_EOL, $process->getErrorOutput(), 2);
+        $this->assertStringContainsString('[REDACTED]', $lines[0]);
+        $this->assertStringNotContainsString($password, $lines[0]);
+        $this->assertStringContainsString($password, $lines[1]);
     }
     
     /**

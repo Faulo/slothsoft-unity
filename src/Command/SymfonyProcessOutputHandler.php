@@ -10,12 +10,14 @@ final readonly class SymfonyProcessOutputHandler implements UnityProcessOutputHa
     
     public function __construct(
         private OutputInterface $standardOutput,
-        private OutputInterface $errorOutput
+        private OutputInterface $errorOutput,
+        private ?CommandLineRedactor $redactor = null
     ) {
     }
     
     public function onProcessStarted(Process $process): void {
-        $this->standardOutput->writeln($process->getCommandLine(), OutputInterface::OUTPUT_RAW);
+        $commandLine = $process->getCommandLine();
+        $this->standardOutput->writeln($this->redactor?->redact($commandLine) ?? $commandLine, OutputInterface::OUTPUT_RAW);
     }
     
     public function onStandardOutput(string $data): void {
@@ -36,4 +38,5 @@ final readonly class SymfonyProcessOutputHandler implements UnityProcessOutputHa
             $this->errorOutput->writeln($summary, OutputInterface::OUTPUT_RAW);
         }
     }
+
 }

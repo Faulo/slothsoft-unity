@@ -18,7 +18,8 @@ final readonly class AssetExecutor implements AssetExecutorInterface {
     
     public function execute(FarahUrl $url, OutputInterface $output): AssetExecutionResult {
         $errorOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
-        $handler = new SymfonyProcessOutputHandler($output, $errorOutput);
+        $redactor = CommandLineRedactor::fromEnvironment();
+        $handler = new SymfonyProcessOutputHandler($output, $errorOutput, $redactor);
         $previousConfig = UnityHub::getConfig();
         $executionConfig = clone $previousConfig;
         $executionConfig->throwOnFailure = true;
@@ -31,11 +32,11 @@ final readonly class AssetExecutor implements AssetExecutorInterface {
             return new AssetExecutionResult(Command::SUCCESS, $document);
         } catch (ExecutionError $error) {
             $errorExitCode = $error->getExitCode();
-            $errorOutput->writeln(sprintf('Command failed (underlying exit code %d): %s', $errorExitCode, $error->getMessage()));
+            $errorOutput->writeln(sprintf('Command failed (underlying exit code %d): %s', $errorExitCode, $redactor->redact($error->getMessage())));
             $exitCode = $errorExitCode !== 0 ? $errorExitCode : Command::FAILURE;
             return new AssetExecutionResult($exitCode, null, $error);
         } catch (Throwable $error) {
-            $errorOutput->writeln(sprintf('Command failed: %s', $error->getMessage()));
+            $errorOutput->writeln(sprintf('Command failed: %s', $redactor->redact($error->getMessage())));
             return new AssetExecutionResult(Command::FAILURE, null, $error);
         } finally {
             UnityHub::setConfig($previousConfig);
