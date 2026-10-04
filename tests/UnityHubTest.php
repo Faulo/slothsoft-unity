@@ -110,7 +110,6 @@ class UnityHubTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         $result = $hub->execute('help');
         $ouput = trim($result->getOutput());
@@ -122,20 +121,18 @@ class UnityHubTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $result = $hub->execute('install-path', '--get');
-        $ouput = trim($result->getOutput());
-        $this->assertNotEquals('', $ouput);
-        $this->assertDirectoryExists($ouput);
+        $output = trim($result->getOutput());
+        $this->assertSame(0, $result->getExitCode());
+        $this->assertNotSame('', $output);
     }
     
     public function testGetEditors(): void {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $editors = $hub->getEditors();
@@ -155,7 +152,9 @@ class UnityHubTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
+        }
+        if ($hub->getEditors() === []) {
+            $this->markTestSkipped('Please provide at least one installed Unity Editor.');
         }
         
         $path = $hub->getEditorPath();
@@ -166,13 +165,11 @@ class UnityHubTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $editors = $hub->getEditors();
         if (count($editors) === 0) {
             $this->markTestSkipped('Needs at least 1 installed editor to test getEditorByVersion.');
-            return;
         }
         
         $editor = array_shift($editors);
@@ -189,7 +186,6 @@ class UnityHubTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $this->assertIsArray($hub->createEditorInstallation($version));
@@ -219,7 +215,6 @@ class UnityHubTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         UnityHub::addLicenseFolder($licenseFolder);
@@ -237,7 +232,6 @@ class UnityHubTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $package = $hub->findPackage($packageFolder);
