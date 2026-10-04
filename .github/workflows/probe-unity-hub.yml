@@ -1,0 +1,56 @@
+name: Probe Unity Hub on runners
+
+on: workflow_dispatch
+
+jobs:
+  probe:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Probe Linux image
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          printf 'Image: %s %s\n' "$ImageOS" "$ImageVersion"
+          printf 'Architecture: '; uname -m
+          printf 'unityhub on PATH: '
+          if command -v unityhub; then
+            command -v unityhub | xargs -r readlink -f
+          else
+            echo absent
+          fi
+          for path in /usr/bin/unityhub /opt/unityhub /opt/unityhub/unityhub /usr/share/unityhub/unityhub; do
+            if test -e "$path"; then
+              ls -ld "$path"
+            else
+              printf 'Absent: %s\n' "$path"
+            fi
+          done
+          dpkg-query -W -f='Package: ${Package} ${Version}\n' unityhub 2>/dev/null || echo 'unityhub package: absent'
+
+      - name: Probe Windows image
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Write-Output "Image: $env:ImageOS $env:ImageVersion"
+          Write-Output "Architecture: $env:PROCESSOR_ARCHITECTURE"
+          $registryPath = 'HKLM:\SOFTWARE\Unity Technologies\Hub'
+          $hub = Get-ItemProperty -LiteralPath $registryPath -ErrorAction SilentlyContinue
+          Write-Output "Registry InstallLocation: $($hub.InstallLocation)"
+          $paths = @('C:\Program Files\Unity Hub\Unity Hub.exe')
+          if ($hub.InstallLocation) {
+            $paths += Join-Path $hub.InstallLocation 'Unity Hub.exe'
+          }
+          foreach ($path in ($paths | Select-Object -Unique)) {
+            $exists = Test-Path -LiteralPath $path -PathType Leaf
+            Write-Output "Executable exists: $exists at $path"
+            if ($exists) {
+              $file = Get-Item -LiteralPath $path
+              Write-Output "File version: $($file.VersionInfo.FileVersion)"
+              $signature = Get-AuthenticodeSignature -LiteralPath $path
+              Write-Output "Signature: $($signature.Status); signer: $($signature.SignerCertificate.Subject)"
+            }
+          }
