@@ -4,7 +4,7 @@ on: [ push ]
 
 jobs:
   run-tests:
-    name: PHP ${{ matrix.php }} (${{ matrix.composer }}) on ${{ matrix.os }}
+    name: ${{ matrix.os }} / PHP ${{ matrix.php }} (${{ matrix.composer }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -28,7 +28,7 @@ jobs:
       - name: Cache Composer dependencies
         uses: actions/cache@v6
         with:
-          path: /tmp/composer-cache
+          path: ${{ runner.temp }}/composer-cache
           key: ${{ matrix.os }}-php-${{ matrix.php }}-composer-${{ matrix.composer }}-${{ hashFiles('composer.json') }}
 
       - name: Install dependencies
