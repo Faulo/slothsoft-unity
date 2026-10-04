@@ -11,16 +11,6 @@ def runComposerTest(def version, def variant) {
 	}
 }
 
-def installFirefox() {
-	unstable {
-		if (isUnix()) {
-			// already part of the farah image
-		} else {
-			callShell "choco install Firefox --no-progress --yes --skip-checksums --params='/NoTaskbarShortcut /NoDesktopShortcut /NoStartMenuShortcut /NoAutoUpdate'"
-		}
-	}
-}
-
 pipeline {
 	agent none
 	options {
@@ -31,7 +21,6 @@ pipeline {
 	}
 	environment {
 		COMPOSER_PROCESS_TIMEOUT = '3600'
-		FARAH_INSTALL_FIREFOX = '0'
 	}
 	stages {
 		stage('Setup') {
@@ -65,10 +54,6 @@ pipeline {
 												}
 
 												docker.image("faulo/farah:${version}").inside {
-													if (env.FARAH_INSTALL_FIREFOX == '1') {
-														installFirefox()
-													}
-
 													runComposerTest(version, variant)
 												}
 
