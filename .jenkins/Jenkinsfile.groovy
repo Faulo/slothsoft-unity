@@ -24,7 +24,6 @@ def runComposerTest(def version, def variant) {
 
 def runLinter() {
 	unstable {
-        exec 'composer require phpstan/phpstan --no-interaction --no-progress'
 		exec "composer update --no-interaction --no-progress"
 
         exec 'composer exec phpstan -- --no-progress --configuration=phpstan.neon.dist --error-format=junit > .reports/phpstan.xml'
