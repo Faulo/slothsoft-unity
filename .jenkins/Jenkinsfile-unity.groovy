@@ -34,7 +34,7 @@ pipeline {
     stages {
         stage('Linux') {
             agent {
-                label 'compose-unity && linux'
+                label 'unity && linux'
             }
             steps {
                 script {
@@ -46,7 +46,7 @@ pipeline {
         }
         stage('Windows') {
             agent {
-                label 'compose-unity && windows'
+                label 'unity && windows'
             }
             steps {
                 script {
