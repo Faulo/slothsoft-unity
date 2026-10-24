@@ -11,7 +11,7 @@ def report(def body) {
 
     body()
 
-    junit ".reports/*.xml"
+    junit(testResults: '.reports/*.xml', allowEmptyResults: true)
 }
 
 def runComposerTest(def version, def variant) {
