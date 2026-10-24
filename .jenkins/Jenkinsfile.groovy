@@ -4,10 +4,30 @@ def unstable(def body) {
 	}
 }
 
+def report(def body) {
+    checkout scm
+
+    fileOperations([folderDeleteOperation('.reports'), folderCreateOperation('.reports')])
+
+    body()
+
+    junit ".reports/*.xml"
+}
+
 def runComposerTest(def version, def variant) {
 	unstable {
-		callShell "composer update --prefer-${variant} --no-interaction --no-progress"
-		callShell "composer exec phpunit -- --log-junit .reports/${version}-${variant}.xml"
+        exec "composer update --prefer-${variant} --no-interaction --no-progress"
+
+        exec "composer exec phpunit -- --log-junit .reports/${version}-${variant}.xml"
+	}
+}
+
+def runLinter() {
+	unstable {
+        exec 'composer require phpstan/phpstan --no-interaction --no-progress'
+		exec "composer update --no-interaction --no-progress"
+
+        exec 'composer exec phpstan -- --no-progress --configuration=phpstan.neon.dist --error-format=junit > .reports/phpstan.xml'
 	}
 }
 
@@ -23,7 +43,21 @@ pipeline {
 		COMPOSER_PROCESS_TIMEOUT = '3600'
 	}
 	stages {
-		stage('Setup') {
+		stage('Lint') {
+			agent {
+                label 'docker'
+            }
+			steps {
+                script {
+                    report {
+                        docker.image("faulo/farah:8.2").inside {
+                            runLinter();
+                        }
+                    }
+                }
+			}
+		}
+		stage('Test') {
 			steps {
 				script {
 					def platforms = [ 'linux', 'windows' ]
@@ -47,19 +81,11 @@ pipeline {
 									stage(name) {
 										node(label) {
 											ws("${WORKSPACE}/${workspace}") {
-												checkout scm
-
-												dir('.reports') {
-													deleteDir()
-												}
-
-												docker.image("faulo/farah:${version}").inside {
-													runComposerTest(version, variant)
-												}
-
-												dir('.reports') {
-													junit "*.xml"
-												}
+                                                report {
+                                                    docker.image("faulo/farah:${version}").inside {
+                                                        runComposerTest(version, variant)
+                                                    }
+                                                }
 											}
 										}
 									}

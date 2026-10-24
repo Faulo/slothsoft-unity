@@ -1,16 +1,16 @@
 services:
-    frontend:
-        container_name: ${COMPOSER_VENDOR}_${COMPOSER_MODULE}
-        image: faulo/farah:${PHP_VERSION}
-        volumes:
-            - ..:${DOCKER_WORKDIR}
-            - .:${DOCKER_WORKDIR}/html
-            - ../.farah-vendor:${DOCKER_WORKDIR}/vendor
-            - ../.farah-cache:/tmp/.farah-cache
-            - ../.farah-data:/tmp/.farah-data
-            - ../.farah-log:/tmp/.farah-log
-        ports:
-            - 80:80
-        environment:
-          COMPOSER_ROOT_VERSION: "dev-main"
-          COMPOSER_UPDATE: "install-dev"
+  frontend:
+    container_name: ${COMPOSER_VENDOR}_${COMPOSER_MODULE}
+    image: faulo/farah:${PHP_VERSION}
+    volumes:
+      - ..:${DOCKER_WORKDIR}
+      - .:${DOCKER_WORKDIR}/html
+      - ../.farah-vendor:${DOCKER_WORKDIR}/vendor
+      - ../.farah-cache:/tmp/.farah-cache
+      - ../.farah-data:/tmp/.farah-data
+      - ../.farah-log:/tmp/.farah-log
+    ports:
+      - 80:80
+    environment:
+      COMPOSER_ROOT_VERSION: "dev-main"
+      COMPOSER_UPDATE: "install-dev"

@@ -2,7 +2,7 @@ name: GitHub Pages Documentation
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
 
 # Allow GITHUB_TOKEN to deploy to GitHub Pages
 permissions:
