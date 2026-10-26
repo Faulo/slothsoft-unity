@@ -38,8 +38,22 @@ jobs:
           COMPOSER_CACHE_DIR: ${{ runner.temp }}/composer-cache
           COMPOSER_AUTH: "{}"
 
+      - name: Restore Farah Testing data
+        id: farah-testing-data
+        uses: actions/cache/restore@v6
+        with:
+          path: .data/farah-testing
+          key: farah-testing-data-v1-${{ matrix.os }}-${{ runner.arch }}
+
       - name: Run PHPUnit
         run: vendor/bin/phpunit --log-junit results-${{ matrix.os }}-${{ matrix.php }}-${{ matrix.composer }}.xml
+
+      - name: Save Farah Testing data
+        if: always() && steps.farah-testing-data.outputs.cache-hit != 'true' && hashFiles('.data/farah-testing/**/*') != ''
+        uses: actions/cache/save@v6
+        with:
+          path: .data/farah-testing
+          key: farah-testing-data-v1-${{ matrix.os }}-${{ runner.arch }}
 
       - name: Upload Test Results
         if: always()

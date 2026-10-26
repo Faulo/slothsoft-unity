@@ -1,5 +1,10 @@
+includes:
+    - phpstan/DOM.neon.php
+
 parameters:
     level: 5
     paths:
         - src
         - tests
+    stubFiles:
+        - phpstan/COM.stub
