@@ -20,7 +20,7 @@ def runComposerTest(def version, def variant) {
 
         exec "composer update --prefer-${variant} --no-interaction --no-progress"
 
-        exec "composer exec phpunit -- --log-junit .reports/${version}-${variant}.xml"
+        exec "php vendor/bin/phpunit --log-junit .reports/${version}-${variant}.xml"
 	}
 }
 
@@ -32,7 +32,7 @@ def runLinter() {
 
         writeFile(
             file: ".reports/phpstan.xml",
-            text: execStdout("composer exec --verbose phpstan -- --no-progress --configuration=phpstan.neon.dist --error-format=junit"),
+            text: execStdout("php vendor/bin/phpstan analyse --no-progress --configuration=phpstan.neon.dist --error-format=junit"),
             encoding: 'UTF-8'
         )
 	}
