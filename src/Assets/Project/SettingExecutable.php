@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\Assets\Project;
 
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
@@ -38,7 +39,7 @@ final class SettingExecutable extends ProjectExecutableBase {
         return sprintf('%s("%s")', 'Setting', $this->name);
     }
     
-    protected function createResultDocument(): ?DOMDocument {
+    protected function createResultDocument(): DOMDocument {
         $document = new DOMDocument('1.0', 'UTF-8');
         $node = $document->createElement($this->name);
         $node->textContent = $this->project->getSetting($this->name, '');

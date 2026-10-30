@@ -42,7 +42,7 @@ final class VersionExecutable extends ProjectExecutableBase {
         return sprintf('%s("%s")', $this->mode, $this->version);
     }
     
-    protected function createResultDocument(): ?DOMDocument {
+    protected function createResultDocument(): DOMDocument {
         switch ($this->mode) {
             case 'get':
                 break;

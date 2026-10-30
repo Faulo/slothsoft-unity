@@ -49,8 +49,8 @@ class UnityProjectInfoTest extends TestCase {
         $this->assertEquals(realpath(self::VALID_PROJECT), realpath($info->path));
         $this->assertEquals(self::VALID_PROJECT_VERSION, $info->editorVersion);
         $this->assertEquals(self::VALID_PROJECT_CHANGESET, $info->editorChangeset);
-        $this->assertIsArray($info->settings);
-        $this->assertIsArray($info->packages);
+        $this->assertSame('Oilcatz', $info->settings['companyName']);
+        $this->assertArrayHasKey('com.unity.test-framework', $info->packages);
     }
     
     /**
@@ -90,4 +90,3 @@ class UnityProjectInfoTest extends TestCase {
         ];
     }
 }
-

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\DotNet;
 
 use PHPUnit\Framework\TestCase;
+use DOMElement;
 
 class FormatLogTest extends TestCase {
     
@@ -79,6 +80,7 @@ class FormatLogTest extends TestCase {
         $this->assertEquals(1, $actual->documentElement->childNodes->length);
         
         $node = $actual->documentElement->firstChild;
+        $this->assertInstanceOf(DOMElement::class, $node);
         $this->assertEquals('Report', $node->tagName);
         $this->assertEquals("AIEnemyActionUiState_old.cs", $node->getAttribute('FileName'));
         $this->assertEquals("R:\\Ulisses\\Ulisses.HeXXen1733.Battle\\Packages\\de.ulisses-spiele.hexxen1733.battle\\Runtime\\UI\\States\\AIEnemyActionUiState_old.cs", $node->getAttribute('FilePath'));
@@ -91,5 +93,4 @@ class FormatLogTest extends TestCase {
         $this->assertEquals("warning IDE0019: Musterabgleich verwenden", $node->getAttribute('FormatDescription'));
     }
 }
-
 

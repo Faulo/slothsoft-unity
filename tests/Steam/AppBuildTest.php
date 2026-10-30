@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @see AppBuild
  *
- * @todo auto-generated
  */
 final class AppBuildTest extends TestCase {
     
@@ -20,5 +19,17 @@ final class AppBuildTest extends TestCase {
      */
     public function testClassExists(): void {
         $this->assertTrue(class_exists(AppBuild::class), "Failed to load class 'Slothsoft\Unity\Steam\AppBuild'!");
+    }
+    
+    public function testConvertsBuildValuesToUtf8(): void {
+        $build = new AppBuild('123', "Caf\xe9", 'content', 'build');
+        $build->addDepot('456', "Caf\xe9/*");
+        $build->setLive("Caf\xe9");
+        
+        $actual = (string) $build;
+        
+        $this->assertStringContainsString('Café', $actual);
+        $this->assertStringNotContainsString("Caf\xe9", $actual);
+        $this->assertSame(3, substr_count($actual, 'Café'));
     }
 }

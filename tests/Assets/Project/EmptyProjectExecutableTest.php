@@ -27,7 +27,7 @@ final class EmptyProjectExecutableTest extends TestCase {
     }
     
     public function testUsesExecutableBaseAndDedicatedParameters(): void {
-        $this->assertTrue(is_subclass_of(EmptyProjectExecutable::class, ExecutableBase::class));
+        $this->assertInstanceOf(ExecutableBase::class, new EmptyProjectExecutable());
         $this->assertTrue(class_exists(EmptyProjectParameters::class));
     }
 }

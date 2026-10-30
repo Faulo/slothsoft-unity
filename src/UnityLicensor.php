@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
 use Symfony\Component\BrowserKit\Cookie;
@@ -11,6 +12,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use DateInterval;
 use DateTimeImmutable;
 use Exception;
+use DOMElement;
 
 /**
  * Signs Unity manual activation files through Unity's browser-based license flow.
@@ -21,15 +23,15 @@ use Exception;
 final class UnityLicensor {
     
     private const UNITY_INIT_LOGIN = 'https://license.unity3d.com/genesis/oauth/logout_callback';
-
+    
     private const UNITY_AUTH_CSRF = 'https://login.unity.com/api/auth/csrf';
-
+    
     private const UNITY_AUTH_CREDENTIALS = 'https://login.unity.com/api/auth/callback/credentials';
-
+    
     private const UNITY_AUTH_CALLBACK = 'https://login.unity.com/en/sign-in';
-
+    
     private const UNITY_AUTH_SECURITY_CHECK = '/sign-in/security-check';
-
+    
     private const UNITY_AUTH_SECURITY_ACTION = 'verifyEmailSecurityCode';
     
     private const UNITY_INIT_ACTIVATION = 'https://license.unity3d.com/manual';
@@ -133,15 +135,15 @@ final class UnityLicensor {
         $this->log();
         
         $url = self::UNITY_INIT_LOGIN . '?' . http_build_query([
-            'lastPage' => '/manual'
-        ]);
+                'lastPage' => '/manual'
+            ]);
         
         $crawler = $this->browser->request('GET', $url);
         
         $this->log();
         
         $startTime = new DateTimeImmutable();
-
+        
         if ($crawler->filterXPath('.//input[@name = "email"]')->count() > 0) {
             $crawler = $this->loginWithAuthJs();
             if (str_ends_with((string) parse_url($crawler->getUri(), PHP_URL_PATH), self::UNITY_AUTH_SECURITY_CHECK)) {
@@ -155,29 +157,31 @@ final class UnityLicensor {
                 'conversations_create_session_form[password]' => $this->userPassword,
                 'conversations_create_session_form[remember_me]' => true
             ]);
-
+            
             $this->log();
-
+            
             $form = $crawler->filterXPath('.//form[.//input/@name = "conversations_email_tfa_required_form[code]"]');
-
+            
             if ($form->count() > 0) {
                 if (MailboxAccess::hasCredentials()) {
                     if ($crawler->filterXPath('.//*[@id="alert-tfa-expired"]')->count() > 0) {
                         if (self::isLogging()) {
                             trigger_error(sprintf('Reloading 2FA page "%s" to send code.', $crawler->getUri()), E_USER_NOTICE);
                         }
-
+                        
                         $input = $form->selectButton('conversations_email_tfa_required_form[resend]');
-                        $input->getNode(0)->removeAttribute('disabled');
-
+                        $inputNode = $input->getNode(0);
+                        assert($inputNode instanceof DOMElement);
+                        $inputNode->removeAttribute('disabled');
+                        
                         $form = $input->form();
                         $form->disableValidation();
                         $crawler = $this->browser->submit($form, [
                             'conversations_email_tfa_required_form[resend]' => 'Re-send code'
                         ]);
-
+                        
                         $this->log();
-
+                        
                         $form = $crawler->filterXPath('.//form[.//input/@name = "conversations_email_tfa_required_form[code]"]');
                     }
                     
@@ -189,7 +193,7 @@ final class UnityLicensor {
                         $crawler = $this->browser->submit($form, [
                             'conversations_email_tfa_required_form[code]' => $code
                         ]);
-
+                        
                         $this->log();
                     } else {
                         trigger_error(sprintf('Unity sent a 2FA code to "%s", but we did not find it there using the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
@@ -198,7 +202,7 @@ final class UnityLicensor {
                     trigger_error(sprintf('Unity sent a 2FA code to "%s", but mail access has not been granted via the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW), E_USER_WARNING);
                 }
             }
-
+            
             $redirect = $crawler->filterXPath('.//a');
             $crawler = $this->browser->click($redirect->link());
         }
@@ -211,7 +215,7 @@ final class UnityLicensor {
             trigger_error(sprintf('Failed to login using email "%s" (ended up in "%s"). %s', $this->userMail, $crawler->getUri(), $this->describeLoginPage($crawler)), E_USER_WARNING);
         }
     }
-
+    
     private function describeLoginPage(Crawler $crawler): string {
         $text = $crawler->filterXPath('.//h1 | .//h2 | .//p | .//label')->each(function (Crawler $node): string {
             return str_replace($this->userMail, '[email]', trim($node->text('')));
@@ -222,22 +226,22 @@ final class UnityLicensor {
         $scripts = $crawler->filterXPath('.//script[@src]')->each(function (Crawler $node): string {
             return $node->attr('src') ?? '';
         });
-
+        
         return sprintf('Page text: [%s]. Controls: [%s]. Scripts: [%s].', implode(' | ', array_unique(array_filter($text))), implode(', ', $controls), implode(', ', $scripts));
     }
-
+    
     private function loginWithAuthJs(): Crawler {
         $deviceFingerprint = hash('sha256', $this->userMail . "\0" . microtime(true));
         $this->cookies->set(new Cookie('device_fp', $deviceFingerprint, null, '/', 'login.unity.com', true, false, false, 'Lax'));
-
+        
         $this->browser->request('GET', self::UNITY_AUTH_CSRF);
         $csrfResponse = json_decode($this->browser->getResponse()->getContent(), true);
         $csrfToken = is_array($csrfResponse) ? ($csrfResponse['csrfToken'] ?? null) : null;
-
+        
         if (! is_string($csrfToken) or $csrfToken === '') {
             throw new Exception(sprintf('Failed to retrieve a CSRF token from "%s".', self::UNITY_AUTH_CSRF));
         }
-
+        
         $this->browser->request('POST', self::UNITY_AUTH_CREDENTIALS, [
             'email' => $this->userMail,
             'password' => $this->userPassword,
@@ -246,28 +250,28 @@ final class UnityLicensor {
         ], [], [
             'HTTP_X_AUTH_RETURN_REDIRECT' => '1'
         ]);
-
+        
         $loginResponse = json_decode($this->browser->getResponse()->getContent(), true);
         $redirectUrl = is_array($loginResponse) ? ($loginResponse['url'] ?? null) : null;
-
+        
         if (! is_string($redirectUrl) or $redirectUrl === '') {
             throw new Exception(sprintf('Failed to authenticate through "%s".', self::UNITY_AUTH_CREDENTIALS));
         }
-
+        
         return $this->followMetaRefresh($this->browser->request('GET', $redirectUrl));
     }
-
+    
     private function completeSecurityCheck(Crawler $crawler, DateTimeImmutable $startTime): Crawler {
         if (! MailboxAccess::hasCredentials()) {
             throw new Exception(sprintf('Unity sent a security code to "%s", but mail access has not been granted via the environment variables "%s" and "%s".', $this->userMail, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW));
         }
-
+        
         $mailbox = new MailboxAccess();
         $code = $mailbox->waitForLatestBy(self::UNITY_EMAIL, $startTime, new DateInterval('PT5M'), self::UNITY_2FA_PATTERN);
         if ($code === null) {
             throw new Exception(sprintf('Unity sent a security code to "%s", but no matching email arrived within five minutes.', $this->userMail));
         }
-
+        
         $action = $this->findServerAction($crawler, self::UNITY_AUTH_SECURITY_ACTION);
         $securityCheckUrl = $crawler->getUri();
         $body = json_encode([
@@ -276,18 +280,18 @@ final class UnityLicensor {
                 'rememberDevice' => true
             ]
         ]);
-
+        
         $this->browser->request('POST', $securityCheckUrl, [], [], [
             'HTTP_ACCEPT' => 'text/x-component',
             'HTTP_NEXT_ACTION' => $action,
             'CONTENT_TYPE' => 'text/plain;charset=UTF-8'
         ], $body);
-
+        
         $actionResponse = $this->browser->getResponse();
         if ($actionResponse->getStatusCode() !== 200) {
             throw new Exception(sprintf('Unity rejected the security code with HTTP status %d.', $actionResponse->getStatusCode()));
         }
-
+        
         $crawler = $this->followMetaRefresh($this->browser->request('GET', $securityCheckUrl));
         if (str_ends_with((string) parse_url($crawler->getUri(), PHP_URL_PATH), self::UNITY_AUTH_SECURITY_CHECK)) {
             $responseContent = str_replace([
@@ -299,32 +303,33 @@ final class UnityLicensor {
             ], substr($actionResponse->getContent(), 0, 4000));
             throw new Exception(sprintf('Unity did not accept the security code. Action response headers: [%s]. Action response: %s', implode(', ', array_keys($actionResponse->getHeaders())), $responseContent));
         }
-
+        
         return $crawler;
     }
-
+    
     private function findServerAction(Crawler $crawler, string $actionName): string {
         $pattern = '/createServerReference\)\("([a-f0-9]+)"(?:(?!createServerReference).){0,512}"' . preg_quote($actionName, '/') . '"/s';
-
+        
         foreach ($crawler->filterXPath('.//script[@src]') as $scriptNode) {
+            assert($scriptNode instanceof DOMElement);
             $scriptUrl = $scriptNode->getAttribute('src');
             if ($scriptUrl === '') {
                 continue;
             }
-
+            
             $script = $this->client->request('GET', $scriptUrl)->getContent();
             $match = [];
             if (preg_match($pattern, $script, $match)) {
                 return $match[1];
             }
         }
-
+        
         throw new Exception(sprintf('Failed to locate Unity server action "%s".', $actionName));
     }
-
+    
     private function followMetaRefresh(Crawler $crawler): Crawler {
         $metaRefresh = $crawler->filterXPath('.//meta[translate(@http-equiv, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz") = "refresh"]');
-
+        
         if ($metaRefresh->count() > 0) {
             $redirect = $crawler->filterXPath('.//a[@href]');
             if ($redirect->count() === 0) {
@@ -332,7 +337,7 @@ final class UnityLicensor {
             }
             $crawler = $this->browser->click($redirect->link());
         }
-
+        
         return $crawler;
     }
     

@@ -22,7 +22,6 @@ class UnityLicensorTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return null;
         }
         
         $hub->registerChangeset(self::EDITOR_VERSION, self::EDITOR_CHANGESET);

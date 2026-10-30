@@ -37,7 +37,6 @@ class TestEnvironment {
         
         if ($missing) {
             $test->markTestSkipped(sprintf('Missing environment variables [%s]', implode(', ', $missing)));
-            return false;
         } else {
             return true;
         }

@@ -25,6 +25,6 @@ class GitProjectTest extends TestCase {
     public function testGetBranches() {
         $git = new GitProject('.');
         $branches = $git->getBranches();
-        $this->assertIsArray($branches);
+        $this->assertContainsOnly('string', $branches);
     }
 }

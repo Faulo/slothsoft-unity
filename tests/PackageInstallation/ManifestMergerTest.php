@@ -7,11 +7,22 @@ use PHPUnit\Framework\TestCase;
 
 final class ManifestMergerTest extends TestCase {
     private ManifestMerger $merger;
-
+    
     protected function setUp(): void {
         $this->merger = new ManifestMerger();
     }
-
+    
+    public function testPreservesObjectsWithNumericKeysAndEmptyObjects(): void {
+        $existing = json_decode('{"0":{"0":1},"empty":{},"scopedRegistries":[{"url":"https://example.test","0":true}]}', false, 512, JSON_THROW_ON_ERROR);
+        $incoming = json_decode('{"0":{"1":2},"scopedRegistries":[{"url":"https://example.test","1":false}]}', false, 512, JSON_THROW_ON_ERROR);
+        $this->assertInstanceOf(\stdClass::class, $existing);
+        $this->assertInstanceOf(\stdClass::class, $incoming);
+        
+        $actual = $this->merger->merge($existing, $incoming);
+        
+        $this->assertSame('{"0":{"0":1,"1":2},"empty":{},"scopedRegistries":[{"url":"https://example.test","0":true,"1":false}]}', json_encode($actual, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
+    }
+    
     public function testMergesNestedObjectsAndLetsIncomingConflictsWin(): void {
         $existing = [
             'name' => 'existing',
@@ -36,9 +47,9 @@ final class ManifestMergerTest extends TestCase {
                 ]
             ]
         ];
-
+        
         $actual = $this->merger->merge($this->asObject($existing), $this->asObject($incoming));
-
+        
         $this->assertSame([
             'name' => 'incoming',
             'settings' => [
@@ -52,7 +63,7 @@ final class ManifestMergerTest extends TestCase {
             ]
         ], $this->asArray($actual));
     }
-
+    
     public function testMergesDependenciesByNameWithCompleteIncomingValuesWinning(): void {
         $existing = [
             'dependencies' => [
@@ -71,9 +82,9 @@ final class ManifestMergerTest extends TestCase {
                 'com.example.add' => '3.0.0'
             ]
         ];
-
+        
         $actual = $this->merger->merge($this->asObject($existing), $this->asObject($incoming));
-
+        
         $this->assertSame([
             'com.example.keep' => '1.0.0',
             'com.example.replace' => [
@@ -82,21 +93,21 @@ final class ManifestMergerTest extends TestCase {
             'com.example.add' => '3.0.0'
         ], $this->asArray($actual->dependencies));
     }
-
+    
     public function testEmptyIncomingDependencyObjectPreservesExistingDependencies(): void {
         $actual = $this->merger->merge($this->asObject([
             'dependencies' => [
                 'com.example.keep' => '1.0.0'
             ]
-        ]), (object) [
-            'dependencies' => (object) []
+        ]), (object)[
+            'dependencies' => (object)[]
         ]);
-
+        
         $this->assertSame([
             'com.example.keep' => '1.0.0'
         ], $this->asArray($actual->dependencies));
     }
-
+    
     public function testAppendsGeneralListsAndRemovesOnlyStrictDuplicates(): void {
         $existing = [
             'values' => [
@@ -120,9 +131,9 @@ final class ManifestMergerTest extends TestCase {
                 false
             ]
         ];
-
+        
         $actual = $this->merger->merge($this->asObject($existing), $this->asObject($incoming));
-
+        
         $this->assertSame([
             1,
             '1',
@@ -134,7 +145,7 @@ final class ManifestMergerTest extends TestCase {
             false
         ], $this->asArrayValue($actual->values));
     }
-
+    
     public function testNormalizesDuplicatesInListsThatOnlyExistOnOneSide(): void {
         $actual = $this->merger->merge($this->asObject([]), $this->asObject([
             'values' => [
@@ -143,13 +154,13 @@ final class ManifestMergerTest extends TestCase {
                 'second'
             ]
         ]));
-
+        
         $this->assertSame([
             'first',
             'second'
         ], $actual->values);
     }
-
+    
     public function testMergesScopedRegistriesByUrlWithIncomingFieldsAndUnionedScopes(): void {
         $existing = [
             'scopedRegistries' => [
@@ -197,9 +208,9 @@ final class ManifestMergerTest extends TestCase {
                 ]
             ]
         ];
-
+        
         $actual = $this->merger->merge($this->asObject($existing), $this->asObject($incoming));
-
+        
         $this->assertSame([
             [
                 'name' => 'Incoming Name',
@@ -230,12 +241,12 @@ final class ManifestMergerTest extends TestCase {
             ]
         ], $this->asArrayValue($actual->scopedRegistries));
     }
-
+    
     public function testPreservesAndStrictlyDeduplicatesRegistryEntriesWithoutUrls(): void {
         $entry = [
             'name' => 'No URL'
         ];
-
+        
         $actual = $this->merger->merge($this->asObject([
             'scopedRegistries' => [$entry]
         ]), $this->asObject([
@@ -246,7 +257,7 @@ final class ManifestMergerTest extends TestCase {
                 ]
             ]
         ]));
-
+        
         $this->assertSame([
             $entry,
             [
@@ -254,7 +265,7 @@ final class ManifestMergerTest extends TestCase {
             ]
         ], $this->asArrayValue($actual->scopedRegistries));
     }
-
+    
     public function testProducesTheSameResultForRepeatedMerges(): void {
         $existing = [
             'dependencies' => [
@@ -273,29 +284,29 @@ final class ManifestMergerTest extends TestCase {
                 'b'
             ]
         ];
-
+        
         $incoming = $this->asObject($incoming);
         $once = $this->merger->merge($this->asObject($existing), $incoming);
         $twice = $this->merger->merge($once, $incoming);
-
+        
         $this->assertEquals($once, $twice);
     }
-
+    
     private function asObject(array $value): \stdClass {
-        $object = json_decode(json_encode((object) $value, JSON_PRESERVE_ZERO_FRACTION | JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
+        $object = json_decode(json_encode((object)$value, JSON_PRESERVE_ZERO_FRACTION | JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
         $this->assertInstanceOf(\stdClass::class, $object);
-
+        
         return $object;
     }
-
+    
     private function asArray(\stdClass $value): array {
         return $this->asArrayValue($value);
     }
-
+    
     private function asArrayValue(mixed $value): array {
         $array = json_decode(json_encode($value, JSON_PRESERVE_ZERO_FRACTION | JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $this->assertIsArray($array);
-
+        
         return $array;
     }
 }

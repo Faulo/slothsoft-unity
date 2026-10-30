@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\Assets\Project;
 
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
@@ -46,7 +47,7 @@ final class TestsExecutable extends ProjectExecutableBase {
         return true;
     }
     
-    protected function createResultDocument(): ?DOMDocument {
+    protected function createResultDocument(): DOMDocument {
         return $this->project->runTests(...$this->modes);
     }
 }

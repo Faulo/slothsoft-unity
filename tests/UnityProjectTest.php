@@ -20,7 +20,6 @@ class UnityProjectTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
@@ -32,7 +31,6 @@ class UnityProjectTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $project = $hub->findProject(UnityProjectInfoTest::VALID_ROOT . DIRECTORY_SEPARATOR . 'MissingDirectory');
@@ -43,7 +41,6 @@ class UnityProjectTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
@@ -67,7 +64,6 @@ class UnityProjectTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
@@ -80,7 +76,6 @@ class UnityProjectTest extends TestCase {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
-            return;
         }
         
         $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
@@ -88,7 +83,7 @@ class UnityProjectTest extends TestCase {
         $this->assertFalse($project->hasSetting('???'));
         $this->assertEquals('Oilcatz', $project->getSetting('???', 'Oilcatz'));
     }
-
+    
     /**
      * @runInSeparateProcess
      */
@@ -107,10 +102,10 @@ class UnityProjectTest extends TestCase {
                 'exitCode' => 2
             ]
         ]);
-
+        
         $report = $project->runTests('EditMode', 'PlayMode', 'EmptyMode');
         $xpath = new DOMXPath($report);
-
+        
         $this->assertSame('2', $xpath->evaluate('string(/test-run/@testcasecount)'));
         $this->assertSame(2, $xpath->query('//test-case')->length);
         $this->assertSame(0, $xpath->query('//test-case[@label="UnityProcessError"]')->length);
@@ -119,7 +114,7 @@ class UnityProjectTest extends TestCase {
         $this->assertStringContainsString('PlayMode', $xpath->evaluate('string(/test-run/warning[1])'));
         $this->assertStringContainsString('exit code 2', $xpath->evaluate('string(/test-run/warning[1])'));
     }
-
+    
     /**
      * @runInSeparateProcess
      */
@@ -139,10 +134,10 @@ class UnityProjectTest extends TestCase {
                 'report' => '<result />'
             ]
         ]);
-
+        
         $report = $project->runTests('EditMode', 'MissingMode', 'MalformedMode', 'WrongRootMode');
         $xpath = new DOMXPath($report);
-
+        
         $this->assertSame('4', $xpath->evaluate('string(/test-run/@testcasecount)'));
         $this->assertSame(1, $xpath->query('//test-case[@name="Passes"]')->length);
         $this->assertSame(3, $xpath->query('//test-case[@label="UnityProcessError"]')->length);
@@ -150,16 +145,16 @@ class UnityProjectTest extends TestCase {
             'MissingMode',
             'MalformedMode',
             'WrongRootMode'
-        ], array_map(static fn ($node): string => $node->getAttribute('value'), iterator_to_array($xpath->query('//test-suite[test-case[@label="UnityProcessError"]]/properties/property[@name="unity-test-platform"]'))));
+        ], array_map(static fn($node): string => $node->getAttribute('value'), iterator_to_array($xpath->query('//test-suite[test-case[@label="UnityProcessError"]]/properties/property[@name="unity-test-platform"]'))));
         $this->assertSame('17', $xpath->evaluate('string(//test-suite[properties/property[@value="MissingMode"]]/properties/property[@name="unity-process.exit-code"]/@value)'));
-
+        
         $junit = (new JUnitReporter())->createReport($report, new OperationMetadata('tests'));
         $junitXPath = new DOMXPath($junit);
         $this->assertSame(4, $junitXPath->query('//testcase')->length);
         $this->assertSame(3, $junitXPath->query('//testcase/error[@type="UnityProcessError"]')->length);
         $this->assertSame(0, $junitXPath->query('//testcase[@name="Passes"]/*[self::failure or self::error]')->length);
     }
-
+    
     private function createSyntheticTestProject(array $scenario): UnityProject {
         $encodedScenario = json_encode($scenario, JSON_THROW_ON_ERROR);
         putenv('SLOTHSOFT_UNITY_TEST_SCENARIO=' . $encodedScenario);
@@ -168,7 +163,7 @@ class UnityProjectTest extends TestCase {
         $config = UnityHub::getConfig();
         $config->propagateProcessExitCodes = true;
         UnityHub::setConfig($config);
-
+        
         $info = UnityProjectInfo::find(UnityProjectInfoTest::VALID_PROJECT);
         $this->assertNotNull($info);
         $hub = UnityHub::getInstance();
@@ -178,7 +173,7 @@ class UnityProjectTest extends TestCase {
         $editor->setExecutable(__DIR__ . '/../test-files/Command/' . $runner);
         $property = new ReflectionProperty($project, 'editor');
         $property->setValue($project, $editor);
-
+        
         return $project;
     }
 }

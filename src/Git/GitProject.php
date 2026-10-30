@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\Git;
 
 use Symfony\Component\Process\Process;
@@ -26,8 +27,9 @@ final class GitProject {
     private function initialize(): void {
         $this->exists = is_dir($this->path . DIRECTORY_SEPARATOR . '.git');
         if ($this->exists) {
-            $this->path = realpath($this->path);
-            assert($this->path !== false);
+            $path = realpath($this->path);
+            assert($path !== false);
+            $this->path = $path;
         }
     }
     

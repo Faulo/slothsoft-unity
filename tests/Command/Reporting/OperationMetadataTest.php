@@ -28,6 +28,12 @@ final class OperationMetadataTest extends TestCase {
         $this->assertSame(17, $metadata->getExitCode());
     }
     
+    public function testReindexesWarnings(): void {
+        $metadata = new OperationMetadata('build', warnings: ['editor' => 'editor warning', 7 => 'build warning']);
+        
+        $this->assertSame(['editor warning', 'build warning'], $metadata->getWarnings());
+    }
+    
     /**
      * @dataProvider invalidMetadataProvider
      */

@@ -21,9 +21,9 @@ use Throwable;
  */
 final class UnityHub {
     
-    private const UNITY_VERSION_HISTORY = 'https://symbolserver.unity3d.com/000Admin/history.txt';
+    public static bool $USE_UNITY_ARCHIVE = false;
     
-    private const USE_UNITY_ARCHIVE = false;
+    private const UNITY_VERSION_HISTORY = 'https://symbolserver.unity3d.com/000Admin/history.txt';
     
     private const UNITY_ARCHIVE_ALL = 'https://unity.com/releases/editor/archive';
     
@@ -42,9 +42,9 @@ final class UnityHub {
     }
     
     private static array $licenseFolders = [];
-
+    
     private static ?UnityHubConfig $config = null;
-
+    
     public static function addLicenseFolder(string $folder): void {
         if (! is_dir($folder)) {
             throw new InvalidArgumentException("Folder '$folder' does not exist!");
@@ -79,7 +79,7 @@ final class UnityHub {
     public static function getThrowOnFailure(): bool {
         return self::config()->throwOnFailure;
     }
-
+    
     public static function getPropagateProcessExitCodes(): bool {
         return self::config()->propagateProcessExitCodes;
     }
@@ -91,11 +91,11 @@ final class UnityHub {
     public static function getProcessTimeout(): int {
         return self::config()->processTimeout;
     }
-
+    
     public static function setProcessOutputHandler(?UnityProcessOutputHandlerInterface $handler): void {
         self::config()->processOutputHandler = $handler;
     }
-
+    
     public static function getProcessOutputHandler(): ?UnityProcessOutputHandlerInterface {
         return self::config()->processOutputHandler;
     }
@@ -154,9 +154,9 @@ final class UnityHub {
     private string $editorPath = '';
     
     private ?array $changesets = null;
-
+    
     private ?UnityReleaseApi $releaseApi = null;
-
+    
     private array $releaseApiQueries = [];
     
     private mixed $fileContext = null;
@@ -314,11 +314,11 @@ final class UnityHub {
         foreach (self::$licenseFolders as $folder) {
             foreach (FileSystem::scanDir($folder, FileSystem::SCANDIR_EXCLUDE_DIRS | FileSystem::SCANDIR_REALPATH) as $file) {
                 if (pathinfo($file, PATHINFO_EXTENSION) === 'ulf') {
-                    if ($document = DOMHelper::loadDocument($file) and $xpath = DOMHelper::loadXPath($document)) {
-                        if ($licenseVersion = $xpath->evaluate('string(//ClientProvidedVersion/@Value)')) {
-                            if (substr($licenseVersion, 0, 4) === substr($editorVersion, 0, 4)) {
-                                yield $file;
-                            }
+                    $document = DOMHelper::loadDocument($file);
+                    $xpath = DOMHelper::loadXPath($document);
+                    if ($licenseVersion = $xpath->evaluate('string(//ClientProvidedVersion/@Value)')) {
+                        if (substr($licenseVersion, 0, 4) === substr($editorVersion, 0, 4)) {
+                            yield $file;
                         }
                     }
                 }
@@ -409,19 +409,19 @@ final class UnityHub {
         if (isset($this->customChangesets[$version])) {
             return $this->customChangesets[$version];
         }
-
+        
         if (isset($this->changesets[$version])) {
             return $this->changesets[$version];
         }
-
+        
         $this->loadChangesetsFromReleaseApi($version);
-
+        
         if (isset($this->changesets[$version])) {
             return $this->changesets[$version];
         }
-
+        
         $this->loadChangesets();
-
+        
         if (isset($this->changesets[$version])) {
             return $this->changesets[$version];
         }
@@ -519,25 +519,25 @@ final class UnityHub {
             $this->changesets = [];
             
             $this->loadVersionsFromUrl(self::UNITY_VERSION_HISTORY);
-            
-            if (self::USE_UNITY_ARCHIVE) {
+
+            if (self::$USE_UNITY_ARCHIVE) {
                 $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_ALL);
             }
         }
     }
-
+    
     private function loadChangesetsFromReleaseApi(string $requestedVersion): bool {
         if (array_key_exists($requestedVersion, $this->releaseApiQueries)) {
             return $this->releaseApiQueries[$requestedVersion];
         }
-
+        
         $this->releaseApi ??= new UnityReleaseApi();
         try {
             $releases = $this->releaseApi->find($requestedVersion);
         } catch (Throwable) {
             $releases = [];
         }
-
+        
         $matchingReleases = [];
         foreach ($releases as $version => $changeset) {
             if (self::matchesEditorVersion($version, $requestedVersion)) {
@@ -567,16 +567,15 @@ final class UnityHub {
         }
         
         // legacy website
-        if ($document = @DOMHelper::loadDocument($url, true)) {
-            $xpath = DOMHelper::loadXPath($document);
-            foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
-                // unityhub://2019.4.17f1/667c8606c536
-                $href = $node->getAttribute('href');
-                $version = parse_url($href, PHP_URL_HOST);
-                $changeset = parse_url($href, PHP_URL_PATH);
-                
-                $this->changesets[$version] = substr($changeset, 1);
-            }
+        $document = @DOMHelper::loadDocument($url, true);
+        $xpath = DOMHelper::loadXPath($document);
+        foreach ($xpath->evaluate('//a[starts-with(@href, "unityhub")]') as $node) {
+            // unityhub://2019.4.17f1/667c8606c536
+            $href = $node->getAttribute('href');
+            $version = parse_url($href, PHP_URL_HOST);
+            $changeset = parse_url($href, PHP_URL_PATH);
+            
+            $this->changesets[$version] = substr($changeset, 1);
         }
     }
     

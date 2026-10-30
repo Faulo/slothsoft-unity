@@ -9,6 +9,17 @@ Historical entries are reconstructed from Git tags and the changes between relea
 
 ## [Unreleased]
 
+## [2.24.0] - 2026-10-30
+
+### Added
+
+- Exposed `UnityHub::$USE_UNITY_ARCHIVE` to enable loading the full Unity editor archive during changeset initialization. It defaults to `false`.
+
+### Fixed
+
+- Resolved PHPStan findings in source and tests without adding a baseline or weakening analysis. Preserved warning validation, manifest object keys, and optional Unity archive loading.
+- Guarded Steam build text conversion failures before assigning converted values.
+
 ## [2.23.3] - 2026-10-06
 
 ### Fixed
@@ -771,3 +782,6 @@ Historical entries are reconstructed from Git tags and the changes between relea
 
 ### Added
 - Initial release with Unity project, Git project, and ML-Agents helpers.
+
+[Unreleased]: https://github.com/Faulo/slothsoft-unity/compare/2.24.0...HEAD
+[2.24.0]: https://github.com/Faulo/slothsoft-unity/compare/2.23.3...2.24.0

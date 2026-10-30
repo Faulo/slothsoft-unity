@@ -34,7 +34,7 @@ final readonly class OperationMetadata {
     private ?int $exitCode;
     
     /**
-     * @param list<string> $warnings
+     * @param array<array-key, mixed> $warnings Values are validated and reindexed.
      */
     public function __construct(
         string $name,

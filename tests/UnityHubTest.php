@@ -58,10 +58,10 @@ class UnityHubTest extends TestCase {
         $config->propagateProcessExitCodes = true;
         $config->processTimeout = 60;
         $config->processOutputHandler = $handler;
-
+        
         try {
             UnityHub::setConfig($config);
-
+            
             $this->assertTrue(UnityHub::getLoggingEnabled());
             $this->assertTrue(UnityHub::getThrowOnFailure());
             $this->assertTrue(UnityHub::getPropagateProcessExitCodes());
@@ -71,7 +71,7 @@ class UnityHubTest extends TestCase {
             UnityHub::setConfig($previousConfig);
         }
     }
-
+    
     /**
      * @runInSeparateProcess
      */
@@ -83,7 +83,7 @@ class UnityHubTest extends TestCase {
         $sink = new BufferedOutput();
         $config->processOutputHandler = new SymfonyProcessOutputHandler($sink, $sink);
         UnityHub::setConfig($config);
-
+        
         try {
             $config = UnityHub::getConfig();
             $config->throwOnFailure = true;
@@ -91,7 +91,7 @@ class UnityHubTest extends TestCase {
             UnityHub::setConfig($config);
             $process = UnityHub::getInstance()->execute('ignored');
             $this->assertSame(42, $process->getExitCode());
-
+            
             $config->propagateProcessExitCodes = true;
             UnityHub::setConfig($config);
             try {
@@ -105,7 +105,7 @@ class UnityHubTest extends TestCase {
             UnityHub::setConfig($previousConfig);
         }
     }
-
+    
     public function testHubIsInstalled(): void {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
@@ -136,7 +136,7 @@ class UnityHubTest extends TestCase {
         }
         
         $editors = $hub->getEditors();
-        $this->assertIsArray($editors);
+        $this->assertContainsOnlyInstancesOf(UnityEditor::class, $editors);
         foreach ($editors as $version => $editor) {
             $this->assertEditorIsValid($editor, $version);
         }
@@ -188,7 +188,7 @@ class UnityHubTest extends TestCase {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
         }
         
-        $this->assertIsArray($hub->createEditorInstallation($version));
+        $this->assertSame(['install', '--version', $version, '--changeset', $hub->inventChangeset($version)], $hub->createEditorInstallation($version));
     }
     
     public function validUnityVersions(): iterable {
@@ -246,7 +246,7 @@ class UnityHubTest extends TestCase {
     public function testInventStableEditorVersion(string $requestedVersion, bool $highest, string $expectedVersion): void {
         $hub = UnityHub::getInstance();
         $releaseApi = new \ReflectionProperty($hub, 'releaseApi');
-        $releaseApi->setValue($hub, new UnityReleaseApi(static fn (): string => '{"total":0,"results":[]}'));
+        $releaseApi->setValue($hub, new UnityReleaseApi(static fn(): string => '{"total":0,"results":[]}'));
         $changesets = new \ReflectionProperty($hub, 'changesets');
         $changesets->setValue($hub, array_fill_keys([
             '2022.3.10f1',
@@ -261,7 +261,7 @@ class UnityHubTest extends TestCase {
         
         $this->assertEquals($expectedVersion, $actualVersion);
     }
-
+    
     /**
      * @runInSeparateProcess
      */
@@ -270,7 +270,7 @@ class UnityHubTest extends TestCase {
         $changesets = new \ReflectionProperty($hub, 'changesets');
         $changesets->setValue($hub, []);
         $releaseApi = new \ReflectionProperty($hub, 'releaseApi');
-        $releaseApi->setValue($hub, new UnityReleaseApi(static fn (): string => json_encode([
+        $releaseApi->setValue($hub, new UnityReleaseApi(static fn(): string => json_encode([
             'total' => 2,
             'results' => [
                 [
@@ -283,10 +283,10 @@ class UnityHubTest extends TestCase {
                 ]
             ]
         ], JSON_THROW_ON_ERROR)));
-
+        
         $this->assertSame('6b23d448b533', $hub->inventChangeset('2019.4.41f2'));
     }
-
+    
     /**
      * @runInSeparateProcess
      */
@@ -297,7 +297,7 @@ class UnityHubTest extends TestCase {
             '2019.4.40f1' => null
         ]);
         $releaseApi = new \ReflectionProperty($hub, 'releaseApi');
-        $releaseApi->setValue($hub, new UnityReleaseApi(static fn (): string => json_encode([
+        $releaseApi->setValue($hub, new UnityReleaseApi(static fn(): string => json_encode([
             'total' => 1,
             'results' => [
                 [
@@ -306,7 +306,7 @@ class UnityHubTest extends TestCase {
                 ]
             ]
         ], JSON_THROW_ON_ERROR)));
-
+        
         $this->assertSame('2019.4.41f2', $hub->inventStableEditorVersion('2019', true));
     }
     
@@ -350,10 +350,10 @@ class UnityHubTest extends TestCase {
 }
 
 final class SyntheticHubLocator implements HubLocatorInterface {
-
+    
     public function __construct(private int $exitCode) {
     }
-
+    
     public function create(array $arguments): Process {
         return new Process([
             PHP_BINARY,
@@ -361,7 +361,7 @@ final class SyntheticHubLocator implements HubLocatorInterface {
             (string) $this->exitCode
         ]);
     }
-
+    
     public function exists(): bool {
         return true;
     }

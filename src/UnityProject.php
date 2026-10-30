@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
 use Slothsoft\Core\FileSystem;
@@ -106,12 +107,12 @@ final class UnityProject {
             $resultsDoc = $this->loadTestReport($resultsFile, $reportError);
             if ($resultsDoc === null) {
                 $this->appendTestInfrastructureError($doc, $rootNode, $testPlatform, $reportError, $executionError, $process);
-                $attributes['testcasecount'] ++;
-                $attributes['total'] ++;
-                $attributes['failed'] ++;
+                $attributes['testcasecount']++;
+                $attributes['total']++;
+                $attributes['failed']++;
                 continue;
             }
-
+            
             if ($executionError !== null and UnityHub::getPropagateProcessExitCodes()) {
                 $warning = sprintf(
                     "Unity test mode '%s' produced a valid report despite process exit code %d. The report was accepted as authoritative.",
@@ -139,13 +140,13 @@ final class UnityProject {
         
         return $doc;
     }
-
+    
     private function loadTestReport(string $resultsFile, string &$error): ?DOMDocument {
         if (! is_file($resultsFile)) {
             $error = 'Unity did not create a test report.';
             return null;
         }
-
+        
         $previousInternalErrors = libxml_use_internal_errors(true);
         libxml_clear_errors();
         try {
@@ -162,7 +163,7 @@ final class UnityProject {
                 return null;
             }
             if ($document->documentElement?->nodeName !== 'test-run') {
-                $error = sprintf("Unity created an unusable test report with root element '%s'.", $document->documentElement?->nodeName ?? 'none');
+                $error = sprintf("Unity created an unusable test report with root element '%s'.", $document->documentElement->nodeName ?? 'none');
                 return null;
             }
             return $document;
@@ -171,7 +172,7 @@ final class UnityProject {
             libxml_use_internal_errors($previousInternalErrors);
         }
     }
-
+    
     private function appendTestInfrastructureError(
         DOMDocument $document,
         DOMElement $root,
@@ -183,24 +184,24 @@ final class UnityProject {
         $suiteName = sprintf('Unity Test Runner process (%s)', $testPlatform);
         $suite = $document->createElement('test-suite');
         foreach ([
-            'type' => 'TestSuite',
-            'name' => $suiteName,
-            'fullname' => $suiteName,
-            'classname' => 'unity-command.tests',
-            'testcasecount' => '1',
-            'result' => 'Failed',
-            'start-time' => gmdate(DATE_W3C),
-            'duration' => '0',
-            'total' => '1',
-            'passed' => '0',
-            'failed' => '1',
-            'inconclusive' => '0',
-            'skipped' => '0',
-            'asserts' => '0'
-        ] as $name => $value) {
+                     'type' => 'TestSuite',
+                     'name' => $suiteName,
+                     'fullname' => $suiteName,
+                     'classname' => 'unity-command.tests',
+                     'testcasecount' => '1',
+                     'result' => 'Failed',
+                     'start-time' => gmdate(DATE_W3C),
+                     'duration' => '0',
+                     'total' => '1',
+                     'passed' => '0',
+                     'failed' => '1',
+                     'inconclusive' => '0',
+                     'skipped' => '0',
+                     'asserts' => '0'
+                 ] as $name => $value) {
             $suite->setAttribute($name, $value);
         }
-
+        
         $properties = $document->createElement('properties');
         $platformProperty = $document->createElement('property');
         $platformProperty->setAttribute('name', 'unity-test-platform');
@@ -214,7 +215,7 @@ final class UnityProject {
             $properties->appendChild($exitCodeProperty);
         }
         $suite->appendChild($properties);
-
+        
         $testCase = $document->createElement('test-case');
         $testCase->setAttribute('name', $suiteName);
         $testCase->setAttribute('classname', 'unity-command.tests');

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity;
 
 use RecursiveCallbackFilterIterator;
@@ -109,7 +110,7 @@ final class UnityProjectInfo {
     
     private function loadSettings(): array {
         $settings = Spyc::YAMLLoad($this->path . self::FILE_SETTINGS);
-        if (is_array($settings) and isset($settings['PlayerSettings'])) {
+        if (isset($settings['PlayerSettings'])) {
             return $settings['PlayerSettings'];
         }
         throw ExecutionError::Error('AssertProjectSettings', "Unable to determine settings for project '$this->path'!");

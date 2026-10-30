@@ -1,8 +1,10 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\Steam;
 
 use Mintopia\VDFKeyValue\Encoder;
+use RuntimeException;
 
 /**
  * Builds Steam app build VDF files for SteamCMD uploads.
@@ -67,7 +69,11 @@ final class AppBuild {
     private function fixEncoding(string &$value): void {
         $encoding = mb_detect_encoding($value, self::SUPPORTED_ENCODINGS);
         if ($encoding and $encoding !== 'UTF-8') {
-            $value = mb_convert_encoding($value, 'UTF-8', $encoding);
+            $converted = mb_convert_encoding($value, 'UTF-8', $encoding);
+            if ($converted === false) {
+                throw new RuntimeException('Unable to convert Steam build value to UTF-8.');
+            }
+            $value = $converted;
         }
     }
     
