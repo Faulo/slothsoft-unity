@@ -20,6 +20,10 @@ Historical entries are reconstructed from Git tags and the changes between relea
 - Resolved PHPStan findings in source and tests without adding a baseline or weakening analysis. Preserved warning validation, manifest object keys, and optional Unity archive loading.
 - Guarded Steam build text conversion failures before assigning converted values.
 
+### Changed
+
+- Linux Jenkins containers use a checksum-verified Composer PHAR to avoid PHP 8.5 deprecation output from the image's system Composer.
+
 ## [2.23.3] - 2026-10-06
 
 ### Fixed
