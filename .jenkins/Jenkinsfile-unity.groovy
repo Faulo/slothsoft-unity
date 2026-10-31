@@ -1,19 +1,13 @@
 def runTests(def name = "tests") {
+    fileOperations([folderDeleteOperation('.reports'), folderCreateOperation('.reports')])
+
     catchError(stageResult: 'UNSTABLE', buildResult: 'UNSTABLE', catchInterruptions: false) {
-        exec "composer update --prefer-lowest --no-interaction --no-progress"
+        exec "composer update --no-interaction --no-progress --prefer-lowest"
 
-        dir('.reports') {
-            deleteDir()
-        }
-
-        def report = ".reports/${name}.xml"
-
-        exec "php vendor/bin/phpunit --log-junit ${report}"
-
-        if (fileExists(report)) {
-            junit report
-        }
+        exec "php vendor/bin/phpunit --log-junit .reports/${name}.xml"
     }
+
+    junit(testResults: '.reports/*.xml', allowEmptyResults: true)
 }
 
 pipeline {
