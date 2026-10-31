@@ -27,7 +27,7 @@ def runLinter() {
 		exec "composer update --no-interaction --no-progress"
 
         execStatus(
-            script: "php vendor/bin/phpstan analyse --no-progress --configuration=phpstan.neon.dist --error-format=junit"
+            script: "php vendor/bin/phpstan analyse --no-progress --configuration=phpstan.neon.dist --error-format=junit",
             stdout: ".reports/phpstan.xml"
         )
 	}
