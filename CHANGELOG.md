@@ -9,6 +9,10 @@ Historical entries are reconstructed from Git tags and the changes between relea
 
 ## [Unreleased]
 
+### Fixed
+
+- Unity sidecar Jenkins tests install the checkout's dependencies and run its PHPUnit using the sidecar's vendor directory.
+
 ## [2.24.0] - 2026-10-30
 
 ### Added
