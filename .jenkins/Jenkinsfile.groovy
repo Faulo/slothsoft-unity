@@ -16,9 +16,7 @@ def report(def body) {
 
 def runComposerTest(def version, def variant) {
 	unstable {
-        prepareComposer()
-
-        exec "composer update --prefer-${variant} --no-interaction --no-progress"
+        exec "composer update --no-interaction --no-progress --prefer-${variant}"
 
         exec "php vendor/bin/phpunit --log-junit .reports/${version}-${variant}.xml"
 	}
@@ -26,8 +24,6 @@ def runComposerTest(def version, def variant) {
 
 def runLinter() {
 	unstable {
-        prepareComposer()
-
 		exec "composer update --no-interaction --no-progress"
 
         writeFile(
@@ -36,16 +32,6 @@ def runLinter() {
             encoding: 'UTF-8'
         )
 	}
-}
-
-def prepareComposer() {
-    if (isUnix()) {
-        // Use a verified PHAR instead of the image's PHP 8.5-incompatible system Composer.
-        exec "php -r \"if (!copy('https://getcomposer.org/download/2.11.1/composer.phar', '.reports/composer.phar')) { exit(1); }\""
-        exec "php -r \"if (hash_file('sha256', '.reports/composer.phar') !== '6f1b891e1d4927d62740276c540fb490e47689e19e102c49e8da849794882f8c') { exit(1); }\""
-        exec "install -m 0755 .reports/composer.phar /usr/local/bin/composer"
-        exec "composer --version"
-    }
 }
 
 pipeline {
