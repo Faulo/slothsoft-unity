@@ -26,10 +26,9 @@ def runLinter() {
 	unstable {
 		exec "composer update --no-interaction --no-progress"
 
-        writeFile(
-            file: ".reports/phpstan.xml",
-            text: execStdout("php vendor/bin/phpstan analyse --no-progress --configuration=phpstan.neon.dist --error-format=junit"),
-            encoding: 'UTF-8'
+        execStatus(
+            script: "php vendor/bin/phpstan analyse --no-progress --configuration=phpstan.neon.dist --error-format=junit"
+            stdout: ".reports/phpstan.xml"
         )
 	}
 }
