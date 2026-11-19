@@ -104,6 +104,19 @@ See `assets/manifest.xml` for the canonical asset definitions and parameter filt
 
 ## Command-Line Usage
 
+Set `UNITY_LEGACY_BEE_COMPAT=1` to prepare Linux Unity 2021.3 editors immediately
+before execution to work around a Bee stdin-canary deadlock. Preparation
+covers installed and newly downloaded editors, removes only `--stdin-canary`, and
+preserves the original executable as `Editor/Data/bee_backend.unity-original`.
+Other Unity release lines and Windows editors are unchanged. Preparation requires
+a writable editor cache once; an already prepared cache can be mounted read-only.
+Concurrent preparations are serialized and unrecognized replacements are rejected.
+The workaround persists in the cache and bypasses Bee's editor progress-bar
+cancellation mechanism. Batch hosts must terminate all invocation descendants on
+cancellation. To remove the workaround, unset the option and reinstall the editor
+or restore the saved original and remove its `.unity-marker` and `.unity-lock`
+companion files when no editor commands are active.
+
 Install dependencies first:
 
 ```bash
@@ -323,12 +336,12 @@ Tests may create temporary files through `temp_file`, `temp_dir`, or `Slothsoft\
 
 The local development environment should provide the Composer development extensions. If an optional extension or platform feature is unavailable, affected tests may be skipped or impossible to run locally. Skipped tests should be treated as intentionally skipped unless the task is specifically about test skipping.
 
-Use `.editorconfig` for coding style. Additional formatter or static-analysis tooling may be added later, but none is required right now.
-
-Run tests with:
+Use `.editorconfig` for coding style. Run PHPUnit and PHPStan at the configured
+level in the DDEV runtime.
 
 ```bash
-vendor/bin/phpunit
+ddev exec php vendor/bin/phpunit --colors=never
+ddev exec php vendor/bin/phpstan analyse --configuration=phpstan.neon.dist --no-progress --error-format=json
 ```
 
 Generate API documentation with:

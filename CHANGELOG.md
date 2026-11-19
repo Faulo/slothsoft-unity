@@ -9,8 +9,12 @@ Historical entries are reconstructed from Git tags and the changes between relea
 
 ## [Unreleased]
 
+## [2.24.1] - 2026-11-19
+
 ### Fixed
 
+- Support `UNITY_LEGACY_BEE_COMPAT=1` to prepare Linux Unity 2021.3 editors with a Bee wrapper that avoids the stdin-canary deadlock. Preserve the original binary, serialize concurrent preparation, and support prepared read-only caches.
+- Handle missing editor metadata, unreadable paths, and invalid reports explicitly. Update source and test types to pass PHPStan at level 8.
 - Unity sidecar Jenkins tests install the checkout's dependencies and run its PHPUnit using the sidecar's vendor directory.
 
 ## [2.24.0] - 2026-10-30
@@ -791,5 +795,6 @@ Historical entries are reconstructed from Git tags and the changes between relea
 ### Added
 - Initial release with Unity project, Git project, and ML-Agents helpers.
 
-[Unreleased]: https://github.com/Faulo/slothsoft-unity/compare/2.24.0...HEAD
+[Unreleased]: https://github.com/Faulo/slothsoft-unity/compare/2.24.1...HEAD
+[2.24.1]: https://github.com/Faulo/slothsoft-unity/compare/2.24.0...2.24.1
 [2.24.0]: https://github.com/Faulo/slothsoft-unity/compare/2.23.3...2.24.0

@@ -211,6 +211,9 @@ final class UnityEditor {
     
     public function execute(bool $validateExitCode, string ...$arguments): Process {
         assert($this->isInstalled());
+        if (getenv('UNITY_LEGACY_BEE_COMPAT') === '1') {
+            LinuxBeeCompatibility::prepare($this->version, (string) $this->executable);
+        }
         
         try {
             $process = $this->createProcess($arguments);
