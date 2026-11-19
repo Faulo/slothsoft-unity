@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity\Assets\Package;
 
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
+use Slothsoft\Unity\ExecutionError;
 use DOMDocument;
 
 /**
@@ -27,7 +28,11 @@ final class InstallExecutable extends PackageExecutableBase {
         if (! is_dir($this->workspace)) {
             mkdir($this->workspace, 0777, true);
         }
-        $this->workspace = realpath($this->workspace);
+        $workspace = realpath($this->workspace);
+        if ($workspace === false) {
+            throw ExecutionError::Error('AssertDirectory', "Failed to resolve workspace '{$this->workspace}'!");
+        }
+        $this->workspace = $workspace;
     }
     
     protected function getExecutablePackage(): string {
@@ -39,7 +44,8 @@ final class InstallExecutable extends PackageExecutableBase {
     }
     
     protected function createResultDocument(): ?DOMDocument {
-        $project = $this->package->createEmptyProject($this->workspace);
+        $package = $this->package ?? throw ExecutionError::Error('AssertPackage', "Missing Unity package at '{$this->packageDirectory}'!");
+        $project = $package->createEmptyProject($this->workspace);
         
         $this->workspace = $project->getProjectPath();
         

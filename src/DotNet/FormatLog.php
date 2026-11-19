@@ -14,13 +14,16 @@ final class FormatLog {
     
     private int $time;
     
+    /** @var array<array-key, mixed> */
     private array $reports = [];
     
+    /** @var list<string> */
     private static array $reportAttributes = [
         'FileName',
         'FilePath'
     ];
     
+    /** @var list<string> */
     private static array $changeAttributes = [
         'LineNumber',
         'CharNumber',
@@ -29,15 +32,18 @@ final class FormatLog {
     ];
     
     public function __construct(string $path) {
-        if (! realpath($path)) {
+        $resolved = realpath($path);
+        if ($resolved === false or ! is_file($resolved)) {
             throw new \InvalidArgumentException("Missing format-report.json '$path'!");
         }
         
-        $path = realpath($path);
+        $this->time = FileSystem::changetime($resolved)
+            ?? throw new \InvalidArgumentException("Unable to read modification time of '$path'.");
         
-        $this->time = FileSystem::changetime($path);
-        
-        $json = file_get_contents($path);
+        $json = file_get_contents($resolved);
+        if ($json === false) {
+            throw new \InvalidArgumentException("Unable to read format-report.json '$path'.");
+        }
         $reports = json_decode($json, true);
         if (! is_array($reports)) {
             throw new \InvalidArgumentException("Malformed format-report.json '$path':" . PHP_EOL . $json);

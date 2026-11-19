@@ -11,6 +11,10 @@ namespace Slothsoft\Unity;
 final class JUnit {
     
     public static function formatDate(string $date): string {
-        return date("Y-m-d\TH:i:s", strtotime($date));
+        $timestamp = strtotime($date);
+        if ($timestamp === false) {
+            throw new \InvalidArgumentException("Invalid JUnit date '$date'.");
+        }
+        return date("Y-m-d\TH:i:s", $timestamp);
     }
 }

@@ -145,6 +145,11 @@ final class UnityEditorTest extends TestCase {
         $this->assertThat($result->getExitCode(), new IsEqual(0));
     }
 
+    /**
+     * @param array<string, bool> $modules
+     * @param list<string> $modulesToInstall
+     * @return array{UnityEditor, SyntheticModuleInstallHubLocator}
+     */
     private function createSyntheticEditor(array $modules, array $modulesToInstall, int $exitCode): array {
         $editorDirectory = temp_dir(str_replace(':', '-', __METHOD__)) . DIRECTORY_SEPARATOR . '6000.3.13f1';
         $executableDirectory = $editorDirectory . DIRECTORY_SEPARATOR . 'Editor';
@@ -184,8 +189,10 @@ final class SyntheticModuleInstallHubLocator implements HubLocatorInterface {
 
     public int $executionCount = 0;
 
+    /** @var array<array-key, string> */
     public array $arguments = [];
 
+    /** @param list<string> $modulesToInstall */
     public function __construct(
         private readonly string $manifest,
         private readonly array $modulesToInstall,
@@ -193,6 +200,7 @@ final class SyntheticModuleInstallHubLocator implements HubLocatorInterface {
     ) {
     }
 
+    /** @param array<array-key, string> $arguments */
     public function create(array $arguments): Process {
         $this->executionCount ++;
         $this->arguments = $arguments;

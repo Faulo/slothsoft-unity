@@ -58,6 +58,7 @@ final class Settings {
     
     private string $path;
     
+    /** @var array<string, mixed> */
     private array $config = [
         'version' => 1,
         'isRoot' => true,
@@ -71,6 +72,7 @@ final class Settings {
         ]
     ];
     
+    /** @var array<string, mixed> */
     private array $data = [
         'metadata' => [],
         'build' => [
@@ -104,6 +106,7 @@ final class Settings {
         ]
     ];
     
+    /** @var array<string, string> */
     private array $toc = [
         self::DIR_API . '/' => 'API'
     ];
@@ -116,13 +119,19 @@ final class Settings {
     
     private ?\SplFileInfo $license = null;
     
+    /** @var list<\SplFileInfo> */
     private array $markdowns = [];
     
+    /** @var array<string, null> */
     private array $projects = [];
     
     public function __construct(string $path) {
         $this->fileSystem = new Filesystem();
-        $this->path = realpath($path);
+        $resolvedPath = realpath($path);
+        if ($resolvedPath === false) {
+            throw new \InvalidArgumentException("Unable to resolve documentation source '$path'.");
+        }
+        $this->path = $resolvedPath;
         
         $plugins = realpath($this->path . DIRECTORY_SEPARATOR . 'Assets' . DIRECTORY_SEPARATOR . 'Plugins');
         if ($plugins) {
@@ -292,7 +301,11 @@ final class Settings {
             }
         }
         
-        return realpath($target);
+        $resolvedTarget = realpath($target);
+        if ($resolvedTarget === false) {
+            throw new \RuntimeException("Unable to resolve documentation output '$target'.");
+        }
+        return $resolvedTarget;
     }
     
     private function ensureDirectory(string $directory): void {
@@ -301,10 +314,12 @@ final class Settings {
         }
     }
     
+    /** @param array<array-key, mixed> $data */
     private function encode(array $data): string {
-        return json_encode($data, JSON_PRETTY_PRINT);
+        return json_encode($data, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
     }
     
+    /** @param array<string, string> $toc */
     private function encodeToC(array $toc): string {
         $yaml = [];
         foreach ($toc as $key => $val) {
@@ -316,6 +331,7 @@ final class Settings {
         return Spyc::YAMLDump($yaml);
     }
     
+    /** @return array<string, string> */
     private function createToC(\SplFileInfo $dir): array {
         $toc = [];
         $directory = new \DirectoryIterator($dir->getRealPath());

@@ -24,12 +24,15 @@ final class LocateHubFromWindowsRegistry implements HubLocatorInterface {
     
     private bool $exists = false;
     
+    /** @var list<string> */
     private array $command;
     
+    /** @param list<string> $command */
     public function __construct(array $command) {
         $this->command = $command;
     }
     
+    /** @param array<array-key, string> $arguments */
     public function create(array $arguments): Process {
         $this->init();
         $arguments = array_merge([

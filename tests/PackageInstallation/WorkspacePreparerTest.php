@@ -35,6 +35,7 @@ final class WorkspacePreparerTest extends TestCase {
         $this->assertTrue($actual->wasInitialized());
     }
     
+    /** @return iterable<string, array{string, WorkspaceState}> */
     public function initializableWorkspaceProvider(): iterable {
         yield 'missing' => [
             'missing',
@@ -111,6 +112,7 @@ final class WorkspacePreparerTest extends TestCase {
      */
     private function createInitializer(Closure $callback): WorkspaceInitializerInterface {
         return new class($callback) implements WorkspaceInitializerInterface {
+            /** @var list<string> */
             public array $paths = [];
             
             private Closure $callback;

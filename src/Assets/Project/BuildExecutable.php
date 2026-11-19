@@ -50,7 +50,7 @@ final class BuildExecutable extends ProjectExecutableBase {
     }
     
     protected function createResultDocument(): ?DOMDocument {
-        $this->project->build($this->target, $this->path);
+        $this->requireProject()->build($this->target, $this->path);
         return null;
     }
 }

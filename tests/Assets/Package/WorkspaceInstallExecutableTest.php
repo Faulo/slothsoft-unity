@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Slothsoft\Unity\Assets\Package;
 
+use Slothsoft\Unity\Fixture;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\FarahUrl\FarahUrlArguments;
@@ -25,20 +26,20 @@ final class WorkspaceInstallExecutableTest extends TestCase {
             'customRepository' => [
                 'url' => 'https://packages.example.test'
             ]
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
         $this->createPackage($package, 'example.package', 'new payload');
         $destination = $workspace . DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'example.package';
         mkdir($destination);
         file_put_contents($destination . DIRECTORY_SEPARATOR . 'stale.txt', 'stale payload');
-        $versionBefore = file_get_contents($workspace . DIRECTORY_SEPARATOR . 'ProjectSettings' . DIRECTORY_SEPARATOR . 'ProjectVersion.txt');
+        $versionBefore = Fixture::read($workspace . DIRECTORY_SEPARATOR . 'ProjectSettings' . DIRECTORY_SEPARATOR . 'ProjectVersion.txt');
         
         $document = Module::resolveToDOMWriter($this->createUrl($workspace, $package))->toDocument();
         
-        $this->assertSame(0, $document->getElementsByTagName('error')->length, $document->saveXML());
+        $this->assertSame(0, $document->getElementsByTagName('error')->length, $document->saveXML() ?: 'Unable to serialize the result document.');
         $this->assertFileDoesNotExist($destination . DIRECTORY_SEPARATOR . 'stale.txt');
-        $this->assertSame('new payload', file_get_contents($destination . DIRECTORY_SEPARATOR . 'payload.txt'));
-        $this->assertSame($versionBefore, file_get_contents($workspace . DIRECTORY_SEPARATOR . 'ProjectSettings' . DIRECTORY_SEPARATOR . 'ProjectVersion.txt'));
-        $manifest = json_decode(file_get_contents($workspace . DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'manifest.json'), true);
+        $this->assertSame('new payload', Fixture::read($destination . DIRECTORY_SEPARATOR . 'payload.txt'));
+        $this->assertSame($versionBefore, Fixture::read($workspace . DIRECTORY_SEPARATOR . 'ProjectSettings' . DIRECTORY_SEPARATOR . 'ProjectVersion.txt'));
+        $manifest = json_decode(Fixture::read($workspace . DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'manifest.json'), true);
         $this->assertSame('1.0.0', $manifest['dependencies']['existing.package']);
         $this->assertSame('1.1.33', $manifest['dependencies']['com.unity.test-framework']);
         $this->assertSame('https://packages.example.test', $manifest['customRepository']['url']);
@@ -58,8 +59,8 @@ final class WorkspaceInstallExecutableTest extends TestCase {
         $document = Module::resolveToDOMWriter($this->createUrl($workspace, $package))->toDocument();
         
         $this->assertSame(1, $document->getElementsByTagName('error')->length);
-        $this->assertSame('AssertWorkspace', $document->getElementsByTagName('error')->item(0)->getAttribute('type'));
-        $this->assertSame('keep me', file_get_contents($sentinel));
+        $this->assertSame('AssertWorkspace', Fixture::element($document->getElementsByTagName('error')->item(0))->getAttribute('type'));
+        $this->assertSame('keep me', Fixture::read($sentinel));
         $this->assertDirectoryDoesNotExist($workspace . DIRECTORY_SEPARATOR . 'Packages');
     }
 
@@ -88,9 +89,9 @@ final class WorkspaceInstallExecutableTest extends TestCase {
         $document = Module::resolveToDOMWriter($this->createUrl($workspace, $package))->toDocument();
 
         $this->assertSame(1, $document->getElementsByTagName('error')->length);
-        $this->assertSame('stale payload', file_get_contents($destination . DIRECTORY_SEPARATOR . 'stale.txt'));
+        $this->assertSame('stale payload', Fixture::read($destination . DIRECTORY_SEPARATOR . 'stale.txt'));
         $this->assertFileDoesNotExist($destination . DIRECTORY_SEPARATOR . 'payload.txt');
-        $this->assertSame($manifestContents, file_get_contents($outsideManifest));
+        $this->assertSame($manifestContents, Fixture::read($outsideManifest));
     }
     
     private function createProject(string $workspace, string $manifest): void {

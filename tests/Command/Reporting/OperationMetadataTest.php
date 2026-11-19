@@ -36,6 +36,7 @@ final class OperationMetadataTest extends TestCase {
     
     /**
      * @dataProvider invalidMetadataProvider
+     * @param list<string|int> $warnings
      */
     public function testRejectsInvalidMetadata(string $name, string $className, string $packageName, float $duration, array $warnings): void {
         $this->expectException(InvalidArgumentException::class);
@@ -43,6 +44,7 @@ final class OperationMetadataTest extends TestCase {
         new OperationMetadata($name, $className, $packageName, null, $duration, '', '', $warnings);
     }
     
+    /** @return iterable<string, array{string, string, string, float, list<string|int>}> */
     public function invalidMetadataProvider(): iterable {
         yield 'empty operation name' => [
             '',

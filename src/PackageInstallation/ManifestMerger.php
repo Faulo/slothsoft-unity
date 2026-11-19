@@ -101,6 +101,11 @@ final class ManifestMerger {
         return $result;
     }
     
+    /**
+     * @param array<array-key, mixed> $existing
+     * @param array<array-key, mixed> $incoming
+     * @return list<mixed>
+     */
     private function mergeLists(array $existing, array $incoming): array {
         $result = [];
         
@@ -114,6 +119,11 @@ final class ManifestMerger {
         return $result;
     }
     
+    /**
+     * @param array<array-key, mixed> $existing
+     * @param array<array-key, mixed> $incoming
+     * @return array<int, mixed>
+     */
     private function mergeScopedRegistries(array $existing, array $incoming): array {
         $result = [];
         $registryIndexes = [];
@@ -143,6 +153,7 @@ final class ManifestMerger {
         return $result;
     }
     
+    /** @param array<array-key, mixed> $values */
     private function containsExactValue(array $values, mixed $candidate): bool {
         foreach ($values as $value) {
             if ($this->valuesAreExactlyEqual($value, $candidate)) {

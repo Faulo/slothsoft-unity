@@ -86,6 +86,6 @@ final class SteamCMD {
     }
     
     private function fetchGuardCode(DateTimeImmutable $startTime): ?string {
-        return $this->mailbox->waitForLatestBy(self::STEAM_EMAIL, $startTime, new DateInterval('PT5M'), self::STEAM_2FA_PATTERN);
+        return $this->mailbox?->waitForLatestBy(self::STEAM_EMAIL, $startTime, new DateInterval('PT5M'), self::STEAM_2FA_PATTERN);
     }
 }

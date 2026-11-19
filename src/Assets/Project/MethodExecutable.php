@@ -18,6 +18,7 @@ final class MethodExecutable extends ProjectExecutableBase {
     
     private int $quitOnExit;
     
+    /** @var list<string> */
     private array $arguments;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -54,9 +55,9 @@ final class MethodExecutable extends ProjectExecutableBase {
     
     protected function createResultDocument(): ?DOMDocument {
         if ($this->quitOnExit) {
-            $this->project->executeMethod($this->method, $this->arguments);
+            $this->requireProject()->executeMethod($this->method, $this->arguments);
         } else {
-            $this->project->startMethod($this->method, $this->arguments);
+            $this->requireProject()->startMethod($this->method, $this->arguments);
         }
         
         return null;

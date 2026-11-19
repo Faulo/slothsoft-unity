@@ -42,7 +42,7 @@ final class SettingExecutable extends ProjectExecutableBase {
     protected function createResultDocument(): DOMDocument {
         $document = new DOMDocument('1.0', 'UTF-8');
         $node = $document->createElement($this->name);
-        $node->textContent = $this->project->getSetting($this->name, '');
+        $node->textContent = $this->requireProject()->getSetting($this->name, '');
         $document->appendChild($node);
         return $document;
     }

@@ -61,9 +61,9 @@ class SteamCMDTest extends TestCase {
         if ($env->prepareVariables($this)) {
             $steam = new SteamCMD();
             
-            $steam->mailbox = new MailboxAccess(getenv(MailboxAccess::ENV_EMAIL_USR), getenv(MailboxAccess::ENV_EMAIL_PSW));
+            $steam->mailbox = new MailboxAccess(TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_USR), TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_PSW));
             
-            $isLoggedIn = $steam->login(getenv(SteamCMD::STEAM_CREDENTIALS_USR), getenv(SteamCMD::STEAM_CREDENTIALS_PSW));
+            $isLoggedIn = $steam->login(TestEnvironment::requireVariable(SteamCMD::STEAM_CREDENTIALS_USR), TestEnvironment::requireVariable(SteamCMD::STEAM_CREDENTIALS_PSW));
             
             $this->assertTrue($isLoggedIn);
         }

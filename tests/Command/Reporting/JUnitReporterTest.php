@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Slothsoft\Unity\Command\Reporting;
 
+use Slothsoft\Unity\Fixture;
 use DateTimeImmutable;
 use DOMDocument;
 use DOMXPath;
@@ -35,7 +36,7 @@ final class JUnitReporterTest extends TestCase {
         $this->assertSame('Unity.Build', $xpath->evaluate('string(/testsuites/testsuite/testcase/@classname)'));
         $this->assertSame('command-success', $xpath->evaluate('string(/testsuites/testsuite/properties/property[@name="unity-command.source-root"]/@value)'));
         $this->assertSame('0', $xpath->evaluate('string(/testsuites/testsuite/properties/property[@name="unity-command.exit-code"]/@value)'));
-        $this->assertSame(3, $xpath->query('/testsuites/testsuite/properties/property[starts-with(@name, "unity-command.warning.")]')->length);
+        $this->assertSame(3, Fixture::query($xpath, '/testsuites/testsuite/properties/property[starts-with(@name, "unity-command.warning.")]')->length);
         $this->assertSame("build output\n", $xpath->evaluate('string(/testsuites/testsuite/system-out)'));
         $this->assertSame("build error\nPackage cache was stale.\nA fallback editor was selected.\nSource reported a warning.", str_replace('WARNING: ', '', $xpath->evaluate('string(/testsuites/testsuite/system-err)')));
         $this->assertStringNotContainsString('secret', $this->reporter->toXml($report));
@@ -54,11 +55,11 @@ final class JUnitReporterTest extends TestCase {
         $report = $this->reporter->createReport($source, $this->metadata('build'));
         $xpath = new DOMXPath($report);
         
-        $this->assertSame(4, $xpath->query('/testsuites/testsuite')->length);
-        $this->assertSame(4, $xpath->query('//testcase')->length);
-        $this->assertSame(1, $xpath->query('//testcase/skipped')->length);
-        $this->assertSame(1, $xpath->query('//testcase/failure')->length);
-        $this->assertSame(1, $xpath->query('//testcase/error')->length);
+        $this->assertSame(4, Fixture::query($xpath, '/testsuites/testsuite')->length);
+        $this->assertSame(4, Fixture::query($xpath, '//testcase')->length);
+        $this->assertSame(1, Fixture::query($xpath, '//testcase/skipped')->length);
+        $this->assertSame(1, Fixture::query($xpath, '//testcase/failure')->length);
+        $this->assertSame(1, Fixture::query($xpath, '//testcase/error')->length);
         $this->assertSame('built', $xpath->evaluate('string(/testsuites/testsuite[1]/system-out)'));
         $this->assertSame('editor log', $xpath->evaluate('string(/testsuites/testsuite[4]/system-err)'));
         $this->assertSame('17', $xpath->evaluate('string(/testsuites/testsuite[4]/properties/property[@name="unity-process.exit-code"]/@value)'));
@@ -73,7 +74,7 @@ final class JUnitReporterTest extends TestCase {
         $report = $this->reporter->createErrorReport($metadata, $error);
         $xpath = new DOMXPath($report);
         
-        $this->assertSame(1, $xpath->query('/testsuites/testsuite/testcase/' . $element)->length);
+        $this->assertSame(1, Fixture::query($xpath, '/testsuites/testsuite/testcase/' . $element)->length);
         $this->assertSame($error->getType(), $xpath->evaluate('string(/testsuites/testsuite/testcase/' . $element . '/@type)'));
         $this->assertSame($error->getMessage(), $xpath->evaluate('string(/testsuites/testsuite/testcase/' . $element . '/@message)'));
         $this->assertSame($error->getDetails(), $xpath->evaluate('string(/testsuites/testsuite/testcase/' . $element . ')'));
@@ -81,6 +82,7 @@ final class JUnitReporterTest extends TestCase {
         $this->assertSame('diagnostic', $xpath->evaluate('string(/testsuites/testsuite/system-err)'));
     }
     
+    /** @return iterable<string, array{ReportError, string}> */
     public function canonicalErrorProvider(): iterable {
         yield 'execution error' => [
             ReportError::error('RuntimeException', 'Unity was unavailable.', 'exception trace'),
@@ -113,13 +115,13 @@ final class JUnitReporterTest extends TestCase {
         $report = $this->reporter->createReport($source, $this->metadata('tests'));
         $xpath = new DOMXPath($report);
         
-        $this->assertSame(2, $xpath->query('/testsuites/testsuite')->length);
+        $this->assertSame(2, Fixture::query($xpath, '/testsuites/testsuite')->length);
         $this->assertSame('0', $xpath->evaluate('string(/testsuites/testsuite[1]/@id)'));
         $this->assertSame('1', $xpath->evaluate('string(/testsuites/testsuite[2]/@id)'));
-        $this->assertSame(6, $xpath->query('//testcase')->length);
-        $this->assertSame(1, $xpath->query('//testcase/failure')->length);
-        $this->assertSame(1, $xpath->query('//testcase/error')->length);
-        $this->assertSame(2, $xpath->query('//testcase/skipped')->length);
+        $this->assertSame(6, Fixture::query($xpath, '//testcase')->length);
+        $this->assertSame(1, Fixture::query($xpath, '//testcase/failure')->length);
+        $this->assertSame(1, Fixture::query($xpath, '//testcase/error')->length);
+        $this->assertSame(2, Fixture::query($xpath, '//testcase/skipped')->length);
         $this->assertSame('1', $xpath->evaluate('string(/testsuites/testsuite[1]/@failures)'));
         $this->assertSame('1', $xpath->evaluate('string(/testsuites/testsuite[1]/@errors)'));
         $this->assertSame('2', $xpath->evaluate('string(/testsuites/testsuite[1]/@skipped)'));
@@ -150,10 +152,10 @@ final class JUnitReporterTest extends TestCase {
         $report = $this->reporter->createReport($source, $metadata);
         $xpath = new DOMXPath($report);
         
-        $this->assertSame(1, $xpath->query('/testsuites/testsuite')->length);
-        $this->assertSame(1, $xpath->query('//testcase[@name="Passes"]')->length);
-        $this->assertSame(1, $xpath->query('//testcase[@name="Inconclusive"]/skipped')->length);
-        $this->assertSame(0, $xpath->query('//testcase[@name="Unity Test Runner process"]/error')->length);
+        $this->assertSame(1, Fixture::query($xpath, '/testsuites/testsuite')->length);
+        $this->assertSame(1, Fixture::query($xpath, '//testcase[@name="Passes"]')->length);
+        $this->assertSame(1, Fixture::query($xpath, '//testcase[@name="Inconclusive"]/skipped')->length);
+        $this->assertSame(0, Fixture::query($xpath, '//testcase[@name="Unity Test Runner process"]/error')->length);
     }
     
     public function testCreateXmlReturnsCompleteUtf8DocumentWithoutWriting(): void {

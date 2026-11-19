@@ -11,10 +11,15 @@ use Symfony\Component\Console\Input\InputDefinition;
  */
 final class UnityArgvInput extends ArgvInput {
 
+    /** @param list<string>|null $argv */
     public function __construct(?array $argv = null, ?InputDefinition $definition = null) {
         parent::__construct(self::normalize($argv ?? $_SERVER['argv'] ?? []), $definition);
     }
 
+    /**
+     * @param list<string> $argv
+     * @return list<string>
+     */
     private static function normalize(array $argv): array {
         $normalized = [];
         $parseOptions = true;

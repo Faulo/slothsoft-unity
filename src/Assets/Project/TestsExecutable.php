@@ -15,6 +15,7 @@ use DOMDocument;
  */
 final class TestsExecutable extends ProjectExecutableBase {
     
+    /** @var list<string> */
     private array $modes;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -48,6 +49,6 @@ final class TestsExecutable extends ProjectExecutableBase {
     }
     
     protected function createResultDocument(): DOMDocument {
-        return $this->project->runTests(...$this->modes);
+        return $this->requireProject()->runTests(...$this->modes);
     }
 }

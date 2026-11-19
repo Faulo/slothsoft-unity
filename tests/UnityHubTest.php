@@ -10,11 +10,11 @@ use Symfony\Component\Process\Process;
 
 class UnityHubTest extends TestCase {
     
-    public function testClassExists() {
+    public function testClassExists(): void {
         $this->assertTrue(class_exists(UnityHub::class));
     }
     
-    public function testLoggingEnabled() {
+    public function testLoggingEnabled(): void {
         foreach ([
                      true,
                      false
@@ -24,7 +24,7 @@ class UnityHubTest extends TestCase {
         }
     }
     
-    public function testThrowOnFailure() {
+    public function testThrowOnFailure(): void {
         foreach ([
                      true,
                      false
@@ -34,7 +34,7 @@ class UnityHubTest extends TestCase {
         }
     }
     
-    public function testProcessTimeout() {
+    public function testProcessTimeout(): void {
         try {
             foreach ([
                          0,
@@ -142,10 +142,12 @@ class UnityHubTest extends TestCase {
         }
     }
     
-    private function assertEditorIsValid(UnityEditor $editor, string $version) {
+    private function assertEditorIsValid(UnityEditor $editor, string $version): void {
         $this->assertInstanceOf(UnityEditor::class, $editor);
         $this->assertTrue($editor->isInstalled());
-        $this->assertStringContainsString($version, $editor->executable);
+        $executable = $editor->executable;
+        $this->assertNotNull($executable);
+        $this->assertStringContainsString($version, $executable);
     }
     
     public function testGetEditorPath(): void {
@@ -182,7 +184,7 @@ class UnityHubTest extends TestCase {
      *
      * @dataProvider validUnityVersions
      */
-    public function testCreateEditorInstallation(string $version) {
+    public function testCreateEditorInstallation(string $version): void {
         $hub = UnityHub::getInstance();
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
@@ -191,6 +193,7 @@ class UnityHubTest extends TestCase {
         $this->assertSame(['install', '--version', $version, '--changeset', $hub->inventChangeset($version)], $hub->createEditorInstallation($version));
     }
     
+    /** @return iterable<string, array{string}> */
     public function validUnityVersions(): iterable {
         yield '2019.4.17f1' => [
             '2019.4.17f1'
@@ -310,6 +313,7 @@ class UnityHubTest extends TestCase {
         $this->assertSame('2019.4.41f2', $hub->inventStableEditorVersion('2019', true));
     }
     
+    /** @return iterable<string, array{string, bool, string}> */
     public function editorVersions(): iterable {
         yield 'major' => [
             '6000',
@@ -354,6 +358,7 @@ final class SyntheticHubLocator implements HubLocatorInterface {
     public function __construct(private int $exitCode) {
     }
     
+    /** @param array<array-key, string> $arguments */
     public function create(array $arguments): Process {
         return new Process([
             PHP_BINARY,

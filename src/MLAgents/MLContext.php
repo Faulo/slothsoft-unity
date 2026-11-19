@@ -44,6 +44,7 @@ final class MLContext {
     
     const UPGRADE_PIP = 'python.exe -m pip install --upgrade pip';
     
+    /** @return iterable<self> */
     public static function determineContexts(string $serverPath): iterable {
         foreach (array_reverse(array_unique(self::PACKAGE_MAPPING)) as $mlVersion) {
             yield new MLContext($serverPath, $mlVersion);
@@ -61,8 +62,11 @@ final class MLContext {
     private string $scriptsPath;
     
     public function __construct(string $workDirectory, string $version) {
-        assert(is_dir($workDirectory));
-        $this->workDirectory = realpath($workDirectory);
+        $directory = realpath($workDirectory);
+        if ($directory === false or ! is_dir($directory)) {
+            throw new \InvalidArgumentException("Missing working directory '$workDirectory'.");
+        }
+        $this->workDirectory = $directory;
         $this->version = $version;
         $this->pythonPath = $this->workDirectory . DIRECTORY_SEPARATOR . self::ROOT_PATH . DIRECTORY_SEPARATOR . $version;
         $this->pythonLock = $this->pythonPath . self::LOCK_EXTENSION;
@@ -80,8 +84,11 @@ final class MLContext {
             $this->update();
             $this->freeze();
         }
-        assert($this->lockExists());
-        $this->pythonLock = realpath($this->pythonLock);
+        $lock = realpath($this->pythonLock);
+        if ($lock === false or ! is_file($lock)) {
+            throw new \RuntimeException("Missing Python lock '$this->pythonLock'.");
+        }
+        $this->pythonLock = $lock;
     }
     
     public function pathExists(): bool {
@@ -92,8 +99,11 @@ final class MLContext {
         if (! $this->pathExists()) {
             $this->setup();
         }
-        assert($this->pathExists());
-        $this->pythonPath = realpath($this->pythonPath);
+        $path = realpath($this->pythonPath);
+        if ($path === false or ! is_dir($path)) {
+            throw new \RuntimeException("Missing Python directory '$this->pythonPath'.");
+        }
+        $this->pythonPath = $path;
         $this->pythonLock = $this->pythonPath . self::LOCK_EXTENSION;
         $this->scriptsPath = $this->pythonPath . DIRECTORY_SEPARATOR . 'Scripts';
     }

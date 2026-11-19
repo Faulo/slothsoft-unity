@@ -28,9 +28,10 @@ final class UnityEnvironment {
         return getenv(self::ENV_UNITY_ACCELERATOR_ENDPOINT) ?: null;
     }
     
+    /** @return list<string> */
     public static function getAcceleratorParams(): array {
         $params = getenv(self::ENV_UNITY_ACCELERATOR_PARAMS);
-        return $params ? preg_split('~\s+~', $params, - 1, PREG_SPLIT_NO_EMPTY) : [];
+        return $params ? (preg_split('~\s+~', $params, - 1, PREG_SPLIT_NO_EMPTY) ?: []) : [];
     }
     
     public const ENV_UNITY_LOGGING = 'UNITY_LOGGING';
@@ -51,8 +52,10 @@ final class UnityEnvironment {
     
     public const UNITY_LOG_CACHE = 'cache';
     
+    /** @var Set<non-empty-string>|null */
     private static ?Set $logging = null;
     
+    /** @return Set<non-empty-string> */
     private static function logging(): Set {
         if (self::$logging === null) {
             $env = getenv(self::ENV_UNITY_LOGGING);
@@ -60,7 +63,7 @@ final class UnityEnvironment {
                 $env = self::UNITY_LOG_DEFAULT;
             }
             
-            self::$logging = new Set(preg_split('~\s+~', strtolower($env), - 1, PREG_SPLIT_NO_EMPTY));
+            self::$logging = new Set(preg_split('~\s+~', strtolower($env), - 1, PREG_SPLIT_NO_EMPTY) ?: []);
         }
         return self::$logging;
     }
@@ -105,7 +108,7 @@ final class UnityEnvironment {
     }
     
     private static function format(string $text, string $style): string {
-        return self::formatter()->format("<$style>$text</$style>");
+        return self::formatter()->format("<$style>$text</$style>") ?? $text;
     }
     
     public static function formatInput(string $text): string {

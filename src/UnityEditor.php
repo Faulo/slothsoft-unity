@@ -97,13 +97,14 @@ final class UnityEditor {
         
         // Unity needs permission to access the installed files
         // https://stackoverflow.com/questions/61865817/jdk-directory-is-not-set-or-invalid-unity
-        if (FileSystem::commandExists('chmod')) {
+        if ($this->executable !== null and FileSystem::commandExists('chmod')) {
             exec('chmod -R 777 ' . escapeshellarg(dirname($this->executable)));
         }
         
         return true;
     }
 
+    /** @return list<string> */
     public function getInstalledModules(): array {
         $manifest = $this->findModuleManifest();
         if ($manifest === null) {
@@ -194,7 +195,7 @@ final class UnityEditor {
             if (is_file($log)) {
                 $file = temp_file(__CLASS__, 'ALF_');
                 rename($log, $file);
-                return realpath($file);
+                return realpath($file) ?: null;
             }
         }
         
@@ -261,7 +262,11 @@ EOT;
         } else {
             $process = null;
             FileSystem::ensureDirectory($path);
-            $path = realpath($path);
+            $resolvedPath = realpath($path);
+            if ($resolvedPath === false) {
+                throw ExecutionError::Error('AssertDirectory', "Failed to resolve project path '$path'!");
+            }
+            $path = $resolvedPath;
             FileSystem::ensureDirectory($path . DIRECTORY_SEPARATOR . 'Assets');
             FileSystem::ensureDirectory($path . DIRECTORY_SEPARATOR . 'Packages');
             FileSystem::ensureDirectory($path . DIRECTORY_SEPARATOR . 'ProjectSettings');
@@ -280,6 +285,7 @@ EOT;
         return $project;
     }
     
+    /** @param array<array-key, string> $arguments */
     private function createProcess(array $arguments): Process {
         $isLicenseRequest = (in_array(self::ARGUMENT_LICENSE_CREATE, $arguments) or in_array(self::ARGUMENT_LICENSE_USE, $arguments));
         

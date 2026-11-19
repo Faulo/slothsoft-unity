@@ -23,6 +23,7 @@ final class MailboxAccess {
         return getenv(self::ENV_EMAIL_USR) and getenv(self::ENV_EMAIL_PSW);
     }
     
+    /** @var array<string, string> */
     private static array $imapHosts = [
         'gmail.de' => 'imap.gmail.com',
         'gmail.com' => 'imap.gmail.com',
@@ -71,6 +72,9 @@ final class MailboxAccess {
         foreach (array_reverse($mailIds) as $mailId) {
             $mail = $this->mailbox->getMail($mailId, false);
             
+            if ($mail->date === null) {
+                continue;
+            }
             $mailDate = new DateTimeImmutable($mail->date);
             
             if ($mailDate >= $since and $mailDate <= $end) {

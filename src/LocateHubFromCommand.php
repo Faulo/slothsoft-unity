@@ -12,12 +12,15 @@ use Symfony\Component\Process\Process;
  */
 final class LocateHubFromCommand implements HubLocatorInterface {
     
+    /** @var list<string> */
     private array $command;
     
+    /** @param list<string> $command */
     public function __construct(array $command) {
         $this->command = $command;
     }
     
+    /** @param array<array-key, string> $arguments */
     public function create(array $arguments): Process {
         $arguments = array_merge($this->command, $arguments);
         return new Process($arguments);

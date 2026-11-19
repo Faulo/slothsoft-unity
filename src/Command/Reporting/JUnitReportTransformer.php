@@ -49,8 +49,9 @@ final readonly class JUnitReportTransformer {
         foreach ($metadata->getWarnings() as $warning) {
             $this->appendTextElement($document, $root, 'warning', $warning);
         }
-        if ($source?->documentElement) {
-            foreach ($source->documentElement->childNodes as $child) {
+        $sourceRoot = $source?->documentElement;
+        if ($sourceRoot !== null) {
+            foreach ($sourceRoot->childNodes as $child) {
                 if ($child instanceof DOMElement and $child->localName === 'warning') {
                     $this->appendTextElement($document, $root, 'warning', $child->textContent);
                 }
@@ -68,9 +69,9 @@ final readonly class JUnitReportTransformer {
             $root->appendChild($problem);
         }
         
-        if ($source) {
+        if ($sourceRoot !== null) {
             $sourceNode = $document->createElement('source');
-            $sourceNode->appendChild($document->importNode($source->documentElement, true));
+            $sourceNode->appendChild($document->importNode($sourceRoot, true));
             $root->appendChild($sourceNode);
         }
         

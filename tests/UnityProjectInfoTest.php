@@ -21,7 +21,7 @@ class UnityProjectInfoTest extends TestCase {
     
     public const VALID_PROJECT_CHANGESET = '6bd9e232123f';
     
-    public function testClassExists() {
+    public function testClassExists(): void {
         $this->assertTrue(class_exists(UnityProjectInfo::class));
     }
     
@@ -29,7 +29,7 @@ class UnityProjectInfoTest extends TestCase {
      *
      * @dataProvider validPathProvider
      */
-    public function testFind(string $path, bool $includeSubdirectories) {
+    public function testFind(string $path, bool $includeSubdirectories): void {
         $info = UnityProjectInfo::find($path, $includeSubdirectories);
         $this->assertNotNull($info);
         $this->assertInfoIsValid($info);
@@ -39,12 +39,12 @@ class UnityProjectInfoTest extends TestCase {
      *
      * @dataProvider invalidPathProvider
      */
-    public function testNoFind(string $path, bool $includeSubdirectories) {
+    public function testNoFind(string $path, bool $includeSubdirectories): void {
         $info = UnityProjectInfo::find($path, $includeSubdirectories);
         $this->assertNull($info);
     }
     
-    private function assertInfoIsValid(UnityProjectInfo $info) {
+    private function assertInfoIsValid(UnityProjectInfo $info): void {
         $this->assertDirectoryExists($info->path);
         $this->assertEquals(realpath(self::VALID_PROJECT), realpath($info->path));
         $this->assertEquals(self::VALID_PROJECT_VERSION, $info->editorVersion);
@@ -57,11 +57,12 @@ class UnityProjectInfoTest extends TestCase {
      *
      * @dataProvider validPathProvider
      */
-    public function testFindAll(string $path, bool $includeSubdirectories, int $expected) {
+    public function testFindAll(string $path, bool $includeSubdirectories, int $expected): void {
         $infos = iterator_to_array(UnityProjectInfo::findAll($path));
         $this->assertCount($expected, $infos);
     }
     
+    /** @return iterable<string, array{string, bool, int}> */
     public function validPathProvider(): iterable {
         yield self::VALID_PROJECT => [
             self::VALID_PROJECT,
@@ -75,6 +76,7 @@ class UnityProjectInfoTest extends TestCase {
         ];
     }
     
+    /** @return iterable<string, array{string, bool}> */
     public function invalidPathProvider(): iterable {
         yield self::VALID_ROOT => [
             self::VALID_ROOT,

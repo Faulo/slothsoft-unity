@@ -47,8 +47,12 @@ final class CommandLineRedactorTest extends TestCase {
         $document = new DOMDocument();
         $document->appendChild($error->asNode($document));
 
-        $this->assertStringNotContainsString($secret, $document->saveXML());
-        $this->assertStringContainsString(CommandLineRedactor::MARKER, $document->saveXML());
+        $xml = $document->saveXML();
+        if ($xml === false) {
+            $this->fail('Unable to serialize the error document.');
+        }
+        $this->assertStringNotContainsString($secret, $xml);
+        $this->assertStringContainsString(CommandLineRedactor::MARKER, $xml);
         $this->assertStringContainsString($secret, $error->getStdOut());
     }
 }

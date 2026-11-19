@@ -22,8 +22,8 @@ final class UnityProject {
     
     private ?UnityEditor $editor = null;
     
-    private function initEditor(): void {
-        $this->editor ??= $this->hub->getEditorByVersion($this->info->editorVersion);
+    private function editor(): UnityEditor {
+        return $this->editor ??= $this->hub->getEditorByVersion($this->info->editorVersion);
     }
     
     public function __construct(UnityProjectInfo $info, UnityHub $hub) {
@@ -51,6 +51,7 @@ final class UnityProject {
         return $this->info->editorVersion;
     }
     
+    /** @return array<array-key, mixed> */
     public function getPackages(): array {
         return $this->info->packages;
     }
@@ -68,6 +69,7 @@ final class UnityProject {
         return $this->info->settings[$key] ?? $defaultValue;
     }
     
+    /** @return iterable<\SplFileInfo> */
     public function getAssetFiles(): iterable {
         $path = $this->info->path . DIRECTORY_SEPARATOR . 'Assets';
         $directory = new \RecursiveDirectoryIterator($path);
@@ -104,8 +106,8 @@ final class UnityProject {
             }
             
             $reportError = '';
-            $resultsDoc = $this->loadTestReport($resultsFile, $reportError);
-            if ($resultsDoc === null) {
+            $report = $this->loadTestReport($resultsFile, $reportError);
+            if ($report === null) {
                 $this->appendTestInfrastructureError($doc, $rootNode, $testPlatform, $reportError, $executionError, $process);
                 $attributes['testcasecount']++;
                 $attributes['total']++;
@@ -123,12 +125,12 @@ final class UnityProject {
                 $warningNode->textContent = $warning;
                 $rootNode->appendChild($warningNode);
             }
-            foreach ($resultsDoc->documentElement->attributes as $attr) {
+            foreach ($report->attributes as $attr) {
                 if (isset($attributes[$attr->name])) {
                     $attributes[$attr->name] += (int) $attr->value;
                 }
             }
-            foreach ($resultsDoc->documentElement->childNodes as $node) {
+            foreach ($report->childNodes as $node) {
                 $rootNode->appendChild($doc->importNode($node, true));
             }
         }
@@ -141,7 +143,7 @@ final class UnityProject {
         return $doc;
     }
     
-    private function loadTestReport(string $resultsFile, string &$error): ?DOMDocument {
+    private function loadTestReport(string $resultsFile, string &$error): ?DOMElement {
         if (! is_file($resultsFile)) {
             $error = 'Unity did not create a test report.';
             return null;
@@ -162,11 +164,12 @@ final class UnityProject {
                 }
                 return null;
             }
-            if ($document->documentElement?->nodeName !== 'test-run') {
-                $error = sprintf("Unity created an unusable test report with root element '%s'.", $document->documentElement->nodeName ?? 'none');
+            $root = $document->documentElement;
+            if ($root?->nodeName !== 'test-run') {
+                $error = sprintf("Unity created an unusable test report with root element '%s'.", $root->nodeName ?? 'none');
                 return null;
             }
-            return $document;
+            return $root;
         } finally {
             libxml_clear_errors();
             libxml_use_internal_errors($previousInternalErrors);
@@ -257,16 +260,15 @@ final class UnityProject {
         if (! is_dir($buildPath)) {
             mkdir($buildPath, 0777, true);
         }
-        if (realpath($buildPath) === false) {
+        $resolvedPath = realpath($buildPath);
+        if ($resolvedPath === false) {
             throw ExecutionError::Error('AssertDirectory', "Failed to resolve build path '$buildPath'!");
         }
-        $buildPath = realpath($buildPath);
+        $buildPath = $resolvedPath;
         
         FileSystem::removeDir($buildPath, true);
         
-        $this->initEditor();
-        
-        $this->editor->installModules(...UnityBuildTarget::getEditoModules($target, $this->getScriptingBackend()));
+        $this->editor()->installModules(...UnityBuildTarget::getEditoModules($target, $this->getScriptingBackend()));
         
         $buildExecutable = UnityBuildTarget::getBuildExecutable($target, $this->getSetting('productName'));
         
@@ -291,31 +293,31 @@ final class UnityProject {
         return $process;
     }
     
+    /** @param list<string> $args */
     public function executeMethod(string $method, array $args): Process {
         return $this->execute('-quit', '-executeMethod', $method, ...$args);
     }
     
+    /** @param list<string> $args */
     public function startMethod(string $method, array $args): Process {
         return $this->execute('-executeMethod', $method, ...$args);
     }
     
     public function execute(string ...$arguments): Process {
-        $this->initEditor();
-        return $this->editor->execute(true, '-projectPath', $this->info->path, ...$arguments);
+        return $this->editor()->execute(true, '-projectPath', $this->info->path, ...$arguments);
     }
     
     public function ensureEditorIsInstalled(): bool {
-        $this->initEditor();
-        return $this->editor->isInstalled() or $this->editor->install();
+        $editor = $this->editor();
+        return $editor->isInstalled() or $editor->install();
     }
     
     public function ensureEditorIsLicensed(): bool {
-        $this->initEditor();
-        return $this->editor->isLicensed($this->info->path) or $this->editor->license($this->info->path);
+        $editor = $this->editor();
+        return $editor->isLicensed($this->info->path) or $editor->license($this->info->path);
     }
     
     public function installModules(string ...$modules): bool {
-        $this->initEditor();
-        return $this->editor->installModules(...$modules);
+        return $this->editor()->installModules(...$modules);
     }
 }

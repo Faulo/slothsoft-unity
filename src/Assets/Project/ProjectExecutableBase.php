@@ -26,16 +26,18 @@ abstract class ProjectExecutableBase extends ExecutableBase implements Executabl
     protected function parseArguments(FarahUrlArguments $args): void {
         $this->workspace = $args->get('workspace');
         if ($workspace = realpath($this->workspace)) {
-            $this->workspaceName = preg_replace('~\s+~', '', basename($workspace));
+            $name = basename($workspace);
+            $this->workspaceName = preg_replace('~\s+~', '', $name) ?? $name;
         }
     }
     
     protected function validate(): void {
-        if (! is_dir($this->workspace)) {
+        $workspace = realpath($this->workspace);
+        if ($workspace === false or ! is_dir($workspace)) {
             throw ExecutionError::Error('AssertDirectory', "Workspace '{$this->workspace}' is not a directory!");
         }
         
-        $this->workspace = realpath($this->workspace);
+        $this->workspace = $workspace;
         
         $hub = UnityHub::getInstance();
         
@@ -62,5 +64,9 @@ abstract class ProjectExecutableBase extends ExecutableBase implements Executabl
     
     protected function requiresEditor(): bool {
         return false;
+    }
+
+    final protected function requireProject(): UnityProject {
+        return $this->project ?? throw ExecutionError::Error('AssertProject', "Workspace '{$this->workspace}' does not contain a Unity project!");
     }
 }

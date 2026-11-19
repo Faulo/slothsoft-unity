@@ -42,7 +42,7 @@ class UnityLicensorTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testErrorWithoutUser() {
+    public function testErrorWithoutUser(): void {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
         $this->expectExceptionMessage('UnityLicensor requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '" to be set.');
@@ -54,7 +54,7 @@ class UnityLicensorTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testErrorWithoutPassword() {
+    public function testErrorWithoutPassword(): void {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
         $this->expectExceptionMessage('UnityLicensor requires the environment variable "' . UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '" to be set.');
@@ -66,7 +66,7 @@ class UnityLicensorTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testNoErrorWithBothAsParam() {
+    public function testNoErrorWithBothAsParam(): void {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
         $sut = new UnityLicensor('test', 'test');
@@ -77,7 +77,7 @@ class UnityLicensorTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testNoErrorWithBothAsEnv() {
+    public function testNoErrorWithBothAsEnv(): void {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
         $sut = new UnityLicensor();
@@ -88,7 +88,7 @@ class UnityLicensorTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testHasCredentialsIsFalseWithoutUser() {
+    public function testHasCredentialsIsFalseWithoutUser(): void {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
         $this->assertFalse(UnityLicensor::hasCredentialsInEnvironment());
@@ -98,7 +98,7 @@ class UnityLicensorTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testHasCredentialsIsFalseWithoutPassword() {
+    public function testHasCredentialsIsFalseWithoutPassword(): void {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=');
         $this->assertFalse(UnityLicensor::hasCredentialsInEnvironment());
@@ -108,13 +108,13 @@ class UnityLicensorTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testHasCredentialsIsTrueWithBoth() {
+    public function testHasCredentialsIsTrueWithBoth(): void {
         putenv(UnityLicensor::ENV_UNITY_LICENSE_EMAIL . '=test');
         putenv(UnityLicensor::ENV_UNITY_LICENSE_PASSWORD . '=test');
         $this->assertTrue(UnityLicensor::hasCredentialsInEnvironment());
     }
     
-    public function testInstallEditor() {
+    public function testInstallEditor(): void {
         $isLogging = UnityHub::getLoggingEnabled();
         UnityHub::setLoggingEnabled(true);
         $editor = $this->initEditor();
@@ -127,7 +127,7 @@ class UnityLicensorTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testSign() {
+    public function testSign(): void {
         $env = new TestEnvironment(UnityLicensor::ENV_UNITY_LICENSE_EMAIL, UnityLicensor::ENV_UNITY_LICENSE_PASSWORD, MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW);
         if ($env->prepareVariables($this)) {
             if ($editor = $this->initEditor()) {

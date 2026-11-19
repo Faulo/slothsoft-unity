@@ -49,6 +49,7 @@ final class GitProject {
         $this->gitMerge("origin/$branch");
     }
     
+    /** @return list<string> */
     public function getBranches(): array {
         $output = $this->execute(true, 'branch', '--sort=-committerdate', '-r');
         $matches = null;

@@ -19,6 +19,7 @@ class ScriptsTest extends TestCase {
     /**
      *
      * @dataProvider validBinaries
+     * @param list<string> $args
      */
     public function testUnityTests(string $script, array $args = []): void {
         $process = new Process([
@@ -38,6 +39,7 @@ class ScriptsTest extends TestCase {
         $this->assertStringContainsString("composer exec $script", $result, "Calling $script failed! Command:" . PHP_EOL . $process->getCommandLine());
     }
     
+    /** @return iterable<string, array{string, 1?: list<string>}> */
     public function validBinaries(): iterable {
         yield 'autoversion' => [
             'autoversion'
@@ -114,6 +116,7 @@ class ScriptsTest extends TestCase {
         $this->assertEquals(0, $code, "Retrieving '$url' failed! Command:" . PHP_EOL . $process->getCommandLine());
     }
     
+    /** @return iterable<string, array{string}> */
     public function validAssets(): iterable {
         yield 'unity-hub-help' => [
             'farah://slothsoft@unity/hub/help'
@@ -196,8 +199,8 @@ class ScriptsTest extends TestCase {
         $this->assertSame(0, $code, $process->getErrorOutput());
         $this->assertSame('', $process->getErrorOutput());
         $destination = $workspace . DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'com.example.package';
-        $this->assertSame('installed payload', file_get_contents($destination . DIRECTORY_SEPARATOR . 'payload.txt'));
-        $manifest = json_decode(file_get_contents($workspace . DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'manifest.json'), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame('installed payload', Fixture::read($destination . DIRECTORY_SEPARATOR . 'payload.txt'));
+        $manifest = json_decode(Fixture::read($workspace . DIRECTORY_SEPARATOR . 'Packages' . DIRECTORY_SEPARATOR . 'manifest.json'), true, 512, JSON_THROW_ON_ERROR);
         $this->assertSame('1.0.0', $manifest['dependencies']['existing.package']);
         $this->assertSame('1.1.33', $manifest['dependencies']['com.unity.test-framework']);
         
@@ -206,13 +209,14 @@ class ScriptsTest extends TestCase {
         } elseif ($mode === 'file') {
             $this->assertSame('', $process->getOutput(), 'File reporting must preserve normal output and not print report XML.');
             $this->assertFileExists($reportPath);
-            $this->assertValidJUnitXml(file_get_contents($reportPath));
+            $this->assertValidJUnitXml(Fixture::read($reportPath));
         } else {
             $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $process->getOutput());
             $this->assertValidJUnitXml($process->getOutput());
         }
     }
     
+    /** @return iterable<string, array{string}> */
     public function composerPackageInstallModes(): iterable {
         yield 'normal output' => ['normal'];
         yield 'file JUnit' => ['file'];

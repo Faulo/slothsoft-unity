@@ -47,7 +47,7 @@ final class VersionExecutable extends ProjectExecutableBase {
             case 'get':
                 break;
             case 'set':
-                $this->project->setProjectVersion($this->version);
+                $this->requireProject()->setProjectVersion($this->version);
                 break;
             default:
                 throw ExecutionError::Error('AssertParameter', "Unknown version mode '$this->mode'!");
@@ -55,7 +55,7 @@ final class VersionExecutable extends ProjectExecutableBase {
         
         $document = new DOMDocument('1.0', 'UTF-8');
         $node = $document->createElement('version');
-        $node->textContent = $this->project->getProjectVersion();
+        $node->textContent = $this->requireProject()->getProjectVersion();
         $document->appendChild($node);
         return $document;
     }

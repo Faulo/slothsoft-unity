@@ -6,6 +6,7 @@ namespace Slothsoft\Unity\Command\Operation;
 use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Farah\FarahUrl\FarahUrl;
+use Slothsoft\Unity\Command\AbstractAssetCommand;
 use Slothsoft\Unity\Command\AssetExecutionResult;
 use Slothsoft\Unity\Command\AssetExecutorInterface;
 use Slothsoft\Unity\Command\ApplicationFactory;
@@ -146,6 +147,7 @@ final class OperationalCommandTest extends TestCase {
     
     /**
      * @dataProvider commandHelpProvider
+     * @param class-string<AbstractAssetCommand> $commandClass
      */
     public function testCommandHelp(string $commandClass, string $name, string $description): void {
         $command = new $commandClass(new RecordingOperationAssetExecutor());
@@ -167,6 +169,7 @@ final class OperationalCommandTest extends TestCase {
         $this->assertStringContainsString($description, $tester->getDisplay());
     }
     
+    /** @return iterable<string, array{class-string<AbstractAssetCommand>, string, string}> */
     public function commandHelpProvider(): iterable {
         yield 'build' => [
             BuildCommand::class,
@@ -207,6 +210,8 @@ final class OperationalCommandTest extends TestCase {
 
     /**
      * @dataProvider missingRequiredInputProvider
+     * @param class-string<AbstractAssetCommand> $commandClass
+     * @param array<string, string> $arguments
      */
     public function testMissingRequiredInputUsesSymfonyInvalidExitCode(string $commandClass, string $name, array $arguments): void {
         $application = ApplicationFactory::createReporting([
@@ -226,6 +231,7 @@ final class OperationalCommandTest extends TestCase {
         $this->assertStringContainsString('Not enough arguments', $tester->getErrorOutput());
     }
 
+    /** @return iterable<string, array{class-string<AbstractAssetCommand>, string, array<string, string>}> */
     public function missingRequiredInputProvider(): iterable {
         yield 'build' => [BuildCommand::class, 'build', []];
         yield 'empty-project' => [EmptyProjectCommand::class, 'empty-project', []];
@@ -236,6 +242,7 @@ final class OperationalCommandTest extends TestCase {
         yield 'package-install' => [PackageInstallCommand::class, 'package-install', ['workspace' => 'workspace']];
     }
     
+    /** @param list<string> $arguments */
     private function executeArgv(Command $command, array $arguments): int {
         $application = new Application('unity-command');
         $application->setAutoExit(false);

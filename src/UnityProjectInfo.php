@@ -34,6 +34,7 @@ final class UnityProjectInfo {
         }
     }
     
+    /** @return iterable<self> */
     public static function findAll(string $directory): iterable {
         if (is_dir($directory)) {
             $iterator = new RecursiveCallbackFilterIterator(new RecursiveDirectoryIterator($directory), function (\SplFileInfo $file, string $path, RecursiveDirectoryIterator $iterator): bool {
@@ -65,10 +66,13 @@ final class UnityProjectInfo {
     
     public ?string $editorChangeset;
     
+    /** @var array<array-key, mixed> */
     public array $settings;
     
+    /** @var array<array-key, mixed> */
     public array $manifest;
     
+    /** @var array<array-key, mixed> */
     public array $packages;
     
     private function __construct(string $path) {
@@ -85,6 +89,9 @@ final class UnityProjectInfo {
             return;
         }
         $yaml = file_get_contents($this->path . self::FILE_SETTINGS);
+        if ($yaml === false) {
+            throw ExecutionError::Error('AssertProjectSettings', "Unable to read settings for project '$this->path'!");
+        }
         $yaml = str_replace(" $key: {$this->settings[$key]}", " $key: $value", $yaml);
         file_put_contents($this->path . self::FILE_SETTINGS, $yaml);
         $this->settings = $this->loadSettings();
@@ -93,7 +100,7 @@ final class UnityProjectInfo {
     private function loadEditorVersion(): string {
         $unityVersion = file_get_contents($this->path . self::FILE_VERSION);
         $match = [];
-        if (preg_match('~m_EditorVersion: (.+)~', $unityVersion, $match)) {
+        if ($unityVersion !== false and preg_match('~m_EditorVersion: (.+)~', $unityVersion, $match)) {
             return trim($match[1]);
         }
         throw ExecutionError::Error('AssertEditorVersion', "Unable to determine editor version for project '$this->path'!");
@@ -102,12 +109,13 @@ final class UnityProjectInfo {
     private function loadEditorChangeset(): ?string {
         $unityVersion = file_get_contents($this->path . self::FILE_VERSION);
         $match = [];
-        if (preg_match('~m_EditorVersionWithRevision: .+ \((.+)\)~', $unityVersion, $match)) {
+        if ($unityVersion !== false and preg_match('~m_EditorVersionWithRevision: .+ \((.+)\)~', $unityVersion, $match)) {
             return trim($match[1]);
         }
         return null;
     }
     
+    /** @return array<array-key, mixed> */
     private function loadSettings(): array {
         $settings = Spyc::YAMLLoad($this->path . self::FILE_SETTINGS);
         if (isset($settings['PlayerSettings'])) {
@@ -116,6 +124,7 @@ final class UnityProjectInfo {
         throw ExecutionError::Error('AssertProjectSettings', "Unable to determine settings for project '$this->path'!");
     }
     
+    /** @return array<array-key, mixed> */
     private function loadPackages(): array {
         if (! file_exists($this->path . self::FILE_PACKAGES)) {
             return [];
@@ -125,6 +134,7 @@ final class UnityProjectInfo {
         return $packages['dependencies'] ?? [];
     }
     
+    /** @return array<array-key, mixed> */
     private function loadManifest(): array {
         if (! file_exists($this->path . self::FILE_MANIFEST)) {
             return [];

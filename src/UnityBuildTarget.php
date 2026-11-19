@@ -24,6 +24,7 @@ final class UnityBuildTarget {
     
     public const BACKEND_IL2CPP = 1;
     
+    /** @return list<string> */
     public static function getEditoModules(string $target, int $backend = self::BACKEND_MONO): array {
         return match (strtolower($target)) {
             self::WINDOWS => match ($backend) {
@@ -67,6 +68,7 @@ final class UnityBuildTarget {
         };
     }
     
+    /** @return list<string> */
     public static function getBuildParameters(string $target, string $buildExecutable): array {
         return match (strtolower($target)) {
             self::WINDOWS => [

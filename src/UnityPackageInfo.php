@@ -26,6 +26,7 @@ final class UnityPackageInfo {
         }
     }
     
+    /** @return iterable<self> */
     public static function findAll(string $directory): iterable {
         if (is_dir($directory)) {
             $iterator = new RecursiveCallbackFilterIterator(new RecursiveDirectoryIterator($directory), function (\SplFileInfo $file, string $path, RecursiveDirectoryIterator $iterator): bool {
@@ -48,6 +49,7 @@ final class UnityPackageInfo {
     
     public string $path;
     
+    /** @var array<array-key, mixed> */
     public array $package;
     
     private function __construct(string $path) {
@@ -66,6 +68,7 @@ final class UnityPackageInfo {
         return $this->package['unity'];
     }
     
+    /** @return array<array-key, mixed> */
     private function loadPackage(): array {
         return JsonUtils::load($this->path . self::FILE_PACKAGE);
     }

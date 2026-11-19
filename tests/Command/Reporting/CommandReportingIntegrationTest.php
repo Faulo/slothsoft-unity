@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Slothsoft\Unity\Command\Reporting;
 
+use Slothsoft\Unity\Fixture;
 use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -37,7 +38,7 @@ final class CommandReportingIntegrationTest extends TestCase {
         $this->assertStringContainsString("live stderr\n", $tester->getErrorOutput());
         $this->assertStringNotContainsString('internal-result', $tester->getDisplay());
         $this->assertFileExists($path);
-        $this->assertValidJUnit(file_get_contents($path));
+        $this->assertValidJUnit(Fixture::read($path));
     }
     
     public function testStdoutReportContainsOnlyXmlAndRedirectsAllNormalOutput(): void {
@@ -76,7 +77,7 @@ final class CommandReportingIntegrationTest extends TestCase {
         $this->assertSame(Command::FAILURE, $code);
         $this->assertSame(1, $executor->executionCount);
         $this->assertStringContainsString('synthetic execution failure', $tester->getErrorOutput());
-        $xml = file_get_contents($path);
+        $xml = Fixture::read($path);
         $this->assertStringContainsString('synthetic execution failure', $xml);
         $this->assertValidJUnit($xml);
     }
@@ -110,7 +111,7 @@ final class CommandReportingIntegrationTest extends TestCase {
         $this->assertSame(Command::INVALID, $code);
         $this->assertSame(0, $executor->executionCount);
         $this->assertStringContainsString('Not enough arguments', $tester->getErrorOutput());
-        $this->assertValidJUnit(file_get_contents($path));
+        $this->assertValidJUnit(Fixture::read($path));
     }
     
     public function testUnknownCommandReturnsInvalidAndCreatesCleanStdoutReport(): void {
@@ -159,6 +160,7 @@ final class CommandReportingIntegrationTest extends TestCase {
         ]));
     }
     
+    /** @return array{capture_stderr_separately: bool, decorated: bool} */
     private function testerOptions(): array {
         return [
             'capture_stderr_separately' => true,

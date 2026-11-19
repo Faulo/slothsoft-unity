@@ -140,6 +140,7 @@ final class ApplicationFactoryTest extends TestCase {
 
 final class TerminatorCommand extends AbstractAssetCommand {
     
+    /** @var array<string, mixed> */
     public array $arguments = [];
     
     public function __construct(AssetExecutorInterface $executor) {

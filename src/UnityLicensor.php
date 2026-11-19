@@ -146,7 +146,7 @@ final class UnityLicensor {
         
         if ($crawler->filterXPath('.//input[@name = "email"]')->count() > 0) {
             $crawler = $this->loginWithAuthJs();
-            if (str_ends_with((string) parse_url($crawler->getUri(), PHP_URL_PATH), self::UNITY_AUTH_SECURITY_CHECK)) {
+            if (str_ends_with((string) parse_url($crawler->getUri() ?? '', PHP_URL_PATH), self::UNITY_AUTH_SECURITY_CHECK)) {
                 $crawler = $this->completeSecurityCheck($crawler, $startTime);
             }
         } else {
@@ -235,7 +235,7 @@ final class UnityLicensor {
         $this->cookies->set(new Cookie('device_fp', $deviceFingerprint, null, '/', 'login.unity.com', true, false, false, 'Lax'));
         
         $this->browser->request('GET', self::UNITY_AUTH_CSRF);
-        $csrfResponse = json_decode($this->browser->getResponse()->getContent(), true);
+        $csrfResponse = json_decode($this->browser->getInternalResponse()->getContent(), true);
         $csrfToken = is_array($csrfResponse) ? ($csrfResponse['csrfToken'] ?? null) : null;
         
         if (! is_string($csrfToken) or $csrfToken === '') {
@@ -251,7 +251,7 @@ final class UnityLicensor {
             'HTTP_X_AUTH_RETURN_REDIRECT' => '1'
         ]);
         
-        $loginResponse = json_decode($this->browser->getResponse()->getContent(), true);
+        $loginResponse = json_decode($this->browser->getInternalResponse()->getContent(), true);
         $redirectUrl = is_array($loginResponse) ? ($loginResponse['url'] ?? null) : null;
         
         if (! is_string($redirectUrl) or $redirectUrl === '') {
@@ -273,13 +273,13 @@ final class UnityLicensor {
         }
         
         $action = $this->findServerAction($crawler, self::UNITY_AUTH_SECURITY_ACTION);
-        $securityCheckUrl = $crawler->getUri();
+        $securityCheckUrl = $crawler->getUri() ?? throw new Exception('Unity did not provide a security check URL.');
         $body = json_encode([
             $code,
             [
                 'rememberDevice' => true
             ]
-        ]);
+        ], JSON_THROW_ON_ERROR);
         
         $this->browser->request('POST', $securityCheckUrl, [], [], [
             'HTTP_ACCEPT' => 'text/x-component',
@@ -287,13 +287,13 @@ final class UnityLicensor {
             'CONTENT_TYPE' => 'text/plain;charset=UTF-8'
         ], $body);
         
-        $actionResponse = $this->browser->getResponse();
+        $actionResponse = $this->browser->getInternalResponse();
         if ($actionResponse->getStatusCode() !== 200) {
             throw new Exception(sprintf('Unity rejected the security code with HTTP status %d.', $actionResponse->getStatusCode()));
         }
         
         $crawler = $this->followMetaRefresh($this->browser->request('GET', $securityCheckUrl));
-        if (str_ends_with((string) parse_url($crawler->getUri(), PHP_URL_PATH), self::UNITY_AUTH_SECURITY_CHECK)) {
+        if (str_ends_with((string) parse_url($crawler->getUri() ?? '', PHP_URL_PATH), self::UNITY_AUTH_SECURITY_CHECK)) {
             $responseContent = str_replace([
                 $code,
                 $this->userMail
@@ -427,8 +427,8 @@ final class UnityLicensor {
     private function log(): void {
         // we need to retrieve the response here to avoid the lazy-loading
         $crawler = $this->browser->getCrawler();
-        $response = $this->browser->getResponse();
-        $url = $crawler->getUri();
+        $response = $this->browser->getInternalResponse();
+        $url = $crawler->getUri() ?? '';
         
         if (! self::isLogging()) {
             return;

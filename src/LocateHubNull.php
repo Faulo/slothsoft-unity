@@ -13,6 +13,7 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
  */
 final class LocateHubNull implements HubLocatorInterface {
     
+    /** @param array<array-key, string> $arguments */
     public function create(array $arguments): Process {
         throw new FileNotFoundException('Unity is not installed!');
     }

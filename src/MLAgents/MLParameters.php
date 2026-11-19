@@ -11,6 +11,7 @@ namespace Slothsoft\Unity\MLAgents;
  */
 final class MLParameters {
     
+    /** @var array<array-key, mixed> */
     private array $data = [];
     
     public function registerArgument(string $key, mixed $defaultValue): void {

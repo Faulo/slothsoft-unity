@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Slothsoft\Unity\Command\Operation;
 
+use Slothsoft\Unity\Fixture;
 use DOMDocument;
 use DOMXPath;
 use PHPUnit\Framework\TestCase;
@@ -46,6 +47,7 @@ final class TestsCommandSemanticTest extends TestCase {
         }
     }
     
+    /** @return iterable<string, array{string, int}> */
     public function semanticResultProvider(): iterable {
         yield 'passing' => [
             '<test-run failed="0" inconclusive="0"><test-suite><test-case result="Passed" /></test-suite></test-run>',
@@ -150,7 +152,7 @@ final class TestsCommandSemanticTest extends TestCase {
         $this->assertTrue($report->load($path));
         (new JUnitReportValidator())->assertValid($report);
         $xpath = new DOMXPath($report);
-        $this->assertSame(0, $xpath->query('//failure | //error')->length);
+        $this->assertSame(0, Fixture::query($xpath, '//failure | //error')->length);
         $this->assertSame('Inconclusive: environment unavailable', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/skipped/@message)'));
         $this->assertSame('captured output', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-out)'));
         $this->assertSame('diagnostic trace', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-err)'));

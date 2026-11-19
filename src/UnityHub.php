@@ -41,6 +41,7 @@ final class UnityHub {
         return $instance;
     }
     
+    /** @var list<string> */
     private static array $licenseFolders = [];
     
     private static ?UnityHubConfig $config = null;
@@ -147,16 +148,19 @@ final class UnityHub {
         return self::getHubLocator()->exists();
     }
     
+    /** @var array<string, UnityEditor>|null */
     private ?array $editors = null;
     
     private bool $hasLoadedEditorsFromCache = false;
     
     private string $editorPath = '';
     
+    /** @var array<string, string|null>|null */
     private ?array $changesets = null;
     
     private ?UnityReleaseApi $releaseApi = null;
     
+    /** @var array<string, bool> */
     private array $releaseApiQueries = [];
     
     private mixed $fileContext = null;
@@ -174,9 +178,10 @@ final class UnityHub {
         return $this->fileContext;
     }
     
+    /** @return array<string, UnityEditor> */
     public function getEditors(): array {
         $this->loadEditors(true);
-        return $this->editors;
+        return $this->editors ?? [];
     }
     
     private function loadEditors(bool $allowCache): void {
@@ -198,6 +203,7 @@ final class UnityHub {
         }
     }
     
+    /** @return iterable<string, string> */
     private function loadInstalledEditors(bool $allowCache): iterable {
         $editorPaths = $this->loadInstalledEditorsOutput($allowCache);
         
@@ -213,7 +219,7 @@ final class UnityHub {
         $editorPaths = $allowCache ? $this->loadInstalledEditorsCache() : null;
         $this->hasLoadedEditorsFromCache = (bool) $editorPaths;
         
-        if ($this->hasLoadedEditorsFromCache) {
+        if ($editorPaths) {
             self::logInstalledEditorsCache($editorPaths);
             return $editorPaths;
         }
@@ -230,6 +236,7 @@ final class UnityHub {
         }
     }
     
+    /** @return array{version: string, path: string}|null */
     private static function parseInstalledEditor(string $line): ?array {
         $line = explode('installed at', str_replace(',', '', $line), 2);
         if (count($line) !== 2) {
@@ -255,7 +262,9 @@ final class UnityHub {
     }
     
     private function loadInstalledEditorsCache(): ?string {
-        return is_file(self::editorPathCache()) ? file_get_contents(self::editorPathCache()) : null;
+        $cache = self::editorPathCache();
+        $contents = is_file($cache) ? file_get_contents($cache) : false;
+        return $contents === false ? null : $contents;
     }
     
     private function saveInstalledEditorsCache(string $data): void {
@@ -310,6 +319,7 @@ final class UnityHub {
         $this->execute(...$arguments);
     }
     
+    /** @return iterable<string> */
     public function findLicenses(string $editorVersion): iterable {
         foreach (self::$licenseFolders as $folder) {
             foreach (FileSystem::scanDir($folder, FileSystem::SCANDIR_EXCLUDE_DIRS | FileSystem::SCANDIR_REALPATH) as $file) {
@@ -335,6 +345,10 @@ final class UnityHub {
         }
     }
     
+    /**
+     * @param array<array-key, string> $modules
+     * @return list<string>
+     */
     public function createEditorInstallation(string $version, array $modules = []): array {
         assert($version !== '');
         
@@ -360,12 +374,12 @@ final class UnityHub {
     }
     
     public function inventStableEditorVersion(string $minVersion, bool $highest = false): string {
-        $hasApiReleases = $highest and $this->loadChangesetsFromReleaseApi(trim($minVersion));
+        $hasApiReleases = $highest && $this->loadChangesetsFromReleaseApi(trim($minVersion));
         if (! $hasApiReleases) {
             $this->loadChangesets();
         }
         $maxVersion = null;
-        foreach (array_keys($this->changesets) as $version) {
+        foreach (array_keys($this->changesets ?? []) as $version) {
             $matches = $highest ? self::matchesEditorVersion($version, $minVersion) : version_compare($version, $minVersion, '>=');
             if ($matches) {
                 $operator = $highest ? '>' : '<';
@@ -399,6 +413,7 @@ final class UnityHub {
         return $version === $requestedVersion;
     }
     
+    /** @var array<string, string> */
     private array $customChangesets = [];
     
     public function registerChangeset(string $version, string $changeset): void {
@@ -461,6 +476,10 @@ final class UnityHub {
         throw ExecutionError::Error('AssertEditorChangeset', "Failed to determine changeset ID for Unity version '$version'!");
     }
     
+    /**
+     * @param array<array-key, string> $modules
+     * @return list<string>
+     */
     public function createModuleInstallation(string $version, array $modules = []): array {
         assert($version !== '');
         
@@ -575,7 +594,9 @@ final class UnityHub {
             $version = parse_url($href, PHP_URL_HOST);
             $changeset = parse_url($href, PHP_URL_PATH);
             
-            $this->changesets[$version] = substr($changeset, 1);
+            if (is_string($version) and is_string($changeset)) {
+                $this->changesets[$version] = substr($changeset, 1);
+            }
         }
     }
     
@@ -593,7 +614,9 @@ final class UnityHub {
     
     public function findProject(string $projectPath, bool $includeSubdirectories = false): ?UnityProject {
         if ($info = UnityProjectInfo::find($projectPath, $includeSubdirectories)) {
-            $this->registerChangeset($info->editorVersion, $info->editorChangeset);
+            if ($info->editorChangeset !== null) {
+                $this->registerChangeset($info->editorVersion, $info->editorChangeset);
+            }
             return new UnityProject($info, $this);
         }
         return null;

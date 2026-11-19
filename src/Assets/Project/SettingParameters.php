@@ -13,6 +13,7 @@ use Slothsoft\Farah\Module\Asset\ParameterFilterStrategy\AbstractMapParameterFil
  */
 final class SettingParameters extends AbstractMapParameterFilter {
     
+    /** @return array<string, \Slothsoft\Core\IO\Sanitizer\SanitizerInterface> */
     protected function createValueSanitizers(): array {
         return [
             'workspace' => new StringSanitizer(''),

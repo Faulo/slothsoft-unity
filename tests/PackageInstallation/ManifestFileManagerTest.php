@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Slothsoft\Unity\PackageInstallation;
 
+use Slothsoft\Unity\Fixture;
 use PHPUnit\Framework\TestCase;
 
 final class ManifestFileManagerTest extends TestCase {
@@ -66,12 +67,12 @@ final class ManifestFileManagerTest extends TestCase {
                 'com.example.package' => '2.0.0'
             ]
         ]);
-        $before = file_get_contents($existingPath);
+        $before = Fixture::read($existingPath);
 
         $merged = $this->manager->mergeFiles($existingPath, $incomingPath);
 
         $this->assertSame('2.0.0', $merged->dependencies->{'com.example.package'});
-        $this->assertSame($before, file_get_contents($existingPath));
+        $this->assertSame($before, Fixture::read($existingPath));
     }
 
     public function testMergeAndWriteAtomicallyReplacesManifest(): void {
@@ -89,7 +90,7 @@ final class ManifestFileManagerTest extends TestCase {
         $merged = $this->manager->mergeAndWrite($existingPath, $incomingPath);
 
         $this->assertEquals($merged, $this->manager->read($existingPath));
-        $this->assertStringEndsWith("\n", file_get_contents($existingPath));
+        $this->assertStringEndsWith("\n", Fixture::read($existingPath));
         $this->assertSame([], glob($this->directory . DIRECTORY_SEPARATOR . '.manifest-*.tmp'));
     }
 
@@ -101,13 +102,13 @@ final class ManifestFileManagerTest extends TestCase {
         ]);
         $incomingPath = $this->directory . DIRECTORY_SEPARATOR . 'installation.json';
         file_put_contents($incomingPath, '{invalid');
-        $before = file_get_contents($existingPath);
+        $before = Fixture::read($existingPath);
 
         try {
             $this->manager->mergeAndWrite($existingPath, $incomingPath);
             $this->fail('Invalid installation JSON should fail.');
         } catch (PackageInstallationException) {
-            $this->assertSame($before, file_get_contents($existingPath));
+            $this->assertSame($before, Fixture::read($existingPath));
             $this->assertSame([], glob($this->directory . DIRECTORY_SEPARATOR . '.manifest-*.tmp'));
         }
     }
@@ -116,7 +117,7 @@ final class ManifestFileManagerTest extends TestCase {
         $path = $this->writeJson('manifest.json', [
             'preserved' => true
         ]);
-        $before = file_get_contents($path);
+        $before = Fixture::read($path);
 
         try {
             $this->manager->write($path, (object) [
@@ -124,7 +125,7 @@ final class ManifestFileManagerTest extends TestCase {
             ]);
             $this->fail('Unencodable JSON should fail.');
         } catch (PackageInstallationException) {
-            $this->assertSame($before, file_get_contents($path));
+            $this->assertSame($before, Fixture::read($path));
             $this->assertSame([], glob($this->directory . DIRECTORY_SEPARATOR . '.manifest-*.tmp'));
         }
     }
@@ -150,7 +151,7 @@ final class ManifestFileManagerTest extends TestCase {
             'dependencies' => (object) []
         ]);
 
-        $this->assertSame("{\n    \"dependencies\": {}\n}\n", file_get_contents($path));
+        $this->assertSame("{\n    \"dependencies\": {}\n}\n", Fixture::read($path));
     }
     
     public function testRoundTripPreservesEmptyObjectsListsAndNumericObjectKeys(): void {
@@ -159,7 +160,7 @@ final class ManifestFileManagerTest extends TestCase {
         
         $manifest = $this->manager->read($path);
         $this->manager->write($path, $manifest);
-        $document = json_decode(file_get_contents($path));
+        $document = json_decode(Fixture::read($path));
         
         $this->assertInstanceOf(\stdClass::class, $document);
         $this->assertInstanceOf(\stdClass::class, $document->emptyObject);
@@ -176,7 +177,7 @@ final class ManifestFileManagerTest extends TestCase {
         file_put_contents($incomingPath, '{"settings":{}}');
         
         $manifest = $this->manager->mergeAndWrite($existingPath, $incomingPath);
-        $document = json_decode(file_get_contents($existingPath));
+        $document = json_decode(Fixture::read($existingPath));
         
         $this->assertInstanceOf(\stdClass::class, $manifest->settings);
         $this->assertInstanceOf(\stdClass::class, $document->settings);
@@ -190,25 +191,25 @@ final class ManifestFileManagerTest extends TestCase {
         
         $this->manager->mergeAndWrite($existingPath, $incomingPath);
         
-        $this->assertStringContainsString('1.0', file_get_contents($existingPath));
-        $this->assertSame([1, 1.0], json_decode(file_get_contents($existingPath), true)['values']);
+        $this->assertStringContainsString('1.0', Fixture::read($existingPath));
+        $this->assertSame([1, 1.0], json_decode(Fixture::read($existingPath), true)['values']);
     }
 
     public function testStagingDoesNotChangeTargetAndCanBeDiscarded(): void {
         $path = $this->writeJson('manifest.json', [
             'preserved' => true
         ]);
-        $before = file_get_contents($path);
+        $before = Fixture::read($path);
 
         $staged = $this->manager->stage($path, (object) [
             'replacement' => true
         ]);
 
-        $this->assertSame($before, file_get_contents($path));
+        $this->assertSame($before, Fixture::read($path));
         $this->assertFileExists($staged['temporary']);
         $this->manager->discard($staged);
         $this->assertFileDoesNotExist($staged['temporary']);
-        $this->assertSame($before, file_get_contents($path));
+        $this->assertSame($before, Fixture::read($path));
     }
 
     public function testRejectsManifestSymlinkBeforeStaging(): void {
@@ -228,11 +229,12 @@ final class ManifestFileManagerTest extends TestCase {
         } catch (PackageInstallationException) {
             $this->assertSame(json_encode([
                 'preserved' => true
-            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR), file_get_contents($outside));
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR), Fixture::read($outside));
             $this->assertSame([], glob($this->directory . DIRECTORY_SEPARATOR . '.manifest-*.tmp'));
         }
     }
 
+    /** @param array<array-key, mixed> $value */
     private function writeJson(string $name, array $value): string {
         $path = $this->directory . DIRECTORY_SEPARATOR . $name;
         file_put_contents($path, json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));

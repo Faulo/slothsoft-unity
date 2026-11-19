@@ -18,6 +18,7 @@ final class MLTraining {
     
     const HYPERPARAMETER_EXTENSION = 'yaml';
     
+    /** @return iterable<self> */
     public static function determineTrainings(UnityProject $project, string $serverPath, string $todoPath, string $modelPath): iterable {
         $packages = $project->getPackages();
         assert(isset($packages[self::MLAGENTS_PACKAGE]), 'Project at ' . $project->getProjectPath() . ' does not appear to have the ml-agents package installed!');
@@ -37,16 +38,16 @@ final class MLTraining {
             mkdir($modelPath, 0777, true);
         }
         
-        assert(is_dir($todoPath), "Path $todoPath not found");
-        assert(is_dir($modelPath), "Path $modelPath not found");
+        $todoDirectory = realpath($todoPath);
+        $modelRoot = realpath($modelPath);
+        if ($todoDirectory === false or ! is_dir($todoDirectory) or $modelRoot === false or ! is_dir($modelRoot)) {
+            throw new \InvalidArgumentException("Unable to resolve training directories '$todoPath' and '$modelPath'.");
+        }
         
-        $todoPath = realpath($todoPath);
-        $modelPath = realpath($modelPath);
-        
-        foreach (FileSystem::scanDir($todoPath, FileSystem::SCANDIR_REALPATH) as $hyperFile) {
+        foreach (FileSystem::scanDir($todoDirectory, FileSystem::SCANDIR_REALPATH) as $hyperFile) {
             if (pathinfo($hyperFile, PATHINFO_EXTENSION) === self::HYPERPARAMETER_EXTENSION) {
                 $runId = pathinfo($hyperFile, PATHINFO_FILENAME);
-                $modelDirectory = $modelPath . DIRECTORY_SEPARATOR . $runId;
+                $modelDirectory = $modelRoot . DIRECTORY_SEPARATOR . $runId;
                 yield new MLTraining($ml, $runId, $hyperFile, $modelDirectory);
             }
         }
@@ -96,7 +97,11 @@ final class MLTraining {
         $this->args->registerArgument('base-port', 5005);
         $this->args->registerArgument('-tot-students', '');
         $this->args->registerArgument('-tot-lessons', '');
-        $this->args->loadFromString(file_get_contents($this->hyperFile));
+        $config = file_get_contents($this->hyperFile);
+        if ($config === false) {
+            throw new \RuntimeException("Unable to read training config '$this->hyperFile'.");
+        }
+        $this->args->loadFromString($config);
     }
     
     public function needsTraining(): bool {
@@ -104,13 +109,15 @@ final class MLTraining {
     }
     
     public function train(string $workDirectory, string $executableFile): int {
-        assert(file_exists($executableFile), "File $executableFile not found");
-        $executableFile = realpath($executableFile);
+        $executablePath = realpath($executableFile);
+        if ($executablePath === false) {
+            throw new \InvalidArgumentException("Executable '$executableFile' not found.");
+        }
         
         $args = [];
         $args[] = escapeshellarg($this->hyperFile);
         $args[] = escapeshellarg($this->runId);
-        $args[] = escapeshellarg($executableFile);
+        $args[] = escapeshellarg($executablePath);
         $args[] = $this->args->asShellArgument();
         
         $command = vsprintf('%s --run-id=%s --env=%s --force %s', $args);

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Slothsoft\Unity\Assets\Project;
 
+use Slothsoft\Unity\Fixture;
 use PHPUnit\Framework\TestCase;
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\Module\Module;
@@ -20,10 +21,10 @@ final class EmptyProjectExecutableTest extends TestCase {
         
         $document = Module::resolveToDOMWriter($url)->toDocument();
         
-        $this->assertSame('result', $document->documentElement->tagName);
+        $this->assertSame('result', Fixture::root($document)->tagName);
         $this->assertSame(1, $document->getElementsByTagName('process')->length);
         $this->assertSame(1, $document->getElementsByTagName('error')->length);
-        $this->assertSame('AssertParameter', $document->getElementsByTagName('error')->item(0)->getAttribute('type'));
+        $this->assertSame('AssertParameter', Fixture::element($document->getElementsByTagName('error')->item(0))->getAttribute('type'));
     }
     
     public function testUsesExecutableBaseAndDedicatedParameters(): void {

@@ -292,6 +292,7 @@ final class ManifestMergerTest extends TestCase {
         $this->assertEquals($once, $twice);
     }
     
+    /** @param array<array-key, mixed> $value */
     private function asObject(array $value): \stdClass {
         $object = json_decode(json_encode((object)$value, JSON_PRESERVE_ZERO_FRACTION | JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
         $this->assertInstanceOf(\stdClass::class, $object);
@@ -299,10 +300,12 @@ final class ManifestMergerTest extends TestCase {
         return $object;
     }
     
+    /** @return array<array-key, mixed> */
     private function asArray(\stdClass $value): array {
         return $this->asArrayValue($value);
     }
     
+    /** @return array<array-key, mixed> */
     private function asArrayValue(mixed $value): array {
         $array = json_decode(json_encode($value, JSON_PRESERVE_ZERO_FRACTION | JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $this->assertIsArray($array);

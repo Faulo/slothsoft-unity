@@ -14,6 +14,7 @@ use RuntimeException;
  */
 final class AppBuild {
     
+    /** @var array<string, mixed> */
     private array $data = [
         "Depots" => []
     ];

@@ -33,6 +33,7 @@ class JUnitTest extends TestCase {
         $this->assertTrue($result);
     }
     
+    /** @return iterable<string, array{string}> */
     public function validTests(): iterable {
         foreach (FileSystem::scanDir(self::EXAMPLE_DIRECTORY, FileSystem::SCANDIR_REALPATH) as $file) {
             yield basename($file) => [
@@ -51,14 +52,14 @@ class JUnitTest extends TestCase {
         XML);
         $xpath = new DOMXPath($data);
 
-        $this->assertSame(1, $xpath->query('/testsuites/testsuite')->length);
+        $this->assertSame(1, Fixture::query($xpath, '/testsuites/testsuite')->length);
         $this->assertSame('', $xpath->evaluate('string(/testsuites/testsuite/@package)'));
         $this->assertSame('Legacy.Package', $xpath->evaluate('string(/testsuites/testsuite/@name)'));
         $this->assertSame('1', $xpath->evaluate('string(/testsuites/testsuite/@failures)'));
-        $this->assertSame(0, $xpath->query('/testsuites/testsuite/properties/*')->length, 'Legacy process reports must not gain unity-command properties.');
+        $this->assertSame(0, Fixture::query($xpath, '/testsuites/testsuite/properties/*')->length, 'Legacy process reports must not gain unity-command properties.');
         $this->assertSame('Legacy.Package', $xpath->evaluate('string(/testsuites/testsuite/testcase/@classname)'));
         $this->assertSame('Legacy operation', $xpath->evaluate('string(/testsuites/testsuite/testcase/@name)'));
-        $failure = $xpath->query('/testsuites/testsuite/testcase/failure')->item(0);
+        $failure = Fixture::query($xpath, '/testsuites/testsuite/testcase/failure')->item(0);
         $this->assertInstanceOf(DOMElement::class, $failure);
         $this->assertSame('LegacyFailure', $failure->getAttribute('type'));
         $this->assertFalse($failure->hasAttribute('message'), 'Legacy failures are copied without synthesizing new attributes.');
@@ -78,12 +79,12 @@ class JUnitTest extends TestCase {
         XML);
         $xpath = new DOMXPath($data);
 
-        $this->assertSame(1, $xpath->query('/testsuites/testsuite')->length);
+        $this->assertSame(1, Fixture::query($xpath, '/testsuites/testsuite')->length);
         $this->assertSame('0', $xpath->evaluate('string(/testsuites/testsuite/@id)'));
         $this->assertSame('Legacy.Suite', $xpath->evaluate('string(/testsuites/testsuite/@name)'));
         $this->assertSame('2', $xpath->evaluate('string(/testsuites/testsuite/@tests)'), 'Legacy suite counts come from Unity Test Runner attributes.');
         $this->assertSame('preserved', $xpath->evaluate('string(/testsuites/testsuite/properties/property[@name="legacy"]/@value)'));
-        $this->assertSame(1, $xpath->query('/testsuites/testsuite/testcase')->length);
+        $this->assertSame(1, Fixture::query($xpath, '/testsuites/testsuite/testcase')->length);
         $this->assertSame('', $xpath->evaluate('string(/testsuites/testsuite/system-out)'), 'Legacy reports do not aggregate per-case output.');
     }
 
@@ -107,7 +108,7 @@ class JUnitTest extends TestCase {
 
         $this->assertSame('0', $xpath->evaluate('string(/testsuites/testsuite/@errors)'));
         $this->assertSame('2', $xpath->evaluate('string(/testsuites/testsuite/@skipped)'));
-        $this->assertSame(2, $xpath->query('//testcase/skipped')->length);
+        $this->assertSame(2, Fixture::query($xpath, '//testcase/skipped')->length);
         $this->assertSame('Inconclusive: environment unavailable', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/skipped/@message)'));
         $this->assertSame('inconclusive output', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-out)'));
         $this->assertSame('inconclusive trace', $xpath->evaluate('string(//testcase[@name="Inconclusive"]/system-err)'));

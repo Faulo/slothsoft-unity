@@ -37,6 +37,7 @@ final class UnityEnvironmentTest extends TestCase {
         $this->assertThat(UnityEnvironment::getNoGraphics(), new IsEqual($expected));
     }
     
+    /** @return iterable<string|int, array{string|null, bool}> */
     public function provideGetNoGraphics(): iterable {
         yield 'empty' => [
             '',
@@ -68,6 +69,7 @@ final class UnityEnvironmentTest extends TestCase {
         $this->assertThat(UnityEnvironment::getAcceleratorEndpoint(), new IsEqual($expected));
     }
     
+    /** @return iterable<string, array{string|null, string|null}> */
     public function provideGetAcceleratorEndpoint(): iterable {
         yield 'empty' => [
             '',
@@ -87,6 +89,7 @@ final class UnityEnvironmentTest extends TestCase {
     /**
      *
      * @dataProvider provideGetAcceleratorParams
+     * @param list<string> $expected
      */
     public function testGetAcceleratorParams(?string $value, array $expected): void {
         putenv(UnityEnvironment::ENV_UNITY_ACCELERATOR_PARAMS . ($value === null ? '' : "=$value"));
@@ -94,6 +97,7 @@ final class UnityEnvironmentTest extends TestCase {
         $this->assertThat(UnityEnvironment::getAcceleratorParams(), new IsEqual($expected));
     }
     
+    /** @return iterable<string, array{string|null, list<string>}> */
     public function provideGetAcceleratorParams(): iterable {
         yield 'empty' => [
             '',
@@ -143,13 +147,14 @@ final class UnityEnvironmentTest extends TestCase {
      *
      * @dataProvider isLoggingInputProvider
      */
-    public function testIsLoggingInput(string $value, bool $expected) {
+    public function testIsLoggingInput(string $value, bool $expected): void {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
         UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingInput(), new IsEqual($expected));
     }
     
+    /** @return iterable<string, array{string, bool}> */
     public function isLoggingInputProvider(): iterable {
         yield UnityEnvironment::UNITY_LOG_NONE => [
             UnityEnvironment::UNITY_LOG_NONE,
@@ -171,13 +176,14 @@ final class UnityEnvironmentTest extends TestCase {
      *
      * @dataProvider isLoggingOutputProvider
      */
-    public function testIsLoggingOutput(string $value, bool $expected) {
+    public function testIsLoggingOutput(string $value, bool $expected): void {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
         UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingOutput(), new IsEqual($expected));
     }
     
+    /** @return iterable<string, array{string, bool}> */
     public function isLoggingOutputProvider(): iterable {
         yield UnityEnvironment::UNITY_LOG_NONE => [
             UnityEnvironment::UNITY_LOG_NONE,
@@ -199,13 +205,14 @@ final class UnityEnvironmentTest extends TestCase {
      *
      * @dataProvider isLoggingErrorProvider
      */
-    public function testIsLoggingError(string $value, bool $expected) {
+    public function testIsLoggingError(string $value, bool $expected): void {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
         UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingError(), new IsEqual($expected));
     }
     
+    /** @return iterable<string, array{string, bool}> */
     public function isLoggingErrorProvider(): iterable {
         yield UnityEnvironment::UNITY_LOG_NONE => [
             UnityEnvironment::UNITY_LOG_NONE,
@@ -227,13 +234,14 @@ final class UnityEnvironmentTest extends TestCase {
      *
      * @dataProvider isLoggingLicenseProvider
      */
-    public function testIsLoggingLicense(string $value, bool $expected) {
+    public function testIsLoggingLicense(string $value, bool $expected): void {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
         UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingLicense(), new IsEqual($expected));
     }
     
+    /** @return iterable<string, array{string, bool}> */
     public function isLoggingLicenseProvider(): iterable {
         yield UnityEnvironment::UNITY_LOG_NONE => [
             UnityEnvironment::UNITY_LOG_NONE,
@@ -255,13 +263,14 @@ final class UnityEnvironmentTest extends TestCase {
      *
      * @dataProvider isLoggingCacheProvider
      */
-    public function testIsLoggingCache(string $value, bool $expected) {
+    public function testIsLoggingCache(string $value, bool $expected): void {
         putenv(UnityEnvironment::ENV_UNITY_LOGGING . '=' . $value);
         UnityEnvironment::reload();
         
         $this->assertThat(UnityEnvironment::isLoggingCache(), new IsEqual($expected));
     }
     
+    /** @return iterable<string, array{string, bool}> */
     public function isLoggingCacheProvider(): iterable {
         yield UnityEnvironment::UNITY_LOG_NONE => [
             UnityEnvironment::UNITY_LOG_NONE,

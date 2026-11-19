@@ -55,6 +55,7 @@ final class PackageMetadataReaderTest extends TestCase {
         $this->reader->read($this->directory);
     }
 
+    /** @return iterable<string, array{string|int|null}> */
     public function invalidNameProvider(): iterable {
         yield 'missing' => [null];
         yield 'empty' => [''];

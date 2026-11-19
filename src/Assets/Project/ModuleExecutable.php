@@ -14,6 +14,7 @@ use DOMDocument;
  */
 final class ModuleExecutable extends ProjectExecutableBase {
     
+    /** @var list<string> */
     private array $modules;
     
     protected function parseArguments(FarahUrlArguments $args): void {
@@ -46,7 +47,7 @@ final class ModuleExecutable extends ProjectExecutableBase {
     }
     
     protected function createResultDocument(): ?DOMDocument {
-        $this->project->installModules(...$this->modules);
+        $this->requireProject()->installModules(...$this->modules);
         return null;
     }
 }

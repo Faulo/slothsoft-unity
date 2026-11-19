@@ -27,6 +27,7 @@ final class LegacyCommandCompatibilityTest extends TestCase {
         $this->assertSame($expectedOutput, $process->getOutput());
     }
     
+    /** @return iterable<string, array{string, string}> */
     public function legacyHelpProvider(): iterable {
         yield 'unity-build' => [
             'unity-build',
@@ -111,6 +112,7 @@ final class LegacyCommandCompatibilityTest extends TestCase {
 
     /**
      * @dataProvider legacyInvalidInvocationProvider
+     * @param list<string> $argumentTemplates
      */
     public function testLegacyInvalidInvocationRetainsArgumentsStreamsAndExitBehavior(string $script, array $argumentTemplates, string $errorPathKey, string $testNameTemplate): void {
         $directory = temp_dir(str_replace(':', '-', __METHOD__) . '-' . $script);
@@ -139,6 +141,7 @@ final class LegacyCommandCompatibilityTest extends TestCase {
         $this->assertSame(strtr($testNameTemplate, $values), $xpath->evaluate('string(/testsuites/testsuite/testcase/@name)'));
     }
 
+    /** @return iterable<string, array{string, list<string>, string, string}> */
     public function legacyInvalidInvocationProvider(): iterable {
         yield 'unity-build defaults' => [
             'unity-build',

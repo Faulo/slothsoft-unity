@@ -22,13 +22,16 @@ class MailboxAccessTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testRetrieveLatestCode() {
+    public function testRetrieveLatestCode(): void {
         $env = new TestEnvironment(MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW, 'EMAIL_TEST_TIME', 'EMAIL_TEST_CODE');
         if ($env->prepareVariables($this)) {
-            $time = getenv('EMAIL_TEST_TIME');
-            $code = getenv('EMAIL_TEST_CODE');
-            $sut = new MailboxAccess(getenv(MailboxAccess::ENV_EMAIL_USR), getenv(MailboxAccess::ENV_EMAIL_PSW));
-            $this->assertEquals($code, $sut->retrieveLatestBy('no-reply@unity3d.com', DateTimeImmutable::createFromFormat('U', $time), new DateInterval('PT1000M'), '/\b(\d{6})\b/'));
+            $time = DateTimeImmutable::createFromFormat('U', TestEnvironment::requireVariable('EMAIL_TEST_TIME'));
+            if ($time === false) {
+                $this->fail('EMAIL_TEST_TIME must be a Unix timestamp.');
+            }
+            $code = TestEnvironment::requireVariable('EMAIL_TEST_CODE');
+            $sut = new MailboxAccess(TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_USR), TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_PSW));
+            $this->assertEquals($code, $sut->retrieveLatestBy('no-reply@unity3d.com', $time, new DateInterval('PT1000M'), '/\b(\d{6})\b/'));
         }
     }
     
@@ -36,11 +39,11 @@ class MailboxAccessTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testRetrieveNoCodeByEmail() {
+    public function testRetrieveNoCodeByEmail(): void {
         $env = new TestEnvironment(MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW);
         if ($env->prepareVariables($this)) {
-            $sut = new MailboxAccess(getenv(MailboxAccess::ENV_EMAIL_USR), getenv(MailboxAccess::ENV_EMAIL_PSW));
-            $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT1000M'), '/\b(\d{6})\b/'));
+            $sut = new MailboxAccess(TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_USR), TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_PSW));
+            $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', new DateTimeImmutable('@1745158411'), new DateInterval('PT1000M'), '/\b(\d{6})\b/'));
         }
     }
     
@@ -48,11 +51,11 @@ class MailboxAccessTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testRetrieveNoCodeByNow() {
+    public function testRetrieveNoCodeByNow(): void {
         $env = new TestEnvironment(MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW);
         if ($env->prepareVariables($this)) {
-            $sut = new MailboxAccess(getenv(MailboxAccess::ENV_EMAIL_USR), getenv(MailboxAccess::ENV_EMAIL_PSW));
-            $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT600M'), '/\b(\d{6})\b/'));
+            $sut = new MailboxAccess(TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_USR), TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_PSW));
+            $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', new DateTimeImmutable('@1745158411'), new DateInterval('PT600M'), '/\b(\d{6})\b/'));
         }
     }
     
@@ -60,11 +63,11 @@ class MailboxAccessTest extends TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testRetrieveNoCodeByPattern() {
+    public function testRetrieveNoCodeByPattern(): void {
         $env = new TestEnvironment(MailboxAccess::ENV_EMAIL_USR, MailboxAccess::ENV_EMAIL_PSW);
         if ($env->prepareVariables($this)) {
-            $sut = new MailboxAccess(getenv(MailboxAccess::ENV_EMAIL_USR), getenv(MailboxAccess::ENV_EMAIL_PSW));
-            $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', DateTimeImmutable::createFromFormat('U', '1745158411'), new DateInterval('PT1000M'), '/\b(\d{7})\b/'));
+            $sut = new MailboxAccess(TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_USR), TestEnvironment::requireVariable(MailboxAccess::ENV_EMAIL_PSW));
+            $this->assertNull($sut->retrieveLatestBy('no-exist@unity3d.com', new DateTimeImmutable('@1745158411'), new DateInterval('PT1000M'), '/\b(\d{7})\b/'));
         }
     }
 }

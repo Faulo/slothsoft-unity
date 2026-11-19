@@ -12,7 +12,7 @@ use SplFileInfo;
 
 class UnityProjectTest extends TestCase {
     
-    public function testClassExists() {
+    public function testClassExists(): void {
         $this->assertTrue(class_exists(UnityProject::class));
     }
     
@@ -44,6 +44,7 @@ class UnityProjectTest extends TestCase {
         }
         
         $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
+        $this->assertNotNull($project);
         
         $assets = iterator_to_array($project->getAssetFiles());
         
@@ -67,6 +68,7 @@ class UnityProjectTest extends TestCase {
         }
         
         $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
+        $this->assertNotNull($project);
         
         $this->assertTrue($project->hasSetting('companyName'));
         $this->assertEquals('Oilcatz', $project->getSetting('companyName'));
@@ -79,6 +81,7 @@ class UnityProjectTest extends TestCase {
         }
         
         $project = $hub->findProject(UnityProjectInfoTest::VALID_PROJECT);
+        $this->assertNotNull($project);
         
         $this->assertFalse($project->hasSetting('???'));
         $this->assertEquals('Oilcatz', $project->getSetting('???', 'Oilcatz'));
@@ -107,10 +110,10 @@ class UnityProjectTest extends TestCase {
         $xpath = new DOMXPath($report);
         
         $this->assertSame('2', $xpath->evaluate('string(/test-run/@testcasecount)'));
-        $this->assertSame(2, $xpath->query('//test-case')->length);
-        $this->assertSame(0, $xpath->query('//test-case[@label="UnityProcessError"]')->length);
-        $this->assertFalse($report->documentElement->hasAttribute('unity-exit-code'));
-        $this->assertSame(2, $xpath->query('/test-run/warning')->length);
+        $this->assertSame(2, Fixture::query($xpath, '//test-case')->length);
+        $this->assertSame(0, Fixture::query($xpath, '//test-case[@label="UnityProcessError"]')->length);
+        $this->assertFalse(Fixture::root($report)->hasAttribute('unity-exit-code'));
+        $this->assertSame(2, Fixture::query($xpath, '/test-run/warning')->length);
         $this->assertStringContainsString('PlayMode', $xpath->evaluate('string(/test-run/warning[1])'));
         $this->assertStringContainsString('exit code 2', $xpath->evaluate('string(/test-run/warning[1])'));
     }
@@ -139,22 +142,23 @@ class UnityProjectTest extends TestCase {
         $xpath = new DOMXPath($report);
         
         $this->assertSame('4', $xpath->evaluate('string(/test-run/@testcasecount)'));
-        $this->assertSame(1, $xpath->query('//test-case[@name="Passes"]')->length);
-        $this->assertSame(3, $xpath->query('//test-case[@label="UnityProcessError"]')->length);
+        $this->assertSame(1, Fixture::query($xpath, '//test-case[@name="Passes"]')->length);
+        $this->assertSame(3, Fixture::query($xpath, '//test-case[@label="UnityProcessError"]')->length);
         $this->assertSame([
             'MissingMode',
             'MalformedMode',
             'WrongRootMode'
-        ], array_map(static fn($node): string => $node->getAttribute('value'), iterator_to_array($xpath->query('//test-suite[test-case[@label="UnityProcessError"]]/properties/property[@name="unity-test-platform"]'))));
+        ], array_map(static fn ($node): string => Fixture::element($node)->getAttribute('value'), iterator_to_array(Fixture::query($xpath, '//test-suite[test-case[@label="UnityProcessError"]]/properties/property[@name="unity-test-platform"]'))));
         $this->assertSame('17', $xpath->evaluate('string(//test-suite[properties/property[@value="MissingMode"]]/properties/property[@name="unity-process.exit-code"]/@value)'));
         
         $junit = (new JUnitReporter())->createReport($report, new OperationMetadata('tests'));
         $junitXPath = new DOMXPath($junit);
-        $this->assertSame(4, $junitXPath->query('//testcase')->length);
-        $this->assertSame(3, $junitXPath->query('//testcase/error[@type="UnityProcessError"]')->length);
-        $this->assertSame(0, $junitXPath->query('//testcase[@name="Passes"]/*[self::failure or self::error]')->length);
+        $this->assertSame(4, Fixture::query($junitXPath, '//testcase')->length);
+        $this->assertSame(3, Fixture::query($junitXPath, '//testcase/error[@type="UnityProcessError"]')->length);
+        $this->assertSame(0, Fixture::query($junitXPath, '//testcase[@name="Passes"]/*[self::failure or self::error]')->length);
     }
     
+    /** @param array<string, mixed> $scenario */
     private function createSyntheticTestProject(array $scenario): UnityProject {
         $encodedScenario = json_encode($scenario, JSON_THROW_ON_ERROR);
         putenv('SLOTHSOFT_UNITY_TEST_SCENARIO=' . $encodedScenario);

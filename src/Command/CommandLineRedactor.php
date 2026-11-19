@@ -13,6 +13,7 @@ final readonly class CommandLineRedactor {
 
     public const MARKER = '[REDACTED]';
 
+    /** @param array<string, string> $replacements */
     private function __construct(private array $replacements) {
     }
 

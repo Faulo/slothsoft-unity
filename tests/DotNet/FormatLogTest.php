@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Slothsoft\Unity\DotNet;
 
+use Slothsoft\Unity\Fixture;
 use PHPUnit\Framework\TestCase;
 use DOMElement;
 
@@ -23,7 +24,11 @@ class FormatLogTest extends TestCase {
     public function testConstructorThrowsOnInvalidJSON(): void {
         $file = temp_file(__NAMESPACE__);
         file_put_contents($file, '[');
-        $file = realpath($file);
+        $resolved = realpath($file);
+        if ($resolved === false) {
+            $this->fail("Unable to resolve fixture '$file'.");
+        }
+        $file = $resolved;
         
         $this->expectExceptionMessage("Malformed format-report.json '$file':" . PHP_EOL . '[');
         
@@ -39,8 +44,7 @@ class FormatLogTest extends TestCase {
         
         $actual = $log->asDocument();
         
-        $node = $actual->documentElement;
-        $this->assertNotEmpty($node);
+        $node = Fixture::root($actual);
         $this->assertEquals('Reports', $node->tagName);
         $this->assertEquals(date(DATE_W3C, 1640991600), $node->getAttribute('Time'));
         $this->assertEquals(0, $node->childNodes->length);
@@ -77,16 +81,16 @@ class FormatLogTest extends TestCase {
         
         $actual = $log->asDocument();
         
-        $this->assertEquals(1, $actual->documentElement->childNodes->length);
+        $this->assertEquals(1, Fixture::root($actual)->childNodes->length);
         
-        $node = $actual->documentElement->firstChild;
+        $node = Fixture::root($actual)->firstChild;
         $this->assertInstanceOf(DOMElement::class, $node);
         $this->assertEquals('Report', $node->tagName);
         $this->assertEquals("AIEnemyActionUiState_old.cs", $node->getAttribute('FileName'));
         $this->assertEquals("R:\\Ulisses\\Ulisses.HeXXen1733.Battle\\Packages\\de.ulisses-spiele.hexxen1733.battle\\Runtime\\UI\\States\\AIEnemyActionUiState_old.cs", $node->getAttribute('FilePath'));
         $this->assertEquals(1, $node->getElementsByTagName('FileChange')->length);
         
-        $node = $node->getElementsByTagName('FileChange')->item(0);
+        $node = Fixture::element($node->getElementsByTagName('FileChange')->item(0));
         $this->assertEquals(96, $node->getAttribute('LineNumber'));
         $this->assertEquals(17, $node->getAttribute('CharNumber'));
         $this->assertEquals("IDE0019", $node->getAttribute('DiagnosticId'));

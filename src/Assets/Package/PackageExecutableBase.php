@@ -25,15 +25,17 @@ abstract class PackageExecutableBase extends ExecutableBase implements Executabl
     
     protected function parseArguments(FarahUrlArguments $args): void {
         $this->packageDirectory = $args->get('package');
-        $this->packageName = preg_replace('~\s+~', '', basename($this->packageDirectory));
+        $name = basename($this->packageDirectory);
+        $this->packageName = preg_replace('~\s+~', '', $name) ?? $name;
     }
     
     protected function validate(): void {
-        if (! is_dir($this->packageDirectory)) {
+        $directory = realpath($this->packageDirectory);
+        if ($directory === false or ! is_dir($directory)) {
             throw ExecutionError::Error('AssertDirectory', "Workspace '$this->packageDirectory' is not a directory!");
         }
         
-        $this->packageDirectory = realpath($this->packageDirectory);
+        $this->packageDirectory = $directory;
         
         $hub = UnityHub::getInstance();
         

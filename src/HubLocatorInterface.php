@@ -12,6 +12,7 @@ use Symfony\Component\Process\Process;
  */
 interface HubLocatorInterface {
     
+    /** @param array<array-key, string> $arguments */
     public function create(array $arguments): Process;
     
     public function exists(): bool;

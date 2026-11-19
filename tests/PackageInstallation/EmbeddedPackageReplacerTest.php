@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Slothsoft\Unity\PackageInstallation;
 
+use Slothsoft\Unity\Fixture;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
@@ -28,8 +29,8 @@ final class EmbeddedPackageReplacerTest extends TestCase {
 
         $expected = realpath($this->workspace . DIRECTORY_SEPARATOR . 'Packages') . DIRECTORY_SEPARATOR . 'com.example.package';
         $this->assertSame($expected, $destination);
-        $this->assertSame('new content', file_get_contents($destination . DIRECTORY_SEPARATOR . 'Runtime' . DIRECTORY_SEPARATOR . 'Package.cs'));
-        $this->assertSame('hidden content', file_get_contents($destination . DIRECTORY_SEPARATOR . '.hidden'));
+        $this->assertSame('new content', Fixture::read($destination . DIRECTORY_SEPARATOR . 'Runtime' . DIRECTORY_SEPARATOR . 'Package.cs'));
+        $this->assertSame('hidden content', Fixture::read($destination . DIRECTORY_SEPARATOR . '.hidden'));
         $this->assertFileExists($this->source . DIRECTORY_SEPARATOR . 'Runtime' . DIRECTORY_SEPARATOR . 'Package.cs');
         $this->assertNoStagingArtifacts();
     }
@@ -46,10 +47,10 @@ final class EmbeddedPackageReplacerTest extends TestCase {
         $this->assertSame(realpath($destination), realpath($actual));
         $this->assertFileDoesNotExist($destination . DIRECTORY_SEPARATOR . 'Old' . DIRECTORY_SEPARATOR . 'obsolete.txt');
         $this->assertDirectoryDoesNotExist($destination . DIRECTORY_SEPARATOR . 'Old');
-        $this->assertSame('new', file_get_contents($destination . DIRECTORY_SEPARATOR . 'new.txt'));
+        $this->assertSame('new', Fixture::read($destination . DIRECTORY_SEPARATOR . 'new.txt'));
         $this->assertSame([
             'name' => 'com.example.package'
-        ], json_decode(file_get_contents($destination . DIRECTORY_SEPARATOR . 'package.json'), true, 512, JSON_THROW_ON_ERROR));
+        ], json_decode(Fixture::read($destination . DIRECTORY_SEPARATOR . 'package.json'), true, 512, JSON_THROW_ON_ERROR));
         $this->assertNoStagingArtifacts();
     }
 
@@ -61,7 +62,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
         (new EmbeddedPackageReplacer())->replace($this->workspace, $this->source);
 
         $this->assertDirectoryExists($destination);
-        $this->assertSame('new', file_get_contents($destination . DIRECTORY_SEPARATOR . 'new.txt'));
+        $this->assertSame('new', Fixture::read($destination . DIRECTORY_SEPARATOR . 'new.txt'));
         $this->assertNoStagingArtifacts();
     }
 
@@ -73,11 +74,11 @@ final class EmbeddedPackageReplacerTest extends TestCase {
         $replacer->prepare($this->workspace, $this->source);
         $replacer->activate();
         $this->assertFileDoesNotExist($destination . DIRECTORY_SEPARATOR . 'preserved.txt');
-        $this->assertSame('new', file_get_contents($destination . DIRECTORY_SEPARATOR . 'new.txt'));
+        $this->assertSame('new', Fixture::read($destination . DIRECTORY_SEPARATOR . 'new.txt'));
 
         $replacer->rollback();
 
-        $this->assertSame('preserved', file_get_contents($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
+        $this->assertSame('preserved', Fixture::read($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
         $this->assertFileDoesNotExist($destination . DIRECTORY_SEPARATOR . 'new.txt');
         $this->assertNoStagingArtifacts();
     }
@@ -93,7 +94,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
 
         (new EmbeddedPackageReplacer())->replace($this->workspace, $this->source);
 
-        $this->assertSame('preserved', file_get_contents($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
+        $this->assertSame('preserved', Fixture::read($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
         $this->assertDirectoryDoesNotExist($destination . DIRECTORY_SEPARATOR . 'linked-directory');
         $this->assertNoStagingArtifacts();
     }
@@ -123,7 +124,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
 
         (new EmbeddedPackageReplacer())->replace($this->workspace, $this->source);
 
-        $this->assertSame('preserved', file_get_contents($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
+        $this->assertSame('preserved', Fixture::read($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
         $this->assertDirectoryDoesNotExist($junction);
         $this->assertNoStagingArtifacts();
     }
@@ -155,8 +156,8 @@ final class EmbeddedPackageReplacerTest extends TestCase {
             (new EmbeddedPackageReplacer())->replace($this->workspace, $this->source);
             $this->fail('Source junctions should fail.');
         } catch (PackageInstallationException) {
-            $this->assertSame('preserved', file_get_contents($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
-            $this->assertSame('preserved', file_get_contents($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
+            $this->assertSame('preserved', Fixture::read($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
+            $this->assertSame('preserved', Fixture::read($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
             $this->assertNoStagingArtifacts();
         } finally {
             @rmdir($junction);
@@ -171,7 +172,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
             (new EmbeddedPackageReplacer())->replace($this->workspace, $this->source);
             $this->fail('Invalid package metadata should fail.');
         } catch (PackageInstallationException) {
-            $this->assertSame('preserved', file_get_contents($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
+            $this->assertSame('preserved', Fixture::read($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
             $this->assertNoStagingArtifacts();
         }
     }
@@ -203,7 +204,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
         } catch (PackageInstallationException $exception) {
             $this->assertSame('Staged validation failed.', $exception->getMessage());
             $this->assertSame(2, $reader->calls);
-            $this->assertSame('preserved', file_get_contents($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
+            $this->assertSame('preserved', Fixture::read($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
             $this->assertNoStagingArtifacts();
         }
     }
@@ -217,7 +218,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
             (new EmbeddedPackageReplacer())->replace($invalidWorkspace, $this->source);
             $this->fail('Invalid workspace should fail.');
         } catch (PackageInstallationException) {
-            $this->assertSame('preserved', file_get_contents($invalidWorkspace . DIRECTORY_SEPARATOR . 'preserved.txt'));
+            $this->assertSame('preserved', Fixture::read($invalidWorkspace . DIRECTORY_SEPARATOR . 'preserved.txt'));
             $this->assertDirectoryDoesNotExist($invalidWorkspace . DIRECTORY_SEPARATOR . 'Packages');
         }
     }
@@ -231,7 +232,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
             (new EmbeddedPackageReplacer())->replace($this->workspace, $destination);
             $this->fail('Overlapping source and destination should fail.');
         } catch (PackageInstallationException) {
-            $this->assertSame('preserved', file_get_contents($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
+            $this->assertSame('preserved', Fixture::read($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
             $this->assertNoStagingArtifacts();
         }
     }
@@ -249,7 +250,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
             (new EmbeddedPackageReplacer())->replace($this->workspace, $this->source);
             $this->fail('A symlinked Packages directory should fail.');
         } catch (PackageInstallationException) {
-            $this->assertSame('preserved', file_get_contents($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
+            $this->assertSame('preserved', Fixture::read($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
             $this->assertFileDoesNotExist($outside . DIRECTORY_SEPARATOR . 'com.example.package');
         }
     }
@@ -267,7 +268,7 @@ final class EmbeddedPackageReplacerTest extends TestCase {
             (new EmbeddedPackageReplacer())->replace($this->workspace, $this->source);
             $this->fail('A symlinked destination should fail.');
         } catch (PackageInstallationException) {
-            $this->assertSame('preserved', file_get_contents($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
+            $this->assertSame('preserved', Fixture::read($outside . DIRECTORY_SEPARATOR . 'preserved.txt'));
             $this->assertNoStagingArtifacts();
         }
     }
@@ -284,8 +285,8 @@ final class EmbeddedPackageReplacerTest extends TestCase {
             (new EmbeddedPackageReplacer())->replace($this->workspace, $this->source);
             $this->fail('Source symlinks should fail.');
         } catch (PackageInstallationException) {
-            $this->assertSame('outside', file_get_contents($outside));
-            $this->assertSame('preserved', file_get_contents($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
+            $this->assertSame('outside', Fixture::read($outside));
+            $this->assertSame('preserved', Fixture::read($destination . DIRECTORY_SEPARATOR . 'preserved.txt'));
             $this->assertNoStagingArtifacts();
         }
     }
