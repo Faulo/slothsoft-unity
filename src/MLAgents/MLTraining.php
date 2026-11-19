@@ -45,7 +45,7 @@ final class MLTraining {
         }
         
         foreach (FileSystem::scanDir($todoDirectory, FileSystem::SCANDIR_REALPATH) as $hyperFile) {
-            if (pathinfo($hyperFile, PATHINFO_EXTENSION) === self::HYPERPARAMETER_EXTENSION) {
+            if (is_string($hyperFile) and pathinfo($hyperFile, PATHINFO_EXTENSION) === self::HYPERPARAMETER_EXTENSION) {
                 $runId = pathinfo($hyperFile, PATHINFO_FILENAME);
                 $modelDirectory = $modelRoot . DIRECTORY_SEPARATOR . $runId;
                 yield new MLTraining($ml, $runId, $hyperFile, $modelDirectory);

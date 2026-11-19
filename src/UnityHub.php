@@ -323,7 +323,7 @@ final class UnityHub {
     public function findLicenses(string $editorVersion): iterable {
         foreach (self::$licenseFolders as $folder) {
             foreach (FileSystem::scanDir($folder, FileSystem::SCANDIR_EXCLUDE_DIRS | FileSystem::SCANDIR_REALPATH) as $file) {
-                if (pathinfo($file, PATHINFO_EXTENSION) === 'ulf') {
+                if (is_string($file) and pathinfo($file, PATHINFO_EXTENSION) === 'ulf') {
                     $document = DOMHelper::loadDocument($file);
                     $xpath = DOMHelper::loadXPath($document);
                     if ($licenseVersion = $xpath->evaluate('string(//ClientProvidedVersion/@Value)')) {

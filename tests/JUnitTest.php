@@ -36,6 +36,9 @@ class JUnitTest extends TestCase {
     /** @return iterable<string, array{string}> */
     public function validTests(): iterable {
         foreach (FileSystem::scanDir(self::EXAMPLE_DIRECTORY, FileSystem::SCANDIR_REALPATH) as $file) {
+            if (! is_string($file)) {
+                $this->fail('Expected a filename for the JUnit fixture.');
+            }
             yield basename($file) => [
                 $file
             ];
