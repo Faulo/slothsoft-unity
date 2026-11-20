@@ -9,6 +9,12 @@ Historical entries are reconstructed from Git tags and the changes between relea
 
 ## [Unreleased]
 
+## [2.24.3] - 2026-11-20
+
+### Fixed
+
+- Redact Steam passwords and Steam Guard codes from login diagnostics, including initial and retry timeout errors. Timeouts report the duration and retain a nonzero CLI exit status. ([#16](https://github.com/Faulo/slothsoft-unity/issues/16))
+
 ## [2.24.2] - 2026-11-20
 
 ### Fixed
@@ -804,7 +810,8 @@ Historical entries are reconstructed from Git tags and the changes between relea
 ### Added
 - Initial release with Unity project, Git project, and ML-Agents helpers.
 
-[Unreleased]: https://github.com/Faulo/slothsoft-unity/compare/2.24.2...HEAD
+[Unreleased]: https://github.com/Faulo/slothsoft-unity/compare/2.24.3...HEAD
+[2.24.3]: https://github.com/Faulo/slothsoft-unity/compare/2.24.2...2.24.3
 [2.24.2]: https://github.com/Faulo/slothsoft-unity/compare/2.24.1...2.24.2
 [2.24.1]: https://github.com/Faulo/slothsoft-unity/compare/2.24.0...2.24.1
 [2.24.0]: https://github.com/Faulo/slothsoft-unity/compare/2.23.3...2.24.0

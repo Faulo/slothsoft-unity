@@ -202,6 +202,8 @@ Uses `STEAM_CREDENTIALS_USR` and `STEAM_CREDENTIALS_PSW`. If mailbox credentials
 composer exec steam-login
 ```
 
+Steam login timeouts report the duration and exit with a nonzero status. Package-generated login diagnostics mask the Steam password and Steam Guard code. PHP callers of `SteamCMD::login()` receive a sanitized `RuntimeException` on timeout.
+
 ### `transform-dotnet-format`
 
 Transform a `dotnet format` JSON report to JUnit XML and write the XML to stdout.
