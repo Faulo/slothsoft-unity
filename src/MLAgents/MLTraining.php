@@ -1,7 +1,10 @@
 <?php
 declare(strict_types = 1);
+
 namespace Slothsoft\Unity\MLAgents;
 
+use InvalidArgumentException;
+use LogicException;
 use Slothsoft\Core\FileSystem;
 use Slothsoft\Unity\UnityProject;
 
@@ -21,12 +24,14 @@ final class MLTraining {
     /** @return iterable<self> */
     public static function determineTrainings(UnityProject $project, string $serverPath, string $todoPath, string $modelPath): iterable {
         $packages = $project->getPackages();
-        assert(isset($packages[self::MLAGENTS_PACKAGE]), 'Project at ' . $project->getProjectPath() . ' does not appear to have the ml-agents package installed!');
-        
-        $packageVersion = $packages[self::MLAGENTS_PACKAGE]['version'];
+        $package = $packages[self::MLAGENTS_PACKAGE] ?? null;
+        $packageVersion = is_array($package) ? ($package['version'] ?? null) : null;
+        if (! is_string($packageVersion) || $packageVersion === '') {
+            throw new InvalidArgumentException("Project at '{$project->getProjectPath()}' does not have a valid ML-Agents package version.");
+        }
         
         if (! isset(MLContext::PACKAGE_MAPPING[$packageVersion])) {
-            throw new \InvalidArgumentException("Package version $packageVersion can't be mapped to an ML-Agents version, help!");
+            throw new InvalidArgumentException("Package version $packageVersion can't be mapped to an ML-Agents version, help!");
         }
         $mlVersion = MLContext::PACKAGE_MAPPING[$packageVersion];
         $ml = new MLContext($serverPath, $mlVersion);
@@ -41,7 +46,7 @@ final class MLTraining {
         $todoDirectory = realpath($todoPath);
         $modelRoot = realpath($modelPath);
         if ($todoDirectory === false or ! is_dir($todoDirectory) or $modelRoot === false or ! is_dir($modelRoot)) {
-            throw new \InvalidArgumentException("Unable to resolve training directories '$todoPath' and '$modelPath'.");
+            throw new InvalidArgumentException("Unable to resolve training directories '$todoPath' and '$modelPath'.");
         }
         
         foreach (FileSystem::scanDir($todoDirectory, FileSystem::SCANDIR_REALPATH) as $hyperFile) {
@@ -61,7 +66,7 @@ final class MLTraining {
     
     private string $modelDirectory;
     
-    private MLParameters $args;
+    private ?MLParameters $args = null;
     
     public function __construct(MLContext $ml, string $runId, string $hyperFile, string $modelDirectory) {
         assert(is_file($hyperFile), "File $hyperFile not found");
@@ -87,31 +92,36 @@ final class MLTraining {
     }
     
     private function loadHyper(): void {
-        $this->args = new MLParameters();
-        $this->args->registerArgument('num-envs', 1);
-        $this->args->registerArgument('time-scale', 1.0);
-        $this->args->registerArgument('cpu', true);
-        $this->args->registerArgument('no-graphics', true);
-        $this->args->registerArgument('quality-level', 0);
-        $this->args->registerArgument('initialize-from', '');
-        $this->args->registerArgument('base-port', 5005);
-        $this->args->registerArgument('-tot-students', '');
-        $this->args->registerArgument('-tot-lessons', '');
         $config = file_get_contents($this->hyperFile);
         if ($config === false) {
             throw new \RuntimeException("Unable to read training config '$this->hyperFile'.");
         }
-        $this->args->loadFromString($config);
+        $args = new MLParameters();
+        $args->registerArgument('num-envs', 1);
+        $args->registerArgument('time-scale', 1.0);
+        $args->registerArgument('cpu', true);
+        $args->registerArgument('no-graphics', true);
+        $args->registerArgument('quality-level', 0);
+        $args->registerArgument('initialize-from', '');
+        $args->registerArgument('base-port', 5005);
+        $args->registerArgument('-tot-students', '');
+        $args->registerArgument('-tot-lessons', '');
+        $args->loadFromString($config);
+        $this->args = $args;
     }
     
     public function needsTraining(): bool {
         return ! is_dir($this->modelDirectory) || FileSystem::scanDir($this->modelDirectory, FileSystem::SCANDIR_EXCLUDE_DIRS, '~\.o?nnx?$~') === [];
     }
     
+    /** Runs training after init() loads the configuration. */
     public function train(string $workDirectory, string $executableFile): int {
+        if ($this->args === null) {
+            throw new LogicException('Call init() before starting ML-Agents training.');
+        }
         $executablePath = realpath($executableFile);
         if ($executablePath === false) {
-            throw new \InvalidArgumentException("Executable '$executableFile' not found.");
+            throw new InvalidArgumentException("Executable '$executableFile' not found.");
         }
         
         $args = [];

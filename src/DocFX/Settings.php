@@ -5,6 +5,7 @@ namespace Slothsoft\Unity\DocFX;
 
 use Slothsoft\Farah\FarahUrl\FarahUrl;
 use Slothsoft\Farah\Module\Module;
+use SplFileInfo;
 use Spyc;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -135,8 +136,9 @@ final class Settings {
         
         $plugins = realpath($this->path . DIRECTORY_SEPARATOR . 'Assets' . DIRECTORY_SEPARATOR . 'Plugins');
         if ($plugins) {
-            $this->addDirectory('Assets', function (\SplFileInfo $file) use ($plugins): bool {
-                return ! str_contains($file->getRealPath(), $plugins);
+            $this->addDirectory('Assets', function (SplFileInfo $file) use ($plugins): bool {
+                $path = $file->getRealPath();
+                return $path !== false && ! str_contains($path, $plugins);
             });
         } else {
             $this->addDirectory('Assets');
@@ -214,7 +216,10 @@ final class Settings {
             if ($file->isDot()) {
                 continue;
             }
-            $this->processFile(new \SplFileInfo($file->getRealPath()));
+            $path = $file->getRealPath();
+            if ($path !== false) {
+                $this->processFile(new SplFileInfo($path));
+            }
         }
     }
     

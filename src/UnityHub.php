@@ -163,8 +163,10 @@ final class UnityHub {
     /** @var array<string, bool> */
     private array $releaseApiQueries = [];
     
+    /** @var resource|null */
     private mixed $fileContext = null;
     
+    /** @return resource */
     private function getFileContext(): mixed {
         if ($this->fileContext === null) {
             $this->fileContext = stream_context_create([
@@ -238,12 +240,12 @@ final class UnityHub {
     
     /** @return array{version: string, path: string}|null */
     private static function parseInstalledEditor(string $line): ?array {
-        $line = explode('installed at', str_replace(',', '', $line), 2);
+        $line = explode('installed at', $line, 2);
         if (count($line) !== 2) {
             return null;
         }
         
-        $version = trim($line[0]);
+        $version = rtrim(rtrim($line[0]), ", \t");
         $path = trim($line[1]);
         if ($version === '' or $path === '') {
             return null;
@@ -538,7 +540,7 @@ final class UnityHub {
             $this->changesets = [];
             
             $this->loadVersionsFromUrl(self::UNITY_VERSION_HISTORY);
-
+            
             if (self::$USE_UNITY_ARCHIVE) {
                 $this->loadChangesetsFromUrl(self::UNITY_ARCHIVE_ALL);
             }

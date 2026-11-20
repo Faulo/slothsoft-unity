@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Slothsoft\Unity;
 
 use PHPUnit\Framework\TestCase;
+use Slothsoft\Core\ServerEnvironment;
 use Slothsoft\Unity\Command\SymfonyProcessOutputHandler;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Process\Process;
@@ -140,6 +141,27 @@ class UnityHubTest extends TestCase {
         foreach ($editors as $version => $editor) {
             $this->assertEditorIsValid($editor, $version);
         }
+    }
+    
+    /** @runInSeparateProcess */
+    public function testEditorDiscoveryRefreshesStaleCacheAndPreservesCommas(): void {
+        $cache = temp_dir('unity-editor-discovery-cache');
+        ServerEnvironment::setCacheDirectory($cache);
+        $cacheFile = $cache . DIRECTORY_SEPARATOR . 'unity-editors-installed.tmp';
+        $editor = $cache . DIRECTORY_SEPARATOR . 'Unity, Editor';
+        file_put_contents($editor, '');
+        file_put_contents($cacheFile, "2021.3.9f1, installed at $cache/missing");
+        
+        $output = "2021.3.10f1, installed at $editor\r\n2021.3.11f1 installed at $editor\nignored line";
+        $program = "echo base64_decode('" . base64_encode($output) . "');";
+        UnityHub::setHubLocator(new LocateHubFromCommand([PHP_BINARY, '-r', $program, '--']));
+        UnityHub::setLoggingEnabled(false);
+        
+        $editors = (new UnityHub())->getEditors();
+        $this->assertSame(['2021.3.10f1', '2021.3.11f1'], array_keys($editors));
+        $this->assertSame($editor, $editors['2021.3.10f1']->executable);
+        $this->assertSame($editor, $editors['2021.3.11f1']->executable);
+        $this->assertSame($output, Fixture::read($cacheFile));
     }
     
     private function assertEditorIsValid(UnityEditor $editor, string $version): void {

@@ -21,6 +21,10 @@ final class AppBuild {
     
     /**
      * Creates an app build with the Steam app ID, description, content root, and build output path.
+     *
+     * @param string $description Internal description for the build.
+     * @param string $contentPath Content root, relative to the generated VDF file when given as a relative path.
+     * @param string $buildPath Directory for build logs and cache files.
      */
     public function __construct(string $appId, string $description, string $contentPath, string $buildPath) {
         $this->fixEncoding($appId);
@@ -36,6 +40,10 @@ final class AppBuild {
     
     /**
      * Adds a depot file mapping to this app build.
+     *
+     * @param string $localPath File pattern relative to the content root.
+     * @param string $depotPath Destination relative to the depot root.
+     * @param string $recursive Use '1' to include subfolders or '0' to exclude them.
      */
     public function addDepot(string $depotId, string $localPath = '*', string $depotPath = '.', string $recursive = '1'): void {
         $this->fixEncoding($depotId);

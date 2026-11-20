@@ -9,6 +9,15 @@ Historical entries are reconstructed from Git tags and the changes between relea
 
 ## [Unreleased]
 
+## [2.24.2] - 2026-11-20
+
+### Fixed
+
+- Preserve commas in Unity editor installation paths reported by Unity Hub.
+- Skip dangling symlinks when scanning a project for DocFX documentation.
+- Report invalid package metadata and missing initialization explicitly in legacy ML-Agents training.
+- Restore stream-context and Steam build parameter documentation. ([#15](https://github.com/Faulo/slothsoft-unity/issues/15))
+
 ## [2.24.1] - 2026-11-19
 
 ### Fixed
@@ -795,6 +804,7 @@ Historical entries are reconstructed from Git tags and the changes between relea
 ### Added
 - Initial release with Unity project, Git project, and ML-Agents helpers.
 
-[Unreleased]: https://github.com/Faulo/slothsoft-unity/compare/2.24.1...HEAD
+[Unreleased]: https://github.com/Faulo/slothsoft-unity/compare/2.24.2...HEAD
+[2.24.2]: https://github.com/Faulo/slothsoft-unity/compare/2.24.1...2.24.2
 [2.24.1]: https://github.com/Faulo/slothsoft-unity/compare/2.24.0...2.24.1
 [2.24.0]: https://github.com/Faulo/slothsoft-unity/compare/2.23.3...2.24.0
