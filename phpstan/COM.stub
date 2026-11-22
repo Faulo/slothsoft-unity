@@ -3,8 +3,8 @@
 /**
  * Filesystem automation methods used by FileSystem::lookupFile().
  *
- * @method object GetFile(string $path)
- * @method object GetFolder(string $path)
+ * @method variant GetFile(string $path)
+ * @method variant GetFolder(string $path)
  */
 class COM {
 }

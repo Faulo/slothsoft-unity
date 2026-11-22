@@ -8,3 +8,5 @@ parameters:
         - tests
     stubFiles:
         - phpstan/COM.stub
+    universalObjectCratesClasses:
+        - VARIANT
