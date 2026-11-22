@@ -9,6 +9,10 @@ Historical entries are reconstructed from Git tags and the changes between relea
 
 ## [Unreleased]
 
+### Fixed
+
+- Refresh Unity Hub's installed editor list before the empty-project smoke test selects an editor. Call `UnityHub::getEditors(refresh: true)` to refresh the list explicitly.
+
 ## [2.24.3] - 2026-11-20
 
 ### Fixed

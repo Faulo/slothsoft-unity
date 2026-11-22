@@ -118,13 +118,13 @@ final class UnityEditorTest extends TestCase {
     }
     
     public function testCreateEmptyProject(): void {
-        $hub = UnityHub::getInstance();
+        $hub = new UnityHub();
         
         if (! $hub->isInstalled()) {
             $this->markTestSkipped('Please provide a valid Unity Hub installation.');
         }
         
-        $editors = $hub->getEditors();
+        $editors = $hub->getEditors(refresh: true);
         if ($editors === []) {
             $this->markTestSkipped('Please provide at least one installed Unity Editor.');
         }

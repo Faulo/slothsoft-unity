@@ -180,29 +180,32 @@ final class UnityHub {
         return $this->fileContext;
     }
     
-    /** @return array<string, UnityEditor> */
-    public function getEditors(): array {
-        $this->loadEditors(true);
+    /**
+     * @param bool $refresh Query Unity Hub even if an installed-editor list is cached.
+     * @return array<string, UnityEditor>
+     */
+    public function getEditors(bool $refresh = false): array {
+        $this->loadEditors(! $refresh);
         return $this->editors ?? [];
     }
     
     private function loadEditors(bool $allowCache): void {
-        if ($this->editors === null) {
-            $this->editors = [];
-            foreach ($this->loadInstalledEditors($allowCache) as $version => $path) {
-                if (is_file($path)) {
-                    $this->editors[$version] = new UnityEditor($this, $version);
-                    $this->editors[$version]->setExecutable($path);
-                } else {
-                    if ($this->hasLoadedEditorsFromCache) {
-                        // cache appears to be stale, let's try again
-                        $this->editors = null;
-                        $this->loadEditors(false);
-                        return;
-                    }
-                }
+        if ($allowCache and $this->editors !== null) {
+            return;
+        }
+        
+        $editors = [];
+        foreach ($this->loadInstalledEditors($allowCache) as $version => $path) {
+            if (is_file($path)) {
+                $editors[$version] = new UnityEditor($this, $version);
+                $editors[$version]->setExecutable($path);
+            } elseif ($this->hasLoadedEditorsFromCache) {
+                // The cached path no longer exists, so query Hub again.
+                $this->loadEditors(false);
+                return;
             }
         }
+        $this->editors = $editors;
     }
     
     /** @return iterable<string, string> */
@@ -219,15 +222,16 @@ final class UnityHub {
     
     private function loadInstalledEditorsOutput(bool $allowCache): string {
         $editorPaths = $allowCache ? $this->loadInstalledEditorsCache() : null;
-        $this->hasLoadedEditorsFromCache = (bool) $editorPaths;
         
         if ($editorPaths) {
+            $this->hasLoadedEditorsFromCache = true;
             self::logInstalledEditorsCache($editorPaths);
             return $editorPaths;
         }
         
         $editorPaths = trim($this->execute('editors', '--installed')->getOutput());
         $this->saveInstalledEditorsCache($editorPaths);
+        $this->hasLoadedEditorsFromCache = false;
         return $editorPaths;
     }
     
@@ -293,7 +297,6 @@ final class UnityHub {
     public function getEditorByVersion(string $version): UnityEditor {
         $this->loadEditors(true);
         if (! isset($this->editors[$version]) and $this->hasLoadedEditorsFromCache) {
-            $this->editors = null;
             $this->loadEditors(false);
         }
         

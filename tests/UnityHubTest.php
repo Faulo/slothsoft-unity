@@ -164,6 +164,33 @@ class UnityHubTest extends TestCase {
         $this->assertSame($output, Fixture::read($cacheFile));
     }
     
+    /**
+     * @runInSeparateProcess
+     * @throws \Exception
+     */
+    public function testEditorDiscoveryCanRefreshWhenCachedEditorStillExists(): void {
+        $cache = temp_dir('unity-editor-discovery-refresh');
+        ServerEnvironment::setCacheDirectory($cache);
+        $cacheFile = $cache . DIRECTORY_SEPARATOR . 'unity-editors-installed.tmp';
+        $oldEditor = $cache . DIRECTORY_SEPARATOR . 'old-editor';
+        $newEditor = $cache . DIRECTORY_SEPARATOR . 'new-editor';
+        touch($oldEditor);
+        touch($newEditor);
+        
+        $cachedOutput = "2022.1.20f1, installed at $oldEditor";
+        file_put_contents($cacheFile, $cachedOutput);
+        $output = "$cachedOutput\n2022.3.62f3, installed at $newEditor";
+        $program = "echo base64_decode('" . base64_encode($output) . "');";
+        UnityHub::setHubLocator(new LocateHubFromCommand([PHP_BINARY, '-r', $program, '--']));
+        UnityHub::setLoggingEnabled(false);
+        
+        $hub = new UnityHub();
+        $this->assertSame(['2022.1.20f1'], array_keys($hub->getEditors()));
+        $this->assertSame(['2022.1.20f1', '2022.3.62f3'], array_keys($hub->getEditors(refresh: true)));
+        $this->assertSame($newEditor, $hub->getEditors()['2022.3.62f3']->executable);
+        $this->assertSame($output, Fixture::read($cacheFile));
+    }
+    
     private function assertEditorIsValid(UnityEditor $editor, string $version): void {
         $this->assertInstanceOf(UnityEditor::class, $editor);
         $this->assertTrue($editor->isInstalled());
